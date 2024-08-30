@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="@string/bottom_title_home"
+        android:icon="@drawable/baseline_home_24"
+
+        />
+    <item
+        android:id="@+id/topResort"
+        android:title="@string/bottom_title_topResort"
+        android:icon="@drawable/ic_top_resort"
+        />
+    <item
+        android:id="@+id/posting"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/bottom_title_posting">
+
+    </item>
+
+
+    <item
+        android:id="@+id/exchange"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/bottom_title_exchange"
+
+        />
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/bottom_title_account"
+
+        />
+
+</menu>

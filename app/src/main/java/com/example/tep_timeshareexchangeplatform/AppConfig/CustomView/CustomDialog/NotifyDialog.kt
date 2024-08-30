@@ -4,33 +4,32 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.Window
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.text.HtmlCompat
 import com.example.tep_timeshareexchangeplatform.R
 
-class ErrorDialog (
+class NotifyDialog (
     context: Context,
-    private val errorContent: String,
+    private val title: String,
+    private val message: String,
     private val textButton: String? = null
 ) : Dialog(context) {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-
-        val rootView = layoutInflater.inflate(R.layout.dialog_error, null, false)
-
-        val tvContentError = rootView.findViewById<TextView>(R.id.tvContentError)
-        tvContentError.text = errorContent
-
-        val btnOK = rootView.findViewById<Button>(R.id.btnOK)
+        setContentView(R.layout.dialog_notify)
+        val tvTitle = findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = title
+        val tvContent = findViewById<TextView>(R.id.tvContent)
+        tvContent.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val btnOK = findViewById<AppCompatButton>(R.id.btnOK)
         textButton?.let {
             btnOK.text = textButton
         }
         btnOK.setOnClickListener {
             dismiss()
         }
-        setContentView(rootView)
-
     }
+
 }

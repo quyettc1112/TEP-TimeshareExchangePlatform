@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TEP-TimeshareExchangePlatform</string>
     <string name="ellipsis">&#8230;</string>
 
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
-    <string name="bottom_title_posting">Posting</string>
-    <string name="bottom_title_exchange">Exhange</string>
-    <string name="bottom_title_account">Account</string>
+    <string name="bottom_title_posting">Đăng Bài</string>
+    <string name="bottom_title_exchange">Trao Đổi</string>
+    <string name="bottom_title_account">Tài Khoản</string>
 </resources>
