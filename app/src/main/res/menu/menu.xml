@@ -14,7 +14,7 @@
         />
     <item
         android:id="@+id/posting"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/ic_sent"
         android:title="@string/bottom_title_posting">
 
     </item>
@@ -22,13 +22,13 @@
 
     <item
         android:id="@+id/exchange"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/ic_exchange"
         android:title="@string/bottom_title_exchange"
 
         />
     <item
         android:id="@+id/account"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/ic_account"
         android:title="@string/bottom_title_account"
 
         />
