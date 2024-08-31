@@ -17,6 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_nextPerson"
+        android:text="Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user">
+
+    </Button>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2Main"
         android:layout_width="match_parent"
@@ -27,21 +39,21 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        app:cardCornerRadius="15dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="13dp"
-        android:translationZ="10dp"
         android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:translationZ="10dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="12dp">
 
         <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomBottomNav.NiceBottomBar
             android:id="@+id/niceBottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/menu"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/menu">
 
         </com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomBottomNav.NiceBottomBar>
     </androidx.cardview.widget.CardView>

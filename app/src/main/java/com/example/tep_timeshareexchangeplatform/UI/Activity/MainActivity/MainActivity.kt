@@ -29,6 +29,7 @@ class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
     private val viewModel: MainViewModel by viewModels()
+    private var currentId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,10 @@ class MainActivity : BaseActivity() {
         setUpBottomNav()
         observeViewModel()
 
-        viewModel.fetchUserById(1) // Giả sử ID người dùng là 1
+        //viewModel.fetchUserById(currentId) // Giả sử ID người dùng là 1
+        binding.btnNextPerson.setOnClickListener {
+            viewModel.incrementUserID()
+        }
 
     }
 
@@ -89,6 +93,11 @@ class MainActivity : BaseActivity() {
                     binding.tvUser.text = resource.status.toString()
                 }
             }
+        })
+
+        // Observing Current User ID
+        viewModel.currentUserID.observe(this, Observer { userId ->
+            viewModel.fetchUserById(userId)
         })
 
     }

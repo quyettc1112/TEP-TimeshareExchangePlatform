@@ -16,6 +16,9 @@ class MainViewModel  @Inject constructor(
 ) : ViewModel()  {
 
 
+    private val _currentUserID = MutableLiveData<Int>()
+    val currentUserID: LiveData<Int> get() = _currentUserID
+
     private val _user = MutableLiveData<Resource<User>>()
     val user: LiveData<Resource<User>> get() = _user
 
@@ -25,6 +28,11 @@ class MainViewModel  @Inject constructor(
             val result = userRepository.getUser(userId)
             _user.postValue(result)
         }
+    }
+
+    // Hàm này sẽ tăng currentUserID lên 1 khi được gọi
+    fun incrementUserID() {
+        _currentUserID.value = (_currentUserID.value ?: 0) + 1
     }
 
 }
