@@ -18,6 +18,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Fragment.ExchangeFragment.Ex
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.HomeFragment.HomeFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.PostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.TopReosortFragment
+import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,7 @@ class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
     private val viewModel: MainViewModel by viewModels()
-    private var currentId: Int = 0
+    private lateinit var notificationHelper: NotificationHelper
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,12 @@ class MainActivity : BaseActivity() {
         binding.btnNextPerson.setOnClickListener {
             viewModel.incrementUserID()
         }
+
+        notificationHelper = NotificationHelper(this)
+
+        // Hiển thị một thông báo đơn giản
+
+
 
     }
 
@@ -98,6 +105,7 @@ class MainActivity : BaseActivity() {
         // Observing Current User ID
         viewModel.currentUserID.observe(this, Observer { userId ->
             viewModel.fetchUserById(userId)
+            notificationHelper.showNotification(1, "Title", "This is a simple notification")
         })
 
     }
