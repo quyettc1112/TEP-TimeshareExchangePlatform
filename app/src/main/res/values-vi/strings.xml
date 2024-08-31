@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">TEP-TimeshareExchangePlatform</string>
     <string name="ellipsis">&#8230;</string>
+    <string name="default_notify_title">Message</string>
 
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>

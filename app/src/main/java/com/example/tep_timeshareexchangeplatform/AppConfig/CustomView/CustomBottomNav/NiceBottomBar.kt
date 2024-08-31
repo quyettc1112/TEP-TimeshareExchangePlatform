@@ -33,14 +33,17 @@ class NiceBottomBar : View {
     private var barIndicatorWidth = d2p(50f)
     private var barIndicatorEnabled = true
     private var barIndicatorGravity = 1
-    private var itemIconSize = d2p(18.5f)
+    private var itemIconSize = d2p(20.5f)
     private var itemIconMargin = d2p(2.5f)
-    private var itemTextColor = Color.parseColor(Constant.DEFAULT_PRIMARY_COLOR_ACTIVE)
-    private var itemTextColorActive = Color.parseColor(Constant.DEFAULT_PRIMARY_COLOR)
+    private var itemTextColor = Color.parseColor(Constant.DEFAULT_PRIMARY_COLOR_INACTIVE)
+    private var itemTextColorActive = Color.parseColor(Constant.DEFAULT_TEXT_COLOR_ACTIVE)
     private var itemTextSize = d2p(12f)
     private var itemBadgeColor = itemTextColorActive
     private var itemFontFamily = 0
     private var activeItem = 0
+
+
+    private var itemTextColorTopResort = Color.parseColor(Constant.DEFAULT_TEXT_COLOR_ACTIVE_TOP_RERSORT)
 
     /**
      * Dynamic variables
@@ -205,7 +208,12 @@ class NiceBottomBar : View {
         }
 
         // Draw indicator
-        if (barIndicatorEnabled)
+        if (barIndicatorEnabled) {
+            if (activeItem == 1) {
+                paintIndicator.color = itemTextColorTopResort
+            } else {
+                paintIndicator.color = barIndicatorColor
+            }
             canvas.drawLine(
                 indicatorLocation - barIndicatorWidth / 2,
                 (if (barIndicatorGravity == 1) height - 5.0f else 5f),
@@ -213,6 +221,8 @@ class NiceBottomBar : View {
                 (if (barIndicatorGravity == 1) height - 5.0f else 5f),
                 paintIndicator
             )
+        }
+
     }
 
     // Handle item clicks
@@ -298,7 +308,7 @@ class NiceBottomBar : View {
         activeItem = pos
 
         animateIndicator(pos)
-        setItemColors()
+        setItemColors(pos)
     }
 
     private fun animateIndicator(pos: Int) {
@@ -323,10 +333,16 @@ class NiceBottomBar : View {
     }
 
     // Apply transition animation to item color
-    private fun setItemColors() {
-        val animator = ValueAnimator.ofObject(ArgbEvaluator(), itemTextColor, itemTextColorActive)
-        animator.addUpdateListener { currentActiveItemColor = it.animatedValue as Int }
-        animator.start()
+    private fun setItemColors(pos : Int) {
+        val targetColor = if (pos == 1) {
+            itemTextColorTopResort
+        } else {
+            itemTextColorActive
+        }
+        ValueAnimator.ofObject(ArgbEvaluator(), itemTextColor, targetColor).apply {
+            addUpdateListener { currentActiveItemColor = it.animatedValue as Int }
+            start()
+        }
     }
 
     private fun d2p(dp: Float): Float {

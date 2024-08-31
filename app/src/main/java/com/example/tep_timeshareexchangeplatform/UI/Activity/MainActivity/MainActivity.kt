@@ -1,6 +1,5 @@
-package com.example.tep_timeshareexchangeplatform
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.AccountFragment.AccountFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.ExchangeFragment.ExchangeFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.HomeFragment.HomeFragment
