@@ -3,51 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.Activity.MainActivity.MainActivity">
-
-    <TextView
-        android:id="@+id/tv_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_sent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ImageView>
-
-    <Button
-        android:id="@+id/btn_nextPerson"
-        android:text="Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user">
-
-    </Button>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2Main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp">
-    </androidx.viewpager2.widget.ViewPager2>
-
+        tools:layout_editor_absoluteX="0dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -70,11 +35,5 @@
 
         </com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomBottomNav.NiceBottomBar>
     </androidx.cardview.widget.CardView>
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

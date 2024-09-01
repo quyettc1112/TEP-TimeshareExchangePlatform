@@ -16,6 +16,7 @@ class Constant {
         const val DEFAULT_PRIMARY_COLOR_INACTIVE = "#CFCFCF"
         const val DEFAULT_TEXT_COLOR_ACTIVE = "#6A82F8"
         const val DEFAULT_TEXT_COLOR_ACTIVE_TOP_RERSORT = "#FF7F0D"
+        const val DEFAULT_TEXT_COLOR_BADGE = "#FF0E0E"
 
 
 

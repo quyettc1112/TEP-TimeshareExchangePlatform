@@ -3,10 +3,17 @@
     <string name="ellipsis">&#8230;</string>
     <string name="default_notify_title">Message</string>
 
-
+    // Bottom Navigation
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
     <string name="bottom_title_posting">Posting</string>
     <string name="bottom_title_exchange">Exhange</string>
     <string name="bottom_title_account">Account</string>
+
+    // Home Fragment
+    <string name="search_location">Location</string>
+    <string name="search_date">Date</string>
+    <string name="search_tourie">Tourist</string>
+
+
 </resources>

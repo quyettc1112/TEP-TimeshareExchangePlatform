@@ -4,9 +4,15 @@
     <string name="ellipsis">&#8230;</string>
     <string name="default_notify_title">Message</string>
 
+    // Bottom Navigation
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
     <string name="bottom_title_posting">Đăng Bài</string>
     <string name="bottom_title_exchange">Trao Đổi</string>
     <string name="bottom_title_account">Tài Khoản</string>
+
+    // Home Fragment
+    <string name="search_location">Điểm đến</string>
+    <string name="search_date">Ngày</string>
+    <string name="search_tourie">Khách</string>
 </resources>

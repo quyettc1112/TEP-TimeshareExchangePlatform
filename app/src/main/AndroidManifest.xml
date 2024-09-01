@@ -12,7 +12,7 @@
         android:label="Unwind"
         android:roundIcon="@drawable/logo_tep_app"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TEPTimeshareExchangePlatform"
+        android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
             android:name=".UI.Activity.MainActivity.MainActivity"

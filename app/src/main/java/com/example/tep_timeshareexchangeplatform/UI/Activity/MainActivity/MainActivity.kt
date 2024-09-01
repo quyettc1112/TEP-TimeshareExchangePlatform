@@ -29,9 +29,6 @@ class MainActivity : BaseActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
-    private val viewModel: MainViewModel by viewModels()
-    private lateinit var notificationHelper: NotificationHelper
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,18 +42,6 @@ class MainActivity : BaseActivity() {
             insets
         }
         setUpBottomNav()
-        observeViewModel()
-
-        //viewModel.fetchUserById(currentId) // Giả sử ID người dùng là 1
-        binding.btnNextPerson.setOnClickListener {
-            viewModel.incrementUserID()
-        }
-
-        notificationHelper = NotificationHelper(this)
-
-        // Hiển thị một thông báo đơn giản
-
-
 
     }
 
@@ -72,6 +57,7 @@ class MainActivity : BaseActivity() {
         binding.vp2Main.adapter = FragmentAdapter
         binding.vp2Main.isUserInputEnabled = false
         binding.vp2Main.offscreenPageLimit = 5
+        binding.niceBottomNav.setBadge(4)
 
         // Settup change listener
         binding.vp2Main.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
@@ -86,27 +72,5 @@ class MainActivity : BaseActivity() {
 
     }
 
-    private fun observeViewModel() {
-        viewModel.user.observe(this, Observer { resource ->
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    val user = resource.data
-                    binding.tvUser.text = user?.name.toString()
-                }
-                Status.ERROR -> {
-                    binding.tvUser.text = resource.message
-                }
-                Status.LOADING -> {
-                    binding.tvUser.text = resource.status.toString()
-                }
-            }
-        })
 
-        // Observing Current User ID
-        viewModel.currentUserID.observe(this, Observer { userId ->
-            viewModel.fetchUserById(userId)
-            notificationHelper.showNotification(1, "Title", "This is a simple notification")
-        })
-
-    }
 }

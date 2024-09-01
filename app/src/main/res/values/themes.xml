@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.TEPTimeshareExchangePlatform" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.TEPTimeshareExchangePlatform" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item> <!-- Điều này sẽ làm cho các biểu tượng và văn bản màu đen -->
     </style>
 
     <style name="Theme.TEPTimeshareExchangePlatform" parent="Base.Theme.TEPTimeshareExchangePlatform" />

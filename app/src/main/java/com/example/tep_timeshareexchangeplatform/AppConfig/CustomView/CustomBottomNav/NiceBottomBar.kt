@@ -38,7 +38,7 @@ class NiceBottomBar : View {
     private var itemTextColor = Color.parseColor(Constant.DEFAULT_PRIMARY_COLOR_INACTIVE)
     private var itemTextColorActive = Color.parseColor(Constant.DEFAULT_TEXT_COLOR_ACTIVE)
     private var itemTextSize = d2p(12f)
-    private var itemBadgeColor = itemTextColorActive
+    private var itemBadgeColor = Color.parseColor(Constant.DEFAULT_TEXT_COLOR_BADGE)
     private var itemFontFamily = 0
     private var activeItem = 0
 
@@ -254,7 +254,7 @@ class NiceBottomBar : View {
     // Draw item badge
     private fun drawBadge(canvas: Canvas, item: BottomBarItem) {
         paintBadge.style = Paint.Style.FILL
-        paintBadge.color = itemTextColorActive
+        paintBadge.color = itemBadgeColor
 
         canvas.drawCircle(
             item.rect.centerX() + itemIconSize / 2 - 4,
