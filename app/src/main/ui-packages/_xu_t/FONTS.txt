@@ -1,0 +1,4 @@
+Poppins
+Inter
+Open Sans
+Roboto

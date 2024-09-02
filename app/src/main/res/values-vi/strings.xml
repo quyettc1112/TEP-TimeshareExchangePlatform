@@ -11,8 +11,18 @@
     <string name="bottom_title_exchange">Trao Đổi</string>
     <string name="bottom_title_account">Tài Khoản</string>
 
-    // Home Fragment
+    // Home Fragment - Search Component
     <string name="search_location">Điểm đến</string>
     <string name="search_date">Ngày</string>
     <string name="search_tourie">Khách</string>
+    <string name="search_search">Tìm Kiếm</string>
+
+    // Home Fragment - Suggest Component
+    <string name="suggest_title">Đề Xuất Dành Cho Bạn</string>
+    <string name="suggest_seemore">Xem Thêm</string>
+    <string name="suggest_description">Dựa trên những địa điểm bạn đã xem</string>
+    <string name="suggest_verify">Xác Minh và Đảm Bảo</string>
+
+
+
 </resources>

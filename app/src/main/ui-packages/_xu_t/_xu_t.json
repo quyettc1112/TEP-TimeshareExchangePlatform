@@ -1,0 +1,1036 @@
+{
+  "name": "_xu_t",
+  "version": 33,
+  "source-key": {
+    "type": "figma",
+    "file": "dzjWXZXljOQo0BeKvE2BgZ",
+    "node": "796:735",
+    "version": "6541577705",
+    "component-id": "5a953d57cddc4e701baedcb1da6d92176adab869"
+  },
+  "default": "Đề Xuất",
+  "documentation": "UI\n",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "Frame 121075715"
+      },
+      {
+        "type": "group",
+        "id": "Best Combo"
+      },
+      {
+        "type": "group",
+        "id": "Verify"
+      },
+      {
+        "type": "group",
+        "id": "Group"
+      },
+      {
+        "type": "text",
+        "id": "Đề Xuất Dành Cho Bạn"
+      },
+      {
+        "type": "text",
+        "id": "Dựa trên những địa điểm bạn đã xem"
+      },
+      {
+        "type": "text",
+        "id": "Xem Thêm"
+      },
+      {
+        "type": "image",
+        "id": "Forward"
+      },
+      {
+        "type": "image",
+        "id": "Rectangle 53"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 54"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 55"
+      },
+      {
+        "type": "group",
+        "id": "carbon:favorite"
+      },
+      {
+        "type": "text",
+        "id": "10% OFF"
+      },
+      {
+        "type": "text",
+        "id": "4.5"
+      },
+      {
+        "type": "text",
+        "id": "Nha Trang Resort"
+      },
+      {
+        "type": "text",
+        "id": "1,300.000 VND | 4 đêm"
+      },
+      {
+        "type": "group",
+        "id": "ic:baseline-star"
+      },
+      {
+        "type": "text",
+        "id": "Khánh Hòa, Việt Nam"
+      },
+      {
+        "type": "text",
+        "id": "26/08/2024 - 30/08/2024"
+      },
+      {
+        "type": "text",
+        "id": "Phòng Studio, 1 Giường, 4 Người"
+      },
+      {
+        "type": "text",
+        "id": "213 đánh giá"
+      },
+      {
+        "type": "group",
+        "id": "system-uicons:location"
+      },
+      {
+        "type": "image",
+        "id": "Location"
+      },
+      {
+        "type": "vector",
+        "id": "Vector"
+      },
+      {
+        "type": "image",
+        "id": "Planner"
+      },
+      {
+        "type": "image",
+        "id": "Interior"
+      },
+      {
+        "type": "vector",
+        "id": "Vector1"
+      },
+      {
+        "type": "group",
+        "id": "Group1"
+      },
+      {
+        "type": "vector",
+        "id": "Vector2"
+      },
+      {
+        "type": "vector",
+        "id": "Vector3"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 2903"
+      },
+      {
+        "type": "text",
+        "id": "Xác Minh & Đảm Bảo"
+      }
+    ],
+    "modes": {
+      "Đề Xuất": {
+        "rules": [
+          {
+            "id": "top_level",
+            "is-structured": false,
+            "children": [
+              "Frame 121075715",
+              "Best Combo",
+              "Verify",
+              "Group"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Frame 121075715",
+            "is-structured": false,
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Best Combo",
+            "margin": {
+              "left": 20.0,
+              "top": 8.9990234375,
+              "right": 7.0,
+              "bottom": 335.28893280029297
+            },
+            "is-structured": false,
+            "children": [
+              "Đề Xuất Dành Cho Bạn",
+              "Dựa trên những địa điểm bạn đã xem",
+              "Xem Thêm",
+              "Forward"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Verify",
+            "margin": {
+              "left": 20.0,
+              "top": 76.0,
+              "right": 128.0,
+              "bottom": 26.0
+            },
+            "border-radius": 10.0,
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.5137254901960784
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 53",
+              "Rectangle 54",
+              "Rectangle 55",
+              "carbon:favorite",
+              "10% OFF",
+              "4.5",
+              "Nha Trang Resort",
+              "1,300.000 VND | 4 đêm",
+              "ic:baseline-star",
+              "Khánh Hòa, Việt Nam",
+              "26/08/2024 - 30/08/2024",
+              "Phòng Studio, 1 Giường, 4 Người",
+              "213 đánh giá",
+              "system-uicons:location",
+              "Location",
+              "Vector",
+              "Planner",
+              "Interior"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Group",
+            "margin": {
+              "left": 20.0,
+              "top": 77.0,
+              "right": 243.0,
+              "bottom": 295.0
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 2903",
+              "Xác Minh & Đảm Bảo"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Đề Xuất Dành Cho Bạn",
+            "margin": {
+              "top": 4.1123046875,
+              "right": 148.0,
+              "bottom": 21.985355377197266
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Đề Xuất Dành Cho Bạn",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.5,
+            "typeface": "Poppins"
+          },
+          {
+            "id": "Dựa trên những địa điểm bạn đã xem",
+            "margin": {
+              "top": 32.2255859375,
+              "right": 45.0
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "font-weight": 300.0,
+            "text-content": "Dựa trên những địa điểm bạn đã xem",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 12.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Xem Thêm",
+            "margin": {
+              "left": 240.0,
+              "top": 9.154296875,
+              "right": 25.0,
+              "bottom": 24.096960067749023
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "color": {
+              "alpha": 1.0,
+              "hue": 205.2,
+              "saturation": 1.0,
+              "value": 0.9803921568627451
+            },
+            "text-content": "Xem Thêm",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 12.0,
+            "line-height": 1.5,
+            "typeface": "Poppins"
+          },
+          {
+            "id": "Forward",
+            "margin": {
+              "left": 300.0,
+              "bottom": 18.94406509399414
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "image-content": "forward.png",
+            "scale": "contain"
+          },
+          {
+            "id": "Rectangle 53",
+            "border-radius": 10.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 5.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 197.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 134.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 50.588235294117645,
+              "saturation": 1.0,
+              "value": 1.0
+            },
+            "image-content": "rectangle_53.png",
+            "scale": "cover"
+          },
+          {
+            "id": "Rectangle 54",
+            "border-radius": 10.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -68.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 148.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 52.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 22.0
+              }
+            },
+            "vector-content": "rectangle_54.svg"
+          },
+          {
+            "id": "Rectangle 55",
+            "border-radius": 10.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 22.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 148.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 116.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 22.0
+              }
+            },
+            "vector-content": "rectangle_55.svg"
+          },
+          {
+            "id": "carbon:favorite",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 82.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 220.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 16.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 17.0
+              }
+            },
+            "is-structured": false
+          },
+          {
+            "id": "10% OFF",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -68.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 154.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 47.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 13.0
+              }
+            },
+            "color": {
+              "alpha": 1.0,
+              "hue": 208.76033057851237,
+              "saturation": 1.0,
+              "value": 0.9490196078431372
+            },
+            "text-content": "10% OFF",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-size": 7.0,
+            "line-height": 1.36181640625,
+            "typeface": "Open Sans"
+          },
+          {
+            "id": "4.5",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -3.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 154.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 47.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 13.0
+              }
+            },
+            "color": {
+              "alpha": 1.0,
+              "hue": 208.76033057851237,
+              "saturation": 1.0,
+              "value": 0.9490196078431372
+            },
+            "text-content": "4.5",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-size": 9.0,
+            "line-height": 1.36181640625,
+            "typeface": "Open Sans"
+          },
+          {
+            "id": "Nha Trang Resort",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -19.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 181.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 141.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 20.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 0.807843137254902,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "text-content": "Nha Trang Resort",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "line-height": 1.171875
+          },
+          {
+            "id": "1,300.000 VND | 4 đêm",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -9.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 269.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 161.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 12.0
+              }
+            },
+            "font-weight": 300.0,
+            "color": {
+              "alpha": 0.807843137254902,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "annotated-text-content": {
+              "text": "1,300.000 VND | 4 đêm",
+              "annotated-text-span-list": [
+                {
+                  "span-start": 0,
+                  "span-length": 13,
+                  "annotated-text-style": {
+                    "font-weight": 700.0,
+                    "text-size": 13.0,
+                    "typeface": "Roboto",
+                    "color": {
+                      "alpha": 1.0,
+                      "hue": 208.76033057851237,
+                      "saturation": 1.0,
+                      "value": 0.9490196078431372
+                    }
+                  }
+                },
+                {
+                  "span-start": 13,
+                  "span-length": 8,
+                  "annotated-text-style": {
+                    "text-size": 13.0
+                  }
+                }
+              ]
+            },
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 13.0,
+            "line-height": 1.171875
+          },
+          {
+            "id": "ic:baseline-star",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -18.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 153.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 12.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 12.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Vector1"
+            ]
+          },
+          {
+            "id": "Khánh Hòa, Việt Nam",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -2.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 203.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 147.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 15.0
+              }
+            },
+            "font-weight": 300.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.4980392156862745
+            },
+            "text-content": "Khánh Hòa, Việt Nam",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 10.0,
+            "line-height": 1.171875
+          },
+          {
+            "id": "26/08/2024 - 30/08/2024",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -2.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 226.794921875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 147.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 15.0
+              }
+            },
+            "font-weight": 300.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.4980392156862745
+            },
+            "text-content": "26/08/2024 - 30/08/2024",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 10.0,
+            "line-height": 1.171875
+          },
+          {
+            "id": "Phòng Studio, 1 Giường, 4 Người",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 7.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 247.794921875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 15.0
+              }
+            },
+            "font-weight": 300.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.4980392156862745
+            },
+            "text-content": "Phòng Studio, 1 Giường, 4 Người",
+            "overflow": "visible",
+            "max-lines": -1,
+            "text-align": "left",
+            "text-size": 10.0,
+            "line-height": 1.171875
+          },
+          {
+            "id": "213 đánh giá",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 40.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 154.0
+              }
+            },
+            "font-weight": 300.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.4980392156862745
+            },
+            "text-content": "213 đánh giá",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 10.0,
+            "line-height": 1.171875
+          },
+          {
+            "id": "system-uicons:location",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -84.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 203.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Group1"
+            ]
+          },
+          {
+            "id": "Location",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 15.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 203.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              }
+            },
+            "image-content": "location.png",
+            "scale": "contain"
+          },
+          {
+            "id": "Vector",
+            "margin": {
+              "left": 179.0,
+              "top": 269.0,
+              "right": 10.0,
+              "bottom": 8.0
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector.svg"
+          },
+          {
+            "id": "Planner",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 15.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 226.794921875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              }
+            },
+            "image-content": "planner.png",
+            "scale": "contain"
+          },
+          {
+            "id": "Interior",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 15.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 247.794921875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 10.0
+              }
+            },
+            "image-content": "interior.png",
+            "scale": "contain"
+          },
+          {
+            "id": "Vector1",
+            "margin": {
+              "left": 1.0,
+              "top": 1.0,
+              "right": 1.0,
+              "bottom": 1.5
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector1.svg"
+          },
+          {
+            "id": "Group1",
+            "margin": {
+              "left": 2.142578125,
+              "top": 1.1904296875,
+              "right": 2.1431360244750977,
+              "bottom": 1.1709990501403809
+            },
+            "is-structured": false,
+            "children": [
+              "Vector2",
+              "Vector3"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Vector2",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            }
+          },
+          {
+            "id": "Vector3",
+            "margin": {
+              "left": 1.6669921875,
+              "top": 1.6669921875,
+              "right": 1.6663413047790527,
+              "bottom": 3.5906269550323486
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            }
+          },
+          {
+            "id": "Rectangle 2903",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "rectangle_2903.svg"
+          },
+          {
+            "id": "Xác Minh & Đảm Bảo",
+            "margin": {
+              "left": 7.0,
+              "top": 9.0,
+              "right": 7.0,
+              "bottom": 8.0
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "font-weight": 600.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "Xác Minh & Đảm Bảo",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 8.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          }
+        ]
+      }
+    }
+  },
+  "previews": [
+    {
+      "design": "Đề Xuất",
+      "size": {
+        "width": 357.0,
+        "height": 399.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

@@ -14,6 +14,15 @@
     <string name="search_location">Location</string>
     <string name="search_date">Date</string>
     <string name="search_tourie">Tourist</string>
+    <string name="search_search">Search</string>
+
+
+    // Home Fragment - Suggest Component
+    <string name="suggest_title">Recommendations For You</string>
+    <string name="suggest_seemore">See All</string>
+    <string name="suggest_description">Based on the places you have searched</string>
+    <string name="suggest_verify">Verified and Protected</string>
+
 
 
 </resources>
