@@ -29,6 +29,11 @@
     <string name="suggest_resort_hotel_mt">Central Vietnam</string>
     <string name="suggest_resort_hotel_mn">South Vietnam</string>
 
+    // Home Fragment - Travle Destination Component
+    <string name="destination_title">Special Tourist Destinations</string>
+    <string name="destination_description">Explore famous tourist destinations</string>
+
+
 
 
 </resources>

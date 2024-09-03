@@ -30,5 +30,10 @@
     <string name="suggest_resort_hotel_mn">Miền Nam</string>
 
 
+    // Home Fragment - Travle Destination Component
+    <string name="destination_title">Địa Điểm Du Lịch Đặc Sắc</string>
+    <string name="destination_description">Khám phá địa điểm du lịch nổi tiếng</string>
+
+
 
 </resources>

@@ -26,9 +26,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="2000dp"
         android:layout_marginTop="4dp"
         android:fillViewport="true"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -288,7 +288,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="200dp"
                 android:orientation="vertical"
                 android:background="@color/white">
 
@@ -499,24 +498,90 @@
                 </LinearLayout>
 
 
+            </LinearLayout>
 
+            <!--// Tourist Destination-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="200dp"
+                android:layout_marginTop="4dp">
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_destination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/destination_title"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_light"
+                        android:text="@string/destination_description"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_destination" />
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center|top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+                        <TextView
+                            android:id="@+id/tv_destination_see_more"
+                            android:textColor="@color/blue_see_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:text="@string/suggest_seemore" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/forward" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:fillViewport="true">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_tourist_destination"
+                        android:scrollbars="none"
+                        android:isScrollContainer="false"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_tourist_destination"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="25dp"
+                        android:paddingEnd="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-
-
-
-
-
-
-
-
+                </androidx.core.widget.NestedScrollView>
 
 
 
 
             </LinearLayout>
+
+
+
 
 
 

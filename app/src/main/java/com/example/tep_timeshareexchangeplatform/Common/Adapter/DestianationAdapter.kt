@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common.Adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,12 +14,36 @@ class DestianationAdapter: BaseAdapter<DestinationModel, DestianationAdapter.Des
 
     inner class DestinationViewHolder(binding: ItemTouristDestinationBinding): BaseItemViewHolderCF<DestinationModel, ItemTouristDestinationBinding>(binding) {
         override fun bind(item: DestinationModel) {
-            Glide.with(binding.imageView.context)
+
+            binding.textView.text = position.toString()
+            Glide.with(binding.imageDestination.context)
                 .load(item.destinationImage)
-                .into(binding.imageView)
-           /* binding.t.text = item.name
-            binding.tvDestinationLocation.text = item.location
-            binding.tvDestinationPrice.text = item.price*/
+                .into(binding.imageDestination)
+
+
+            // Tùy chỉnh chiều cao của mỗi mục dựa trên vị trí
+            val layoutParams = binding.imageDestination.layoutParams
+            layoutParams.height = when (position) {
+                0 -> 100.dpToPx()
+                1 -> 200.dpToPx()
+                2 -> 100.dpToPx()
+                3 -> 100.dpToPx()
+                else -> 200.dpToPx() // Chiều cao mặc định cho các mục khác
+            }
+
+            layoutParams.width = when (position) {
+                0 -> 200.dpToPx()
+                1 -> 100.dpToPx()
+                2 -> 100.dpToPx()
+                3 -> 100.dpToPx()
+                else -> 200.dpToPx() // Chiều rộng mặc định cho các mục khác
+            }
+
+            binding.imageDestination.layoutParams = layoutParams
+        }
+
+        fun Int.dpToPx(): Int {
+            return (this * Resources.getSystem().displayMetrics.density).toInt()
         }
 
 

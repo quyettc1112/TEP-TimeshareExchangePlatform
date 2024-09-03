@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
@@ -250,6 +251,51 @@ class Constant {
                 price = " 700.000 - 1.800.000 VND",
                 numberOfNights = "| 1 đêm"
             )
+        )
+
+
+        val destiantionList = listOf(
+            DestinationModel(
+                id = 1,
+                destinationImage = R.drawable.im_material_phu_quoc,
+                destinationName = "Phú Quốc",
+            ),
+            DestinationModel(
+                id = 2,
+                destinationImage = R.drawable.im_meterial_da_nang,
+                destinationName = "Đà Nẵng",
+            ),
+            DestinationModel(
+                id = 3,
+                destinationImage = R.drawable.im_material_da_lat,
+                destinationName = "Đà Lạt",
+            ),
+            DestinationModel(
+                id = 4,
+                destinationImage = R.drawable.im_material_quy_nhon,
+                destinationName = "Quy NHơn",
+            ),
+            DestinationModel(
+                id = 5,
+                destinationImage = R.drawable.im_material_nha_trang,
+                destinationName = "Nha Trang",
+            ),
+            DestinationModel(
+                id = 6,
+                destinationImage = R.drawable.im_material_phan_thiet,
+                destinationName = "Phan Thiết",
+            ),
+            DestinationModel(
+                id = 7,
+                destinationImage = R.drawable.im_material_phu_yen,
+                destinationName = "Phú Yên",
+            ),
+            DestinationModel(
+                id = 8,
+                destinationImage = R.drawable.im_material_vung_tau,
+                destinationName = "Vũng Tàu",
+            ),
+
         )
     }
 }
