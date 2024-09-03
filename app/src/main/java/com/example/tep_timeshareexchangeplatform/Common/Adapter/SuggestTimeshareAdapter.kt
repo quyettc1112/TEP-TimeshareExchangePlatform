@@ -11,6 +11,10 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareBindin
 
 class SuggestTimeshareAdapter: BaseAdapter<TimeshareModel, SuggestTimeshareAdapter.SuggestTimeshareViewHolder>() {
 
+
+    var onItemClick: ((TimeshareModel) -> Unit)? = null
+    var onFavoriteClick: ((TimeshareModel) -> Unit)? = null
+
     inner class SuggestTimeshareViewHolder(binding: ItemTimeshareBinding): BaseItemViewHolderCF<TimeshareModel, ItemTimeshareBinding>(binding) {
         override fun bind(item: TimeshareModel) {
             Glide.with(binding.imImageTimeshare.context)
@@ -22,6 +26,13 @@ class SuggestTimeshareAdapter: BaseAdapter<TimeshareModel, SuggestTimeshareAdapt
             binding.tvRoom.text = item.roomDetails
             binding.tvPrice.text = item.price
             binding.tvNumberOfNight.text = item.numberOfNights
+
+            binding.root.setOnClickListener {
+                onItemClick?.let { it1 -> it1(item) }
+            }
+            binding.imFavorite.setOnClickListener {
+                onFavoriteClick?.let { it1 -> it1(item) }
+            }
         }
 
     }

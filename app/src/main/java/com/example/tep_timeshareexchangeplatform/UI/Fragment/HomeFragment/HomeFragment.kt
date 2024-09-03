@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -45,6 +46,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         setAdapter()
+        setItemClickListener()
 
 
 
@@ -59,16 +61,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         // List Resort Recomend MB
         binding.vpResortHotelMb.let {
             it.adapter = resortAdapterMB
-            it.clipToPadding = false
+            it.clipToPadding = true
             it.clipChildren = false
             it.offscreenPageLimit = 5
             it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
+
+
 
         }
         // List Resort Recomend MT
         binding.vpResortHotelMt.let {
             it.adapter = resortAdapterMT
-            it.clipToPadding = false
+            it.clipToPadding = true
             it.clipChildren = false
             it.offscreenPageLimit = 5
             it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
@@ -77,7 +81,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         // List Resort Recomend MN
         binding.vpResortHotelMn.let {
             it.adapter = resortAdapterMN
-            it.clipToPadding = false
+            it.clipToPadding = true
             it.clipChildren = false
             it.offscreenPageLimit = 5
             it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
@@ -87,7 +91,44 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
+    }
 
+    fun setItemClickListener() {
+        resortAdapterMB.let {
+            it.onItemClick = {
+                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+            }
+
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        resortAdapterMT.let {
+            it.onItemClick = {
+                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+            }
+
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        resortAdapterMN.let {
+            it.onItemClick = {
+                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+            }
+
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        timeshareAdapter.let {
+            it.onItemClick = {
+                Toast.makeText(requireContext(), it.timeshareName.toString(), Toast.LENGTH_SHORT).show()
+            }
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     }
 
