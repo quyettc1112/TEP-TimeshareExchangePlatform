@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TEP-TimeshareExchangePlatform</string>
     <string name="ellipsis">&#8230;</string>
@@ -32,6 +33,7 @@
     // Home Fragment - Travle Destination Component
     <string name="destination_title">Special Tourist Destinations</string>
     <string name="destination_description">Explore famous tourist destinations</string>
+
 
 
 

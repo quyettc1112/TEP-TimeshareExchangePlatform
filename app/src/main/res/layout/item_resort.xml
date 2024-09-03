@@ -178,7 +178,7 @@
             android:fontFamily="@font/inter_extrabold"
             android:text="500.000 - 1,300.000 VND "
             android:textColor="@color/blue_full"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:gravity="center|left"

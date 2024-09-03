@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Fragment.HomeFragment.HomeFr
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.PostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.TopReosortFragment
 import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
+import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,9 +32,20 @@ class MainActivity : BaseActivity() {
     private lateinit var FragmentAdapter: FragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
+        val preferenceHelper = PreferenceHelper(this)
+        val savedLanguage = preferenceHelper.getLanguage()
+
+        val locale = Locale(savedLanguage)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -41,7 +53,9 @@ class MainActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         setUpBottomNav()
+
 
     }
 
