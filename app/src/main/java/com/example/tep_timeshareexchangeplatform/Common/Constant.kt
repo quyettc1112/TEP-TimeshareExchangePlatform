@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 
@@ -29,10 +30,10 @@ class Constant {
                 imageTimeshare = R.drawable.im_matiral_timeshare,
                 rating = 4.5f,
                 ratingCount = "254 đánh giá",
-                timeshareName = "Nha Trang Resort",
+                timeshareName = "Nha Trang Resort - Cương Quyết",
                 location = "Khánh Hòa, Việt Nam",
                 date = "26/08/2024 - 30/08/2024",
-                roomDetails = "Phòng Studio, 1 Giường, 4 Người",
+                roomDetails = "Phòng Studio, 1 Giường, 4 Người, Emegency, Fukami",
                 price = "1.300.000 VND",
                 numberOfNights = " | 4 đêm"
             ),
@@ -44,7 +45,7 @@ class Constant {
                 rating = 4.0f,
                 ratingCount = "150 đánh giá",
                 timeshareName = "Phú Quốc Resort",
-                location = "Kiên Giang, Việt Nam",
+                location = "Rạch Giá, Kiên Giang, Việt Nam",
                 date = "01/09/2024 - 05/09/2024",
                 roomDetails = "Phòng Deluxe, 2 Giường, 6 Người",
                 price = "2.000.000 VND",
@@ -76,6 +77,178 @@ class Constant {
                 roomDetails = "Phòng Deluxe, 1 Giường, 3 Người",
                 price = "2.500.000 VND",
                 numberOfNights = " | 5 đêm"
+            )
+        )
+
+        val resortListMB = listOf(
+            ResortModel(
+                id = 1,
+                resortImage = R.drawable.im_material_resort,
+                resortName = "Nha Trang Resort",
+                rating = 4.5f,
+                ratingCount = "254 đánh giá",
+                location = "Khánh Hòa, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "550.000 - 1.300.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 2,
+                resortImage = R.drawable.im_material_resort,
+                resortName = "Phú Quốc Resort",
+                rating = 4.0f,
+                ratingCount = "150 đánh giá",
+                location = "Kiên Giang, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "750.000 - 2.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 3,
+                resortImage = R.drawable.im_material_resort,
+                resortName = "Đà Nẵng Resort",
+                rating = 4.7f,
+                ratingCount = "300 đánh giá",
+                location = "Đà Nẵng, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "1.000.000 - 3.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 4,
+                resortImage = R.drawable.im_material_resort,
+                resortName = "Hạ Long Resort",
+                rating = 4.3f,
+                ratingCount = "200 đánh giá",
+                location = "Quảng Ninh, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "650.000 - 2.500.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 5,
+                resortImage = R.drawable.im_material_resort,
+                resortName = "Đại Lải Resort",
+                rating = 4.2f,
+                ratingCount = "180 đánh giá",
+                location = "Vĩnh Phúc, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = " 700.000 - 1.800.000 VND",
+                numberOfNights = "| 1 đêm"
+            )
+        )
+        val resortListMT = listOf(
+            ResortModel(
+                id = 1,
+                resortImage = R.drawable.im_material_mt,
+                resortName = "Nha Trang Resort",
+                rating = 4.5f,
+                ratingCount = "254 đánh giá",
+                location = "Khánh Hòa, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "550.000 - 1.300.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 2,
+                resortImage = R.drawable.im_material_mt,
+                resortName = "Phú Quốc Resort",
+                rating = 4.0f,
+                ratingCount = "150 đánh giá",
+                location = "Kiên Giang, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "750.000 - 2.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 3,
+                resortImage = R.drawable.im_material_mt,
+                resortName = "Đà Nẵng Resort",
+                rating = 4.7f,
+                ratingCount = "300 đánh giá",
+                location = "Đà Nẵng, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "1.000.000 - 3.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 4,
+                resortImage = R.drawable.im_material_mt,
+                resortName = "Hạ Long Resort",
+                rating = 4.3f,
+                ratingCount = "200 đánh giá",
+                location = "Quảng Ninh, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "650.000 - 2.500.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 5,
+                resortImage = R.drawable.im_material_mt,
+                resortName = "Đại Lải Resort",
+                rating = 4.2f,
+                ratingCount = "180 đánh giá",
+                location = "Vĩnh Phúc, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = " 700.000 - 1.800.000 VND",
+                numberOfNights = "| 1 đêm"
+            )
+        )
+        val resortListMN = listOf(
+            ResortModel(
+                id = 1,
+                resortImage = R.drawable.im_material_mn,
+                resortName = "Nha Trang Resort",
+                rating = 4.5f,
+                ratingCount = "254 đánh giá",
+                location = "Khánh Hòa, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "550.000 - 1.300.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 2,
+                resortImage = R.drawable.im_material_mn,
+                resortName = "Phú Quốc Resort",
+                rating = 4.0f,
+                ratingCount = "150 đánh giá",
+                location = "Kiên Giang, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "750.000 - 2.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 3,
+                resortImage = R.drawable.im_material_mn,
+                resortName = "Đà Nẵng Resort",
+                rating = 4.7f,
+                ratingCount = "300 đánh giá",
+                location = "Đà Nẵng, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "1.000.000 - 3.000.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 4,
+                resortImage = R.drawable.im_material_mn,
+                resortName = "Hạ Long Resort",
+                rating = 4.3f,
+                ratingCount = "200 đánh giá",
+                location = "Quảng Ninh, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = "650.000 - 2.500.000 VND",
+                numberOfNights = "| 1 đêm"
+            ),
+            ResortModel(
+                id = 5,
+                resortImage = R.drawable.im_material_mn,
+                resortName = "Đại Lải Resort",
+                rating = 4.2f,
+                ratingCount = "180 đánh giá",
+                location = "Vĩnh Phúc, Việt Nam",
+                roomDetails = "123 Timeshare cho thuê có sẵn",
+                price = " 700.000 - 1.800.000 VND",
+                numberOfNights = "| 1 đêm"
             )
         )
     }

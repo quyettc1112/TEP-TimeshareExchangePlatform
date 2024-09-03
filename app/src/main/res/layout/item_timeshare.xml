@@ -4,9 +4,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:background="@drawable/background_stroke_around"
-        android:layout_marginEnd="15dp"
-        android:layout_width="180dp"
-        android:layout_height="260dp">
+        android:layout_marginEnd="20dp"
+        android:layout_width="200dp"
+        android:layout_height="305dp">
 
         <LinearLayout
             android:id="@+id/ll_verify"
@@ -28,218 +28,224 @@
             </TextView>
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/im_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/baseline_favorite_border_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+
+        <!-- // Image-->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp">
+            android:layout_height="120dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/yellow_stroke_image"
+            app:strokeWidth="1dp">
 
             <ImageView
-                android:id="@+id/im_favorite"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_favorite_border_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
-
-
-            <!-- // Image-->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView"
+                android:id="@+id/im_imageTimeshare"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="@color/yellow_stroke_image"
-                app:strokeWidth="1dp">
-                <ImageView
-                    android:id="@+id/im_imageTimeshare"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/im_matiral_timeshare"/>
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/im_matiral_timeshare" />
+        </com.google.android.material.card.MaterialCardView>
 
-            <!-- // Off-->
-            <!-- // Ratign-->
+        <!-- // Off-->
+        <!-- // Ratign-->
+        <LinearLayout
+            android:id="@+id/materialCardView3"
+            android:layout_width="130dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_rating"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+            app:strokeColor="@color/white">
+
             <LinearLayout
-                android:id="@+id/materialCardView3"
-                android:layout_width="100dp"
-                android:layout_height="22dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/background_rating"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-                app:strokeColor="@color/white">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|left"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/baseline_star_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center|left"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:text="4.5"
+                    android:textColor="#007EF2"
+                    android:textSize="12dp" />
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/baseline_star_24" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:gravity="center"
-                        android:text="4.5"
-                        android:textColor="#007EF2"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
-                        android:gravity="center"
-                        android:text="254 đánh giá"
-                        android:textSize="8dp" />
-                </LinearLayout>
-
-
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:text="254 đánh giá"
+                    android:textSize="12dp" />
             </LinearLayout>
 
-            <!--// TimeShare Detail-->
-            <LinearLayout
+
+        </LinearLayout>
+
+        <!--// TimeShare Detail-->
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+
+            <!-- // TimeShare name-->
+            <TextView
+                android:id="@+id/tv_timeShreName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:maxLines="2"
+                android:text="Nha Trang Resort"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
-                android:padding="5dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+            <!-- // Location-->
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:minHeight="20dp"
+                android:orientation="horizontal">
 
-                <!-- // TimeShare name-->
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/ic_location"></ImageView>
+
                 <TextView
-                    android:id="@+id/tv_timeShreName"
+                    android:id="@+id/tv_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
-                    android:textSize="12dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center|left"
+                    android:text="Khánh Hòa, Việt Nam asd asd"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <!-- // Date-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/ic_schedule"></ImageView>
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center|left"
                     android:maxLines="1"
-                    android:text="Nha Trang Resort"/>
+                    android:text="26/08/2024 - 30/08/2024"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
-                <!-- // Location-->
-                <LinearLayout
+            <!-- // Room-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:minHeight="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/ic_room_ts"></ImageView>
+
+                <TextView
+                    android:id="@+id/tv_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:gravity="center|left"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:minHeight="20dp"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:src="@drawable/ic_location">
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/tv_location"
-                        android:layout_marginStart="5dp"
-                        android:textSize="10dp"
-                        android:gravity="center|left"
-                        android:text="Khánh Hòa, Việt Nam"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <!-- // Date-->
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:minHeight="20dp"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:src="@drawable/ic_schedule">
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/tv_date"
-                        android:layout_marginStart="5dp"
-                        android:textSize="10dp"
-                        android:gravity="center|left"
-                        android:text="26/08/2024 - 30/08/2024"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <!-- // Room-->
-                <LinearLayout
-                    android:gravity="center|left"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:minHeight="20dp"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:src="@drawable/ic_room_ts">
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/tv_room"
-                        android:layout_marginStart="5dp"
-                        android:textSize="10dp"
-                        android:gravity="center|left"
-                        android:text="Phòng Studio, 1 Giường, 4 Người"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <!--// Price-->
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1.300.000 VND"
-                        android:textSize="14dp"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/blue_full"/>
-
-                    <TextView
-                        android:id="@+id/tv_numberOfNight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" | 4 đêm"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/inter_medium"
-                        android:textColor="@color/primary_stroke_around"/>
-
-                </LinearLayout>
-
-
-
-
-
-
-
+                    android:maxLines="2"
+                    android:text="Phòng Studio, 1 Giường, 4 Người"
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
+        </LinearLayout>
+
+        <!--// Price-->
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center|left"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_extrabold"
+                android:text="1.300.000 VND"
+                android:textColor="@color/blue_full"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_numberOfNight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text=" | 4 đêm"
+                android:textColor="@color/primary_stroke_around"
+                android:textSize="12dp" />
+
+        </LinearLayout>
 
 
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

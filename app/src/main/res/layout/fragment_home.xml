@@ -217,7 +217,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:padding="25dp"
-                android:layout_marginBottom="500dp"
                 android:orientation="vertical"
                 android:background="@color/white">
                 <!-- // Suggest Title-->
@@ -276,10 +275,246 @@
                          android:id="@+id/rv_suggest_timeshare"
                          tools:listitem="@layout/item_timeshare"
                          android:layout_width="match_parent"
-                         android:layout_height="260dp">
+                         android:layout_height="310dp">
 
                      </androidx.recyclerview.widget.RecyclerView>
                   </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!--// Resort & Hotel-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="200dp"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_rsht"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/suggest_resort_hotel"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_light"
+                        android:text="@string/suggest_resort_hotel_description"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_rsht" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// MB-->
+                <!--// List Resort & Hotel-->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="310dp">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="@string/suggest_resort_hotel_mb"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center|top"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+                            <TextView
+                                android:id="@+id/tv_sugest_see_more_mb"
+                                android:textColor="@color/blue_see_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:text="@string/suggest_seemore" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/forward" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// List Resort & Hotel-->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp_resort_hotel_mb"
+                        android:layout_gravity="center"
+                        tools:listitem="@layout/item_resort"
+                        android:layout_marginTop="5dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp">
+                    </androidx.viewpager2.widget.ViewPager2>
+                </LinearLayout>
+
+
+                <!--// MT-->
+                <!--// List Resort & Hotel-->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="310dp">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="@string/suggest_resort_hotel_mt"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center|top"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+                            <TextView
+                                android:id="@+id/tv_sugest_see_more_mt"
+                                android:textColor="@color/blue_see_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:text="@string/suggest_seemore" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/forward" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// List Resort & Hotel-->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp_resort_hotel_mt"
+                        android:layout_gravity="center"
+                        tools:listitem="@layout/item_resort"
+                        android:layout_marginTop="5dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp">
+                    </androidx.viewpager2.widget.ViewPager2>
+                </LinearLayout>
+
+
+                <!--// MN-->
+                <!--// List Resort & Hotel-->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="310dp">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="@string/suggest_resort_hotel_mn"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center|top"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+                            <TextView
+                                android:id="@+id/tv_sugest_see_more_mn"
+                                android:textColor="@color/blue_see_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:text="@string/suggest_seemore" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/forward" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// List Resort & Hotel-->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp_resort_hotel_mn"
+                        android:layout_gravity="center"
+                        tools:listitem="@layout/item_resort"
+                        android:layout_marginTop="5dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp">
+                    </androidx.viewpager2.widget.ViewPager2>
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </LinearLayout>
 

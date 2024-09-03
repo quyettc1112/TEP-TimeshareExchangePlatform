@@ -23,6 +23,12 @@
     <string name="suggest_description">Dựa trên những địa điểm bạn đã xem</string>
     <string name="suggest_verify">Xác Minh và Đảm Bảo</string>
 
+    <string name="suggest_resort_hotel">Resort và Khách Sạn</string>
+    <string name="suggest_resort_hotel_description">Khám phá khu nghĩ dưỡng dành cho bạn</string>
+    <string name="suggest_resort_hotel_mb">Miền Bắc</string>
+    <string name="suggest_resort_hotel_mt">Miền Trung</string>
+    <string name="suggest_resort_hotel_mn">Miền Nam</string>
+
 
 
 </resources>

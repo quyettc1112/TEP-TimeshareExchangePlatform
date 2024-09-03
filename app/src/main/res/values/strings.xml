@@ -23,6 +23,12 @@
     <string name="suggest_description">Based on the places you have searched</string>
     <string name="suggest_verify">Verified and Protected</string>
 
+    <string name="suggest_resort_hotel">Resort and Hotel</string>
+    <string name="suggest_resort_hotel_description">Discover the resort for you</string>
+    <string name="suggest_resort_hotel_mb">Northern Vietnam</string>
+    <string name="suggest_resort_hotel_mt">Central Vietnam</string>
+    <string name="suggest_resort_hotel_mn">South Vietnam</string>
+
 
 
 </resources>
