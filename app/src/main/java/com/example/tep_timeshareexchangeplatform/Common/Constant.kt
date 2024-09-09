@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
@@ -296,6 +297,14 @@ class Constant {
                 destinationName = "Vũng Tàu",
             ),
 
+        )
+
+        val blogList = listOf(
+            BlogModel(1, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
+            BlogModel(2, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
+            BlogModel(3, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
+            BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
+            BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
     }
 }

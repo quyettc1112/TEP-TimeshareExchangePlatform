@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.DestianationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
@@ -29,6 +30,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val resortAdapterMT = ResortAdapter()
     private val resortAdapterMN = ResortAdapter()
     private val destianationAdapter = DestianationAdapter()
+    private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter : GridAdapter
 
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
@@ -45,6 +47,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         resortAdapterMT.submitList(Constant.resortListMT)
         resortAdapterMN.submitList(Constant.resortListMN)
         destianationAdapter.submitList(Constant.destiantionList)
+        blogAdapter.submitList(Constant.blogList)
 
     }
 
@@ -65,6 +68,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         // List Timesahre Recomend
         binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvSuggestTimeshare.adapter = timeshareAdapter
+
+
+        // List Blog
+        binding.rcBlog.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcBlog.adapter = blogAdapter
 
         // List Resort Recomend MB
         binding.vpResortHotelMb.let {
