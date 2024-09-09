@@ -34,6 +34,10 @@
     <string name="destination_title">Địa Điểm Du Lịch Đặc Sắc</string>
     <string name="destination_description">Khám phá địa điểm du lịch nổi tiếng</string>
 
+    // Home Fragment - Blog
+    <string name="blog_title">Cẩm Nang Du Lịch</string>
+    <string name="blog_description">Cập nhật thông tin. Chuyến đi tuyệt vời</string>
+
 
 
 </resources>
