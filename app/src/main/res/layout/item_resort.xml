@@ -26,8 +26,9 @@
 
     <!--// Resort Info-->
 
-    <!--// Resort Price-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:padding="6dp"
@@ -50,51 +51,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--// Rating-->
-        <LinearLayout
-            android:id="@+id/materialCardView3"
-            android:layout_width="130dp"
-            android:layout_height="30dp"
-            android:background="@drawable/background_rating"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resortName"
-            app:strokeColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/baseline_star_24" />
-
-                <TextView
-                    android:id="@+id/tv_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:text="4.5"
-                    android:textColor="#007EF2"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:id="@+id/tv_rating_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:text="254 đánh giá"
-                    android:textSize="12dp" />
-            </LinearLayout>
 
 
-        </LinearLayout>
+
+
 
         <!--// Resort Info-->
         <LinearLayout
@@ -159,47 +119,128 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!--// Resort Price-->
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="6dp"
-        android:orientation="horizontal"
         android:gravity="center|left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <TextView
-            android:gravity="center|left"
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_extrabold"
-            android:text="500.000 - 1,300.000 VND "
+            android:gravity="center|left"
+            android:text="1500.000 - 1,300.000 VND "
             android:textColor="@color/blue_full"
-            android:textSize="16dp" />
+            android:textSize="14dp" />
 
         <TextView
-            android:gravity="center|left"
             android:id="@+id/tv_numberOfNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
+            android:gravity="center|left"
             android:text=" / 4 đêm"
             android:textColor="@color/primary_stroke_around"
-            android:textSize="14dp" />
+            android:textSize="10dp" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_favorite"
-        android:layout_width="30dp"
+
+    <!--  // Rating-->
+    <LinearLayout
+        android:id="@+id/materialCardView3"
+        android:layout_width="130dp"
         android:layout_height="30dp"
-        android:layout_margin="5dp"
-        android:src="@drawable/baseline_favorite_border_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@drawable/background_rating"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:strokeColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_star_24" />
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="4.5"
+                android:textColor="#007EF2"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_rating_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="254 đánh giá"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!--// Book Now Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="120dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_stroke_around"
+        android:backgroundTint="@color/blue_btn_search"
+        android:fontFamily="@font/inter_semibold"
+        android:text="@string/book_now"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+    <!--// Favorite Button-->
+
+    <LinearLayout
+        android:id="@+id/ll_favorite"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_circle"
+        android:translationZ="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView2">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/baseline_favorite_24" />
+    </LinearLayout>
+
+
 
 
 

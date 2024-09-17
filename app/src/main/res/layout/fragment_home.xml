@@ -375,7 +375,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp">
+                        android:layout_height="275dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -434,7 +434,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp">
+                        android:layout_height="275dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -493,7 +493,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp">
+                        android:layout_height="275dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 

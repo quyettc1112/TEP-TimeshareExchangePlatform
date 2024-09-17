@@ -32,7 +32,7 @@ class ResortAdapter: BaseAdapter<ResortModel, ResortAdapter.ResortViewHolder>() 
                 onItemClick?.let { it1 -> it1(item) }
             }
 
-            binding.ivFavorite.setOnClickListener {
+            binding.llFavorite.setOnClickListener {
                 onFavoriteClick?.let { it1 -> it1(item) }
             }
         }

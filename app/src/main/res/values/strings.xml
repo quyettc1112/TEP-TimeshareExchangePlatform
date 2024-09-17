@@ -4,6 +4,9 @@
     <string name="ellipsis">&#8230;</string>
     <string name="default_notify_title">Message</string>
 
+    // Common
+    <string name="book_now" >Book Now</string>
+
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
