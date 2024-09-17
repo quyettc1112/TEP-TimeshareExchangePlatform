@@ -38,6 +38,12 @@
     <string name="destination_description">Explore famous tourist destinations</string>
 
 
+    // Home Fragment - Blog
+    <string name="blog_title">Travel Guide</string>
+    <string name="blog_description">Update information. Great trip</string>
+
+
+
 
 
 
