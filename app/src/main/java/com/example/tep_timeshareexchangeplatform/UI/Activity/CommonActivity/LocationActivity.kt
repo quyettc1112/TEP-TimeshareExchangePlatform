@@ -1,5 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -63,7 +65,7 @@ class LocationActivity : BaseActivity() {
         }
         // Click event
         locationAdapter.onitemCLickListener = {
-            Toast.makeText(this, "Clicked: $it", Toast.LENGTH_SHORT).show()
+            intentExtraValueToHome(it + ", Việt Nam")
         }
     }
 
@@ -73,17 +75,18 @@ class LocationActivity : BaseActivity() {
             it.layoutManager = LinearLayoutManager(this)
             it.adapter = locationAdapterSearched
         }
+        // Click event
+        locationAdapterSearched.onItemClickListener = {
+           intentExtraValueToHome(it.name + ", " + it.location)
+        }
+
     }
 
     // Back to previous screen or Explore
     private fun handleClickEventButton() {
        binding.let {
-           it.llExplreWorld.setOnClickListener {
-               finish()
-           }
-           it.imCloseIcon.setOnClickListener{
-               finish()
-           }
+           it.llExplreWorld.setOnClickListener { finish() }
+           it.imCloseIcon.setOnClickListener{ finish() }
        }
     }
     // Nearby Location
@@ -95,14 +98,12 @@ class LocationActivity : BaseActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // No action needed before the text changes
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.trim()?.length!! > 0) hideUI() else showUI()
                 locationAdapterSearched.filter.filter(s)
             }
-
             override fun afterTextChanged(s: Editable?) {
-
+                // No action needed after the text changes
             }
         })
     }
@@ -127,6 +128,13 @@ class LocationActivity : BaseActivity() {
             it.llListLocation.visibility = View.VISIBLE
             it.rvLocationSearched.visibility = View.GONE
         }
+    }
+    private fun intentExtraValueToHome(value : String) {
+        val intent = Intent()
+        // Replace "locationName" with the actual selected location
+        intent.putExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY, value)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
 

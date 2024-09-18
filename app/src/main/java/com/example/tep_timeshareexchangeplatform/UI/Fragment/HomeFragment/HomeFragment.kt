@@ -1,11 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.HomeFragment
 
+import android.app.Activity
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -34,8 +38,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val destianationAdapter = DestianationAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter : GridAdapter
-
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
+
+
+    private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +56,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         resortAdapterMN.submitList(Constant.resortListMN)
         destianationAdapter.submitList(Constant.destiantionList)
         blogAdapter.submitList(Constant.blogList)
+        // Khởi tạo AutoScrollViewPagerHelper
 
+
+        // Khởi tạo ActivityResultLauncher
+        initActivityResultLauncher()
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +83,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       binding.let {
           // Location Click Event
           it.llLocation.setOnClickListener {
-              (activity as? BaseActivity)?.intentToActivity(LocationActivity::class.java)
+              val intent = Intent(requireContext(), LocationActivity::class.java)
+                launchForResult(intent) { selectedLocation ->
+                    selectedLocation?.let { binding.tvLocation.text = selectedLocation }
+                }
           }
       }
-
     }
 
     fun setAdapter() {
@@ -205,6 +219,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         autoScrollHelper.clearAutoScroll(binding.vpResortHotelMt)  // Xóa thiết lập khi Fragment bị hủy
         autoScrollHelper.clearAutoScroll(binding.vpResortHotelMn)  // Xóa thiết lập khi Fragment bị hủy
         //autoScrollHelper.clearAutoScroll(binding.anotherViewPager)
+    }
+
+    // Reusable launchForResult method to handle activity results
+    private fun launchForResult(intent: Intent, resultHandler: (String?) -> Unit) {
+        locationResultLauncher.launch(intent)
+    }
+    private fun initActivityResultLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation = data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
+                    selectedLocation?.let {
+                        binding.tvLocation.text = selectedLocation
+                    }
+                }
+            }
     }
 
 }

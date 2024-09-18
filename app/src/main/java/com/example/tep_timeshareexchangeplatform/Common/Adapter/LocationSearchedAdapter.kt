@@ -24,13 +24,16 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
     // Store the original unfiltered list
     private var originalList: List<LocationModel> = listOf()
     private var searchQuery: String = "" // Store the search query
-
+    var onItemClickListener: ((LocationModel) -> Unit)? = null
     inner class LocationSearchedViewHolder(binding: ItemLocationSearchedBinding) :
         BaseItemViewHolderCF<LocationModel, ItemLocationSearchedBinding>(binding) {
         override fun bind(item: LocationModel) {
             // Bind and highlight the name and location based on the search query
             binding.cityName.text = item.name
             binding.cityLocation.text = item.location
+            binding.root.setOnClickListener {
+                onItemClickListener?.invoke(item)
+            }
         }
 
 
