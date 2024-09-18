@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.DestianationAdapter
@@ -15,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.SpannedGridLayoutManager
@@ -57,11 +59,22 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         setAdapter()
-        setItemClickListener()
+        setItemResortClickListener()
+        setSearchComponentClickEvent()
 
 
 
         return binding.root
+    }
+
+    fun setSearchComponentClickEvent() {
+      binding.let {
+          // Location Click Event
+          it.llLocation.setOnClickListener {
+              (activity as? BaseActivity)?.intentToActivity(LocationActivity::class.java)
+          }
+      }
+
     }
 
     fun setAdapter() {
@@ -138,9 +151,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     }
 
-
-
-    fun setItemClickListener() {
+    fun setItemResortClickListener() {
         resortAdapterMB.let {
             it.onItemClick = {
                 Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
@@ -176,9 +187,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
     }
 
     override fun onPause() {

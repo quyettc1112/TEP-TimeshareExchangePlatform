@@ -75,4 +75,7 @@ open class BaseFragment(view: Int) : Fragment(view) {
     }
 
 
+
+
+
 }
