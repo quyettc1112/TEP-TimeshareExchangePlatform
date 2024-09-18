@@ -5,7 +5,9 @@
     <string name="default_notify_title">Message</string>
 
     // Common
-    <string name="book_now" >Book Now</string>
+    <string name="book_now">Book Now</string>
+    <string name="search_location_bar">Enter location, hotel</string>
+    <string name="near_me_location">Nearby Hotels</string>
 
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>
@@ -41,10 +43,6 @@
     // Home Fragment - Blog
     <string name="blog_title">Travel Guide</string>
     <string name="blog_description">Update information. Great trip</string>
-
-
-
-
 
 
 </resources>
