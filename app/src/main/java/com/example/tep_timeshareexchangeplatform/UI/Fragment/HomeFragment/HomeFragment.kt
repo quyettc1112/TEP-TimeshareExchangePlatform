@@ -39,10 +39,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter : GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
-
-
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
