@@ -47,7 +47,7 @@
             <EditText
                 android:id="@+id/search_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/search_icon"
@@ -184,6 +184,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             tools:listitem="@layout/item_location" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_location_searched"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_location_searched"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

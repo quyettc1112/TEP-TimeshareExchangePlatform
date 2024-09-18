@@ -10,9 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationSearchedAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityLocationBinding
 import com.google.android.flexbox.FlexDirection
@@ -29,6 +32,7 @@ class LocationActivity : BaseActivity() {
         "Seoul", "Tokyo", "Bali"
     )
     private val locationAdapter  = LocationAdapter()
+    private val locationAdapterSearched  = LocationSearchedAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,9 +43,12 @@ class LocationActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        setLocationRecyclerView()
-        handleClickEventButton()
+        binding.rvLocationSearched.visibility = View.GONE
         searchLocation()
+        setLocationRecyclerView()
+        setLocationSearchedRecyclerView()
+        handleClickEventButton()
+
     }
 
     // List of Location
@@ -57,6 +64,14 @@ class LocationActivity : BaseActivity() {
         // Click event
         locationAdapter.onitemCLickListener = {
             Toast.makeText(this, "Clicked: $it", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setLocationSearchedRecyclerView() {
+        locationAdapterSearched.submitOriginalList(Constant.cityList)
+        binding.rvLocationSearched.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = locationAdapterSearched
         }
     }
 
@@ -83,7 +98,7 @@ class LocationActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.trim()?.length!! > 0) hideUI() else showUI()
-
+                locationAdapterSearched.filter.filter(s)
 
             }
 
@@ -94,13 +109,13 @@ class LocationActivity : BaseActivity() {
     }
 
     private fun hideUI() {
-
         binding.let {
             it.llExplreWorld.visibility = View.GONE
             it.llNearMe.visibility = View.GONE
             it.llLine1.visibility = View.GONE
             it.llLine2.visibility = View.GONE
             it.llListLocation.visibility = View.GONE
+            it.rvLocationSearched.visibility = View.VISIBLE
         }
     }
 
@@ -111,6 +126,7 @@ class LocationActivity : BaseActivity() {
             it.llLine1.visibility = View.VISIBLE
             it.llLine2.visibility = View.VISIBLE
             it.llListLocation.visibility = View.VISIBLE
+            it.rvLocationSearched.visibility = View.GONE
         }
     }
 
