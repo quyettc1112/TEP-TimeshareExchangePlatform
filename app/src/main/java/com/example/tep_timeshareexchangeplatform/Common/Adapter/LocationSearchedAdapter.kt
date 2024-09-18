@@ -1,27 +1,39 @@
 package com.example.tep_timeshareexchangeplatform.Common.Adapter
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemLocationSearchedBinding
+import java.text.Normalizer
+import java.util.regex.Pattern
 
 class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapter.LocationSearchedViewHolder>(), Filterable {
 
     // Store the original unfiltered list
     private var originalList: List<LocationModel> = listOf()
+    private var searchQuery: String = "" // Store the search query
 
-    // Inner ViewHolder class
     inner class LocationSearchedViewHolder(binding: ItemLocationSearchedBinding) :
         BaseItemViewHolderCF<LocationModel, ItemLocationSearchedBinding>(binding) {
         override fun bind(item: LocationModel) {
+            // Bind and highlight the name and location based on the search query
             binding.cityName.text = item.name
             binding.cityLocation.text = item.location
         }
+
+
     }
 
     // DiffUtil callback for differ
@@ -49,19 +61,25 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
         originalList = list // Save original unfiltered list
         differ.submitList(list) // Set initial list to differ
     }
+    // Helper function to remove diacritics
+    fun String.normalize(): String {
+        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
+        val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+        return pattern.matcher(temp).replaceAll("").lowercase()
+    }
 
     // Filtering logic for the adapter
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint?.toString()?.lowercase()?.trim()
+                val query = constraint?.toString()?.normalize().orEmpty()
 
-                // Filter the original unfiltered list, not differ.currentList
-                val filteredList = if (query.isNullOrEmpty()) {
+                // Filter the original unfiltered list, but use normalized versions for comparison
+                val filteredList = if (query.isEmpty()) {
                     originalList
                 } else {
                     originalList.filter {
-                        it.name.lowercase().contains(query) || it.location.lowercase().contains(query)
+                        it.name.normalize().contains(query) || it.location.normalize().contains(query)
                     }
                 }
 
@@ -72,7 +90,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                // Submit the filtered list to the AsyncListDiffer
                 differ.submitList(results?.values as List<LocationModel>)
             }
         }

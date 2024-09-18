@@ -99,11 +99,10 @@ class LocationActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.trim()?.length!! > 0) hideUI() else showUI()
                 locationAdapterSearched.filter.filter(s)
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // No action needed after the text changes
+
             }
         })
     }
