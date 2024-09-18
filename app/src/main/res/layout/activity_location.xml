@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/im_closeIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
@@ -64,7 +65,7 @@
 
     <!--// Near me location-->
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/ll_near_me"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center|start"
@@ -80,17 +81,116 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:fontFamily="@font/inter_semibold"
+            android:fontFamily="@font/inter_regular"
             android:maxLines="1"
             android:text="@string/near_me_location"
             android:textSize="16dp" />
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_line1"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/gray_400"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ll_near_me" />
+
+    <!--//Kham pha the gioi-->
+    <LinearLayout
+        android:id="@+id/ll_explre_world"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center|start"
+        app:layout_constraintTop_toBottomOf="@+id/ll_line1">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/backgroud_earth"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_earth_asia"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+            <!-- Title text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/where_to_go"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="16sp" />
+
+            <!-- Subtitle text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/exlpore_the_world"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_line2"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#EDF2F6"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ll_explre_world" />
+
+
+
+    <!--// List of location-->
+    <LinearLayout
+        android:id="@+id/ll_list_location"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ll_line2">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/popular_destination_titler"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_line2" />
+
+        <!-- RecyclerView for popular locations -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:listitem="@layout/item_location" />
+    </LinearLayout>
+
+
+
+
+
+
+
 
 
 
