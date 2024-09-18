@@ -160,6 +160,9 @@ dependencies {
     implementation ("com.makeramen:roundedimageview:2.3.0")
 
 
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
+
+
 
 
 
