@@ -8,6 +8,9 @@
     <string name="book_now">Book Now</string>
     <string name="search_location_bar">Enter location, hotel</string>
     <string name="near_me_location">Nearby Hotels</string>
+    <string name="where_to_go">Still don\'t know where you want to go?</string>
+    <string name="exlpore_the_world">Tap to explore the world</string>
+    <string name="popular_destination_titler">Popular</string>
 
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>

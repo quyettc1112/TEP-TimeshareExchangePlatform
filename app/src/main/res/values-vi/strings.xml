@@ -8,6 +8,9 @@
     <string name="book_now">Đặt Phòng Ngay</string>
     <string name="search_location_bar">Nhập địa điểm, khách sạn</string>
     <string name="near_me_location">Khách sạn gần đây</string>
+    <string name="where_to_go">Vẫn chưa biết mình muốn đi đâu?</string>
+    <string name="exlpore_the_world">Chạm để khám phá thế giới</string>
+    <string name="popular_destination_titler">Phổ biến</string>
 
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>
