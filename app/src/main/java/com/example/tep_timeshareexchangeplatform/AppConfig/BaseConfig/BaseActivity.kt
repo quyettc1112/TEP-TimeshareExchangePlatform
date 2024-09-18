@@ -162,6 +162,11 @@ open class BaseActivity : AppCompatActivity() {
             .show()
     }
 
+    open fun intentToActivity(activity: Class<out Activity>) {
+        val intent = Intent(this, activity)
+        startActivity(intent)
+    }
+
 
 
 
