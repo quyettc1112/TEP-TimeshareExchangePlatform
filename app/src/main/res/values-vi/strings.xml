@@ -12,6 +12,15 @@
     <string name="exlpore_the_world">Chạm để khám phá thế giới</string>
     <string name="popular_destination_titler">Phổ biến</string>
 
+    // Bottom Sheet Dialog
+    <string name="room">Phòng</string>
+    <string name="adult">Người Lớn</string>
+    <string name="child">Trẻ Em</string>
+    <string name="enter_child_age">Nhập tuổi trẻ em</string>
+    <string name="age">Tuổi</string>
+    <string name="cancel">Huỷ</string>
+    <string name="accept">Chọn</string>
+
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>

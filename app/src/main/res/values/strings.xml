@@ -12,6 +12,16 @@
     <string name="exlpore_the_world">Tap to explore the world</string>
     <string name="popular_destination_titler">Popular</string>
 
+    // Bottom Sheet Dialog
+    <string name="room">Room</string>
+    <string name="adult">Adults</string>
+    <string name="child">Children</string>
+    <string name="enter_child_age">Enter child age</string>
+    <string name="age">Age</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+
+
     // Bottom Navigation
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
