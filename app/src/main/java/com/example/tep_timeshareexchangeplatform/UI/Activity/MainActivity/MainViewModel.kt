@@ -15,6 +15,32 @@ class MainViewModel  @Inject constructor(
     private val userRepository: User_Repository
 ) : ViewModel()  {
 
+    private val _roomCount = MutableLiveData(1)
+    val roomCount: LiveData<Int> = _roomCount
+
+    private val _adultCount = MutableLiveData(1)
+    val adultCount: LiveData<Int> = _adultCount
+
+    private val _childrenCount = MutableLiveData(0)
+    val childrenCount: LiveData<Int> = _childrenCount
+
+    fun updateRoomCount(count: Int) {
+        _roomCount.value = count
+    }
+
+    fun updateAdultCount(count: Int) {
+        _adultCount.value = count
+    }
+
+    fun updateChildrenCount(count: Int) {
+        _childrenCount.value = count
+    }
+
+    fun getRoomCount(): String {
+        return "${_adultCount.value} Người lớn, ${_childrenCount.value} Trẻ em, ${_roomCount.value} Phòng"
+    }
+
+
 
     private val _currentUserID = MutableLiveData<Int>()
     val currentUserID: LiveData<Int> get() = _currentUserID

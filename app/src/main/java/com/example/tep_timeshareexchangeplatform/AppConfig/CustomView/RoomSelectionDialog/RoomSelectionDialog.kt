@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.DialogBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,6 +22,10 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
     private var roomCount = 1
     private var adultCount = 1
     private var childrenCount = 0
+
+    // Sử dụng activityViewModels để chia sẻ ViewModel với Activity hoặc Fragment khác
+    private val roomSelectionViewModel: MainViewModel by activityViewModels()
+
 
     // Khai báo binding
     private var _binding: DialogBottomSheetBinding? = null
@@ -38,48 +45,61 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Quan sát dữ liệu từ ViewModel
+        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
+            binding.tvRoomCount.text = count.toString()
+        })
 
-        // Thiết lập các giá trị ban đầu
-        binding.tvRoomCount.text = roomCount.toString()
-        binding.tvAdultCount.text = adultCount.toString()
-        binding.tvChildCount.text = childrenCount.toString()
+        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
+            binding.tvAdultCount.text = count.toString()
+        })
+
+        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
+            binding.tvChildCount.text = count.toString()
+        })
 
         // Xử lý tăng giảm số phòng
         binding.imRemoveRoom.setOnClickListener {
-            if (roomCount > 1) roomCount--
-            binding.tvRoomCount.text = roomCount.toString()
+            val newRoomCount = (roomSelectionViewModel.roomCount.value ?: 1) - 1
+            if (newRoomCount >= 1) {
+                roomSelectionViewModel.updateRoomCount(newRoomCount)
+            }
         }
 
         binding.imAddRoom.setOnClickListener {
-            roomCount++
-            binding.tvRoomCount.text = roomCount.toString()
+            val newRoomCount = (roomSelectionViewModel.roomCount.value ?: 1) + 1
+            roomSelectionViewModel.updateRoomCount(newRoomCount)
         }
 
         // Xử lý tăng giảm số người lớn
         binding.imRemoveAdult.setOnClickListener {
-            if (adultCount > 1) adultCount--
-            binding.tvAdultCount.text = adultCount.toString()
+            val newAdultCount = (roomSelectionViewModel.adultCount.value ?: 1) - 1
+            if (newAdultCount >= 1) {
+                roomSelectionViewModel.updateAdultCount(newAdultCount)
+            }
         }
 
         binding.imAddAdult.setOnClickListener {
-            adultCount++
-            binding.tvAdultCount.text = adultCount.toString()
+            val newAdultCount = (roomSelectionViewModel.adultCount.value ?: 1) + 1
+            roomSelectionViewModel.updateAdultCount(newAdultCount)
         }
 
         // Xử lý tăng giảm số trẻ em
         binding.imRemoveChild.setOnClickListener {
-            if (childrenCount > 0) childrenCount--
-            binding.tvChildCount.text = childrenCount.toString()
+            val newChildrenCount = (roomSelectionViewModel.childrenCount.value ?: 0) - 1
+            if (newChildrenCount >= 0) {
+                roomSelectionViewModel.updateChildrenCount(newChildrenCount)
+            }
 
-            if (childrenCount == 0) {
+            if (newChildrenCount == 0) {
                 slideDown(binding.cstlChildAgeContainer)
                 binding.cstlChildAgeContainer.visibility = View.GONE
             }
         }
 
         binding.imAddChild.setOnClickListener {
-            childrenCount++
-            binding.tvChildCount.text = childrenCount.toString()
+            val newChildrenCount = (roomSelectionViewModel.childrenCount.value ?: 0) + 1
+            roomSelectionViewModel.updateChildrenCount(newChildrenCount)
         }
 
         binding.btnCancel.setOnClickListener {
@@ -87,9 +107,11 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
         }
 
         binding.btnAccept.setOnClickListener {
-            // Logic xử lý khi nhấn "Chọn"
-            dismiss()
+            dismiss() // Logic xử lý khi nhấn "Chọn"
         }
+
+
+
     }
 
     override fun onDestroyView() {
