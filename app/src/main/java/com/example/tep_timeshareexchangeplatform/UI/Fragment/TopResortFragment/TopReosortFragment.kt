@@ -6,26 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopReosortBinding
 
-class TopReosortFragment : Fragment() {
+class TopReosortFragment : BaseFragment(R.layout.fragment_top_reosort) {
 
-    companion object {
-        fun newInstance() = TopReosortFragment()
-    }
-
-    private val viewModel: TopReosortViewModel by viewModels()
+    private lateinit var binding: FragmentTopReosortBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: Use the ViewModel
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_top_reosort, container, false)
+        binding = FragmentTopReosortBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }
