@@ -70,6 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation (libs.material.v190)
 
     //nav
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
