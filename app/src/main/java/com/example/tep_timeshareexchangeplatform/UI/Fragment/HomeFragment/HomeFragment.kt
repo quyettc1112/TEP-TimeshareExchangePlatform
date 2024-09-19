@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
@@ -21,12 +22,13 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.DayPickerActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
@@ -42,6 +44,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     lateinit var gridAdapter : GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var dateResultLauncher: ActivityResultLauncher<Intent>
+    private val roomSelectionViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,30 +78,32 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         setAdapter()
         setItemResortClickListener()
         setSearchComponentClickEvent()
+        observerSearchComponent()
 
 
 
         return binding.root
     }
 
-    fun setSearchComponentClickEvent() {
+    private fun setSearchComponentClickEvent() {
       binding.let {
           // Location Click Event
           it.llLocation.setOnClickListener {
               val intent = Intent(requireContext(), LocationActivity::class.java)
-                launchForResult(intent) { selectedLocation ->
-                    selectedLocation?.let { binding.tvLocation.text = selectedLocation }
-                }
+              locationResultLauncher.launch(intent)
           }
           it.llTourist.setOnClickListener {
               val roomSelectionDialog = RoomSelectionDialog.newInstance()
               roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
-
+          }
+          it.llDate.setOnClickListener{
+              val intent = Intent(requireContext(), DayPickerActivity::class.java)
+              dateResultLauncher.launch(intent)
           }
       }
     }
 
-    fun setAdapter() {
+    private fun setAdapter() {
         // List Timesahre Recomend
         binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvSuggestTimeshare.adapter = timeshareAdapter
@@ -171,7 +177,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     }
 
-    fun setItemResortClickListener() {
+    private fun setItemResortClickListener() {
         resortAdapterMB.let {
             it.onItemClick = {
                 Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
@@ -209,6 +215,26 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
     }
 
+    private fun observerSearchComponent() {
+        // Quan sát các giá trị từ ViewModel
+        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số phòng
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số người lớn
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số trẻ em
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+
+    }
+
     override fun onPause() {
         super.onPause()
         autoScrollHelper.pauseAutoScroll()
@@ -227,10 +253,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         //autoScrollHelper.clearAutoScroll(binding.anotherViewPager)
     }
 
-    // Reusable launchForResult method to handle activity results
-    private fun launchForResult(intent: Intent, resultHandler: (String?) -> Unit) {
-        locationResultLauncher.launch(intent)
-    }
+
     private fun initActivityResultLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -242,6 +265,19 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
                 }
             }
+
+        dateResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedDate = data?.getStringExtra(Constant.DEFAULT_SELECTION_DATE_KEY)
+                    selectedDate?.let {
+                        binding.tvDate.text = selectedDate
+                    }
+                }
+            }
+
+
     }
 
     private fun convertDpToPx(dp: Int): Int {
