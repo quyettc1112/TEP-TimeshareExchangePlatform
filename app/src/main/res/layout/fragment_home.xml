@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@color/white"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -327,7 +327,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="310dp">
+                    android:layout_height="wrap_content">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginStart="25dp"
@@ -375,7 +375,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="275dp">
+                        android:layout_height="300dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -386,7 +386,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="310dp">
+                    android:layout_height="wrap_content">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginStart="25dp"
@@ -434,7 +434,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="275dp">
+                        android:layout_height="300dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -445,7 +445,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="310dp">
+                    android:layout_height="wrap_content">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_marginStart="25dp"
@@ -493,7 +493,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="275dp">
+                        android:layout_height="300dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 

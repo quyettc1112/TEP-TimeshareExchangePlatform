@@ -80,12 +80,6 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
         binding.imAddChild.setOnClickListener {
             childrenCount++
             binding.tvChildCount.text = childrenCount.toString()
-
-            // Mở dialog nhập tuổi nếu số trẻ em > 1
-            if (childrenCount > 0) {
-                slideUp(binding.cstlChildAgeContainer)
-               // binding.cstlChildAgeContainer.visibility = View.VISIBLE
-            }
         }
 
         binding.btnCancel.setOnClickListener {
