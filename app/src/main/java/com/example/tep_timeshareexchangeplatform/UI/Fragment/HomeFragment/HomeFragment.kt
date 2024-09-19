@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.DestianationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
@@ -25,6 +26,7 @@ import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
@@ -58,6 +60,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         // Khởi tạo ActivityResultLauncher
         initActivityResultLauncher()
+
+
     }
 
 
@@ -84,6 +88,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 launchForResult(intent) { selectedLocation ->
                     selectedLocation?.let { binding.tvLocation.text = selectedLocation }
                 }
+          }
+          it.llTourist.setOnClickListener {
+              val roomSelectionDialog = RoomSelectionDialog.newInstance()
+              roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
+
           }
       }
     }
@@ -233,6 +242,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
                 }
             }
+    }
+
+    private fun convertDpToPx(dp: Int): Int {
+        val density = requireContext().resources.displayMetrics.density
+        return (dp * density).toInt()
     }
 
 }
