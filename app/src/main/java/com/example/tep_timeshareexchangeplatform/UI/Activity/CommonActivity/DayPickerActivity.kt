@@ -1,5 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
 import android.widget.Button
@@ -7,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -26,8 +29,6 @@ class DayPickerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val button = findViewById<Button>(R.id.date_picker_button)
 
         // Giới hạn ngày (ví dụ: chỉ cho phép chọn từ ngày 5 đến ngày 25 của tháng 9)
         val constraintsBuilder = CalendarConstraints.Builder()
@@ -63,9 +64,8 @@ class DayPickerActivity : AppCompatActivity() {
                 .build()
 
         // Hiển thị DateRangePicker khi nhấn nút
-        button.setOnClickListener {
-            dateRangePicker.show(supportFragmentManager, "DateRangePicker")
-        }
+        dateRangePicker.show(supportFragmentManager, "DateRangePicker")
+
 
         // Lắng nghe sự kiện khi người dùng chọn ngày
         dateRangePicker.addOnPositiveButtonClickListener { selection ->
@@ -76,7 +76,16 @@ class DayPickerActivity : AppCompatActivity() {
             val startDateString = startDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
             val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
 
-            button.text = "Từ: $startDateString - Đến: $endDateString"
+            intentExtraValueToHome( "$startDateString - $endDateString")
+
         }
+    }
+
+    private fun intentExtraValueToHome(value : String) {
+        val intent = Intent()
+        // Replace "locationName" with the actual selected location
+        intent.putExtra(Constant.DEFAULT_SELECTION_DATE_KEY, value)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 }

@@ -26,6 +26,7 @@ class Constant {
         const val DEFAULT_TEXT_COLOR_BADGE = "#FF0E0E"
 
         const val DEFAULT_SELECTION_LOCATION_KEY = "selectedLocation"
+        const val DEFAULT_SELECTION_DATE_KEY = "selectedDate"
 
         val timeshareList = listOf(
             TimeshareModel(
