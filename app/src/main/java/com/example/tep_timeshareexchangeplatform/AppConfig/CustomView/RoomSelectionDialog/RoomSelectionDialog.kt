@@ -7,10 +7,12 @@ import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.DialogBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
 
 class RoomSelectionDialog : BottomSheetDialogFragment() {
 
@@ -69,10 +71,8 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
             if (childrenCount > 0) childrenCount--
             binding.tvChildCount.text = childrenCount.toString()
 
-            // Ẩn phần nhập tuổi nếu không có trẻ em
-            // Sử dụng TransitionManager để có hiệu ứng khi ẩn
             if (childrenCount == 0) {
-                TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition())
+                slideDown(binding.cstlChildAgeContainer)
                 binding.cstlChildAgeContainer.visibility = View.GONE
             }
         }
@@ -83,10 +83,8 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
 
             // Mở dialog nhập tuổi nếu số trẻ em > 1
             if (childrenCount > 0) {
-                TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition())
-                binding.cstlChildAgeContainer.visibility = View.VISIBLE
-
-
+                slideUp(binding.cstlChildAgeContainer)
+               // binding.cstlChildAgeContainer.visibility = View.VISIBLE
             }
         }
 
@@ -100,11 +98,6 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
         }
     }
 
-  /*  private fun openChildrenAgeDialog(childrenCount: Int) {
-        val dialog = ChildrenAgeDialog.newInstance(childrenCount)
-        dialog.show(parentFragmentManager, "ChildrenAgeDialog")
-    }*/
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -114,5 +107,32 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
         fun newInstance(): RoomSelectionDialog {
             return RoomSelectionDialog()
         }
+    }
+
+    // slide the view from below itself to the current position
+    fun slideUp(view: View) {
+        view.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0f,  // fromXDelta
+            0f,  // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0f
+        ) // toYDelta
+        animate.duration = 200
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+            0f,  // fromXDelta
+            0f,  // toXDelta
+            0f,  // fromYDelta
+            view.height.toFloat()
+        ) // toYDelta
+        animate.duration = 200
+        animate.fillAfter = true
+        view.startAnimation(animate)
     }
 }

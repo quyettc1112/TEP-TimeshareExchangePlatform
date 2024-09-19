@@ -16,6 +16,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.CommonActivity.DayPickerActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.CommonActivity.LocationActivity"
             android:exported="true" />
         <activity
