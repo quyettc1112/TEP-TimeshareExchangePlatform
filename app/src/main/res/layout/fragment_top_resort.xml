@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/primary_background"
-    tools:context=".UI.Fragment.TopResortFragment.TopReosortFragment">
+    tools:context=".UI.Fragment.TopResortFragment.TopResortFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -14,7 +15,6 @@
         android:layout_height="50dp"
         android:background="@color/white"
         android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,23 +27,30 @@
 
     <LinearLayout
         android:layout_marginTop="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:padding="15dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/tbl_topResort"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabTextAppearance="?attr/tabTextAppearance"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/black"
-            app:tabIndicator="@null" />
+            android:background="@color/tab_background"
+            app:tabIndicator="@drawable/background_tab_indicator"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorAnimationMode="elastic"
+            tabElvation="0dp"
 
+            />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_resort_timeshare"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </androidx.viewpager2.widget.ViewPager2>
     </LinearLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
