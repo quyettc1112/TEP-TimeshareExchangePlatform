@@ -19,7 +19,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class DayPickerActivity : AppCompatActivity() {
+class  DayPickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

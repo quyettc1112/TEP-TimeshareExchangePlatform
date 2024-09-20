@@ -25,6 +25,7 @@
 
     </LinearLayout>
 
+    <!--// Layout Container-->
     <LinearLayout
         android:layout_marginTop="2dp"
         android:orientation="vertical"
@@ -32,6 +33,8 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <!--// Tablayout-->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tbl_topResort"
             android:layout_width="match_parent"
@@ -44,6 +47,170 @@
             tabElvation="0dp"
 
             />
+
+        <!--// Location fillter-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_stroke_around"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/tv_search_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:gravity="center|left"
+                android:maxLines="1"
+                android:layout_marginStart="10dp"
+                android:text="Thành Phố Hồ Chí Minh"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center|left"
+                android:text="01/09/2024 - 02/09/2024"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_search_location" />
+
+            <TextView
+                android:id="@+id/tv_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center|left"
+                android:text="5 khách, 2 phòng"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/tv_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_search_location" />
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/baseline_edit_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--// Resort Fillter-->
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ripple_effect_white">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:backgroundTint="@color/black"
+                    android:src="@drawable/ic_sort"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sort"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ripple_effect_white">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:backgroundTint="@color/black"
+                    android:src="@drawable/ic_filter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ripple_effect_white">
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:backgroundTint="@color/black"
+                    android:src="@drawable/ic_protect"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verify"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <!--// Resort List-->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_resort_timeshare"
             android:layout_marginTop="10dp"

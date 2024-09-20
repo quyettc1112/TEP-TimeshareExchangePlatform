@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.os.Parcel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,12 @@ import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
@@ -97,8 +104,56 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
               roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
           }
           it.llDate.setOnClickListener{
-              val intent = Intent(requireContext(), DayPickerActivity::class.java)
-              dateResultLauncher.launch(intent)
+              val constraintsBuilder = CalendarConstraints.Builder()
+                  .setValidator(object : CalendarConstraints.DateValidator {
+                      override fun isValid(date: Long): Boolean {
+                          // Định dạng ngày để kiểm tra các ngày không hợp lệ
+                          val calendar = Calendar.getInstance().apply { timeInMillis = date }
+                          val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+                          val month = calendar.get(Calendar.MONTH)
+                          val year = calendar.get(Calendar.YEAR)
+
+                          // Ví dụ: Chỉ cho phép chọn ngày từ 5/9/2024 đến 25/9/2024
+                          return if (year == 2024 && month == Calendar.SEPTEMBER) {
+                              dayOfMonth in 5..25
+                          } else {
+                              false // Không hợp lệ cho các ngày ngoài phạm vi trên
+                          }
+                      }
+
+
+                      override fun describeContents(): Int = 0
+                      override fun writeToParcel(dest: Parcel, flags: Int) {
+                          TODO("Not yet implemented")
+                      }
+
+                  })
+
+              // Tạo DateRangePicker với CalendarConstraints
+              val dateRangePicker =
+                  MaterialDatePicker.Builder.dateRangePicker()
+                      .setTitleText(getString(R.string.date_range_picker))
+                      .setCalendarConstraints(constraintsBuilder.build())
+                      .build()
+
+
+
+              // Hiển thị DateRangePicker khi nhấn nút
+              dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
+
+
+              // Lắng nghe sự kiện khi người dùng chọn ngày
+              dateRangePicker.addOnPositiveButtonClickListener { selection ->
+                  val startDate = selection?.first
+                  val endDate = selection?.second
+
+                  val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                  val startDateString = startDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
+                  val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
+
+                  binding.tvDate.text =  "$startDateString - $endDateString"
+
+              }
           }
       }
     }
@@ -265,7 +320,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
                 }
             }
-
         dateResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -276,8 +330,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
                 }
             }
-
-
     }
 
     private fun convertDpToPx(dp: Int): Int {
