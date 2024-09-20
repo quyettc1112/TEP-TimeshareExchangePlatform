@@ -17,4 +17,7 @@
     <style name="Theme.TEPTimeshareExchangePlatform.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.TEPTimeshareExchangePlatform.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+
+
 </resources>

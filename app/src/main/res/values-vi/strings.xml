@@ -11,6 +11,10 @@
     <string name="where_to_go">Vẫn chưa biết mình muốn đi đâu?</string>
     <string name="exlpore_the_world">Chạm để khám phá thế giới</string>
     <string name="popular_destination_titler">Phổ biến</string>
+    <string name="date_range_picker">Chọn khoảng thời gian</string>
+    <string name="sort">Sắp xếp</string>
+    <string name="filter">Lọc</string>
+    <string name="verify">Xác minh</string>
 
     // Bottom Sheet Dialog
     <string name="room">Phòng</string>

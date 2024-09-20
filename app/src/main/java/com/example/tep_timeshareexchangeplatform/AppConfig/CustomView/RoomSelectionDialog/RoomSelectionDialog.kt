@@ -19,9 +19,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RoomSelectionDialog : BottomSheetDialogFragment() {
 
-    private var roomCount = 1
-    private var adultCount = 1
-    private var childrenCount = 0
 
     // Sử dụng activityViewModels để chia sẻ ViewModel với Activity hoặc Fragment khác
     private val roomSelectionViewModel: MainViewModel by activityViewModels()

@@ -11,6 +11,11 @@
     <string name="where_to_go">Still don\'t know where you want to go?</string>
     <string name="exlpore_the_world">Tap to explore the world</string>
     <string name="popular_destination_titler">Popular</string>
+    <string name="date_range_picker">Select time period</string>
+    <string name="sort">Sort</string>
+    <string name="filter">Filter</string>
+    <string name="verify">Verified and Protected</string>
+    
 
     // Bottom Sheet Dialog
     <string name="room">Room</string>
