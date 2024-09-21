@@ -94,10 +94,10 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
     }
 
     override fun hideBottomNav() {
-        binding.cardView.animate().translationY(binding.cardView.height.toFloat()).duration = 50
+        binding.cardView.animate().translationY(binding.cardView.height.toFloat()).duration = 30
     }
     override fun showBottomNav() {
-        binding.cardView.animate().translationY(0f).duration = 50
+        binding.cardView.animate().translationY(0f).duration = 30
     }
 
 
