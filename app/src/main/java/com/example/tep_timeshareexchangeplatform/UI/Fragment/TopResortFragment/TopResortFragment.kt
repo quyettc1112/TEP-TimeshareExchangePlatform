@@ -1,26 +1,36 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment
 
+import android.content.Context
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareFragment
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
 import com.google.android.material.tabs.TabLayout
+import kotlin.math.abs
 
-class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
+class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
 
     private lateinit var binding: FragmentTopResortBinding
     private lateinit var FragmentAdapter: FragmentAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
 
     }
@@ -32,10 +42,8 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
         setUpTabLayoutViewPager()
 
-
         return binding.root
     }
-
 
     private fun setUpTabLayoutViewPager(){
         val listFragment: ArrayList<Fragment> = ArrayList()
@@ -83,4 +91,5 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         }
 
     }
+
 }
