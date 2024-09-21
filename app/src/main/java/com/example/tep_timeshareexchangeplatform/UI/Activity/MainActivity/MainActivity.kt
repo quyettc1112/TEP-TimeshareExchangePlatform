@@ -35,8 +35,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
     private lateinit var FragmentAdapter: FragmentAdapter
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val preferenceHelper = PreferenceHelper(this)
@@ -58,8 +56,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
         }
 
         setUpBottomNav()
-
-
 
     }
 
