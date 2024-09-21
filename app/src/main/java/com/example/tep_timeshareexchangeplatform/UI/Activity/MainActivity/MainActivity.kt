@@ -1,8 +1,14 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -17,22 +23,24 @@ import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.Pos
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.TopResortFragment
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
+import com.google.android.gms.common.internal.GetServiceRequest
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import kotlin.math.abs
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
 
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
 
         val preferenceHelper = PreferenceHelper(this)
         val savedLanguage = preferenceHelper.getLanguage()
-
         val locale = Locale(savedLanguage)
         Locale.setDefault(locale)
         val config = Configuration()
@@ -52,6 +60,7 @@ class MainActivity : BaseActivity() {
         setUpBottomNav()
 
 
+
     }
 
     private fun setUpBottomNav(){
@@ -63,13 +72,16 @@ class MainActivity : BaseActivity() {
         listFragment.add(AccountFragment())
 
         FragmentAdapter = FragmentAdapter(this, listFragment)
-        binding.vp2Main.adapter = FragmentAdapter
-        binding.vp2Main.isUserInputEnabled = false
-        binding.vp2Main.offscreenPageLimit = 5
+        binding.vp2Main.apply {
+            adapter = FragmentAdapter
+            isUserInputEnabled = false
+            offscreenPageLimit = 5
+
+        }
         binding.niceBottomNav.setBadge(4)
 
-        // Settup change listener
-        binding.vp2Main.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+        // Setup change listener
+        binding.vp2Main.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.niceBottomNav.setActiveItem(position)
                 super.onPageSelected(position)
@@ -80,6 +92,14 @@ class MainActivity : BaseActivity() {
         }
 
     }
+
+    override fun hideBottomNav() {
+        binding.cardView.animate().translationY(binding.cardView.height.toFloat()).duration = 50
+    }
+    override fun showBottomNav() {
+        binding.cardView.animate().translationY(0f).duration = 50
+    }
+
 
 
 }
