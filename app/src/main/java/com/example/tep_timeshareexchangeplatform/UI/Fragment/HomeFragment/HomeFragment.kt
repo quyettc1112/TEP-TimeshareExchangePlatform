@@ -136,8 +136,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                       .setCalendarConstraints(constraintsBuilder.build())
                       .build()
 
-
-
               // Hiển thị DateRangePicker khi nhấn nút
               dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
 

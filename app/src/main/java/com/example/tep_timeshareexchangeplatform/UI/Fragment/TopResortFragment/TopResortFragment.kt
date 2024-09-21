@@ -1,25 +1,29 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.GestureDetector
+import android.os.Parcel
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareFragment
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
-import kotlin.math.abs
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
 
@@ -30,9 +34,6 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-
     }
 
     override fun onCreateView(
@@ -41,7 +42,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
     ): View {
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
         setUpTabLayoutViewPager()
-
+        setEventSearchComponent()
         return binding.root
     }
 
@@ -89,6 +90,15 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
                 }
             })
         }
+
+    }
+    private fun setEventSearchComponent(){
+        binding.crSearchComponent.setOnClickListener {
+            val dialog = TopDialogFragment()
+            dialog.show(requireActivity().supportFragmentManager, "TopDialogFragment")
+        }
+
+
 
     }
 
