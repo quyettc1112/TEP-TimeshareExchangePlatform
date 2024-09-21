@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -75,7 +76,7 @@ open class BaseFragment(view: Int) : Fragment(view) {
     }
 
 
-
-
-
+    open fun onTouchEvent(event: MotionEvent): Boolean {
+        TODO("Not yet implemented")
+    }
 }
