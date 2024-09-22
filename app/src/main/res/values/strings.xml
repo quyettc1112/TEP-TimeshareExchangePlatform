@@ -15,7 +15,9 @@
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
     <string name="verify">Verified and Protected</string>
-    
+    <string name="back">Back</string>
+
+
 
     // Bottom Sheet Dialog
     <string name="room">Room</string>
@@ -41,6 +43,7 @@
     <string name="search_search">Search</string>
 
 
+
     // Home Fragment - Suggest Component
     <string name="suggest_title">Recommendations For You</string>
     <string name="suggest_seemore">See All</string>
@@ -61,6 +64,11 @@
     // Home Fragment - Blog
     <string name="blog_title">Travel Guide</string>
     <string name="blog_description">Update information. Great trip</string>
+
+    // Login Acitivty
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
+    <string name="login_title_description">Join us, make every day a better version</string>
 
 
 </resources>

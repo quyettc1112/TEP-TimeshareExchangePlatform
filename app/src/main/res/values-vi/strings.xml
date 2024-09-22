@@ -15,6 +15,7 @@
     <string name="sort">Sắp xếp</string>
     <string name="filter">Lọc</string>
     <string name="verify">Xác minh</string>
+    <string name="back">Quay Lại</string>
 
     // Bottom Sheet Dialog
     <string name="room">Phòng</string>
@@ -58,6 +59,12 @@
     // Home Fragment - Blog
     <string name="blog_title">Cẩm Nang Du Lịch</string>
     <string name="blog_description">Cập nhật thông tin. Chuyến đi tuyệt vời</string>
+
+    // Login Acitivty
+    <string name="login_title">Đăng Nhập</string>
+    <string name="register_title">Đăng Ký</string>
+    <string name="login_title_description">Cùng chúng tôi, biến mỗi ngày thành một phiên bản tốt hơn.</string>
+
 
 
 
