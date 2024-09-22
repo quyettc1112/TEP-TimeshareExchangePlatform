@@ -16,10 +16,17 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.LoginActivity.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UI.Activity.StartActivity.StartActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.SplashActivity.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,9 +38,7 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MainActivity.MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>
