@@ -40,6 +40,6 @@ class SplashActivity : BaseActivity() {
         // Delay before navigating to the next screen
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
-        }, 3000) // Adjust delay as needed
+        }, 2000) // Adjust delay as needed
     }
 }
