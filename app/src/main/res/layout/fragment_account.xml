@@ -565,7 +565,7 @@
                     android:text="@string/btn_logout"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/primary_background"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="150dp"
                     />
 
