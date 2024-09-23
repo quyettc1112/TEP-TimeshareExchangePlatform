@@ -41,13 +41,15 @@
             android:orientation="vertical">
 
             <!--// Option Container-->
+
+            <!--// Help Center Component-->
             <LinearLayout
-                android:layout_marginTop="2dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
                 <!--// User Avatar-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_user_avt"
@@ -69,60 +71,57 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Trần Cương Quyết"
                     android:fontFamily="@font/inter_extrabold"
-                    android:textSize="20dp"
-                    />
+                    android:text="Trần Cương Quyết"
+                    android:textSize="20dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="some thing in here"
                     android:fontFamily="@font/inter_light"
-                    android:textSize="16dp"
-                    />
+                    android:text="some thing in here"
+                    android:textSize="16dp" />
 
                 <!--// Option Component-->
                 <LinearLayout
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
 
                     <!--// My Profile-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_person"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_person" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_profile"
                             android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_profile"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -132,32 +131,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:orientation="horizontal"
+                        android:layout_marginBottom="5dp"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_home"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_home" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_timeshare"
                             android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_timeshare"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
                     </LinearLayout>
 
@@ -165,35 +164,33 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_my_posting"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_my_posting" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_posting"
+                            android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_posting"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -202,35 +199,33 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_my_order"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_my_order" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_order"
+                            android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_order"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -239,35 +234,33 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_my_favourite"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_my_favourite" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_favorite"
+                            android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_favorite"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -276,35 +269,33 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_my_posting"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_my_posting" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_account_security"
+                            android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_account_security"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -313,35 +304,33 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/ic_profile_link_account"/>
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_profile_link_account" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="@string/my_account_link"
+                            android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
-                            android:textSize="16dp"
-                            />
+                            android:paddingStart="20dp"
+                            android:text="@string/my_account_link"
+                            android:textSize="18dp" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_gravity="left|center"
-                            android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                     </LinearLayout>
@@ -350,10 +339,9 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!--// Help Center Component-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:background="@color/white"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
@@ -385,7 +373,7 @@
                         android:layout_weight="6"
                         android:textColor="@color/blue_btn_search"
                         android:fontFamily="@font/inter_extrabold"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         />
 
                     <ImageView
@@ -417,6 +405,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
@@ -435,7 +424,7 @@
                         android:layout_gravity="left|center"
                         android:text="@string/version"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         />
 
                     <ImageView
@@ -454,6 +443,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
@@ -472,7 +462,7 @@
                         android:layout_gravity="left|center"
                         android:text="@string/term_policy"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         />
 
                     <ImageView
@@ -491,6 +481,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
@@ -509,7 +500,7 @@
                         android:layout_gravity="left|center"
                         android:text="@string/privacy_policy"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         />
                     <ImageView
                         android:layout_width="0dp"
@@ -528,6 +519,7 @@
                     android:id="@+id/ll_setting_lang"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
@@ -546,7 +538,7 @@
                         android:layout_gravity="left|center"
                         android:text="@string/setting"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         />
                     <ImageView
                         android:layout_width="0dp"
