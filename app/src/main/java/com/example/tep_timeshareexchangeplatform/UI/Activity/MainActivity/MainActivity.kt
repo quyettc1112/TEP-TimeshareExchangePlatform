@@ -72,21 +72,19 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
             adapter = FragmentAdapter
             isUserInputEnabled = false
             offscreenPageLimit = 5
-
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    binding.niceBottomNav.setActiveItem(position)
+                    super.onPageSelected(position)
+                }
+            })
         }
-        binding.niceBottomNav.setBadge(4)
-
-        // Setup change listener
-        binding.vp2Main.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                binding.niceBottomNav.setActiveItem(position)
-                super.onPageSelected(position)
+        binding.niceBottomNav.apply {
+            setBadge(4)
+            onItemSelected = {idFragemnt ->
+                binding.vp2Main.setCurrentItem(idFragemnt, true)
             }
-        })
-        binding.niceBottomNav.onItemSelected = {idFragemnt ->
-            binding.vp2Main.setCurrentItem(idFragemnt, true)
         }
-
     }
 
     override fun hideBottomNav() {
