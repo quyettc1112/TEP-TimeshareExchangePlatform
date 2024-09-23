@@ -65,6 +65,9 @@
     <string name="register_title">Đăng Ký</string>
     <string name="login_title_description">Cùng chúng tôi, biến mỗi ngày thành một phiên bản tốt hơn.</string>
 
+    // Profile Fragment
+    <string name="profile_title">Thông Tin Người Dùng</string>
+
 
 
 
