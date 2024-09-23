@@ -2,83 +2,212 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".UI.Fragment.AccountFragment.AccountFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn"
-        android:layout_marginTop="50dp"
-        android:layout_width="wrap_content"
+    <!--// Custom Toolbar-->
+
+
+    <!-- // User Info Container-->
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/toolblarCustome"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_stroke_around"
-        android:text="Chinh sửa ngôn ngữ"
+        android:background="@color/white"
+        android:title="@string/profile_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showEndIcon="false"
+        app:showShadow="false"
+        app:showStartIcon="true"
+        app:showStartText="false" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolblarCustome">
 
-    </androidx.appcompat.widget.AppCompatButton>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn">
-
-        <ImageView
-            android:id="@+id/imageView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:src="@drawable/meme"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:gravity="center"
+            android:background="@color/primary_background"
+            android:orientation="vertical">
 
-            app:layout_constraintVertical_bias="1.0" />
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <!--// User Avatar-->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user_avt"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/ic_user_default_avt"
+                    android:translationZ="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.151"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/blue"
-            android:text="Click me"
-            android:textColor="@color/white"
-            android:layout_width="100dp"
-            android:textSize="20dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/background_stroke_around"
-            android:backgroundTint="@color/blue_full"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.654">
+                <!--// User Name-->
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Trần Cương Quyết"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:textSize="20dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="some thing in here"
+                    android:fontFamily="@font/inter_light"
+                    android:textSize="16dp"
+                    />
 
-        </androidx.appcompat.widget.AppCompatButton>
+                <!--// Option Component-->
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_red"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/background_stroke_around"
-            android:backgroundTint="@color/redLight_primary"
-            android:text="Click me"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.797"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.652">
+                    <!--// My Profile-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
 
-        </androidx.appcompat.widget.AppCompatButton>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_person"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Hồ sơ của tôi"
+                            android:layout_weight="8"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
 
 
 
 
+                    </LinearLayout>
+
+                    <!--// My Timeshare-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_home"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Danh sách Timeshare của tôi"
+                            android:layout_weight="8"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
+
+                    </LinearLayout>
+
+                    <!--// My Posting-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_my_posting"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Bài đăng của tôi"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                    </LinearLayout>
+
+
+
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

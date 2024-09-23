@@ -40,17 +40,12 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater, container, false)
 
-        binding.btn.setOnClickListener {
+        // Chỉnh Ngôn ngữ
+        /*binding.btn.setOnClickListener {
             (activity as? BaseActivity)?.showLanguageDialog()
-        }
+        }*/
 
-        binding.blue.setOnClickListener {
-            openYouTube("https://youtu.be/5uQayTp3wr4?si=uzWmzy0mLYB3i8bH")
-        }
 
-        binding.btnRed.setOnClickListener {
-            openYouTube("https://youtu.be/8NFA-XfaWFo?si=D0IUQLBM1GTOwLor")
-        }
 
 
 
@@ -60,6 +55,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
         return binding.root
     }
+
 
     private fun openYouTube(url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
