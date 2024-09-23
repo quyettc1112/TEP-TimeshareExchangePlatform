@@ -16,6 +16,7 @@
     <string name="filter">Filter</string>
     <string name="verify">Verified and Protected</string>
     <string name="back">Back</string>
+    <string name="btn_logout">Đăng Xuất</string>
 
 
 
@@ -72,6 +73,17 @@
 
     // Profile Fragment
     <string name="profile_title">User Information</string>
+    <string name="my_profile">User Information</string>
+    <string name="my_timeshare">My Timeshare listing</string>
+    <string name="my_posting">My Posting</string>
+    <string name="my_order">My reservations</string>
+    <string name="my_favorite">My travel interests</string>
+    <string name="my_account_security">Account &amp; Security</string>
+    <string name="my_account_link">Account link</string>
+    <string name="help_center">Help center</string>
+    <string name="version">Application version </string>
+    <string name="term_policy">Term &amp; Policies</string>
+    <string name="privacy_policy">Privacy Policies</string>
 
 
 </resources>

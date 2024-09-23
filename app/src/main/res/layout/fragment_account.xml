@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Hồ sơ của tôi"
+                            android:text="@string/my_profile"
                             android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
@@ -146,7 +146,7 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Danh sách Timeshare của tôi"
+                            android:text="@string/my_timeshare"
                             android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
@@ -181,7 +181,7 @@
                             android:layout_weight="8"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Bài đăng của tôi"
+                            android:text="@string/my_posting"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
                             />
@@ -218,7 +218,7 @@
                             android:layout_weight="8"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Đặt phòng của tôi"
+                            android:text="@string/my_order"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
                             />
@@ -255,7 +255,7 @@
                             android:layout_weight="8"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Sở thích du lịch"
+                            android:text="@string/my_favorite"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
                             />
@@ -292,7 +292,7 @@
                             android:layout_weight="8"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Tài Khoản &amp; Bảo mật"
+                            android:text="@string/my_account_security"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
                             />
@@ -329,7 +329,7 @@
                             android:layout_weight="8"
                             android:paddingStart="20dp"
                             android:layout_gravity="left|center"
-                            android:text="Liên kết tài khoản"
+                            android:text="@string/my_account_link"
                             android:fontFamily="@font/inter_semibold"
                             android:textSize="16dp"
                             />
@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="Liên hệ hỗ trợ"
+                        android:text="@string/help_center"
                         android:layout_weight="6"
                         android:textColor="@color/blue_btn_search"
                         android:fontFamily="@font/inter_extrabold"
@@ -433,7 +433,7 @@
                         android:layout_weight="8"
                         android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="Phiên bản"
+                        android:text="@string/version"
                         android:fontFamily="@font/inter_semibold"
                         android:textSize="16dp"
                         />
@@ -470,7 +470,7 @@
                         android:layout_weight="8"
                         android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="Điều khoản &amp; Chính sách"
+                        android:text="@string/term_policy"
                         android:fontFamily="@font/inter_semibold"
                         android:textSize="16dp"
                         />
@@ -507,7 +507,7 @@
                         android:layout_weight="8"
                         android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="Chính sách quyền riêng tư"
+                        android:text="@string/privacy_policy"
                         android:fontFamily="@font/inter_semibold"
                         android:textSize="16dp"
                         />
@@ -527,12 +527,11 @@
                     android:background="@drawable/ripple_effect_white"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:text="Đăng Xuất"
+                    android:text="@string/btn_logout"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/primary_background"
                     android:layout_height="60dp"
                     android:layout_marginBottom="150dp"
-
                     />
 
 
