@@ -40,15 +40,25 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater, container, false)
 
-        // Chỉnh Ngôn ngữ
-        /*binding.btn.setOnClickListener {
-            (activity as? BaseActivity)?.showLanguageDialog()
-        }*/
-
-
-
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setClickEvent()
+    }
+
+
+    private fun setClickEvent() {
+        binding.apply {
+            // Chỉnh Ngôn ngữ
+            llSettingLang.setOnClickListener { (activity as? BaseActivity)?.showLanguageDialog() }
+
+
+        }
+
+    }
+
 
 
     private fun openYouTube(url: String) {

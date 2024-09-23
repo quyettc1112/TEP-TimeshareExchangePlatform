@@ -17,6 +17,7 @@
     <string name="verify">Verified and Protected</string>
     <string name="back">Back</string>
     <string name="btn_logout">Đăng Xuất</string>
+    <string name="select_lang">Chọn ngôn ngữ</string>
 
 
 
@@ -84,7 +85,7 @@
     <string name="version">Application version </string>
     <string name="term_policy">Term &amp; Policies</string>
     <string name="privacy_policy">Privacy Policies</string>
-    <string name="setting">Setting</string>
+    <string name="setting">Setting language</string>
 
 
 </resources>

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
 
@@ -139,24 +140,28 @@ open class BaseActivity : AppCompatActivity() {
         )
     }
 
-    open  fun showLanguageDialog() {
-        val languages = arrayOf("English", "Vietnamese")
+    open fun showLanguageDialog() {
+        val languages = arrayOf("English", "Tiếng Việt")
         val languageCodes = arrayOf("en", "vi")
+        val preferenceHelper = PreferenceHelper(this)
+        val currentLanguage = preferenceHelper.getLanguage() ?: Locale.getDefault().language
+
+        val dialogTitle = if (currentLanguage == "vi") "Chọn ngôn ngữ" else "Choose language"
+
         AlertDialog.Builder(this)
-            .setTitle("Select Language")
+            .setTitle(dialogTitle)
             .setItems(languages) { _, which ->
                 val selectedLanguageCode = languageCodes[which]
-                val preferenceHelper = PreferenceHelper(this)
                 preferenceHelper.saveLanguage(selectedLanguageCode)
 
-                // Áp dụng ngôn ngữ mới
+                // Apply the new language
                 val locale = Locale(selectedLanguageCode)
                 Locale.setDefault(locale)
                 val config = Configuration()
                 config.setLocale(locale)
                 this.resources.updateConfiguration(config, this.resources.displayMetrics)
 
-                // Khởi động lại Activity để áp dụng thay đổi ngôn ngữ
+                // Restart Activity to apply language change
                 recreate()
             }
             .show()

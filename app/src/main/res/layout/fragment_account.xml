@@ -523,8 +523,9 @@
 
                 </LinearLayout>
 
-                <!--// Privacy Policie and Button-->
+                <!--// Lang Setting-->
                 <LinearLayout
+                    android:id="@+id/ll_setting_lang"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:orientation="horizontal"
@@ -535,7 +536,7 @@
                         android:layout_height="20dp"
                         android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/ic_setting"/>
+                        android:src="@drawable/ic_lang_setting"/>
 
                     <TextView
                         android:layout_width="0dp"
@@ -553,9 +554,6 @@
                         android:layout_weight="1"
                         android:layout_gravity="left|center"
                         android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
-
 
                 </LinearLayout>
 
