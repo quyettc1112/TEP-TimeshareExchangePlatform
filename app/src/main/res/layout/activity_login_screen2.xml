@@ -62,7 +62,6 @@
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
                 <EditText
                     android:id="@+id/edt_email"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/background_stroke_around"
                     android:drawableStart="@drawable/ic_email_30px"
@@ -90,7 +89,7 @@
                 <EditText
                     android:id="@+id/edt_password"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/background_stroke_around"
                     android:drawableStart="@drawable/ic_password_30px"
