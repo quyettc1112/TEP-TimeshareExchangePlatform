@@ -87,11 +87,12 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/ripple_effect_white"
+            android:backgroundTint="@color/blue_full"
             android:textAllCaps="false"
-            android:fontFamily="@font/inter_bold"
+            android:fontFamily="@font/inter_semibold"
             android:text="@string/login_title"
-            android:textColor="@color/blue_btn_search"
-            android:textSize="22dp"
+            android:textColor="@color/white"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -99,11 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/ripple_effect"
-            android:fontFamily="@font/inter_bold"
+            android:fontFamily="@font/inter_semibold"
             android:textAllCaps="false"
             android:text="@string/register_title"
             android:textColor="@color/white"
-            android:textSize="22dp"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </LinearLayout>
