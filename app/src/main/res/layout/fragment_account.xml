@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +8,6 @@
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".UI.Fragment.AccountFragment.AccountFragment">
-
-    <!--// Custom Toolbar-->
-
 
     <!-- // User Info Container-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
@@ -24,12 +22,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:showEndIcon="false"
         app:showShadow="false"
-        app:showStartIcon="true"
+        app:showStartIcon="false"
         app:showStartText="false" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolblarCustome">
@@ -37,11 +36,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
             android:gravity="center"
             android:background="@color/primary_background"
             android:orientation="vertical">
 
+            <!--// Option Container-->
             <LinearLayout
                 android:layout_marginTop="2dp"
                 android:orientation="vertical"
@@ -199,8 +198,202 @@
 
                     </LinearLayout>
 
+                    <!--// My Order-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_my_order"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Đặt phòng của tôi"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
 
 
+
+
+                    </LinearLayout>
+
+                    <!--// My Favorite-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_my_favourite"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Sở thích du lịch"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                    </LinearLayout>
+
+                    <!--// Account  Security-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_my_posting"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Tài Khoản &amp; Bảo mật"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                    </LinearLayout>
+
+                    <!--// Account Link-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/ic_profile_link_account"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="left|center"
+                            android:text="Liên kết tài khoản"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textSize="16dp"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="left|center"
+                            android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--// Help Center Component-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:gravity="center"
+                android:layout_marginTop="2dp">
+
+
+                <!--// Unwind Help Center-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="3"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/logo_unwind_horizontal"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:layout_gravity="left|center"
+                        android:text="Liên hệ hỗ trợ"
+                        android:layout_weight="6"
+                        android:textColor="@color/blue_btn_search"
+                        android:fontFamily="@font/inter_extrabold"
+                        android:textSize="16dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/baseline_navigate_next_24_black"/>
 
 
 
@@ -208,6 +401,146 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <!--// Version and Policy-->
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <!--// Versionr-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/ic_info"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:paddingStart="20dp"
+                        android:layout_gravity="left|center"
+                        android:text="Phiên bản"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textSize="16dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                </LinearLayout>
+
+                <!--// Terms and policies-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/ic_info"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:paddingStart="20dp"
+                        android:layout_gravity="left|center"
+                        android:text="Điều khoản &amp; Chính sách"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textSize="16dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                </LinearLayout>
+
+                <!--// Privacy Policie and Button-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/ic_privacy_polices"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:paddingStart="20dp"
+                        android:layout_gravity="left|center"
+                        android:text="Chính sách quyền riêng tư"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textSize="16dp"
+                        />
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/baseline_navigate_next_24_black"/>
+
+
+
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:background="@drawable/ripple_effect_white"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:text="Đăng Xuất"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/primary_background"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="150dp"
+
+                    />
+
+
+
+            </LinearLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

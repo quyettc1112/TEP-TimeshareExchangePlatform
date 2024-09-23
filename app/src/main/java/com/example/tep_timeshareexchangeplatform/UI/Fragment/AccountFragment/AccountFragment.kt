@@ -47,12 +47,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
 
 
-
-
-
-
-
-
         return binding.root
     }
 
