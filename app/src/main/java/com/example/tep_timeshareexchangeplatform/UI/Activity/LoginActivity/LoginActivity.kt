@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.LoginActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,11 +25,21 @@ class LoginActivity : BaseActivity() {
         }
 
         customToolbarEvent()
+        intentToAuth()
     }
     private fun customToolbarEvent() {
         binding.customToolbar.onStartIconClick = {
-            onBackPressed()
+            finish()
         }
+
+    }
+
+    private fun intentToAuth() {
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity_screen2::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
