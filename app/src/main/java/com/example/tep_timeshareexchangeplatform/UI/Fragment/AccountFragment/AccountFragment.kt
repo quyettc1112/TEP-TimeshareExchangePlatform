@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat.recreate
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.LoginActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import java.util.Locale
@@ -46,6 +47,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClickEvent()
+        logoutDialog()
     }
 
 
@@ -53,9 +55,15 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         binding.apply {
             // Chỉnh Ngôn ngữ
             llSettingLang.setOnClickListener { (activity as? BaseActivity)?.showLanguageDialog() }
-
-
         }
+
+    }
+
+    private fun logoutDialog() {
+        binding.btnLogout.setOnClickListener {
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        }
+
 
     }
 

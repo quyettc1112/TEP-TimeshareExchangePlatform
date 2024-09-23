@@ -558,6 +558,7 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_logout"
                     android:background="@drawable/ripple_effect_white"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
