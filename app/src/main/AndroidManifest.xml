@@ -16,6 +16,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.LoginActivity.LoginActivity_screen2"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.LoginActivity.LoginActivity"
             android:exported="true" />
         <activity

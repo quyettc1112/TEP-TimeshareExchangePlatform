@@ -16,9 +16,8 @@
     <string name="filter">Filter</string>
     <string name="verify">Verified and Protected</string>
     <string name="back">Back</string>
-    <string name="btn_logout">Đăng Xuất</string>
-    <string name="select_lang">Chọn ngôn ngữ</string>
-
+    <string name="btn_logout">Logout</string>
+    <string name="select_lang">Select Language</string>
 
 
     // Bottom Sheet Dialog
@@ -43,7 +42,6 @@
     <string name="search_date">Date</string>
     <string name="search_tourie">Tourist</string>
     <string name="search_search">Search</string>
-
 
 
     // Home Fragment - Suggest Component

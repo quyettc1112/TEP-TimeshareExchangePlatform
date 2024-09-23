@@ -7,34 +7,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.databinding.ActivityLoginBinding
 
-class LoginActivity : BaseActivity() {
-    private lateinit var binding: ActivityLoginBinding
-
+class LoginActivity_screen2 : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_login_screen2)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        customToolbarEvent()
-    }
-    private fun customToolbarEvent() {
-        binding.customToolbar.onStartIconClick = {
-            onBackPressed()
-        }
-
-    }
-
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
     }
 }
