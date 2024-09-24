@@ -1,19 +1,17 @@
-package com.example.tep_timeshareexchangeplatform.Common.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.databinding.GridItemLayoutBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortImageBinding
 
-class ResortImageAdapter (
+class ResortImageListAdapter (
     private val listResortImage: List<String>,
     private val onItemClick: (String) -> Unit
-): RecyclerView.Adapter<ResortImageAdapter.DataViewHolder>() {
+): RecyclerView.Adapter<ResortImageListAdapter.DataViewHolder>() {
 
     class DataViewHolder(private val binding: ItemResortImageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String, onItemClick: (String) -> Unit) {

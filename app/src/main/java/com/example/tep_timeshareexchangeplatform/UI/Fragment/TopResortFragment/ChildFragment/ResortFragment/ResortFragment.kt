@@ -3,7 +3,6 @@ package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.
 import android.content.Context
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
-import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
-import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
 
 class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
