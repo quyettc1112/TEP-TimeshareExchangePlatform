@@ -2,21 +2,19 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivi
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 
 class ResortDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResortDetailBinding
-    private lateinit var resortImageAdapter: ResortImageAdapter
+    private lateinit var resortImageListAdapter: ResortImageListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +26,10 @@ class ResortDetailActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        resortImageAdapter = ResortImageAdapter(Constant.listImage) {
-            // Do something when click item
+        resortImageListAdapter = ResortImageListAdapter(Constant.listImage) {
+            // Do something when item clicked
         }
-
+        // Set up RecyclerView with GridLayoutManager
         setListImage()
 
     }
@@ -61,7 +59,7 @@ class ResortDetailActivity : BaseActivity() {
         )
 
         binding.recyclerViewResortImage.apply {
-            adapter = resortImageAdapter
+            adapter = resortImageListAdapter
             layoutManager = manager
         }
     }

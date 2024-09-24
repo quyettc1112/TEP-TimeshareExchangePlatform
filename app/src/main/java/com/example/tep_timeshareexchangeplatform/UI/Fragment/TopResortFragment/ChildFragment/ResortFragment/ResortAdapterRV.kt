@@ -7,8 +7,6 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
-import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRvBinding
 
 class ResortAdapterRV: BaseAdapter<ResortModel, ResortAdapterRV.ResortViewHolder>() {

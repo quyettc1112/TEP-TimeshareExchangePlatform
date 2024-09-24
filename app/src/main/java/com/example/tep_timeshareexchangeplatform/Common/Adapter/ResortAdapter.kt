@@ -8,7 +8,6 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapte
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareBinding
 
 class ResortAdapter: BaseAdapter<ResortModel, ResortAdapter.ResortViewHolder>() {
 
