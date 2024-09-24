@@ -10,18 +10,18 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemResortImageBind
 
 class ResortImageListAdapter (
     private val listResortImage: List<String>,
-    private val onItemClick: (String) -> Unit
+    private val onItemClick: (Int) -> Unit
 ): RecyclerView.Adapter<ResortImageListAdapter.DataViewHolder>() {
 
     class DataViewHolder(private val binding: ItemResortImageBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: String, onItemClick: (String) -> Unit) {
+        fun bind(item: String, onItemClick: (Int) -> Unit) {
             binding.apply {
                 Glide.with(imageViewAvatar.context)
                     .load(item)
                     .into(imageViewAvatar)
                 // Thiết lập sự kiện click cho root view của item
                 root.setOnClickListener {
-                    onItemClick(item) // Gọi lambda khi item được click
+                    onItemClick.invoke(adapterPosition)
                 }
             }
         }

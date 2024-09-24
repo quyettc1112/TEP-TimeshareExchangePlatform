@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -27,7 +28,11 @@ class ResortDetailActivity : BaseActivity() {
             insets
         }
         resortImageListAdapter = ResortImageListAdapter(Constant.listImage) {
-            // Do something when item clicked
+            val intent = Intent(this, ImageListActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putInt("imagePosition", it)
+            })
+            startActivity(intent)
         }
         // Set up RecyclerView with GridLayoutManager
         setListImage()
@@ -61,6 +66,7 @@ class ResortDetailActivity : BaseActivity() {
         binding.recyclerViewResortImage.apply {
             adapter = resortImageListAdapter
             layoutManager = manager
+
         }
     }
 }
