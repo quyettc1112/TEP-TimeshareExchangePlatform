@@ -428,5 +428,15 @@ class Constant {
             LocationModel(5,"Thành Phố Đồng Hới", "Quảng Bình, Việt Nam"),
             // Add more cities here...
         )
+
+
+        val listImage = listOf(
+            "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg",
+            "https://i.pinimg.com/564x/02/18/15/021815591bfa2023e4ef3f9cc1d15590.jpg",
+            "https://i.pinimg.com/564x/02/18/15/021815591bfa2023e4ef3f9cc1d15590.jpg",
+            "https://i.pinimg.com/736x/4d/4c/a7/4d4ca70285d1bc68fee56ed86770b47c.jpg",
+            "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
+            "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
+        )
     }
 }
