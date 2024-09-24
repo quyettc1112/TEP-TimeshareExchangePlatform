@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager
+package com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -29,7 +29,7 @@ class GridAdapter(
                     onItemClick(destinationModel) // Gọi lambda khi item được click
                 }
 
-                executePendingBindings()
+               // executePendingBindings()
             }
         }
     }

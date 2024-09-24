@@ -18,17 +18,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.DestianationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.DayPickerActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
-import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.GridAdapter
-import com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -46,7 +44,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val resortAdapterMB = ResortAdapter()
     private val resortAdapterMT = ResortAdapter()
     private val resortAdapterMN = ResortAdapter()
-    private val destianationAdapter = DestianationAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter : GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
@@ -64,7 +61,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         resortAdapterMB.submitList(Constant.resortListMB)
         resortAdapterMT.submitList(Constant.resortListMT)
         resortAdapterMN.submitList(Constant.resortListMN)
-        destianationAdapter.submitList(Constant.destiantionList)
         blogAdapter.submitList(Constant.blogList)
         // Khởi tạo AutoScrollViewPagerHelper
 
