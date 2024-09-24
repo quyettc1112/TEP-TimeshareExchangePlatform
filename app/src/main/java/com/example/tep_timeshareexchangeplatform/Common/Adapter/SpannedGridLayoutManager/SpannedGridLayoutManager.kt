@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.Until.SpannedGridLayoutManager
+package com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager
 
 import android.content.Context
 import android.graphics.PointF
