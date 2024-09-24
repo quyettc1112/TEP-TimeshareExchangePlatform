@@ -27,6 +27,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -82,6 +83,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         setItemResortClickListener()
         setSearchComponentClickEvent()
         observerSearchComponent()
+        setAutoScroll()
 
 
 
@@ -172,6 +174,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
 
 
+
         }
         // List Resort Recomend MT
         binding.vpResortHotelMt.let {
@@ -190,11 +193,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             it.offscreenPageLimit = 5
             it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
         }
-
-        // Auto Scroll
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
 
         // List Destination
         val manager = SpannedGridLayoutManager(
@@ -226,10 +224,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     }
 
+    private fun setAutoScroll() {
+        // Auto Scroll
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
+    }
+
     private fun setItemResortClickListener() {
         resortAdapterMB.let {
             it.onItemClick = {
-                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
             }
 
             it.onFavoriteClick = {
@@ -238,16 +243,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
         resortAdapterMT.let {
             it.onItemClick = {
-                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
             }
-
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
         }
         resortAdapterMN.let {
             it.onItemClick = {
-                Toast.makeText(requireContext(), it.resortName.toString(), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
             }
 
             it.onFavoriteClick = {

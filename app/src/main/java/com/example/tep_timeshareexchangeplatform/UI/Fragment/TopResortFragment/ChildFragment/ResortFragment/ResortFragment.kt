@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.ResortFragment
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
 
 class ResortFragment : BaseFragment(R.layout.fragment_resort) {
@@ -56,12 +58,13 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentResortBinding.inflate(inflater, container, false)
-        setResortList()
+        setResortListAdapter()
+        setResortClickListener()
 
         return binding.root
     }
 
-    private fun setResortList() {
+    private fun setResortListAdapter() {
         binding.rcTopResort.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = resortAdapter
@@ -92,5 +95,11 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
                 }
             })
         }
+    }
+    private fun setResortClickListener() {
+        resortAdapter.onItemClick = {
+            startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
+        }
+
     }
 }
