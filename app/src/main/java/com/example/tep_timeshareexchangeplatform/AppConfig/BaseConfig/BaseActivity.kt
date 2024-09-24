@@ -17,7 +17,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
 
-open class BaseActivity : AppCompatActivity() {
+open class  BaseActivity : AppCompatActivity() {
 
     var progressDialog: ProgressDialog? = null
 
