@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,12 +9,14 @@
     tools:context=".UI.Activity.ResortDetailActivity.ResortDetailActivity">
 
     <!--// Custom Toolbar-->
+
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/customToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="Flamingo Dai Lai Resort"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showTitleDetail="true"
@@ -42,7 +45,7 @@
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"
+                    android:layout_height="310dp"
                     android:fillViewport="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -63,18 +66,265 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <!--// Resort Info and Map-->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <!--// Resort Name-->
+                <TextView
+                    android:id="@+id/tvResortName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:text="Flamingo Dai Lai Resort"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--// Resort Type-->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialCardView4"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvResortName"
+                    app:strokeColor="#20A3C9"
+                    app:strokeWidth="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Khách sạn"
+                        android:textColor="#20A3C9" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- // Rating-->
+                <LinearLayout
+                    android:id="@+id/materialCardView3"
+                    android:layout_width="130dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_rating"
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView4"
+                    app:layout_constraintTop_toBottomOf="@+id/tvResortName"
+                    app:strokeColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/baseline_star_24" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:gravity="center"
+                            android:text="4.5"
+                            android:textColor="#007EF2"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/tv_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:gravity="center"
+                            android:text="254 đánh giá"
+                            android:textSize="12dp" />
+                    </LinearLayout>
 
 
-            </LinearLayout>
+                </LinearLayout>
+
+               <!-- // Favorite Button-->
+                <LinearLayout
+                    android:id="@+id/ll_favorite"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/background_circle"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/baseline_favorite_24" />
+                </LinearLayout>
+
+                <!--// Location-->
+                <LinearLayout
+                    android:id="@+id/linearLayout9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
+                    tools:layout_editor_absoluteX="20dp">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/ic_location" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="9"
+                        android:fontFamily="@font/inter_light"
+                        android:maxLines="2"
+                        android:paddingStart="5dp"
+                        android:text="Đường Hồ Chí Minh, Phúc Yên, Vĩnh Phúc"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+                <!--// Verify Button-->
+                <LinearLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/ic_verify" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="9"
+                        android:fontFamily="@font/inter_light"
+                        android:maxLines="2"
+                        android:paddingStart="5dp"
+                        android:text="Đã được xác minh bởi Unwind"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+                <!--// Find More-->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_weight="9"
+                    android:fontFamily="@font/inter_light"
+                    android:maxLines="2"
+                    android:textColor="@color/blue_see_more"
+                    android:paddingStart="5dp"
+                    android:text="Tìm hiểu thêm"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout10"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout10" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--// Resort Room Type-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:background="@color/white">
+
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Loại phòng"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|top"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_sugest_see_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:fontFamily="@font/inter_light"
+                            android:text="@string/suggest_seemore"
+                            android:layout_marginEnd="5dp"
+                            android:textColor="@color/blue_see_more"
+                            android:textSize="12dp" />
+
+                        <ImageView
+                            android:scaleType="centerCrop"
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/forward" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Frame Layout Room Type-->
+
+
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
         </LinearLayout>
+
     </ScrollView>
 
 

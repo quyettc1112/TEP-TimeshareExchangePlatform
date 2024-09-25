@@ -11,7 +11,6 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
-        android:layout_margin="6dp"
         android:layout_height="160dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/im_material_resort"/>
+            android:src="@drawable/im_material_resort" />
     </androidx.cardview.widget.CardView>
 
     <!--// Resort Info-->
