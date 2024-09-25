@@ -265,6 +265,7 @@
 
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -296,22 +297,30 @@
                             android:id="@+id/tv_sugest_see_more"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:fontFamily="@font/inter_light"
-                            android:text="@string/suggest_seemore"
                             android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/inter_light"
+                            android:gravity="center"
+                            android:text="@string/suggest_seemore"
                             android:textColor="@color/blue_see_more"
                             android:textSize="12dp" />
 
                         <ImageView
-                            android:scaleType="centerCrop"
                             android:layout_width="10dp"
                             android:layout_height="20dp"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/forward" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Frame Layout Room Type-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/item_resort_room_type"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
 
 
