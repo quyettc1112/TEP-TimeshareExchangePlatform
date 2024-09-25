@@ -35,8 +35,9 @@
                     android:id="@+id/tvStartText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    tools:text="Back" />
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/back"
+                    android:textSize="12dp" />
             </LinearLayout>
 
 
