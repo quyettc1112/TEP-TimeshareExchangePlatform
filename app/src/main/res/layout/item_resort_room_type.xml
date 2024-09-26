@@ -6,27 +6,24 @@
     android:background="@drawable/background_stroke_around"
     android:layout_marginBottom="20dp"
     android:layout_width="match_parent"
-    android:layout_height="360dp">
+    android:layout_height="300dp">
     <!--// Image-->
-
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         app:cardCornerRadius="8dp"
-        app:strokeWidth="2dp"
-        app:strokeColor="@color/yellow_stroke_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/im_resortImage"
+            android:id="@+id/im_room_type_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/im_matiral_timeshare" />
-    </com.google.android.material.card.MaterialCardView>
+            android:scaleType="centerCrop"
+            android:src="@drawable/im_material_resort" />
+    </androidx.cardview.widget.CardView>
 
     <!--// Resort Info-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2">
         <!--// Resort Name-->
         <TextView
-            android:id="@+id/tv_resortName"
+            android:id="@+id/tv_room_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -65,7 +62,7 @@
             android:layout_marginEnd="150dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resortName">
+            app:layout_constraintTop_toBottomOf="@+id/tv_room_name">
 
             <!-- // Bath-->
             <LinearLayout
@@ -209,7 +206,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resortName">
+            app:layout_constraintTop_toBottomOf="@+id/tv_room_name">
 
             <ImageView
                 android:layout_width="20dp"
@@ -235,11 +232,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--// Chính sách huỷ -->
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:maxWidth="300dp"
         android:orientation="horizontal"
@@ -261,7 +258,7 @@
             android:text="Không có chính sách hoàn tiền"
             android:textColor="@color/black"
             android:textSize="12dp" />
-    </LinearLayout>
+    </LinearLayout>-->
 
 
     <!--// Resort Price-->

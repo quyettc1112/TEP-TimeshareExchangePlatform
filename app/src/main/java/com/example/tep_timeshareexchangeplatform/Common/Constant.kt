@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 
@@ -438,5 +439,12 @@ class Constant {
             "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
             "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
         )
+
+        // Get List Room Type
+        val listRoomType = listOf(
+            RoomTypeModel(1, "Phòng Studio", "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg"),
+            RoomTypeModel(2, "Phòng Queen", "https://i.pinimg.com/736x/09/b6/5f/09b65f9ba22e9a314d059b814e7d62a3.jpg"),
+        )
+
     }
 }
