@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.Common
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
@@ -444,6 +445,18 @@ class Constant {
         val listRoomType = listOf(
             RoomTypeModel(1, "Phòng Studio", "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg"),
             RoomTypeModel(2, "Phòng Queen", "https://i.pinimg.com/736x/09/b6/5f/09b65f9ba22e9a314d059b814e7d62a3.jpg"),
+        )
+
+        // Get list Facilitie
+        val listFacilite = listOf(
+            FacilitieModel(1, "Điều hoà nhiệt độ", R.drawable.ic_air_conditioner),
+            FacilitieModel(2, "Lễ tân 24h", R.drawable.ic_receptionist),
+            FacilitieModel(3, "Chỗ đỗ xe", R.drawable.ic_car_aprking),
+            FacilitieModel(4, "Sân thượng", R.drawable.ic_roff_top),
+            FacilitieModel(5, "Phòng gia đình", R.drawable.ic_family_room),
+            FacilitieModel(6, "Chỗ đỗ xe", R.drawable.ic_car_aprking),
+            FacilitieModel(7, "Sân thượng", R.drawable.ic_roff_top),
+            FacilitieModel(8, "Phòng gia đình", R.drawable.ic_family_room),
         )
 
     }
