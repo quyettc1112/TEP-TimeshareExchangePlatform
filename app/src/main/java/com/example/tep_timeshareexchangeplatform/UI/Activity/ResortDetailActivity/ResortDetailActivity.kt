@@ -11,14 +11,20 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivit
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 
 class ResortDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResortDetailBinding
     private lateinit var resortImageListAdapter: ResortImageListAdapter
     private var roomTypeAdapter = RoomTypeAdapter()
+    private var facilitieAdapter = FacilitieAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +48,13 @@ class ResortDetailActivity : BaseActivity() {
         // Set Resort Detail Info
         setListImageResort()
         setRoomTypeListResort()
+        setFacilitieListResort()
     }
 
     private fun initAdapter() {
         roomTypeAdapter.submitList(Constant.listRoomType)
+        facilitieAdapter.submitList(Constant.listFacilite)
+
     }
 
 
@@ -86,6 +95,16 @@ class ResortDetailActivity : BaseActivity() {
         }
 
 
+    }
+
+    private fun setFacilitieListResort() {
+        val flexboxLayoutManager = FlexboxLayoutManager(this)
+        flexboxLayoutManager.flexDirection = FlexDirection.ROW
+        flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
+        binding.rvResortFacilities.let {
+            it.layoutManager = flexboxLayoutManager
+            it.adapter = facilitieAdapter
+        }
     }
 
 }
