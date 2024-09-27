@@ -11,9 +11,14 @@
         android:id="@+id/rc_timeshare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="100dp"
+        android:paddingTop="10dp"
         android:orientation="vertical"
+        android:paddingStart="20dp"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_timeshare">
+        tools:listitem="@layout/item_timeshare_ver_1">
 
 
     </androidx.recyclerview.widget.RecyclerView>
