@@ -1,0 +1,10 @@
+package com.example.tep_timeshareexchangeplatform.BaseModel.Model
+
+data class ReviewModel(
+    val reviewId: Int,
+    val reviewContent: String,
+    val reviewRating: Int,
+    val reviewDate: String,
+    val reviewUserId: Int,
+    val reviewResortId: Int
+)

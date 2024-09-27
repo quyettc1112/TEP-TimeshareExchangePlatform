@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 import com.google.android.flexbox.FlexDirection
@@ -24,6 +25,7 @@ class ResortDetailActivity : BaseActivity() {
     private lateinit var resortImageListAdapter: ResortImageListAdapter
     private var roomTypeAdapter = RoomTypeAdapter()
     private var facilitieAdapter = FacilitieAdapter()
+    private var reviewAdapter = ReviewAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,14 +51,14 @@ class ResortDetailActivity : BaseActivity() {
         setListImageResort()
         setRoomTypeListResort()
         setFacilitieListResort()
+        setReviewResort()
     }
 
     private fun initAdapter() {
         roomTypeAdapter.submitList(Constant.listRoomType)
         facilitieAdapter.submitList(Constant.listFacilite)
-
+        reviewAdapter.submitList(Constant.listReview)
     }
-
 
     private fun setListImageResort() {
         // List Destination
@@ -104,6 +106,13 @@ class ResortDetailActivity : BaseActivity() {
         binding.rvResortFacilities.let {
             it.layoutManager = flexboxLayoutManager
             it.adapter = facilitieAdapter
+        }
+    }
+
+    private fun setReviewResort() {
+        binding.rvReview.apply {
+            adapter = reviewAdapter
+            layoutManager = LinearLayoutManager(this@ResortDetailActivity)
         }
     }
 

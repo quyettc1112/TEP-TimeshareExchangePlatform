@@ -5,6 +5,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ReviewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
@@ -457,6 +458,20 @@ class Constant {
             FacilitieModel(6, "Chỗ đỗ xe", R.drawable.ic_car_aprking),
             FacilitieModel(7, "Sân thượng", R.drawable.ic_roff_top),
             FacilitieModel(8, "Phòng gia đình", R.drawable.ic_family_room),
+            FacilitieModel(9, "Phòng gia đình", R.drawable.ic_family_room),
+            FacilitieModel(10, "Phòng gia đình", R.drawable.ic_family_room),
+            FacilitieModel(11, "Phòng gia đình", R.drawable.ic_family_room),
+        )
+
+        // Get list Review
+        val listReview = listOf(
+            ReviewModel(1, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(2, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(3, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(4, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(5, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(6, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
+            ReviewModel(7, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
         )
 
     }
