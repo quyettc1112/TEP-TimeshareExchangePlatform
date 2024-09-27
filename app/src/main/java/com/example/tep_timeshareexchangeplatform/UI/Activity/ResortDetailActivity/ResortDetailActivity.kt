@@ -52,6 +52,15 @@ class ResortDetailActivity : BaseActivity() {
         setRoomTypeListResort()
         setFacilitieListResort()
         setReviewResort()
+
+        actionCustomToolbar()
+
+    }
+
+    private fun actionCustomToolbar() {
+        binding.customToolbar.onStartIconClick = {
+            onBackPressed()
+        }
     }
 
     private fun initAdapter() {
@@ -115,5 +124,11 @@ class ResortDetailActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@ResortDetailActivity)
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
 
 }

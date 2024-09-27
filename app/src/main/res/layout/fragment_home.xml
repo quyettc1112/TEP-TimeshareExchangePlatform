@@ -556,24 +556,17 @@
                             android:src="@drawable/forward" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:fillViewport="true">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_tourist_destination"
                         android:scrollbars="none"
-                        android:isScrollContainer="false"
                         android:nestedScrollingEnabled="false"
                         tools:listitem="@layout/item_tourist_destination"
                         android:layout_marginBottom="20dp"
                         android:paddingStart="25dp"
                         android:paddingEnd="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </androidx.core.widget.NestedScrollView>
+                        android:layout_height="500dp" />
 
 
 
