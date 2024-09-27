@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
@@ -14,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareFragment
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
@@ -29,7 +31,17 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
 
     private lateinit var binding: FragmentTopResortBinding
     private lateinit var FragmentAdapter: FragmentAdapter
+    private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnBottomNavVisibilityListener) {
+            bottomNavVisibilityListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnBottomNavVisibilityListener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +78,10 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
             // Set Tab Layout Onclick Event
             it.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tab != null) { binding.vpResortTimeshare.currentItem = tab!!.position }
+                    if (tab != null) {
+                        binding.vpResortTimeshare.currentItem = tab!!.position
+                        bottomNavVisibilityListener!!.showBottomNav()
+                    }
                 }
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     // Not thing to do

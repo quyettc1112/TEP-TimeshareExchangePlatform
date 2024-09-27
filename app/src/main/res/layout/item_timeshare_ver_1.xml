@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginEnd="20dp"
+    android:layout_width="170dp"
+    android:backgroundTint="@color/white"
+    android:background="@drawable/background_stroke_around"
+    android:layout_marginBottom="25dp"
+    android:layout_height="325dp">
+
+    <!--// Image Timeshare-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/im_imageTimeshare"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/im_matiral_timeshare" />
+    </androidx.cardview.widget.CardView>
+
+    <!--// Timeshare Location-->
+    <LinearLayout
+        android:id="@+id/linearLayout12"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background_stroke_around"
+        android:backgroundTint="#CF403635"
+        android:gravity="center|left"
+        android:padding="3dp"
+        android:translationZ="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_location_pin_24" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Thành Phố Lâm Đồng"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+
+
+    </LinearLayout>
+
+    <!--// Timeshare name-->
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+        <!-- // TimeShare name-->
+        <TextView
+            android:id="@+id/tv_timeShreName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="40dp"
+            android:fontFamily="@font/inter_bold"
+            android:maxLines="2"
+            android:text="Biển Vịnh Hạ Long Resort"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+
+        <!-- // Date-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_schedule"/>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center|left"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:text="26/08/2024 - 30/08/2024"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <!-- // Room-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:minHeight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_room_ts"/>
+
+            <TextView
+                android:id="@+id/tv_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center|left"
+                android:maxLines="2"
+                android:text="Phòng Studio, 1 Giường, 4 Người"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!--// Price-->
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_extrabold"
+            android:text="1.300.000 VND"
+            android:textColor="@color/blue_full"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_numberOfNight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text=" | 4 đêm"
+            android:textColor="@color/primary_stroke_around"
+            android:textSize="10dp" />
+
+    </LinearLayout>
+
+    <!--//Verify-->
+    <LinearLayout
+        android:id="@+id/ll_verify"
+        android:layout_width="90dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:background="@drawable/background_verify"
+        app:layout_constraintStart_toStartOf="parent"
+        android:translationZ="10dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:gravity="center"
+            android:text="@string/suggest_verify"
+            android:textSize="7dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+
+    <!-- // Ratign-->
+    <LinearLayout
+        android:id="@+id/materialCardView3"
+        android:layout_width="130dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="5dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:strokeColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_stroke_around"
+                android:backgroundTint="#F23161"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/inter_semibold"
+                    android:gravity="center"
+                    android:text="4.5"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/baseline_star_24" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="Rất tốt (254)"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

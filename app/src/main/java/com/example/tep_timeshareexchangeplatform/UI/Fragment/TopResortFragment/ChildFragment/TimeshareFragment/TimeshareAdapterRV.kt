@@ -10,6 +10,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareTrBinding
+import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareVer1Binding
 
 class TimeshareAdapterRV : BaseAdapter<TimeshareModel, TimeshareAdapterRV.TimeshareAdapterRVViewHolder>() {
 
@@ -17,14 +18,14 @@ class TimeshareAdapterRV : BaseAdapter<TimeshareModel, TimeshareAdapterRV.Timesh
     var onItemClick: ((TimeshareModel) -> Unit)? = null
     var onFavoriteClick: ((TimeshareModel) -> Unit)? = null
 
-    inner class TimeshareAdapterRVViewHolder(binding: ItemTimeshareTrBinding): BaseItemViewHolderCF<TimeshareModel, ItemTimeshareTrBinding>(binding) {
+    inner class TimeshareAdapterRVViewHolder(binding: ItemTimeshareVer1Binding): BaseItemViewHolderCF<TimeshareModel, ItemTimeshareVer1Binding>(binding) {
         override fun bind(item: TimeshareModel) {
             Glide.with(binding.imImageTimeshare.context)
                 .load(item.imageTimeshare)
                 .into(binding.imImageTimeshare)
             binding.tvTimeShreName.text = item.timeshareName
-           /* binding.tvLocation.text = item.location
-            binding.tvDate.text = item.date*/
+            binding.tvLocation.text = item.location
+            binding.tvDate.text = item.date
             binding.tvRoom.text = item.roomDetails
             binding.tvPrice.text = item.price
             binding.tvNumberOfNight.text = item.numberOfNights
@@ -32,9 +33,9 @@ class TimeshareAdapterRV : BaseAdapter<TimeshareModel, TimeshareAdapterRV.Timesh
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
             }
-            binding.imFavorite.setOnClickListener {
+          /*  binding.imFavorite.setOnClickListener {
                 onFavoriteClick?.let { it1 -> it1(item) }
-            }
+            }*/
         }
 
     }
@@ -52,7 +53,7 @@ class TimeshareAdapterRV : BaseAdapter<TimeshareModel, TimeshareAdapterRV.Timesh
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeshareAdapterRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemTimeshareTrBinding.inflate(inflater, parent, false)
+        val binding = ItemTimeshareVer1Binding.inflate(inflater, parent, false)
         return TimeshareAdapterRVViewHolder(binding)
     }
 
