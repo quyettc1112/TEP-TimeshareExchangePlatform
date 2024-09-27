@@ -274,7 +274,9 @@
                       android:layout_height="wrap_content">
                      <androidx.recyclerview.widget.RecyclerView
                          android:id="@+id/rv_suggest_timeshare"
-                         tools:listitem="@layout/item_timeshare"
+                         android:orientation="horizontal"
+                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                         tools:listitem="@layout/item_timeshare_ver_1"
                          android:layout_width="match_parent"
                          android:layout_height="310dp">
 
