@@ -166,6 +166,9 @@ dependencies {
     // Circle Image
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // Circle indicator
+    implementation ("me.relex:circleindicator:2.1.6")
+
 
 
 

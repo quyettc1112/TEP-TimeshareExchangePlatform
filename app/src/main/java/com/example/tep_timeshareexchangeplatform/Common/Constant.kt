@@ -487,5 +487,15 @@ class Constant {
             ReviewModel(7, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
         )
 
+        val listTimeshareImage = listOf(
+            "https://i.pinimg.com/564x/0f/df/c5/0fdfc565bc883a817317592ec37eaffe.jpg",
+            "https://i.pinimg.com/564x/3f/19/6f/3f196f360056fea74b88098a650131aa.jpg",
+            "https://i.pinimg.com/564x/0b/48/2b/0b482bf30e232ff44d74d92e22bad3b8.jpg",
+            "https://i.pinimg.com/736x/d9/5d/ca/d95dca792b2fdcb0c8c0021400c27cc7.jpg",
+            "https://i.pinimg.com/736x/a3/df/db/a3dfdbb0283cac6b594c676d00696779.jpg"
+
+
+        )
+
     }
 }
