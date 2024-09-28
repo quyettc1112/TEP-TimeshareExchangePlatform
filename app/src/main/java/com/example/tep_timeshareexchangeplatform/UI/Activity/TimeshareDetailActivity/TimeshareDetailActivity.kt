@@ -36,6 +36,8 @@ class TimeshareDetailActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set up the adapter for Timeshare Detail Info
         initAdapter()
         setListImageTimeshare()
         setAutoScroll()
