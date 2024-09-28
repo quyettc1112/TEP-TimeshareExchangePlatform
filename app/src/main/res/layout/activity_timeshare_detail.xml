@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -273,6 +274,122 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!--// Ngày nhận phòng-->
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:paddingTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white">
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:paddingStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Ngày nhận phòng"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Container for Check-in, Check-out, and Nights -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/blue_background_show"
+                    android:background="@drawable/background_stroke_around">
+
+                    <!-- Check-in Information -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Nhận phòng"
+                            android:textSize="14sp"
+                            android:textColor="#9E9E9E"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Th 7, 28 thg 9 2024 (14:00)"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/inter_extrabold"
+                            android:textColor="#000000"
+                            android:paddingStart="16dp"/>
+                    </LinearLayout>
+
+                    <!-- Check-out Information -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Trả phòng"
+                            android:textSize="14sp"
+                            android:textColor="#9E9E9E"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CN, 29 thg 9 2024 (12:00)"
+                            android:fontFamily="@font/inter_extrabold"
+                            android:textSize="14sp"
+                            android:textColor="#000000"
+                            android:paddingStart="16dp"/>
+                    </LinearLayout>
+
+                    <!-- Number of night -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Số đêm"
+                            android:textSize="14sp"
+                            android:textColor="#9E9E9E"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4 đêm"
+                            android:fontFamily="@font/inter_extrabold"
+                            android:textSize="14sp"
+                            android:textColor="#000000"
+                            android:paddingStart="16dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
             <!--// Type Room-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="@color/white"
@@ -305,7 +422,7 @@
                         android:maxLines="1"
                         android:text="Chi Tiết Phòng | Phòng Studio King"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -638,16 +755,102 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <!--// Resort Review-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:minHeight="300dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--// Review Scrore-->
+                <TextView
+                    android:id="@+id/tv_review_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="4.5"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--// Review Level-->
+                <TextView
+                    android:id="@+id/tv_review_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Tuyệt vời"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--// Review Count-->
+                <TextView
+                    android:id="@+id/tv_review_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/inter_light"
+                    android:text="5 đánh giá"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_review_level" />
+
+                <!--// Review List-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_review"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_height="300dp"
+                    android:maxHeight="250dp"
+                    tools:listitem="@layout/item_review"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_review_score">
+
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <!--// See More Review-->
+                <TextView
+                    android:id="@+id/tv_see_more_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Xem tất cả đánh giá >"
+                    android:textColor="@color/quantum_orange"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--// Detail Billing-->
+
+
             <!--// Do Nothing-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:background="@color/white"/>
 
 
 
         </LinearLayout>
     </ScrollView>
+
+    //
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

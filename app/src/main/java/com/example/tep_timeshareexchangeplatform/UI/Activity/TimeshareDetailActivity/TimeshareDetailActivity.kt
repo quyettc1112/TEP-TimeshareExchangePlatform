@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareDetailBinding
@@ -20,6 +22,7 @@ class TimeshareDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityTimeshareDetailBinding
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = FacilitieAdapter()
+    private var reviewAdapter = ReviewAdapter()
 
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
 
@@ -37,7 +40,7 @@ class TimeshareDetailActivity : BaseActivity() {
         setListImageTimeshare()
         setAutoScroll()
         setFacilitieListTimeshare()
-
+        setReviewTimeshare()
 
         // Set up the action for the button
         setButtonAction()
@@ -46,6 +49,7 @@ class TimeshareDetailActivity : BaseActivity() {
 
     private fun initAdapter() {
         facilityAdapter.submitList(Constant.listFacilite)
+        reviewAdapter.submitList(Constant.listReview)
     }
     private fun setListImageTimeshare() {
         binding.viewPager.apply {
@@ -71,7 +75,6 @@ class TimeshareDetailActivity : BaseActivity() {
             finish()
         }
     }
-
     private fun setFacilitieListTimeshare() {
         val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.flexDirection = FlexDirection.ROW
@@ -79,6 +82,12 @@ class TimeshareDetailActivity : BaseActivity() {
         binding.rvResortFacilities.let {
             it.layoutManager = flexboxLayoutManager
             it.adapter = facilityAdapter
+        }
+    }
+    private fun setReviewTimeshare() {
+        binding.rvReview.apply {
+            adapter = reviewAdapter
+            layoutManager = LinearLayoutManager(this@TimeshareDetailActivity)
         }
     }
 }
