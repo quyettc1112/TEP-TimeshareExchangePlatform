@@ -11,6 +11,9 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeB
 
 class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHolder>(){
 
+    var onItemClick: ((RoomTypeModel) -> Unit)? = null
+    var onButonBookClick: ((RoomTypeModel) -> Unit)? = null
+
     inner class RoomTypeViewHolder(binding: ItemResortRoomTypeBinding): BaseItemViewHolderCF<RoomTypeModel, ItemResortRoomTypeBinding> (binding) {
         override fun bind(item: RoomTypeModel) {
             binding.apply {
@@ -18,6 +21,14 @@ class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHo
                 Glide.with(itemView)
                     .load(item.image)
                     .into(imRoomTypeImage)
+            }
+
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
+
+            binding.btnViewRoom.setOnClickListener {
+                onButonBookClick?.invoke(item)
             }
         }
     }

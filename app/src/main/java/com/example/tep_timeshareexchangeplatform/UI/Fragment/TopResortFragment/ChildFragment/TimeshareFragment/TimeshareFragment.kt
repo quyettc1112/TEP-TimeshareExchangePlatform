@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTimeshareBinding
 
 class TimeshareFragment : BaseFragment(R.layout.fragment_timeshare) {
@@ -34,6 +36,12 @@ class TimeshareFragment : BaseFragment(R.layout.fragment_timeshare) {
         binding = FragmentTimeshareBinding.inflate(layoutInflater, container, false)
         binding.rcTimeshare.layoutManager = GridLayoutManager(requireActivity(), 2, LinearLayoutManager.VERTICAL, false)
         binding.rcTimeshare.adapter = timeshareAdapter
+
+        timeshareAdapter.onItemClick = {
+            val intent = Intent(requireActivity(), TimeshareListActivity::class.java)
+            startActivity(intent)
+        }
+
 
         return binding.root
     }
