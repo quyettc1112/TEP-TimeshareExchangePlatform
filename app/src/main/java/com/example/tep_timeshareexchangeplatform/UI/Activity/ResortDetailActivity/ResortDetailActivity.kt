@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -45,6 +46,8 @@ class ResortDetailActivity : BaseActivity() {
             })
             startActivity(intent)
         }
+
+        // Init Adapter
         initAdapter()
 
         // Set Resort Detail Info
@@ -53,6 +56,9 @@ class ResortDetailActivity : BaseActivity() {
         setFacilitieListResort()
         setReviewResort()
 
+        // Action Event
+        setTypeRoomClickAction()
+        setButtonSelectRoomClick()
         actionCustomToolbar()
 
     }
@@ -67,6 +73,22 @@ class ResortDetailActivity : BaseActivity() {
         roomTypeAdapter.submitList(Constant.listRoomType)
         facilitieAdapter.submitList(Constant.listFacilite)
         reviewAdapter.submitList(Constant.listReview)
+    }
+
+    private fun setTypeRoomClickAction() {
+        roomTypeAdapter.apply {
+            onItemClick = {
+                val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
+                startActivity(intent)
+            }
+
+            onButonBookClick = {
+                val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+
     }
 
     private fun setListImageResort() {
@@ -116,6 +138,14 @@ class ResortDetailActivity : BaseActivity() {
             it.layoutManager = flexboxLayoutManager
             it.adapter = facilitieAdapter
         }
+    }
+
+    private fun setButtonSelectRoomClick() {
+        binding.btnSelectRoom.setOnClickListener {
+            val intent = Intent(this, TimeshareListActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun setReviewResort() {

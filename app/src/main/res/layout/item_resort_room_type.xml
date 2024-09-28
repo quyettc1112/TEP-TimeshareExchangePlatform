@@ -231,35 +231,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--// Chính sách huỷ -->
-    <!--<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:maxWidth="300dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_ban" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:fontFamily="@font/inter_medium"
-            android:gravity="center|left"
-            android:maxLines="1"
-            android:text="Không có chính sách hoàn tiền"
-            android:textColor="@color/black"
-            android:textSize="12dp" />
-    </LinearLayout>-->
-
 
     <!--// Resort Price-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -273,12 +244,12 @@
 
         <!--// View Now Button-->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton"
+            android:id="@+id/btn_view_room"
             android:layout_width="120dp"
             android:layout_height="45dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/background_stroke_around"
+            android:background="@drawable/ripple_effect_white"
             android:backgroundTint="@color/blue_btn_search"
             android:fontFamily="@font/inter_semibold"
             android:text="Xem Phòng"
@@ -299,69 +270,11 @@
             android:text="1,300.000 VND "
             android:textColor="@color/blue_full"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
+            app:layout_constraintBottom_toTopOf="@+id/btn_view_room"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-<!--
-        <TextView
-            android:id="@+id/tv_numberOfNight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_medium"
-            android:gravity="center|left"
-            android:text=" / 4 đêm"
-            android:textColor="@color/primary_stroke_around"
-            android:textSize="10dp" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-    <!--&lt;!&ndash;// Book Now Button&ndash;&gt;
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="120dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/background_stroke_around"
-        android:backgroundTint="@color/blue_btn_search"
-        android:fontFamily="@font/inter_semibold"
-        android:text="@string/book_now"
-        android:textColor="@color/white"
-        android:textSize="10dp"
-        android:layout_marginTop="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
-
-    </androidx.appcompat.widget.AppCompatButton>
-
-
-    &lt;!&ndash;// Favorite Button&ndash;&gt;
-    <LinearLayout
-        android:id="@+id/ll_favorite"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/background_circle"
-        android:translationZ="10dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView2">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:src="@drawable/baseline_favorite_24" />
-    </LinearLayout>-->
-
-
-
-
-
-
-
-
 
 
 

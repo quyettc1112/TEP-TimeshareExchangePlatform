@@ -19,7 +19,6 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
@@ -80,7 +79,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        setAdapter()
+        initAdapter()
         setItemResortClickListener()
         setSearchComponentClickEvent()
         observerSearchComponent()
@@ -155,7 +154,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       }
     }
 
-    private fun setAdapter() {
+    private fun initAdapter() {
         // List Timesahre Recomend
         binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvSuggestTimeshare.adapter = timeshareAdapter
