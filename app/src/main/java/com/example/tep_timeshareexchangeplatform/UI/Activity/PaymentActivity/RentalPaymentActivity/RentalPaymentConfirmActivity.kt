@@ -9,14 +9,15 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentBinding
+import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentConfirmBinding
 
-class RentalPaymentActivity : BaseActivity() {
-    private lateinit var binding: ActivityRentalPaymentBinding
+class RentalPaymentConfirmActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityRentalPaymentConfirmBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityRentalPaymentBinding.inflate(layoutInflater)
+        binding = ActivityRentalPaymentConfirmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -24,17 +25,14 @@ class RentalPaymentActivity : BaseActivity() {
             insets
         }
 
-        binding.ctrRequestButton.setOnClickListener {
-            intentToRentalPaymentConfirmActivity()
-        }
 
-        binding.customToolbar.setOnClickListener {
+        binding.customToolbar.onStartIconClick = {
             finish()
         }
+
     }
 
-    private fun intentToRentalPaymentConfirmActivity() {
-        val intent = Intent(this, RentalPaymentConfirmActivity::class.java)
-        startActivity(intent)
-    }
+
+
+
 }
