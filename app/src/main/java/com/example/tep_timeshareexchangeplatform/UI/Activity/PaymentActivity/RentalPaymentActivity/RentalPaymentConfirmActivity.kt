@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentConfirmBinding
 
@@ -27,6 +28,11 @@ class RentalPaymentConfirmActivity : BaseActivity() {
 
 
         binding.customToolbar.onStartIconClick = {
+            finish()
+        }
+
+        binding.ctrRequestButton.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 

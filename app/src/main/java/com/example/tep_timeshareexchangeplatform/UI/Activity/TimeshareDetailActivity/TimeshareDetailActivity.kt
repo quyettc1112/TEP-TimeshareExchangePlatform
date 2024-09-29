@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailAct
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentActivity.RentalPaymentActivity.RentalPaymentActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
@@ -135,6 +137,10 @@ class TimeshareDetailActivity : BaseActivity() {
                 }
             }
             isExpanded = !isExpanded
+        }
+
+        binding.ctrRequestButton.setOnClickListener {
+            startActivity(Intent(this, RentalPaymentActivity::class.java))
         }
     }
     private fun collapseCardView(cardView: CardView, vararg viewsToHide: View) {
