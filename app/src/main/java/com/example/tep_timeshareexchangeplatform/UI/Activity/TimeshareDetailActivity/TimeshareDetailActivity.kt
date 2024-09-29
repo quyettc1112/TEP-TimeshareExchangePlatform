@@ -1,7 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
+import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +32,14 @@ class TimeshareDetailActivity : BaseActivity() {
 
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
 
+
+    private var isExpanded = true
+    private var expandedHeight = 140.dp // Initial height in dp
+    private var collapsedHeight = 100.dp // Collapsed height in dp
+
+    val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,16 +51,19 @@ class TimeshareDetailActivity : BaseActivity() {
             insets
         }
 
-        // Set up the adapter for Timeshare Detail Info
         initAdapter()
+
+        // Image
         setListImageTimeshare()
-        setAutoScroll()
+        // Facility
         setFacilitieListTimeshare()
+        // Review
         setReviewTimeshare()
 
         // Set up the action for the button
-        setButtonAction()
-        setChangeImageListAction()
+        setToolBarAction()
+        setRequestButtonAction()
+
     }
 
     private fun initAdapter() {
@@ -54,25 +71,24 @@ class TimeshareDetailActivity : BaseActivity() {
         reviewAdapter.submitList(Constant.listReview)
     }
     private fun setListImageTimeshare() {
+        // Set List Image Timeshare
         binding.viewPager.apply {
             adapter = imageAdapter
         }
         binding.indicator.setViewPager(binding.viewPager)
-    }
-    private fun setAutoScroll() {
+
+        // Set Image Auto Scroll, Auto Scroll Time = 3s
         autoScrollHelper.setupAutoScroll(binding.viewPager)
-    }
-    private fun setChangeImageListAction() {
+
+        // Set Action for Button Next Page and Back To
         binding.ivNextPage.setOnClickListener {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
         }
-
         binding.icBackTo.setOnClickListener {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
         }
-
     }
-    private fun setButtonAction() {
+    private fun setToolBarAction() {
         binding.customToolbar.onStartIconClick =  {
             finish()
         }
@@ -92,4 +108,74 @@ class TimeshareDetailActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@TimeshareDetailActivity)
         }
     }
+
+    private fun setRequestButtonAction() {
+        binding.llSeeAll.setOnClickListener {
+            if (isExpanded) {
+                collapseCardView(
+                    binding.cvRequestContaner,
+                    binding.tvPrice,
+                    binding.tvDate,
+                    binding.tvNotion
+                )
+                binding.apply {
+                    tvSeeAll.text = "Mở rộng"
+                    imExpanded.setImageResource(R.drawable.ic_expend)
+                }
+            } else {
+                expandCardView(
+                    binding.cvRequestContaner,
+                    binding.tvPrice,
+                    binding.tvDate,
+                    binding.tvNotion
+                )
+                binding.apply {
+                    tvSeeAll.text = "Thu nhỏ"
+                    imExpanded.setImageResource(R.drawable.ic_expend_open)
+                }
+            }
+            isExpanded = !isExpanded
+        }
+    }
+    private fun collapseCardView(cardView: CardView, vararg viewsToHide: View) {
+        val animator = ValueAnimator.ofInt(expandedHeight, collapsedHeight)
+        animator.addUpdateListener {
+            val value = it.animatedValue as Int
+            val layoutParams = cardView.layoutParams
+            layoutParams.height = value
+            cardView.layoutParams = layoutParams
+        }
+
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                viewsToHide.forEach { it.visibility = View.GONE }
+            }
+        })
+
+        animator.duration = 300
+        animator.start()
+    }
+    private fun expandCardView(cardView: CardView, vararg viewsToShow: View) {
+        val animator = ValueAnimator.ofInt(collapsedHeight, expandedHeight)
+        animator.addUpdateListener {
+            val value = it.animatedValue as Int
+            val layoutParams = cardView.layoutParams
+            layoutParams.height = value
+            cardView.layoutParams = layoutParams
+        }
+
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator) {
+                super.onAnimationStart(animation)
+                viewsToShow.forEach { it.visibility = View.VISIBLE }
+            }
+        })
+
+        animator.duration = 300
+        animator.start()
+    }
+
+
+
 }
