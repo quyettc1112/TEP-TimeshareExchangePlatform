@@ -197,6 +197,7 @@
 
                     <!--// My Order-->
                     <LinearLayout
+                        android:id="@+id/ll_my_order"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="5dp"
