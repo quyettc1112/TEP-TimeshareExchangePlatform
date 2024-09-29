@@ -19,7 +19,7 @@
             android:name=".UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.ResortDetailActivity.TimeshareListActivity.TimeshareListActivity"
+            android:name=".UI.Activity.TimeshareListActivity.TimeshareListActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.ResortDetailActivity.ImageListActivity"

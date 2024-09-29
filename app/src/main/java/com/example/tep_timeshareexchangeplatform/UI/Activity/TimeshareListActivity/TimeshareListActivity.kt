@@ -1,5 +1,6 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.TimeshareListActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareListActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareListBinding
 
@@ -31,6 +33,7 @@ class TimeshareListActivity : BaseActivity() {
         initAdapter()
         setTimeShareListResort()
     }
+
     private fun initAdapter() {
         timeshareAdapter.submitList(Constant.timeshareList)
     }
@@ -50,6 +53,10 @@ class TimeshareListActivity : BaseActivity() {
         binding.rcTimeshare.apply {
             adapter = timeshareAdapter
             layoutManager = GridLayoutManager(this@TimeshareListActivity, 2)
+        }
+
+        timeshareAdapter.onItemClick = {
+            startActivity(Intent(this, TimeshareDetailActivity::class.java))
         }
     }
 

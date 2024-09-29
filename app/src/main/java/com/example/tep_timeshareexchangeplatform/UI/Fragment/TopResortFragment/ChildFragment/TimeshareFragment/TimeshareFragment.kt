@@ -13,7 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SuggestTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.TimeshareListActivity.TimeshareListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTimeshareBinding
 
 class TimeshareFragment : BaseFragment(R.layout.fragment_timeshare) {

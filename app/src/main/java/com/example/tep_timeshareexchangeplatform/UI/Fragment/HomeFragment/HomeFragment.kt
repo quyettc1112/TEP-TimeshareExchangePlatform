@@ -27,6 +27,7 @@ import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
@@ -159,7 +160,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvSuggestTimeshare.adapter = timeshareAdapter
 
-
         // List Blog
         binding.rcBlog.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rcBlog.adapter = blogAdapter
@@ -260,7 +260,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
         timeshareAdapter.let {
             it.onItemClick = {
-                Toast.makeText(requireContext(), it.timeshareName.toString(), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), TimeshareDetailActivity::class.java))
             }
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
@@ -305,7 +305,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         autoScrollHelper.clearAutoScroll(binding.vpResortHotelMn)  // Xóa thiết lập khi Fragment bị hủy
         //autoScrollHelper.clearAutoScroll(binding.anotherViewPager)
     }
-
 
     private fun initActivityResultLauncher() {
         locationResultLauncher =
