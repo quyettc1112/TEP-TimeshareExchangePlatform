@@ -16,6 +16,12 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.SubscriptionActivity.PackgkageActivity.PackageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity"
             android:exported="true" />
         <activity
