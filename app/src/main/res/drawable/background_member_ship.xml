@@ -1,0 +1,16 @@
+<!-- res/drawable/card_gradient.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+    <item android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#B58AF3"
+                android:endColor="#FFFFFF"/>
+        </shape>
+    </item>
+</layer-list>

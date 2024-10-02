@@ -7,4 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity">
 
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/customToolbar4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:showStartText="false"
+        android:title="Đăng ký gói thành viên"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_member_ship"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customToolbar4">
+    </androidx.viewpager2.widget.ViewPager2>
+
+    <!--// Indicator-->
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vp_member_ship" />
+
+    <!--// Button Request-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctr_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/ripple_effect_white"
+        android:backgroundTint="@color/blue_see_more"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Đăng Ký Gói Thành Viên"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

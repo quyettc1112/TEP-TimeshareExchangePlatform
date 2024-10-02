@@ -17,10 +17,10 @@
         tools:targetApi="31">
         <activity
             android:name=".UI.Activity.SubscriptionActivity.PackgkageActivity.PackageActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity"
             android:exported="true" />
