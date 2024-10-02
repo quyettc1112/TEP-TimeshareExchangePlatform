@@ -1,0 +1,114 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:backgroundTint="#FFFFFF"
+    app:cardElevation="8dp"
+    android:elevation="@dimen/places_autocomplete_button_padding"
+    app:cardCornerRadius="12dp"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- LITE Text -->
+        <LinearLayout
+            android:id="@+id/ll_type_membership"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:background="@drawable/lite_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/tv_type_membership"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gói Tháng"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </LinearLayout>
+
+        <!-- Price Text -->
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99,000 VNĐ"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="32sp"
+            android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/ll_type_membership"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <!-- Price Duration -->
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="/ Tháng"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/price_text" />
+
+        <!--// Description Text-->
+        <TextView
+            android:id="@+id/description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Chọn một gói để trao đổi timeshare. Bạn sẽ có thể thêm thông tin chi tiết"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
+
+        <Button
+            android:id="@+id/get_started_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="30dp"
+            android:text="CHỌN GÓI"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0A0A23"
+            app:layout_constraintTop_toBottomOf="@id/description_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_benefits"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            tools:listitem="@layout/item_package_benefit"
+            app:layout_constraintTop_toBottomOf="@+id/get_started_button">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

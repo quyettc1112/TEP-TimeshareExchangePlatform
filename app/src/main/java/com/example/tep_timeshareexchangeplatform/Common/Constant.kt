@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MemberShipModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyOrderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ReviewModel
@@ -575,6 +576,42 @@ class Constant {
                 paymentTypeIcon = R.drawable.ic_momo, // Replace with your actual drawable resource ID
                 timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
             )
+        )
+
+        val listMemberShip = listOf(
+            MemberShipModel(
+                id = 1,
+                name = "Gói Tháng",
+                price = 99000,
+                description = "Gói dành cho những ai muốn trải nghiệm dịch vụ của chúng tôi trong 1 tháng",
+                duration = 1,
+                type = "Gói Tháng",
+                listBenefit = listOf(
+                    "Đặt phòng nhanh chóng",
+                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
+                    "Miễn phí hủy phòng",
+                    "Hỗ trợ 24/7"
+                )
+            ),
+
+            MemberShipModel(
+                id = 2,
+                name = "Gói Năm",
+                price = 990000,
+                description = "Gói dành cho những ai muốn trải nghiệm dịch vụ của chúng tôi trong 1 tháng",
+                duration = 1,
+                type = "Gói Năm",
+                listBenefit = listOf(
+                    "Đặt phòng nhanh chóng",
+                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
+                    "Miễn phí hủy phòng",
+                    "Hỗ trợ 24/7",
+                    "Đặt phòng nhanh chóng",
+                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
+
+                )
+            ),
+
         )
 
     }
