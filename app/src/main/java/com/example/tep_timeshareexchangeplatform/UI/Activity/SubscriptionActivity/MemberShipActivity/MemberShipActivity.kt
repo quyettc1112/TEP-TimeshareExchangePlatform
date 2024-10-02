@@ -28,6 +28,11 @@ class MemberShipActivity : AppCompatActivity() {
         initAdapter()
         initViewPagerView()
 
+        binding.customToolbar4.onStartIconClick = {
+            onBackPressed()
+            finish()
+        }
+
     }
 
     private fun initAdapter() {

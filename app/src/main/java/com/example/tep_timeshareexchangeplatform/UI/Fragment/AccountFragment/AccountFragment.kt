@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.LoginActivity.LoginActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
@@ -60,6 +61,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             // Xem List Order
             llMyOrder.setOnClickListener {startActivity(Intent(requireContext(), MyOrderActivity::class.java))}
 
+            llHelpCenter.setOnClickListener { startActivity(Intent(requireContext(), MemberShipActivity::class.java)) }
         }
 
     }
