@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tep_timeshareexchangeplatform.API.Repository.User_Repository
+import com.example.tep_timeshareexchangeplatform.API.Repository.UserRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.User
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class MainViewModel  @Inject constructor(
-    private val userRepository: User_Repository
+    private val userRepository: UserRepository
 ) : ViewModel()  {
 
     private val _roomCount = MutableLiveData(1)
