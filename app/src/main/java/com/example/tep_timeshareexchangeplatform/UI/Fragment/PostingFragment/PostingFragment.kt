@@ -1,31 +1,53 @@
 package com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.Adapter.IntroSliderAdapter
+import com.example.tep_timeshareexchangeplatform.databinding.FragmentPostingBinding
 
-class PostingFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = PostingFragment()
-    }
+class PostingFragment : BaseFragment(R.layout.fragment_posting) {
+    private lateinit var binding: FragmentPostingBinding
+    private var introSliderAdapter = IntroSliderAdapter()
 
     private val viewModel: PostingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        introSliderAdapter.submitList(Constant.listIntroSlider)
 
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_posting, container, false)
+        binding = FragmentPostingBinding.inflate(inflater, container, false)
+        setIntroSlider()
+
+        return binding.root
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun setIntroSlider() {
+        binding.vpPostingIntroduction.adapter = introSliderAdapter
+
+        // Set up indicator
+        binding.indicator.apply {
+            setViewPager(binding.vpPostingIntroduction)
+            tintIndicator(R.color.blue_full)
+        }
+
+        // Event next Button
+        binding.btnNext.setOnClickListener {
+            binding.vpPostingIntroduction.currentItem = binding.vpPostingIntroduction.currentItem + 1
+        }
     }
 }
