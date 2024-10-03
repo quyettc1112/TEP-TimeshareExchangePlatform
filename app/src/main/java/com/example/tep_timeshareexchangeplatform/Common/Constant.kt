@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.Common
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MemberShipModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyOrderModel
@@ -610,6 +611,33 @@ class Constant {
                     "Giảm giá 10% cho lần đặt phòng tiếp theo",
 
                 )
+            ),
+
+        )
+
+        val listIntroSlider = listOf(
+            IntroSliderModel(
+                id = 1,
+                title = "Trao Đổi Timeshare \n" +
+                        " Đơn Giản, Tiện Lợi",
+                description = "Linh hoạt trong việc trao đổi kỳ nghỉ và khám phá các khu nghỉ dưỡng mới.",
+                image = R.drawable.ic_material_slider_1
+            ),
+
+            IntroSliderModel(
+                id = 2,
+                title = "Chuyển Đổi Timeshare\n" +
+                        " Khám Phá Việt Nam",
+                description = "Thay đổi địa điểm nghỉ dưỡng dễ dàng \n qua tính năng trao đổi thông minh.",
+                image = R.drawable.ic_meterial_slider_2
+            ),
+
+            IntroSliderModel(
+                id = 3,
+                title = "Kỳ Nghỉ Đa Dạng\n" +
+                        "Trải Nghiệm Toàn Quốc",
+                description = "Trao đổi kỳ nghỉ dễ dàng với cộng đồng tận hưởng dịch vụ nghỉ dưỡng toàn cầu.",
+                image = R.drawable.ic_meterial_slider_3
             ),
 
         )
