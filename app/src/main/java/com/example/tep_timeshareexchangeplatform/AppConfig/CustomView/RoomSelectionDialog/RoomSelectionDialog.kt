@@ -23,7 +23,6 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
     // Sử dụng activityViewModels để chia sẻ ViewModel với Activity hoặc Fragment khác
     private val roomSelectionViewModel: MainViewModel by activityViewModels()
 
-
     // Khai báo binding
     private var _binding: DialogBottomSheetBinding? = null
     private val binding get() = _binding!!

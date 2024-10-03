@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.PostingBottomNavDialog.PostOptionsBottomSheet
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.Adapter.IntroSliderAdapter
@@ -38,16 +39,22 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     @SuppressLint("ResourceAsColor")
     private fun setIntroSlider() {
         binding.vpPostingIntroduction.adapter = introSliderAdapter
-
         // Set up indicator
         binding.indicator.apply {
             setViewPager(binding.vpPostingIntroduction)
             tintIndicator(R.color.blue_full)
         }
-
         // Event next Button
         binding.btnNext.setOnClickListener {
             binding.vpPostingIntroduction.currentItem = binding.vpPostingIntroduction.currentItem + 1
+            if (binding.vpPostingIntroduction.currentItem == introSliderAdapter.itemCount - 1) {
+               showBottomNavDialog()
+            }
         }
+    }
+
+    private fun showBottomNavDialog() {
+        val postOptionsBottomSheet = PostOptionsBottomSheet()
+        postOptionsBottomSheet.show(requireActivity().supportFragmentManager, "PostOptionsBottomSheet")
     }
 }
