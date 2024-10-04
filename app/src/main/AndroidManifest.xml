@@ -22,9 +22,6 @@
             android:name=".UI.Activity.PostingStream.RentalPostingActivity.RentalPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.SubscriptionActivity.PackgkageActivity.PackageActivity"
-            android:exported="true" />
-        <activity
             android:name=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity"
             android:exported="true" />
         <activity

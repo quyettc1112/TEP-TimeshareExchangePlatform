@@ -95,6 +95,8 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="term_policy">Term &amp; Policies</string>
     <string name="privacy_policy">Privacy Policies</string>
     <string name="setting">Setting language</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

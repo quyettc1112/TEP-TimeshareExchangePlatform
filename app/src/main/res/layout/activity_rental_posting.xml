@@ -8,115 +8,24 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.PostingStream.RentalPostingActivity.RentalPostingActivity">
 
-    <!--// Custom Toolbar-->
-    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolBar"
-        android:title="Cho Thuê Kỳ Nghỉ"
-        app:showStartText="false"
+    <!-- Include the custom progress bar layout -->
+    <include
+        android:id="@+id/progressBarLayout"
+        layout="@layout/custom_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Add other views or buttons below if needed -->
+    <Button
+        android:id="@+id/nextStepButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Step"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/customToolBar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="2dp">
-
-            <!--// Logo Image-->
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customToolBar">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:src="@drawable/logo_unwind_horizontal" />
-            </LinearLayout>
-
-            <!--// Content Timeshare Company-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!--// Title Posting-->
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/inter_extrabold"
-                    android:gravity="center"
-                    android:text="Cho Thuê Kỳ Nghỉ"
-                    android:textColor="@color/black"
-                    android:textSize="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!--// Description-->
-                <TextView
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:maxLines="2"
-                    android:text="Cho thuê kỳ nghỉ theo tuần của bạn trên thị trường cho thuê kỳ nghỉ lớn nhất Việt Nam!"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--// List of Timeshare Company-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_timeshare_company"
-                android:layout_width="match_parent"
-                android:layout_height="430dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2">
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <!--// See More-->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_logout"
-                android:background="@drawable/ripple_effect_white"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:textAllCaps="false"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="Xem thêm...."
-                android:textSize="20dp"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/primary_background"
-                android:layout_height="50dp"
-                android:layout_marginBottom="150dp"
-                />
-
-        </LinearLayout>
-
-
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

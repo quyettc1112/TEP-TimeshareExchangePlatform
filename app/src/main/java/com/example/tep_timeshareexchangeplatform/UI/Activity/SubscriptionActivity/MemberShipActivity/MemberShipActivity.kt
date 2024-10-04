@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -39,13 +40,12 @@ class MemberShipActivity : AppCompatActivity() {
         memberShipAdapter.submitList(Constant.listMemberShip)
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun initViewPagerView() {
         binding.vpMemberShip.adapter = memberShipAdapter
         // Set Indicator
         binding.indicator.apply {
             setViewPager(binding.vpMemberShip)
-            tintIndicator(R.color.blue_full)
+            tintIndicator(ContextCompat.getColor(context, R.color.blue_full))
         }
     }
 }

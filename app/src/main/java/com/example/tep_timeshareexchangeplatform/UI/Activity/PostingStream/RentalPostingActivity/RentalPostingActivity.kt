@@ -2,12 +2,9 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.Rent
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.Adapter.TimeshareCompanyAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
@@ -25,18 +22,12 @@ class RentalPostingActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        initAdapter()
-        initRecyclerView()
+
+        CustomProgressBar(binding.progressBarLayout).updateProgress(3)
+
+
+
     }
 
-    private fun initAdapter() {
-        timeshareCompanyAdapter.submitList(Constant.listTimeshareCompany)
-    }
 
-    private fun initRecyclerView() {
-        binding.rcTimeshareCompany.apply {
-            adapter = timeshareCompanyAdapter
-            layoutManager = GridLayoutManager(this@RentalPostingActivity, 2)
-        }
-    }
 }

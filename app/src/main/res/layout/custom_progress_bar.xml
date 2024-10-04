@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="6"
+    android:gravity="center">
+
+    <!-- Step 1 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step1_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 1"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step1_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <!-- Step 2 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step2_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 2"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step2_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <!-- Step 3 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step3_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 3"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step3_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <!-- Step 4 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step4_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 4"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step4_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <!-- Step 5 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step5_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 5"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step5_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <!-- Step 6 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/step6_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step 6"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/step6_view"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+</LinearLayout>
