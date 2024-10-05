@@ -24,7 +24,6 @@ class RentalPostingActivity : BaseActivity() {
     private lateinit var processBarManager: ProcessBarManager
     private lateinit var FragmentAdapter: FragmentAdapter
     var step: Int = 1
-    private var timeshareCompanyAdapter = TimeshareCompanyAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

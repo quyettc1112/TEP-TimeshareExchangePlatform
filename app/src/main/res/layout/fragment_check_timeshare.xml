@@ -9,6 +9,7 @@
     tools:context=".UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -89,7 +90,7 @@
 
             <!--// See More-->
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_logout"
+                android:id="@+id/btn_see_more"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
@@ -105,6 +106,7 @@
 
             <!--// Have Timeshare Yet ?-->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/csl_input_section"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp">
@@ -220,10 +222,50 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!--// FAQ-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/background_stroke_around"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--// Title FAQ-->
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Câu hỏi thường gặp"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="300dp"
+                    android:paddingTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:listitem="@layout/item_faq">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!--// Bottom Space-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_height="100dp" />
 
         </LinearLayout>
 

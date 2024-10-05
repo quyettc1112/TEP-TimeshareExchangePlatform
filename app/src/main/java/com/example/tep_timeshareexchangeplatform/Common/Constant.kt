@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.Common
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FAQModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
@@ -650,6 +651,39 @@ class Constant {
             "https://everland.vn/upload/projects/original/crystal-holidays-heritage-ly-son-avartar-1666754442.png",
             "https://media.discordapp.net/attachments/1257221915135840267/1291317831580909568/ic_flc_holiday.png?ex=66ffa8f2&is=66fe5772&hm=68d8deee0a8fc5314bccedc3cc1b965a43f3f21fe7e90516f008983ecc336b7e&=&format=webp&quality=lossless&width=390&height=46"
 
+        )
+
+        val listFaq = listOf(
+            FAQModel(
+                id = 1,
+                title = "Tôi có thể đặt phòng trực tuyến không?",
+                desc = "Có, bạn có thể đặt phòng trực tuyến thông qua ứng dụng hoặc website của chúng tôi." ,
+                isExpandable = false
+            ),
+            FAQModel(
+                id = 2,
+                title = "Tôi có thể hủy phòng không?",
+                desc = "Có, bạn có thể hủy phòng thông qua ứng dụng hoặc website của chúng tôi." ,
+                isExpandable = false
+            ),
+            FAQModel(
+                id = 3,
+                title = "Tôi có thể thay đổi ngày đặt phòng không?",
+                desc = "Có, bạn có thể thay đổi ngày đặt phòng thông qua ứng dụng hoặc website của chúng tôi." ,
+                isExpandable = false
+            ),
+            FAQModel(
+                id = 4,
+                title = "Tôi có thể đặt phòng cho người khác không?",
+                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi." ,
+                isExpandable = false
+            ),
+            FAQModel(
+                id = 5,
+                title = "Tôi có thể đặt phòng cho người khác không?",
+                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi." ,
+                isExpandable = false
+            )
         )
 
     }
