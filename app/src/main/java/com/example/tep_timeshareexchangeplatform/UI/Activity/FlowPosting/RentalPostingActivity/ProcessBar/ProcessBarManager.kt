@@ -1,8 +1,7 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.ProcessBar
+package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ProcessBar
 
 import androidx.core.content.ContextCompat
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.CustomProgressBarBinding
 
 class ProcessBarManager(private val binding: CustomProgressBarBinding) {
@@ -61,6 +60,7 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding) {
                 // Các bước còn lại chưa hoàn thành
                 stepCircles[i].setBackgroundResource(R.drawable.circle_pending)
                 stepLabels[i].setTextColor(ContextCompat.getColor(binding.root.context, android.R.color.darker_gray))
+                stepTexts[i].setTextColor(ContextCompat.getColor(binding.root.context, android.R.color.darker_gray))
                 if (i < stepLines.size) {
                     stepLines[i].setBackgroundColor(ContextCompat.getColor(binding.root.context, android.R.color.darker_gray))
                 }

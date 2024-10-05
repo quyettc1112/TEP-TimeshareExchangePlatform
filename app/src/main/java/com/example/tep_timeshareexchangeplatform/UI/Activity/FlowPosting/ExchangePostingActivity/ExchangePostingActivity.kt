@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.ExchangePostingActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.ExchangePostingActivity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

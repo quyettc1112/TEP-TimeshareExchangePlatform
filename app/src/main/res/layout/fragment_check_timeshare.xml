@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PostingStream.RentalPostingActivity.RentalPostingActivity">
+    tools:context=".UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"></androidx.recyclerview.widget.RecyclerView>
+                app:spanCount="2"/>
 
             <!--// See More-->
             <androidx.appcompat.widget.AppCompatButton

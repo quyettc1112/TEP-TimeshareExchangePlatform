@@ -16,10 +16,10 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.PostingStream.ExchangePostingActivity.ExchangePostingActivity"
+            android:name=".UI.Activity.FlowPosting.ExchangePostingActivity.ExchangePostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PostingStream.RentalPostingActivity.RentalPostingActivity"
+            android:name=".UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity"

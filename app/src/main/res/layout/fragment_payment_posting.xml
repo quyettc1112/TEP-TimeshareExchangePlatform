@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PostingStream.RentalPostingActivity.Fragment.PaymentPostingFragment">
+    tools:context=".UI.Activity.FlowPosting.RentalPostingActivity.Fragment.PaymentPostingFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

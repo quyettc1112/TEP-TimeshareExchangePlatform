@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.Fragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

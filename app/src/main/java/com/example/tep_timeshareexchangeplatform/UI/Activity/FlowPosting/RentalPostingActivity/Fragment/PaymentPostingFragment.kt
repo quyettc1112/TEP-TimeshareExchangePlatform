@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.Fragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CreateTimeshareFragment.newInstance] factory method to
+ * Use the [PaymentPostingFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreateTimeshareFragment : Fragment() {
+class PaymentPostingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +35,7 @@ class CreateTimeshareFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_timeshare, container, false)
+        return inflater.inflate(R.layout.fragment_payment_posting, container, false)
     }
 
     companion object {
@@ -45,12 +45,12 @@ class CreateTimeshareFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CreateTimeshareFragment.
+         * @return A new instance of fragment PaymentPostingFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CreateTimeshareFragment().apply {
+            PaymentPostingFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

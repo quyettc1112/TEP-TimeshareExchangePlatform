@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
