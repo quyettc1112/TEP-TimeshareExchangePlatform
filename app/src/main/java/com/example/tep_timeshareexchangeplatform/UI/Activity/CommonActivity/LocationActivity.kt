@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationSearchedAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityLocationBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -46,38 +47,49 @@ class LocationActivity : BaseActivity() {
             insets
         }
         binding.rvLocationSearched.visibility = View.GONE
-        searchLocation()
-        setLocationRecyclerView()
-        setLocationSearchedRecyclerView()
+        initAdapter()
+        initRecyclerView()
+        onItemClickEvent()
         handleClickEventButton()
+        searchLocation()
 
     }
 
-    // List of Location
-    private fun setLocationRecyclerView() {
+    private fun initAdapter() {
         locationAdapter.submitList(locationList)
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
-        flexboxLayoutManager.flexDirection = FlexDirection.ROW
-        flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
-        binding.rvLocation.let {
-            it.layoutManager = flexboxLayoutManager
-            it.adapter = locationAdapter
+        locationAdapterSearched.submitOriginalList(Constant.cityList)
+    }
+
+    private fun initRecyclerView() {
+        // Location List
+        binding.rvLocation.apply {
+            val flexboxLayoutManager = FlexboxLayoutManager(this@LocationActivity)
+            flexboxLayoutManager.flexDirection = FlexDirection.ROW
+            flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
+            layoutManager = flexboxLayoutManager
+            adapter = locationAdapter
         }
-        // Click event
+        // Location Search List
+        binding.rvLocationSearched.apply {
+            layoutManager = LinearLayoutManager(this@LocationActivity)
+            adapter = locationAdapterSearched
+        }
+    }
+
+
+    private fun onItemClickEvent() {
+        // Location Click
         locationAdapter.onitemCLickListener = {
             intentExtraValueToHome(it + ", Việt Nam")
         }
-    }
-
-    private fun setLocationSearchedRecyclerView() {
-        locationAdapterSearched.submitOriginalList(Constant.cityList)
-        binding.rvLocationSearched.let {
-            it.layoutManager = LinearLayoutManager(this)
-            it.adapter = locationAdapterSearched
-        }
-        // Click event
-        locationAdapterSearched.onItemClickListener = {
-           intentExtraValueToHome(it.name + ", " + it.location)
+        // Location Searched Click
+        locationAdapterSearched.onItemClickListener = { it ->
+            if (it.type == 1) {
+                intentExtraValueToHome(it.name + ", " + it.location)
+            } else {
+                startActivity(Intent(this, ResortDetailActivity::class.java))
+                finish()
+            }
         }
 
     }
@@ -89,7 +101,6 @@ class LocationActivity : BaseActivity() {
            it.imCloseIcon.setOnClickListener{ finish() }
        }
     }
-    // Nearby Location
 
     // Search Location
     private fun searchLocation() {

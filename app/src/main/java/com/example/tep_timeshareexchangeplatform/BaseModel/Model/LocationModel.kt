@@ -4,4 +4,6 @@ data class LocationModel(
     val id : Int,
     val name: String,
     val location: String,
+    val image: Int,
+    val type: Int,
 )

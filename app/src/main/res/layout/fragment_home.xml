@@ -44,13 +44,15 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:padding="25dp">
+
                 <LinearLayout
                     android:id="@+id/ll_location"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:background="@drawable/background_stroke_around"
                     android:weightSum="10"
-                    android:layout_height="55dp"
+                    android:minHeight="55dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp">
                     <LinearLayout
                         android:layout_width="0dp"
@@ -88,6 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
+                            android:maxLines="1"
                             android:text="Thành Phố Hồ Chí Minh, Việt Nam"
                             android:fontFamily="@font/inter_medium"
                             android:textColor="@color/black"

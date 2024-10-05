@@ -73,5 +73,17 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/img_next"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="30dp"
+        android:translationZ="10dp"
+        android:src="@drawable/baseline_navigate_next_24_black"
+        app:layout_constraintBottom_toBottomOf="@+id/vp_member_ship"
+        app:layout_constraintEnd_toEndOf="@+id/vp_member_ship">
+
+    </ImageView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
@@ -29,11 +30,33 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
         BaseItemViewHolderCF<LocationModel, ItemLocationSearchedBinding>(binding) {
         override fun bind(item: LocationModel) {
             // Bind and highlight the name and location based on the search query
+
             binding.cityName.text = item.name
             binding.cityLocation.text = item.location
             binding.root.setOnClickListener {
                 onItemClickListener?.invoke(item)
             }
+
+            if (item.type == 1) {
+                binding.icon.apply {
+                    layoutParams = layoutParams.apply {
+                        width = context.resources.getDimensionPixelSize(R.dimen.dp_24) // Đổi 24dp sang pixel
+                        height = context.resources.getDimensionPixelSize(R.dimen.dp_24)
+                    }
+                    setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_location))
+                }
+            } else {
+                binding.icon.apply {
+                    layoutParams = layoutParams.apply {
+                        width = ViewGroup.LayoutParams.MATCH_PARENT
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                }
+                Glide.with(binding.root.context)
+                    .load(item.image)
+                    .into(binding.icon)
+            }
+
         }
 
 

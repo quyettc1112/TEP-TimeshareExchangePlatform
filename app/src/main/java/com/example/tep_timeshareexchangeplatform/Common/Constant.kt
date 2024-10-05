@@ -441,12 +441,17 @@ class Constant {
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
         val cityList = listOf(
-            LocationModel(1, "Thành Phố Đà Lạt", "Lâm Đồng, Việt Nam"),
-            LocationModel(2,"Thành Phố Hội An", "Quảng Nam, Việt Nam"),
-            LocationModel(3,"Thành Phố Hạ Long", "Quảng Ninh, Việt Nam"),
-            LocationModel(4,"Thành Phố Quy Nhơn", "Bình Định, Việt Nam"),
-            LocationModel(5,"Thành Phố Đồng Hới", "Quảng Bình, Việt Nam"),
-            // Add more cities here...
+            LocationModel(1, "Thành Phố Đà Lạt", "Lâm Đồng, Việt Nam", R.drawable.im_material_da_lat, 1),
+            LocationModel(2,"Thành Phố Hội An", "Quảng Nam, Việt Nam", R.drawable.im_material_vung_tau, 1),
+            LocationModel(3,"Thành Phố Hạ Long", "Quảng Ninh, Việt Nam", R.drawable.im_material_vung_tau, 1),
+            LocationModel(4,"Thành Phố Quy Nhơn", "Bình Định, Việt Nam", R.drawable.im_material_vung_tau,1 ),
+            LocationModel(5,"Thành Phố Đồng Hới", "Quảng Bình, Việt Nam", R.drawable.im_material_vung_tau,1),
+            LocationModel(6,"Khách sạn Gia Vinh", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_nha_trang,2),
+            LocationModel(7,"Khách sạn Cương Quyết", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_quy_nhon,2),
+            LocationModel(8,"Khách sạn Nguyễn Tấn", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_phan_thiet,2),
+            LocationModel(9,"Khách sạn Thành Đạt", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_quy_nhon,2),
+            LocationModel(10,"Khách sạn Thanh Long", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_phu_yen,2),
+
         )
 
 

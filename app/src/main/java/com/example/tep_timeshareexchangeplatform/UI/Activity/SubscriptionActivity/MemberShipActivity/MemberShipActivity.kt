@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.SubscriptionActivity.MemberShipActivity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.SubscriptionActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMemberShipBinding
 
@@ -32,6 +34,10 @@ class MemberShipActivity : AppCompatActivity() {
         binding.customToolbar4.onStartIconClick = {
             onBackPressed()
             finish()
+        }
+
+        binding.imgNext.setOnClickListener {
+           startActivity(Intent(this, RentalPostingActivity::class.java))
         }
 
     }

@@ -74,7 +74,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
