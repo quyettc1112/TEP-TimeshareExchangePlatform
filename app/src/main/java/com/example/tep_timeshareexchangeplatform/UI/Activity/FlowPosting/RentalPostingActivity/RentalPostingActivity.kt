@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -17,13 +18,14 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.SelectPackageFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.SelectTimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ProcessBar.ProcessBarManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 
 class RentalPostingActivity : BaseActivity() {
     private lateinit var binding: ActivityRentalPostingBinding
     private lateinit var processBarManager: ProcessBarManager
     private lateinit var FragmentAdapter: FragmentAdapter
-    var step: Int = 1
+    private val rentalPostingViewModel: RentalPostingViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,14 +36,25 @@ class RentalPostingActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        processBarManager = ProcessBarManager(binding.progressBarLayout)
-        processBarManager.updateProgress(step)
-
+        initProcessBarWithViewModel()
         setPostingFlowScreen()
 
     }
 
+    private fun initProcessBarWithViewModel() {
+        // Init Process Bar
+        processBarManager = ProcessBarManager(binding.progressBarLayout)
+
+        // Observe Step with viewModel
+        rentalPostingViewModel.step.observe(this) {
+            processBarManager.updateProgress(it)
+
+            // Chuyển ViewPager sang trang tương ứng với step
+            if (binding.viewPager.currentItem != rentalPostingViewModel.step.value!! - 1) {
+                binding.viewPager.setCurrentItem(rentalPostingViewModel.step.value!! - 1, true)
+            }
+        }
+    }
     private fun setPostingFlowScreen() {
         val listFragment: ArrayList<Fragment> = ArrayList()
 
@@ -72,15 +85,10 @@ class RentalPostingActivity : BaseActivity() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    step = position + 1
-                    processBarManager.updateProgress(step)
+                    rentalPostingViewModel.updateStep(position + 1)
                 }
             })
         }
 
     }
-
-
-
-
 }
