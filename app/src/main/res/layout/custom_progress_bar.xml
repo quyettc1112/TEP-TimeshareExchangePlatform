@@ -1,147 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:orientation="horizontal"
     android:weightSum="6"
     android:gravity="center">
 
     <!-- Step 1 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step1_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_completed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step1_text"
+            android:id="@+id/step1_label"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 1"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:text="Bắt đầu"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step1_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/step1_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
+    <!-- Line between steps -->
+    <View
+        android:id="@+id/line1"
+        android:layout_width="15dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray" />
 
     <!-- Step 2 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step2_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_pending"
+            app:layout_constraintEnd_toEndOf="@+id/step2_label"
+            app:layout_constraintStart_toStartOf="@+id/step2_label"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="2"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step2_text"
+            android:id="@+id/step2_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 2"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="Tạo Timeshare"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step2_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/step2_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
+    <!-- Line between steps -->
+    <View
+        android:id="@+id/line2"
+        android:layout_width="15dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"/>
 
     <!-- Step 3 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step3_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_pending"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="3"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step3_text"
+            android:id="@+id/step3_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 3"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:gravity="center"
+            android:text="Chọn Timeshare"
+            android:fontFamily="@font/inter_regular"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step3_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Line between steps -->
+    <View
+        android:id="@+id/line3"
+        android:layout_width="15dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"/>
 
-        <View
-            android:id="@+id/step3_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
 
     <!-- Step 4 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step4_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_pending"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step4_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="4"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step4_text"
+            android:id="@+id/step4_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 4"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
-
-        <View
-            android:id="@+id/step4_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
+            android:gravity="center"
+            android:text="Gói dịch vụ"
+            android:fontFamily="@font/inter_regular"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step4_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/line4"
+        android:layout_width="15dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"/>
 
     <!-- Step 5 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step5_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_pending"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step5_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="5"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step5_text"
+            android:id="@+id/step5_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 5"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="Tạo bài đăng"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step5_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/line5"
+        android:layout_width="15dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"/>
 
-        <View
-            android:id="@+id/step5_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
 
     <!-- Step 6 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Circle for step -->
+        <FrameLayout
+            android:id="@+id/step6_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circle_pending"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/step6_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="6"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Label for step -->
         <TextView
-            android:id="@+id/step6_text"
+            android:id="@+id/step6_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Step 6"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:text="Thanh Toán"
+            android:fontFamily="@font/inter_regular"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step6_circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/step6_view"
-            android:layout_width="40dp"
-            android:layout_height="10dp"
-            android:background="@android:color/darker_gray"/>
-    </LinearLayout>
+    <!-- You can continue this pattern for Steps 4, 5, and so on -->
 </LinearLayout>

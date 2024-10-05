@@ -2,15 +2,19 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.Rent
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.Adapter.TimeshareCompanyAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingStream.RentalPostingActivity.ProcessBar.ProcessBarManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 
 class RentalPostingActivity : BaseActivity() {
     private lateinit var binding: ActivityRentalPostingBinding
+    private lateinit var processBarManager: ProcessBarManager
+    var step: Int = 1
     private var timeshareCompanyAdapter = TimeshareCompanyAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,11 +27,21 @@ class RentalPostingActivity : BaseActivity() {
             insets
         }
 
-        CustomProgressBar(binding.progressBarLayout).updateProgress(3)
+        processBarManager = ProcessBarManager(binding.progressBarLayout)
+        processBarManager.updateProgress(step)
+
+        binding.button.setOnClickListener {
+            step +=1
+            processBarManager.updateProgress(step)
+        }
+
+
 
 
 
     }
+
+
 
 
 }

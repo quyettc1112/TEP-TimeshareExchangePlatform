@@ -8,24 +8,43 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.PostingStream.RentalPostingActivity.RentalPostingActivity">
 
-    <!-- Include the custom progress bar layout -->
-    <include
-        android:id="@+id/progressBarLayout"
-        layout="@layout/custom_progress_bar"
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/customToolbar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:title="Đăng bài cho thuê"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showStartText="false" />
 
-    <!-- Add other views or buttons below if needed -->
+    <LinearLayout
+        android:id="@+id/linearLayout14"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/customToolbar3">
+
+        <include
+            android:id="@+id/progressBarLayout"
+            layout="@layout/custom_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
     <Button
-        android:id="@+id/nextStepButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next Step"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout14" />
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
