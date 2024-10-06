@@ -52,6 +52,11 @@ class LocationActivity : BaseActivity() {
         onItemClickEvent()
         handleClickEventButton()
         searchLocation()
+        if (checkIntentFromPostingFlow()) {
+            hideUI()
+            binding.rvLocationSearched.visibility = View.GONE
+
+        }
 
     }
 
@@ -84,12 +89,16 @@ class LocationActivity : BaseActivity() {
         }
         // Location Searched Click
         locationAdapterSearched.onItemClickListener = { it ->
+            if (checkIntentFromPostingFlow()) {
+                intentExtraValueToPostingFlow(it.name + ", " + it.location)
+                finish()
+            } else {
                 if (it.type == 1) { intentExtraValueToHome(it.name + ", " + it.location) }
                 else {
                     startActivity(Intent(this, ResortDetailActivity::class.java))
                     finish()
                 }
-
+            }
         }
     }
 
@@ -109,8 +118,21 @@ class LocationActivity : BaseActivity() {
 
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.trim()?.length!! > 0) hideUI() else showUI()
-                locationAdapterSearched.filter.filter(s)
+                if (checkIntentFromPostingFlow()) {
+                    binding.llListLocation.visibility = View.GONE
+                    binding.rvLocationSearched.visibility = View.GONE
+                    binding.llExplreWorld.visibility = View.GONE
+                    binding.llNearMe.visibility = View.GONE
+                    binding.llLine1.visibility = View.GONE
+                    if (s?.trim()?.length!! > 0)
+                        binding.rvLocationSearched.visibility = View.GONE
+                    else binding.rvLocationSearched.visibility = View.VISIBLE
+                    locationAdapterSearched.filter.filter("query=${s.toString()}&type=2")
+
+                } else {
+                    if (s?.trim()?.length!! > 0) hideUI() else showUI()
+                    locationAdapterSearched.filter.filter("query=${s.toString()}")
+                }
             }
             override fun afterTextChanged(s: Editable?) {
                 // No action needed after the text changes
@@ -146,5 +168,24 @@ class LocationActivity : BaseActivity() {
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
+
+    private fun intentExtraValueToPostingFlow(value : String) {
+        val intent = Intent()
+        // Replace "locationName" with the actual selected location
+        intent.putExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, value)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    private fun checkIntentFromPostingFlow(): Boolean {
+        if (intent.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW) != null) {
+            return true
+        }
+        return false
+    }
+
+
+
+
 
 }

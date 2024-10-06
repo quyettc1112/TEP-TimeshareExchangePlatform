@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/checkTimeshareFragment">
+
+    <fragment
+        android:id="@+id/checkTimeshareFragment"
+        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.CheckTimeshareFragment"
+        android:label="CheckTimeshareFragment" >
+        <action
+            android:id="@+id/action_checkTimeshareFragment_to_resortLocationFragment"
+            app:destination="@id/resortLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resortLocationFragment"
+        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.ResortLocationFragment"
+        android:label="fragment_resort_location"
+        tools:layout="@layout/fragment_resort_location" >
+        <action
+            android:id="@+id/action_resortLocationFragment_to_checkTimeshareFragment"
+            app:destination="@id/checkTimeshareFragment" />
+    </fragment>
+</navigation>

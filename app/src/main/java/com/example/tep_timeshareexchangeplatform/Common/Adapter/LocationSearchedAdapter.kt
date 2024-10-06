@@ -29,7 +29,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
         BaseItemViewHolderCF<LocationModel, ItemLocationSearchedBinding>(binding) {
         override fun bind(item: LocationModel) {
             // Bind and highlight the name and location based on the search query
-
             binding.cityName.text = item.name
             binding.cityLocation.text = item.location
             binding.root.setOnClickListener {
@@ -56,8 +55,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
                     .into(binding.icon)
             }
         }
-
-
     }
 
     // DiffUtil callback for differ
@@ -95,15 +92,24 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint?.toString()?.normalize().orEmpty()
+                // Giả sử chuỗi constraint sẽ có dạng: "query&type=1", ví dụ: "K&type=1"
+                val filterParams: Map<String, String> = parseFilterParams(constraint)
 
-                // Filter the original unfiltered list, but use normalized versions for comparison
-                val filteredList = if (query.isEmpty()) {
-                    originalList
-                } else {
-                    originalList.filter {
-                        (it.name.normalize().contains(query) || it.location.normalize().contains(query)) && it.type == 1
-                    }
+                // Lọc dựa trên query (chuỗi tìm kiếm cho tên và địa điểm)
+                val query = filterParams["query"]?.normalize().orEmpty()
+                // Lọc theo type nếu có trong constraint (nullable)
+                val typeQuery = filterParams["type"]?.toIntOrNull()
+
+                // Lọc danh sách dựa trên tên, địa điểm và có hoặc không có điều kiện type
+                val filteredList = originalList.filter { location ->
+                    val matchesName = location.name.normalize().contains(query)
+                    val matchesLocation = location.location.normalize().contains(query)
+
+                    // Kết hợp: nếu khớp với tên hoặc địa điểm
+                    val matchesType = typeQuery?.let { location.type == it } ?: true
+
+                    // Điều kiện cuối cùng: khớp với tên hoặc địa điểm và thoả mãn điều kiện type (nếu có)
+                    (matchesName || matchesLocation) && matchesType
                 }
 
                 val results = FilterResults()
@@ -116,6 +122,20 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
                 differ.submitList(results?.values as List<LocationModel>)
             }
         }
+    }
+
+    // Hàm parse để phân tích các tham số lọc từ constraint
+    private fun parseFilterParams(constraint: CharSequence?): Map<String, String> {
+        val filterParams = mutableMapOf<String, String>()
+
+        constraint?.split("&")?.forEach { param ->
+            val keyValue = param.split("=")
+            if (keyValue.size == 2) {
+                filterParams[keyValue[0]] = keyValue[1]
+            }
+        }
+
+        return filterParams
     }
 
 }
