@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationSearchedAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -90,7 +91,7 @@ class LocationActivity : BaseActivity() {
         // Location Searched Click
         locationAdapterSearched.onItemClickListener = { it ->
             if (checkIntentFromPostingFlow()) {
-                intentExtraValueToPostingFlow(it.name + ", " + it.location)
+                intentExtraValueToPostingFlow(it)
                 finish()
             } else {
                 if (it.type == 1) { intentExtraValueToHome(it.name + ", " + it.location) }
@@ -125,8 +126,8 @@ class LocationActivity : BaseActivity() {
                     binding.llNearMe.visibility = View.GONE
                     binding.llLine1.visibility = View.GONE
                     if (s?.trim()?.length!! > 0)
-                        binding.rvLocationSearched.visibility = View.GONE
-                    else binding.rvLocationSearched.visibility = View.VISIBLE
+                        binding.rvLocationSearched.visibility = View.VISIBLE
+                    else binding.rvLocationSearched.visibility = View.GONE
                     locationAdapterSearched.filter.filter("query=${s.toString()}&type=2")
 
                 } else {
@@ -169,10 +170,10 @@ class LocationActivity : BaseActivity() {
         finish()
     }
 
-    private fun intentExtraValueToPostingFlow(value : String) {
+    private fun intentExtraValueToPostingFlow(locationModel : LocationModel) {
         val intent = Intent()
         // Replace "locationName" with the actual selected location
-        intent.putExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, value)
+        intent.putExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, locationModel)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

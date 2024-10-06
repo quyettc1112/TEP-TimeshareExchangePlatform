@@ -10,13 +10,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.TimeshareCompanyAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.CheckTimeshareFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.CreatePostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.CreateTimeshareFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.PaymentPostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.SelectPackageFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.SelectTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_5_CreatePostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_6_PaymentPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_4_SelectPackageFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_3_SelectTimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ProcessBar.ProcessBarManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
@@ -59,22 +58,22 @@ class RentalPostingActivity : BaseActivity() {
         val listFragment: ArrayList<Fragment> = ArrayList()
 
         // Step 1 Check Availability Timeshare
-        listFragment.add(CheckTimeshareFragment())
+        listFragment.add(Step_1_CheckTimeshareFragment())
 
         // Step 2 Create Timeshare
-        listFragment.add(CreateTimeshareFragment())
+        listFragment.add(Step_2_CreateTimeshareFragment())
 
         // Step 3 Select Timeshare
-        listFragment.add(SelectTimeshareFragment())
+        listFragment.add(Step_3_SelectTimeshareFragment())
 
         // Step 4 Select Package Posting
-        listFragment.add(SelectPackageFragment())
+        listFragment.add(Step_4_SelectPackageFragment())
 
         // Step 5 Create Timeshare Posting
-        listFragment.add(CreatePostingFragment())
+        listFragment.add(Step_5_CreatePostingFragment())
 
         // Step 6 Payment
-        listFragment.add(PaymentPostingFragment())
+        listFragment.add(Step_6_PaymentPostingFragment())
 
         FragmentAdapter = FragmentAdapter(this, listFragment)
 

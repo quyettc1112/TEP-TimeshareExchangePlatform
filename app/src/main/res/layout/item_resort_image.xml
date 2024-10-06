@@ -20,6 +20,27 @@
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="5dp" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewClose"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="5dp"
+            android:background="@color/primary_background_F9"
+            android:elevation="5dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_close" />
+
+        </androidx.cardview.widget.CardView>
+
+
 
 
 

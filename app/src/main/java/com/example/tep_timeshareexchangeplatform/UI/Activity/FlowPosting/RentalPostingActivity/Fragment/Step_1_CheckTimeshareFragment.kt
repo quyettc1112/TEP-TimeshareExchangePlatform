@@ -1,25 +1,31 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.FaqAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.TimeshareCompanyAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCheckTimeshareBinding
 
 
-class CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_timeshare) {
+class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_timeshare) {
     private lateinit var binding: FragmentCheckTimeshareBinding
     private var timeshareCompanyAdapter = TimeshareCompanyAdapter()
     private var faqAdapter = FaqAdapter()
     private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +38,7 @@ class CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_timeshare) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCheckTimeshareBinding.inflate(inflater, container, false)
+        initActivityLauncher()
         setRecyclerView()
         setScrollToEvent()
         setEventInputAction()
@@ -50,6 +57,14 @@ class CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_timeshare) {
             // Go to Create Timeshare
             // (activity as RentalPostingActivity).goToCreateTimeshare()
             rentalPostingViewModel.updateStep(2)
+        }
+
+        binding.searchInput.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
+            })
+            locationResultLauncher.launch(intent)
         }
 
     }
@@ -71,6 +86,21 @@ class CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_timeshare) {
                 binding.scrollView.smoothScrollTo(0, binding.cslInputSection.top)
             }
         }
+
+    }
+
+    private fun initActivityLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation: LocationModel? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW)
+                    selectedLocation?.let {
+                        rentalPostingViewModel.updateLocationModel(selectedLocation)
+                        rentalPostingViewModel.updateStep(2)
+                    }
+                }
+            }
 
     }
 

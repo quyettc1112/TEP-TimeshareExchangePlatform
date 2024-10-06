@@ -24,7 +24,7 @@ class ResortDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResortDetailBinding
     private lateinit var resortImageListAdapter: ResortImageListAdapter
-    private var roomTypeAdapter = RoomTypeAdapter()
+    private var roomTypeAdapter = RoomTypeAdapter(true)
     private var facilitieAdapter = FacilitieAdapter()
     private var reviewAdapter = ReviewAdapter()
 

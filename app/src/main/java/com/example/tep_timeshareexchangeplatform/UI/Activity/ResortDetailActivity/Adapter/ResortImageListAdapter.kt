@@ -24,6 +24,7 @@ class ResortImageListAdapter (
                     onItemClick.invoke(adapterPosition)
                 }
             }
+            binding.cardViewClose.visibility = ViewGroup.GONE
         }
     }
 

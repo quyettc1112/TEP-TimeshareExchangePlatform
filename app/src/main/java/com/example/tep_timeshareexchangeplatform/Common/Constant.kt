@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FAQModel
@@ -690,6 +691,75 @@ class Constant {
                 desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi." ,
                 isExpandable = false
             )
+        )
+
+        val listAmenities = listOf(
+            AmenitiesModel(
+                name = "Máy pha cà phê",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Lò vi sóng",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy rửa chén",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy nướng bánh mì",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Tủ lạnh (lớn)",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Tủ lạnh (nhỏ)",
+                isChecked = false,
+            ),
+        )
+
+        val listEntertament = listOf(
+            AmenitiesModel(
+                name = "Máy phát DVD",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Mạng Internet",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Radio",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "TV thông minh",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Điện thoại bàn",
+                isChecked = false,
+            ),
+
+
+        )
+
+        val listPolicy = listOf(
+            AmenitiesModel(
+                name = "Không hút thuốc",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Không thú cưng",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Không tổ chức tiệc",
+                isChecked = false,
+            ),
+
+
         )
 
     }

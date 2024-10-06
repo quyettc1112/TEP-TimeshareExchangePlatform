@@ -2,19 +2,34 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 
 class RentalPostingViewModel: ViewModel() {
+    // Khai Bao
     private val _step = MutableLiveData<Int>()
+    private val _locationModel = MutableLiveData<LocationModel>()
+
+
+    // Getter
     val step: MutableLiveData<Int>
         get() = _step
 
+    val locationModel: MutableLiveData<LocationModel>
+        get() = _locationModel
+
+    // Init
     init {
         _step.value = 1
     }
 
+
     // Funtion to update step
     fun updateStep(step: Int){
         _step.value = step
+    }
+
+    fun updateLocationModel(locationModel: LocationModel){
+        _locationModel.value = locationModel
     }
 
 

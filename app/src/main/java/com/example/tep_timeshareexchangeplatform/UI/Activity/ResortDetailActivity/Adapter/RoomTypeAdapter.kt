@@ -9,7 +9,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeBinding
 
-class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHolder>(){
+class RoomTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHolder>(){
 
     var onItemClick: ((RoomTypeModel) -> Unit)? = null
     var onButonBookClick: ((RoomTypeModel) -> Unit)? = null
@@ -21,6 +21,7 @@ class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHo
                 Glide.with(itemView)
                     .load(item.image)
                     .into(imRoomTypeImage)
+                showDetailInfoVisibility(showFullInfo)
             }
 
             binding.root.setOnClickListener {
@@ -31,7 +32,20 @@ class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHo
                 onButonBookClick?.invoke(item)
             }
         }
+        fun showDetailInfoVisibility(isShow: Boolean) {
+            binding.apply {
+                if (isShow) {
+                    llAmennities.visibility = ViewGroup.VISIBLE
+                    crlResortPrice.visibility = ViewGroup.VISIBLE
+                } else {
+                    llAmennities.visibility = ViewGroup.GONE
+                    crlResortPrice.visibility = ViewGroup.GONE
+                }
+            }
+        }
     }
+
+
 
     override fun differCallBack(): DiffUtil.ItemCallback<RoomTypeModel> {
         return object : DiffUtil.ItemCallback<RoomTypeModel>() {
@@ -50,5 +64,7 @@ class RoomTypeAdapter: BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHo
         val binding = ItemResortRoomTypeBinding.inflate(layoutInflater, parent, false)
         return RoomTypeViewHolder(binding)
     }
+
+
 
 }
