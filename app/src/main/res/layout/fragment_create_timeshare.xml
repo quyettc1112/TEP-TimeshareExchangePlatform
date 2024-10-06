@@ -8,16 +8,17 @@
     tools:context=".UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment">
 
     <ScrollView
-        android:background="@color/primary_background_F9"
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/primary_background_F9"
         android:fillViewport="true">
 
-       <!--// Content-->
+        <!--// Content-->
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <!--// Timeshare Resort Location -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -29,11 +30,11 @@
 
                 <LinearLayout
                     android:id="@+id/llResortLocation"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:visibility="gone">
 
                     <!-- Title Text -->
                     <TextView
@@ -41,14 +42,14 @@
                         android:layout_height="wrap_content"
                         android:text="Bạn đang cho thuê Timeshare tại:"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
 
                         <!-- Text Section -->
                         <LinearLayout
@@ -64,9 +65,9 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="2"
                                 android:text="Hyatt Hig Sierra Lodge asda asdasdas"
-                                android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:textSize="18sp"
-                                android:textColor="@color/black"/>
+                                android:textStyle="bold" />
 
                             <!-- Location Subtitle -->
                             <TextView
@@ -75,32 +76,33 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:text="Incline Village, Nevadadasdasd"
-                                android:textSize="14sp"
-                                android:textColor="@color/gray_400"/>
+                                android:textColor="@color/gray_400"
+                                android:textSize="14sp" />
 
                             <!-- Change Button -->
                             <TextView
                                 android:id="@+id/tvChangeLocation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:text="✏️ Thay đổi"
-                                android:textColor="@color/teal_700"
-                                android:layout_marginTop="8dp"/>
+                                android:textColor="@color/teal_700" />
                         </LinearLayout>
 
                         <!-- Image Section -->
 
                         <com.google.android.material.card.MaterialCardView
-                            app:cardCornerRadius="12dp"
                             android:layout_width="90dp"
-                            android:layout_height="90dp">
+                            android:layout_height="90dp"
+                            app:cardCornerRadius="12dp">
+
                             <ImageView
                                 android:id="@+id/ivResortImage"
                                 android:layout_width="90dp"
                                 android:layout_height="90dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/im_meterial_da_nang"/>
+                                android:src="@drawable/im_meterial_da_nang" />
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -108,6 +110,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="90dp">
@@ -137,12 +140,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                app:cardElevation="4dp"
                 android:layout_marginBottom="10dp"
-                app:cardCornerRadius="17dp">
+                android:background="@color/white"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -181,9 +185,9 @@
                             android:id="@+id/titleTv"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:fontFamily="@font/inter_medium"
                             android:text="Thông tin phòng của bạn"
                             android:textColor="@color/black"
                             android:textSize="14sp"
@@ -197,79 +201,30 @@
                     <LinearLayout
                         android:id="@+id/ll_content_unit_type"
                         android:layout_width="0dp"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info" >
+                        app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
 
                         <!-- Verified Room Info Text -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thông tin phòng đã được xác minh"
-                            android:textSize="14sp"
                             android:fontFamily="@font/inter_bold"
-                            android:textColor="@color/black" />
-
-                        <!-- Dropdown for Bed Selection -->
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="16dp">
-
-                            <TextView
-                                android:id="@+id/textView11"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="Giường"
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="*"
-                                android:textColor="@color/red_light"
-                                android:textSize="20sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/textView11"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <Spinner
-                                android:id="@+id/custom_spinner_bed"
-                                style="@style/CustomSpinner"
-                                tools:listitem="@layout/support_simple_spinner_dropdown_item"
-                                android:layout_width="100dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:spinnerMode="dropdown"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <!--// List of Bed Type-->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvBedType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"/>
+                            android:text="Thông tin phòng đã được xác minh"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
                         <!-- Dropdown for room direction -->
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="16dp">
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/textView12"
@@ -297,23 +252,74 @@
                             <Spinner
                                 android:id="@+id/custom_spinner_view_diretion"
                                 style="@style/CustomSpinner"
-                                tools:listitem="@layout/support_simple_spinner_dropdown_item"
                                 android:layout_width="100dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
                                 android:spinnerMode="dropdown"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:listitem="@layout/support_simple_spinner_dropdown_item" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Dropdown for Bed Selection -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Giường"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="*"
+                                android:textColor="@color/red_light"
+                                android:textSize="20sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView11"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Spinner
+                                android:id="@+id/custom_spinner_bed"
+                                style="@style/CustomSpinner"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:spinnerMode="dropdown"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!--// List of Bed Type-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvBedType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
 
                         <!-- Input for house number or unit -->
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
                             android:hint="Số toà nhà/Số đơn vị (nếu đã được phân bổ)"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:maxLines="1" />
 
 
                     </LinearLayout>
@@ -326,12 +332,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                app:cardElevation="4dp"
                 android:layout_marginBottom="10dp"
-                app:cardCornerRadius="17dp">
+                android:background="@color/white"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -366,9 +373,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:fontFamily="@font/inter_medium"
                             android:text="Ngày check in"
                             android:textColor="@color/black"
                             android:textSize="14sp"
@@ -381,38 +388,39 @@
                     <!--// Content Unit Type-->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:visibility="visible"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/crl_day_check_in_info" >
+                        app:layout_constraintTop_toBottomOf="@id/crl_day_check_in_info">
+
                         <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/llCheckInCheckOut"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="16dp"
-                            android:background="@android:color/white"
-                            android:gravity="center">
+                            android:visibility="gone">
 
                             <!-- Date Selection Container -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="8dp"
                                 android:background="@drawable/background_stroke_around"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="8dp">
 
                                 <!-- Check-In Section -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="vertical"
-                                    android:gravity="center_horizontal">
+                                    android:gravity="center_horizontal"
+                                    android:orientation="vertical">
 
 
                                     <!-- Check-In Label -->
@@ -420,8 +428,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Ngày Check In"
-                                        android:textSize="14sp"
-                                        android:textColor="@android:color/black"/>
+                                        android:textColor="@android:color/black"
+                                        android:textSize="14sp" />
 
                                     <!-- Check-In Date -->
                                     <TextView
@@ -429,9 +437,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="19-08-2024"
+                                        android:textColor="@android:color/black"
                                         android:textSize="18sp"
-                                        android:textStyle="bold"
-                                        android:textColor="@android:color/black"/>
+                                        android:textStyle="bold" />
 
                                     <!-- Check-In Day -->
                                     <TextView
@@ -439,32 +447,32 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Thứ 2"
-                                        android:textSize="14sp"
-                                        android:textColor="@android:color/darker_gray"/>
+                                        android:textColor="@android:color/darker_gray"
+                                        android:textSize="14sp" />
                                 </LinearLayout>
 
                                 <!-- Arrow between Check-In and Check-Out -->
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/ic_arrow_right"
-                                    android:layout_gravity="center"/>
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_arrow_right" />
 
                                 <!-- Check-Out Section -->
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="vertical"
-                                    android:gravity="center_horizontal">
+                                    android:gravity="center_horizontal"
+                                    android:orientation="vertical">
 
                                     <!-- Check-Out Label -->
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Ngày Check Out"
-                                        android:textSize="14sp"
-                                        android:textColor="@android:color/black"/>
+                                        android:textColor="@android:color/black"
+                                        android:textSize="14sp" />
 
                                     <!-- Check-Out Date -->
                                     <TextView
@@ -472,9 +480,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="19-08-2024"
+                                        android:textColor="@android:color/black"
                                         android:textSize="18sp"
-                                        android:textStyle="bold"
-                                        android:textColor="@android:color/black"/>
+                                        android:textStyle="bold" />
 
                                     <!-- Check-Out Day -->
                                     <TextView
@@ -482,8 +490,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Thứ 2"
-                                        android:textSize="14sp"
-                                        android:textColor="@android:color/darker_gray"/>
+                                        android:textColor="@android:color/darker_gray"
+                                        android:textSize="14sp" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -491,37 +499,36 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="16dp"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <!-- Nights Label -->
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Số đêm"
-                                    android:textSize="16sp"
-                                    android:textColor="@android:color/black"/>
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
 
                                 <!-- Nights Count Field -->
                                 <EditText
                                     android:id="@+id/etNightsCount"
                                     android:layout_width="100dp"
-                                    android:gravity="center"
-                                    android:text="0"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
+                                    android:layout_marginLeft="16dp"
                                     android:background="@color/primary_background_F9"
-                                    android:hint="0"
-                                    android:fontFamily="@font/inter_bold"
-                                    android:padding="8dp"
-                                    android:textSize="16sp"
                                     android:enabled="false"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:gravity="center"
+                                    android:hint="0"
+                                    android:padding="8dp"
+                                    android:text="0"
                                     android:textColor="@android:color/black"
-                                    android:layout_marginLeft="16dp"/>
+                                    android:textSize="16sp" />
                             </LinearLayout>
                         </LinearLayout>
-
 
 
                     </LinearLayout>
@@ -534,12 +541,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                app:cardElevation="4dp"
                 android:layout_marginBottom="10dp"
-                app:cardCornerRadius="17dp">
+                android:background="@color/white"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -573,9 +581,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:fontFamily="@font/inter_medium"
                             android:text="Tiện ích phòng"
                             android:textColor="@color/black"
                             android:textSize="14sp"
@@ -590,25 +598,26 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ll_content_amenities"
                         android:layout_width="0dp"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/crl_amenities_info" >
+                        app:layout_constraintTop_toBottomOf="@id/crl_amenities_info">
 
                         <!--// List of Amenities Kichen-->
                         <TextView
                             android:id="@+id/textView13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
                             android:fontFamily="@font/inter_medium"
                             android:text="Bếp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginStart="15dp"
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvAmenities"
                             android:layout_width="match_parent"
@@ -623,13 +632,14 @@
                             android:id="@+id/textView14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_medium"
-                            android:layout_marginTop="10dp"
                             android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_medium"
                             android:text="Giải trí"
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/rvAmenities" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvAmenities_entertainment"
                             android:layout_width="match_parent"
@@ -645,13 +655,14 @@
                             android:id="@+id/textView15"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_medium"
-                            android:layout_marginTop="10dp"
                             android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_medium"
                             android:text="Chính sách"
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/rvAmenities_entertainment" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPolicy"
                             android:layout_width="match_parent"
@@ -697,7 +708,6 @@
                         </LinearLayout>
 
 
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -708,12 +718,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                app:cardElevation="4dp"
                 android:layout_marginBottom="10dp"
-                app:cardCornerRadius="17dp">
+                android:background="@color/white"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -735,11 +746,11 @@
                             android:layout_width="100dp"
                             android:layout_height="35dp"
                             android:layout_marginEnd="10dp"
-                            android:textAllCaps="false"
-                            android:text="Thêm ảnh"
-                            android:textColor="@color/white"
-                            android:backgroundTint="@color/blue_btn_search"
                             android:background="@drawable/background_stroke_around"
+                            android:backgroundTint="@color/blue_btn_search"
+                            android:text="Thêm ảnh"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/cardView4"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -781,21 +792,21 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ll_image"
                         android:layout_width="0dp"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/crl_image_info" >
+                        app:layout_constraintTop_toBottomOf="@id/crl_image_info">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvImage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/background_stroke_around"
                             android:minHeight="150dp"
                             android:nestedScrollingEnabled="false"
@@ -807,7 +818,26 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!--// Do Nothing-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/ripple_effect_white"
+        android:backgroundTint="@color/blue_btn_search"
+        android:text="Gửi yêu cầu tạo Timeshare"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

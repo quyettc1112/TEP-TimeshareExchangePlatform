@@ -77,6 +77,27 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+    // Observe Location Model
+    private fun observeViewModel() {
+        // Bind Data of Location Model
+        rentalPostingViewModel.locationModel.observe(viewLifecycleOwner) { locationModel ->
+            if (locationModel != null) {
+                binding.let {
+                    it.tvResortName.text = locationModel.name
+                    it.tvLocation.text = locationModel.location
+                    it.ivResortImage.setImageResource(locationModel.image)
+                    binding.llResortLocation.visibility = View.VISIBLE
+                    binding.btnSelectResortLocation.visibility = View.GONE
+                    isUnitTypeExpanded = true
+                    handleViewVisibility(binding.llContentUnitType, isUnitTypeExpanded)
+                }
+            } else {
+                binding.llResortLocation.visibility = View.GONE
+                binding.btnSelectResortLocation.visibility = View.VISIBLE
+
+            }
+        }
+    }
 
     // Click to Open or Close View
     private fun expanedViewHandle() {
@@ -103,25 +124,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             View.VISIBLE
         } else {
             View.GONE
-        }
-    }
-
-    // Observe Location Model
-    private fun observeViewModel() {
-        // Bind Data of Location Model
-        rentalPostingViewModel.locationModel.observe(viewLifecycleOwner) { locationModel ->
-            if (locationModel != null) {
-                binding.let {
-                    it.tvResortName.text = locationModel.name
-                    it.tvLocation.text = locationModel.location
-                    it.ivResortImage.setImageResource(locationModel.image)
-                    binding.llResortLocation.visibility = View.VISIBLE
-                    binding.btnSelectResortLocation.visibility = View.GONE
-                }
-            } else {
-                binding.llResortLocation.visibility = View.GONE
-                binding.btnSelectResortLocation.visibility = View.VISIBLE
-            }
         }
     }
 
@@ -193,7 +195,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             openGallery()
         }
     }
-
     private fun initActivityLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
