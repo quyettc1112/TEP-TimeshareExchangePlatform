@@ -24,7 +24,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
 
     // Store the original unfiltered list
     private var originalList: List<LocationModel> = listOf()
-    private var searchQuery: String = "" // Store the search query
     var onItemClickListener: ((LocationModel) -> Unit)? = null
     inner class LocationSearchedViewHolder(binding: ItemLocationSearchedBinding) :
         BaseItemViewHolderCF<LocationModel, ItemLocationSearchedBinding>(binding) {
@@ -56,7 +55,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
                     .load(item.image)
                     .into(binding.icon)
             }
-
         }
 
 
@@ -68,7 +66,6 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
             override fun areItemsTheSame(oldItem: LocationModel, newItem: LocationModel): Boolean {
                 return oldItem.id == newItem.id
             }
-
             override fun areContentsTheSame(oldItem: LocationModel, newItem: LocationModel): Boolean {
                 return oldItem == newItem
             }
@@ -105,7 +102,7 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
                     originalList
                 } else {
                     originalList.filter {
-                        it.name.normalize().contains(query) || it.location.normalize().contains(query)
+                        (it.name.normalize().contains(query) || it.location.normalize().contains(query)) && it.type == 1
                     }
                 }
 
@@ -120,4 +117,5 @@ class LocationSearchedAdapter : BaseAdapter<LocationModel, LocationSearchedAdapt
             }
         }
     }
+
 }

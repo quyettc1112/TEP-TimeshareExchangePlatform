@@ -111,12 +111,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                           val month = calendar.get(Calendar.MONTH)
                           val year = calendar.get(Calendar.YEAR)
 
-                          // Ví dụ: Chỉ cho phép chọn ngày từ 5/9/2024 đến 25/9/2024
-                          return if (year == 2024 && month == Calendar.SEPTEMBER) {
-                              dayOfMonth in 5..25
-                          } else {
-                              false // Không hợp lệ cho các ngày ngoài phạm vi trên
-                          }
+                          return true
                       }
 
 

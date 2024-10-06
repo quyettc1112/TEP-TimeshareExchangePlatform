@@ -84,14 +84,13 @@ class LocationActivity : BaseActivity() {
         }
         // Location Searched Click
         locationAdapterSearched.onItemClickListener = { it ->
-            if (it.type == 1) {
-                intentExtraValueToHome(it.name + ", " + it.location)
-            } else {
-                startActivity(Intent(this, ResortDetailActivity::class.java))
-                finish()
-            }
-        }
+                if (it.type == 1) { intentExtraValueToHome(it.name + ", " + it.location) }
+                else {
+                    startActivity(Intent(this, ResortDetailActivity::class.java))
+                    finish()
+                }
 
+        }
     }
 
     // Back to previous screen or Explore
@@ -107,7 +106,7 @@ class LocationActivity : BaseActivity() {
         // Add a TextWatcher to EditText to filter results as the user types
         binding.searchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // No action needed before the text changes
+
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.trim()?.length!! > 0) hideUI() else showUI()
@@ -147,9 +146,5 @@ class LocationActivity : BaseActivity() {
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-
-
-
-
 
 }

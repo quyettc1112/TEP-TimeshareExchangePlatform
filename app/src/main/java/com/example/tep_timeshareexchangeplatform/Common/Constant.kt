@@ -34,6 +34,7 @@ class Constant {
 
         const val DEFAULT_SELECTION_LOCATION_KEY = "selectedLocation"
         const val DEFAULT_SELECTION_DATE_KEY = "selectedDate"
+        const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
 
         val timeshareList = listOf(
             TimeshareModel(
