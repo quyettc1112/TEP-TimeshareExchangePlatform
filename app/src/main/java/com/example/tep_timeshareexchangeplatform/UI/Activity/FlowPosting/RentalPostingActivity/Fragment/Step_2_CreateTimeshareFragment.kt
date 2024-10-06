@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -62,10 +63,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         setValueUnitRoom()
         expanedViewHandle()
         getImageFromGallery()
-
+        sendRequestCreateTimeshare()
 
         return binding.root
     }
+
     private fun initAdapter() {
         roomTypeAdapter.submitList(Constant.listRoomType)
         amenitiesAdapter.submitList(Constant.listAmenities)
@@ -219,6 +221,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
     fun openGallery() {
         pickImagesLauncher.launch("image/*")
+    }
+
+
+    private fun sendRequestCreateTimeshare() {
+        binding.btnNext.setOnClickListener {
+            showLoading("Đang tạo yêu cầu tạo mới Timeshare", "Vui lòng chờ", true, object : (DialogInterface) -> Unit {
+                override fun invoke(dialog: DialogInterface) {
+                    dialog.dismiss()
+                    rentalPostingViewModel.updateStep(3)
+                }
+            })
+        }
+
     }
 
 
