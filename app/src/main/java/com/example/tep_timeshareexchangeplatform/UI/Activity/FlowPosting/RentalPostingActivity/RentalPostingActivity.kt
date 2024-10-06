@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -18,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_3_SelectTimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ProcessBar.ProcessBarManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 
 class RentalPostingActivity : BaseActivity() {
@@ -37,6 +39,9 @@ class RentalPostingActivity : BaseActivity() {
         }
         initProcessBarWithViewModel()
         setPostingFlowScreen()
+        binding.customToolbar3.onStartIconClick = {
+            onBackPressed()
+        }
 
     }
 
@@ -88,6 +93,12 @@ class RentalPostingActivity : BaseActivity() {
                 }
             })
         }
+    }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }
