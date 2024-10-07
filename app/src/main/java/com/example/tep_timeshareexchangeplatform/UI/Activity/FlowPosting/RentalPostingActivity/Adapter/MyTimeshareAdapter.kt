@@ -11,6 +11,8 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBind
 
 class MyTimeshareAdapter: BaseAdapter<MyTimeshareModel, MyTimeshareAdapter.MyTimeshareViewHolder>() {
 
+    var onItemClick: ((MyTimeshareModel) -> Unit)? = null
+
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
         BaseItemViewHolderCF<MyTimeshareModel, ItemMyTimeshareBinding>(binding) {
         override fun bind(item: MyTimeshareModel) {
@@ -20,6 +22,10 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareModel, MyTimeshareAdapter.MyTim
             binding.tvNumberOfNight.text =  " | ${item.numberOfNight.toString()} đêm"
             binding.tvPrice.text = item.price.toString()
             Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)
+
+            binding.btnSelect.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
         }
     }
 

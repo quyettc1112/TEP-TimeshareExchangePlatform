@@ -28,6 +28,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     ): View? {
         binding = FragmentSelectTimeshareBinding.inflate(layoutInflater, container, false)
         initRecyclerView()
+        setEventItemClick()
 
         return binding.root
     }
@@ -41,6 +42,18 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         binding.recyclerView.let {
             it.adapter = myTimeshareAdapter
             it.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun setEventItemClick(){
+        // Item click
+        myTimeshareAdapter.setItemOnclickListener {
+
+        }
+
+        // Select button click
+        myTimeshareAdapter.onItemClick = {
+            // Handle item click
         }
     }
 
