@@ -768,8 +768,8 @@ class Constant {
                 id = 1,
                 name = "Flamingo Đại Lải",
                 roomName = "Phòng Studio King, 1 Giường, 4 Người",
-                checkInDate = "18-08-2024",
-                checkOutDate = "23-08-2024",
+                checkInDate = "18/08/2024",
+                checkOutDate = "23/08/2024",
                 numberOfNight = 6,
                 price = "1,000,000 VND",
                 image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
@@ -778,8 +778,8 @@ class Constant {
                 id = 2,
                 name = "Vinpearl Nha Trang",
                 roomName = "Biệt thự 3 phòng ngủ, hướng biển",
-                checkInDate = "10-10-2024",
-                checkOutDate = "15-10-2024",
+                checkInDate = "10/10/2024",
+                checkOutDate = "15/10/2024",
                 numberOfNight = 5,
                 price = "3,500,000 VND",
                 image = "https://i.pinimg.com/474x/04/36/58/043658561a6c9b4315050324c877cbcc.jpg"
@@ -788,8 +788,8 @@ class Constant {
                 id = 3,
                 name = "InterContinental Phú Quốc",
                 roomName = "Phòng Suite với ban công và hướng biển",
-                checkInDate = "01-11-2024",
-                checkOutDate = "05-11-2024",
+                checkInDate = "01/11/2024",
+                checkOutDate = "05/11/2024",
                 numberOfNight = 4,
                 price = "5,000,000 VND",
                 image = "https://i.pinimg.com/474x/2b/49/9d/2b499d27792e5239ed304a0ae6869a01.jpg"
