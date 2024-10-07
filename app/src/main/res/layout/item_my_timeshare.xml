@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_stroke_around"
-    android:layout_marginBottom="20dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="25dp"
     android:layout_width="match_parent"
-    android:layout_height="275dp">
+    android:layout_height="270dp">
     <!--// Image-->
 
     <androidx.cardview.widget.CardView
@@ -21,7 +23,7 @@
             android:id="@+id/im_resortImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/im_material_resort" />
     </androidx.cardview.widget.CardView>
 
@@ -47,7 +49,7 @@
             android:maxLines="1"
             android:text="Flamingo Đại Lải"
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +74,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="16dp"
+                    android:layout_width="14dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_room_ts" />
 
@@ -84,7 +86,7 @@
                     android:fontFamily="@font/inter_extrabold"
                     android:gravity="center|left"
                     android:text="Phòng Studio King "
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <!-- // Room-->
@@ -96,7 +98,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="16dp"
+                    android:layout_width="14dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_schedule" />
 
@@ -109,7 +111,7 @@
                     android:gravity="center|left"
                     android:maxLines="1"
                     android:text="18/09/2024 - 20/09/2024"
-                    android:textSize="16dp" />
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
@@ -136,7 +138,7 @@
             android:gravity="center|left"
             android:text="1,300.000 VND"
             android:textColor="@color/blue_full"
-            android:textSize="18dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_numberOfNight"
@@ -147,73 +149,26 @@
             android:gravity="center|left"
             android:text="| 2 đêm"
             android:textColor="@color/primary_stroke_around"
-            android:textSize="16dp" />
+            android:textSize="12dp" />
 
     </LinearLayout>
 
 
-    <!--  // Rating-->
-    <LinearLayout
-        android:id="@+id/materialCardView3"
-        android:layout_width="130dp"
-        android:layout_height="30dp"
-        android:background="@drawable/background_rating"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:strokeColor="@color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/baseline_star_24" />
-
-            <TextView
-                android:id="@+id/tv_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:gravity="center"
-                android:text="4.5"
-                android:textColor="#007EF2"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/tv_rating_count"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:gravity="center"
-                android:text="254 đánh giá"
-                android:textSize="12dp" />
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <!--// Book Now Button-->
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="120dp"
-        android:layout_height="45dp"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/background_stroke_around"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ripple_effect_white"
         android:backgroundTint="@color/blue_btn_search"
         android:fontFamily="@font/inter_semibold"
         android:text="Chọn"
         android:textColor="@color/white"
         android:textSize="10dp"
-        android:layout_marginTop="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     </androidx.appcompat.widget.AppCompatButton>
 
