@@ -1,21 +1,27 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.MyTimeshareAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectTimeshareBinding
 
 class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_timeshare) {
 
     private lateinit var binding: FragmentSelectTimeshareBinding
     private var myTimeshareAdapter = MyTimeshareAdapter()
+    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +35,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         binding = FragmentSelectTimeshareBinding.inflate(layoutInflater, container, false)
         initRecyclerView()
         setEventItemClick()
-
         return binding.root
     }
 
@@ -48,7 +53,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     private fun setEventItemClick(){
         // Item click
         myTimeshareAdapter.setItemOnclickListener {
-
+            startActivity(Intent(requireContext(), MyTimeshareDetailActivity::class.java))
         }
 
         // Select button click

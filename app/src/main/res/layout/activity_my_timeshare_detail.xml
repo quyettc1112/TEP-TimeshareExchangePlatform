@@ -800,11 +800,11 @@
                     tools:layout_editor_absoluteX="0dp">
 
                     <TextView
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:fontFamily="@font/inter_semibold"
-                        android:text="Yêu Cầu Cho Thuê"
+                        android:text="Chọn Timeshare Cho Thuê"
                         android:textColor="@color/white" />
 
 
