@@ -51,6 +51,7 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
         binding.btnYes.setOnClickListener {
             // Go to My Timeshare List
             // (activity as RentalPostingActivity).goToCreateTimeshare()
+            rentalPostingViewModel.updateStep(3)
         }
 
         binding.btnNo.setOnClickListener {
