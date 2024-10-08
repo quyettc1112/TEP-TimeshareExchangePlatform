@@ -1,6 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Model
 
-data class MemberShipModel(
+data class PackageModel(
     val id: Int,
     val name: String,
     val price: Int,

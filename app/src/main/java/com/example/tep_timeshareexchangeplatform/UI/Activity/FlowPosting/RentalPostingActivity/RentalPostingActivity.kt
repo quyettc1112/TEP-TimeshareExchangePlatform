@@ -86,7 +86,7 @@ class RentalPostingActivity : BaseActivity() {
 
         binding.viewPager.apply {
             adapter = FragmentAdapter
-            isUserInputEnabled = true
+            isUserInputEnabled = false
             offscreenPageLimit = 6
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {

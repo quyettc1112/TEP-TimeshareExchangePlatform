@@ -5,56 +5,46 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.PackagePostingAdapter
+import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectPackageBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_package) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Step_4_SelectPackageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Step_4_SelectPackageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentSelectPackageBinding
+    private var packagePostingAdapter = PackagePostingAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        initAdapter()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_select_package, container, false)
+        binding = FragmentSelectPackageBinding.inflate(layoutInflater, container, false)
+        setViewPagerPackage()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Step_4_SelectPackageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Step_4_SelectPackageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun initAdapter() {
+        packagePostingAdapter.submitList(Constant.listPackage)
     }
+
+    private fun setViewPagerPackage() {
+        binding.vpPackagePosting.apply {
+            adapter = packagePostingAdapter
+            offscreenPageLimit = 3
+        }
+
+        binding.indicator.setViewPager(binding.vpPackagePosting)
+
+    }
+
+
+
+
 }

@@ -25,6 +25,7 @@ class RentalPostingViewModel: ViewModel() {
     // Init
     init {
         _step.value = 1
+        updateStep(4)
     }
 
 

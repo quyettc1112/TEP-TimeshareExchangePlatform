@@ -7,7 +7,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FAQModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MemberShipModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyOrderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
@@ -590,7 +590,7 @@ class Constant {
         )
 
         val listMemberShip = listOf(
-            MemberShipModel(
+            PackageModel(
                 id = 1,
                 name = "Gói Tháng",
                 price = 99000,
@@ -605,7 +605,7 @@ class Constant {
                 )
             ),
 
-            MemberShipModel(
+            PackageModel(
                 id = 2,
                 name = "Gói Năm",
                 price = 990000,
@@ -797,6 +797,53 @@ class Constant {
             ),
 
         )
+
+        val listPackage = listOf(
+            PackageModel(
+                id = 1,
+                name = "Gói Cơ Bản",
+                price = 149000,
+                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
+                duration = 1,
+                type = "Gói Tháng",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                )
+            ),
+            PackageModel(
+                id = 2,
+                name = "Gói Nâng Cao",
+                price = 179000,
+                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
+                duration = 1,
+                type = "Gói Tháng",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                    "Gán cờ “Được xác minh” của Unwind",
+                    "Được xác minh bới nhân viên của Resort, Khách sạn",
+                    "Cho thuê trực tuyến"
+                )
+            ),
+            PackageModel(
+                id = 3,
+                name = "Gói Premium",
+                price = 199000,
+                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
+                duration = 1,
+                type = "Gói Tháng",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                    "Gán cờ “Được xác minh” của Unwind",
+                    "Được xác minh bới nhân viên của Resort, Khách sạn",
+                    "Cho thuê trực tuyến",
+                    "Hỗ trợ định giá",
+                    "Hỗ trợ quản lý phòng và liên lạc"
+                )
+            ),
+            )
 
     }
 }

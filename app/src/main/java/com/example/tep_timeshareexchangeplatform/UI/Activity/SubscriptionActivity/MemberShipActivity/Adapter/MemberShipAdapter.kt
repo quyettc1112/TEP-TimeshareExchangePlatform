@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MemberShipModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMemberShipBinding
 import java.text.DecimalFormat
 
-class MemberShipAdapter: BaseAdapter<MemberShipModel, MemberShipAdapter.MemberShipViewHolder>() {
+class MemberShipAdapter: BaseAdapter<PackageModel, MemberShipAdapter.MemberShipViewHolder>() {
 
-    var onItemClick: ((MemberShipModel) -> Unit)? = null
+    var onItemClick: ((PackageModel) -> Unit)? = null
 
-    inner class MemberShipViewHolder(binding: ItemMemberShipBinding): BaseItemViewHolderCF<MemberShipModel, ItemMemberShipBinding>(binding){
-        override fun bind(item: MemberShipModel) {
+    inner class MemberShipViewHolder(binding: ItemMemberShipBinding): BaseItemViewHolderCF<PackageModel, ItemMemberShipBinding>(binding){
+        override fun bind(item: PackageModel) {
             var benefitAdapter = BenefitAdapter()
             benefitAdapter.submitList(item.listBenefit)
             binding.tvTypeMembership.text = item.name
@@ -42,13 +42,13 @@ class MemberShipAdapter: BaseAdapter<MemberShipModel, MemberShipAdapter.MemberSh
         }
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MemberShipModel> {
-        return object : DiffUtil.ItemCallback<MemberShipModel>(){
-            override fun areItemsTheSame(oldItem: MemberShipModel, newItem: MemberShipModel): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<PackageModel> {
+        return object : DiffUtil.ItemCallback<PackageModel>(){
+            override fun areItemsTheSame(oldItem: PackageModel, newItem: PackageModel): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: MemberShipModel, newItem: MemberShipModel): Boolean {
+            override fun areContentsTheSame(oldItem: PackageModel, newItem: PackageModel): Boolean {
                 return oldItem == newItem
             }
         }
