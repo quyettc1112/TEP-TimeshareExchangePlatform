@@ -47,7 +47,7 @@ class RentalPostingActivity : BaseActivity() {
 
     private fun initProcessBarWithViewModel() {
         // Init Process Bar
-        processBarManager = ProcessBarManager(binding.progressBarLayout)
+        processBarManager = ProcessBarManager(binding.progressBarLayout, rentalPostingViewModel)
 
         // Observe Step with viewModel
         rentalPostingViewModel.step.observe(this) {
@@ -95,6 +95,10 @@ class RentalPostingActivity : BaseActivity() {
                 }
             })
         }
+    }
+    private fun setProcessStepOnClick() {
+        binding.progressBarLayout
+
     }
 
     override fun onBackPressed() {

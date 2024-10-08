@@ -1,10 +1,20 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ProcessBar
 
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.CustomProgressBarBinding
 
-class ProcessBarManager(private val binding: CustomProgressBarBinding) {
+class ProcessBarManager(private val binding: CustomProgressBarBinding, private val rentalPostingViewModel: RentalPostingViewModel) {
+    val layoutStep = listOf(
+        binding.layoutStep1,
+        binding.layoutStep2,
+        binding.layoutStep3,
+        binding.layoutStep4,
+        binding.layoutStep5,
+        binding.layoutStep6
+    )
 
     val stepCircles = listOf(
         binding.step1Circle,
@@ -66,7 +76,36 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding) {
                 }
             }
         }
-
     }
+
+    // Initialize the click listeners for each step layout
+    init {
+        for (i in layoutStep.indices) {
+            layoutStep[i].setOnClickListener {
+                // Handle step click here, navigate to the clicked step
+                onStepClick(i + 1) // Pass the step number
+            }
+        }
+    }
+    // Function to handle step click
+    private fun onStepClick(step: Int) {
+        if (rentalPostingViewModel.canNavigateToStep(step)) {
+            // Allow navigation and update the UI
+            tryNavigateToStep(step)
+        } else {
+            // Show a message that the user cannot access this step yet
+            Toast.makeText(binding.root.context, "You cannot access this step yet", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Function to update the progress UI
+    private fun tryNavigateToStep(step: Int) {
+        // Implement your step navigation logic here
+        rentalPostingViewModel.updateStep(step)
+        updateProgress(step)
+    }
+
+
+
 
 }

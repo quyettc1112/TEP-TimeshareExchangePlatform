@@ -10,6 +10,7 @@
 
     <!-- Step 1 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -65,6 +66,7 @@
 
     <!-- Step 2 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -122,6 +124,7 @@
 
     <!-- Step 3 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -178,6 +181,7 @@
 
     <!-- Step 4 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step4"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -232,6 +236,7 @@
 
     <!-- Step 5 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step5"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -286,6 +291,7 @@
 
     <!-- Step 6 -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_step6"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
