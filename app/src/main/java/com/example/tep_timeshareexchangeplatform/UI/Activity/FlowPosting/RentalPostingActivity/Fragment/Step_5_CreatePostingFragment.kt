@@ -30,6 +30,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
         observeViewModel()
         setEventChangeMyTimeshare()
+        setEventNext()
         return binding.root
     }
 
@@ -64,6 +65,12 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             rentalPostingViewModel.updateStep(3)
         }
 
+    }
+
+    private fun setEventNext() {
+        binding.btnNext.setOnClickListener {
+            rentalPostingViewModel.updateStep(6)
+        }
     }
 
 }

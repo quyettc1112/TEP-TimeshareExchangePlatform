@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -41,13 +42,17 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
         packagePostingAdapter.submitList(Constant.listPackage)
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun setViewPagerPackage() {
         binding.vpPackagePosting.apply {
             adapter = packagePostingAdapter
             offscreenPageLimit = 3
         }
 
-        binding.indicator.setViewPager(binding.vpPackagePosting)
+        binding.indicator.apply {
+            setViewPager(binding.vpPackagePosting)
+            tintIndicator(R.color.blue_full)
+        }
 
     }
 
