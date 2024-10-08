@@ -843,6 +843,19 @@ class Constant {
                     "Hỗ trợ quản lý phòng và liên lạc"
                 )
             ),
+            PackageModel(
+                id = 4,
+                name = "Gói Ủy Quyền",
+                price = 599000,
+                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
+                duration = 1,
+                type = "Gói Tháng",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                    "Gán cờ “Được xác minh” của Unwind",
+                )
+            ),
             )
 
     }

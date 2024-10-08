@@ -5,27 +5,35 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 
 class RentalPostingViewModel: ViewModel() {
-    // Khai Bao
+    // Tracking Progress Step
     private val _step = MutableLiveData<Int>()
-    private val _locationModel = MutableLiveData<LocationModel>()
-    private val _myTimeshareModel = MutableLiveData<MyTimeshareModel>()
+    val step: MutableLiveData<Int>
+        get() = _step
 
-    // Khai báo tracking Progesss
+    // Tracking Current Step In Progress
     private val _currentStepInProgress = MutableLiveData<Int>()
     val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
 
 
-    // Getter
-    val step: MutableLiveData<Int>
-        get() = _step
-
+    // Tracking Location Selected
+    private val _locationModel = MutableLiveData<LocationModel>()
     val locationModel: MutableLiveData<LocationModel>
         get() = _locationModel
 
+
+    // Tracking MyTimeshareModel Selected
+    private val _myTimeshareModel = MutableLiveData<MyTimeshareModel>()
     val myTimeshareModelSelected: MutableLiveData<MyTimeshareModel>
         get() = _myTimeshareModel
+
+    // Tracking Package Step 4 Selected
+    private val _packageStep4 = MutableLiveData<PackageModel>()
+    val packageStep4: MutableLiveData<PackageModel>
+        get() = _packageStep4
+
 
     // Init
     init {
@@ -65,6 +73,11 @@ class RentalPostingViewModel: ViewModel() {
     // Funtion to update myTimeshareModel
     fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareModel){
         _myTimeshareModel.value = myTimeshareModel
+    }
+
+    // Funtion to update packageStep4
+    fun updatePackageStep4(packageModel: PackageModel){
+        _packageStep4.value = packageModel
     }
 
 
