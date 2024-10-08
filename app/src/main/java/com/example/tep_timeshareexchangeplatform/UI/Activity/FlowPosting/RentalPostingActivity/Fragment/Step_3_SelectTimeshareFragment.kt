@@ -1,15 +1,20 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
@@ -22,6 +27,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     private lateinit var binding: FragmentSelectTimeshareBinding
     private var myTimeshareAdapter = MyTimeshareAdapter()
     private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     ): View? {
         binding = FragmentSelectTimeshareBinding.inflate(layoutInflater, container, false)
         initRecyclerView()
+        initActivityResultLauncher()
         setEventItemClick()
         return binding.root
     }
@@ -53,12 +60,26 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     private fun setEventItemClick(){
         // Item click
         myTimeshareAdapter.setItemOnclickListener {
-            startActivity(Intent(requireContext(), MyTimeshareDetailActivity::class.java))
+            val intent = Intent(requireContext(), MyTimeshareDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, it)
+            selectMyTimeshareResultLauncher.launch(intent)
         }
 
         // Select button click
         myTimeshareAdapter.onItemClick = {
-            // Handle item click
+            rentalPostingViewModel.updateMyTimeshareModel(it)
+        }
+    }
+
+    private fun initActivityResultLauncher(){
+        selectMyTimeshareResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val selectedMyTimeshare: MyTimeshareModel? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
+                if (selectedMyTimeshare != null) {
+                    rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
+                }
+            }
         }
     }
 

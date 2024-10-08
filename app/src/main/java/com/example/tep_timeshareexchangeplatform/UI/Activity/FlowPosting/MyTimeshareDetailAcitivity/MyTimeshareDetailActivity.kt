@@ -1,13 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.MyTimeshareDetailAcitivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
@@ -35,6 +38,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
         initAdapter()
         setListImageTimeshare()
         setFacilitieListTimeshare()
+        setEventButtonRequestClick()
     }
 
     private fun initAdapter() {
@@ -66,5 +70,38 @@ class MyTimeshareDetailActivity : BaseActivity() {
             it.layoutManager = flexboxLayoutManager
             it.adapter = facilityAdapter
         }
+    }
+
+    private fun setEventButtonRequestClick() {
+        binding.ctrRequestButton.setOnClickListener {
+            // Fake Data
+           val myTimeshareModel =  MyTimeshareModel(
+                id = 1,
+                name = "Flamingo Đại Lải",
+                roomName = "Phòng Studio King, 1 Giường, 4 Người",
+                checkInDate = "18/08/2024",
+                checkOutDate = "23/08/2024",
+                numberOfNight = 6,
+                price = "1,000,000 VND",
+                image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
+            )
+            intentValueToPostingFlow(myTimeshareModel)
+        }
+
+
+    }
+
+
+    private fun intentValueToPostingFlow(myTimeshareModel : MyTimeshareModel) {
+        val intent = Intent()
+        intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, myTimeshareModel)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        autoScrollHelper.pauseAutoScroll()
     }
 }

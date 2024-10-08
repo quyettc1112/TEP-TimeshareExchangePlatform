@@ -42,7 +42,6 @@ class RentalPostingActivity : BaseActivity() {
         binding.customToolbar3.onStartIconClick = {
             onBackPressed()
         }
-
     }
 
     private fun initProcessBarWithViewModel() {
