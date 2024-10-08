@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment
@@ -57,6 +58,8 @@ class RentalPostingActivity : BaseActivity() {
                 binding.viewPager.setCurrentItem(rentalPostingViewModel.step.value!! - 1, true)
             }
         }
+
+
     }
     private fun setPostingFlowScreen() {
         val listFragment: ArrayList<Fragment> = ArrayList()

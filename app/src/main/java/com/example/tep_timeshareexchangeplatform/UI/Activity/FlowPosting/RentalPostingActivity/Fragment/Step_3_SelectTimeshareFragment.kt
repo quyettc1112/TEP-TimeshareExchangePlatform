@@ -7,18 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.MyTimeshareAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectTimeshareBinding
 
@@ -67,7 +70,23 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
         // Select button click
         myTimeshareAdapter.onItemClick = {
-            rentalPostingViewModel.updateMyTimeshareModel(it)
+            (activity as RentalPostingActivity).showConfirmDialog(
+                title = "Confirm",
+                message = "Are you sure you want to select this Timeshare?",
+                positiveButtonTitle = "Yes",
+                negativeButtonTitle = "No",
+                textButton = null,
+                object : ConfirmDialog.ConfirmCallback {
+                    override fun negativeAction() {
+
+                    }
+                    override fun positiveAction() {
+                        rentalPostingViewModel.updateMyTimeshareModel(it)
+                        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
+                        rentalPostingViewModel.updateStep(4)
+                    }
+                }
+            )
         }
     }
 
@@ -78,6 +97,8 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                 val selectedMyTimeshare: MyTimeshareModel? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
                 if (selectedMyTimeshare != null) {
                     rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
+                    Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
+                    rentalPostingViewModel.updateStep(4)
                 }
             }
         }

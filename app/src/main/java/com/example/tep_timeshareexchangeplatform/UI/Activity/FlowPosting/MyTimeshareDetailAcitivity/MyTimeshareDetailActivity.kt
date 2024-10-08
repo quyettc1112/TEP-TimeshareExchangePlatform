@@ -2,11 +2,13 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.MyTime
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -74,20 +76,33 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
     private fun setEventButtonRequestClick() {
         binding.ctrRequestButton.setOnClickListener {
-            // Fake Data
-           val myTimeshareModel =  MyTimeshareModel(
-                id = 1,
-                name = "Flamingo Đại Lải",
-                roomName = "Phòng Studio King, 1 Giường, 4 Người",
-                checkInDate = "18/08/2024",
-                checkOutDate = "23/08/2024",
-                numberOfNight = 6,
-                price = "1,000,000 VND",
-                image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
-            )
-            intentValueToPostingFlow(myTimeshareModel)
-        }
+            showConfirmDialog(
+                title = "Confirm",
+                message = "Are you sure you want to select this Timeshare?",
+                positiveButtonTitle = "Yes",
+                negativeButtonTitle = "No",
+                textButton = null,
+                object : ConfirmDialog.ConfirmCallback {
+                    override fun negativeAction() {
 
+                    }
+                    override fun positiveAction() {
+                        // Fake Data
+                        val myTimeshareModel =  MyTimeshareModel(
+                            id = 1,
+                            name = "Flamingo Đại Lải",
+                            roomName = "Phòng Studio King, 1 Giường, 4 Người",
+                            checkInDate = "18/08/2024",
+                            checkOutDate = "23/08/2024",
+                            numberOfNight = 6,
+                            price = "1,000,000 VND",
+                            image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
+                        )
+                        intentValueToPostingFlow(myTimeshareModel)
+                    }
+                }
+            )
+        }
 
     }
 
