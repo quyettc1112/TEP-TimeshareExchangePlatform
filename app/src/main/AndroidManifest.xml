@@ -27,7 +27,7 @@
             android:name=".UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.SubscriptionActivity.MemberShipActivity.MemberShipActivity"
+            android:name=".UI.Activity.CommonActivity.MemberShipActivity.MemberShipActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity"

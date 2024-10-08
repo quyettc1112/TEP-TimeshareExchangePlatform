@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".UI.Fragment.AccountFragment.AccountFragment">
+    tools:context=".UI.Activity.MainActivity.Fragment.AccountFragment.AccountFragment">
 
     <!-- // User Info Container-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar

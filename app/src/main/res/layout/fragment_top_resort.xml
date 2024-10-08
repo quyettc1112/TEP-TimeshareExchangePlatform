@@ -7,7 +7,7 @@
     android:background="@color/primary_background"
     android:orientation="vertical"
     app:layoutDescription="@xml/fragment_top_resort_scene3"
-    tools:context=".UI.Fragment.TopResortFragment.TopResortFragment">
+    tools:context=".UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment">
 
     <LinearLayout
         android:id="@+id/ll_top_container"

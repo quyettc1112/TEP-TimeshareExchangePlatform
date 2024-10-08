@@ -16,11 +16,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Fragment.AccountFragment.AccountFragment
-import com.example.tep_timeshareexchangeplatform.UI.Fragment.ExchangeFragment.ExchangeFragment
-import com.example.tep_timeshareexchangeplatform.UI.Fragment.HomeFragment.HomeFragment
-import com.example.tep_timeshareexchangeplatform.UI.Fragment.PostingFragment.PostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Fragment.TopResortFragment.TopResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment.AccountFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.ExchangeFragment.ExchangeFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.HomeFragment.HomeFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.PostingFragment.PostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
 import com.google.android.gms.common.internal.GetServiceRequest
