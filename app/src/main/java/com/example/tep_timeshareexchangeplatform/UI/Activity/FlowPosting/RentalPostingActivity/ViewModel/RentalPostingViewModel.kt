@@ -42,8 +42,8 @@ class RentalPostingViewModel: ViewModel() {
 
     // Init
     init {
-        _step.value = 1
-        _currentStepInProgress.value = 1
+        _step.value = 6
+        _currentStepInProgress.value = 6
     }
 
 

@@ -5,56 +5,79 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.BenefitAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.databinding.FragmentPaymentPostingBinding
+import java.text.DecimalFormat
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Step_6_PaymentPostingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Step_6_PaymentPostingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_posting) {
+
+    private lateinit var binding: FragmentPaymentPostingBinding
+    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_payment_posting, container, false)
+        binding = FragmentPaymentPostingBinding.inflate(layoutInflater, container, false)
+        observeViewModel()
+        setEventChangePackage()
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Step_6_PaymentPostingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Step_6_PaymentPostingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    // Observe ViewModel
+    private fun observeViewModel() {
+        rentalPostingViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
+            if (packageModel != null) {
+                bindDataPackagePosting(packageModel)
             }
+        }
     }
+
+    // Funtion to Change Pakage
+    private fun setEventChangePackage() {
+        binding.btnChangeMyPackage.setOnClickListener {
+            rentalPostingViewModel.updateStep(4)
+        }
+    }
+
+
+
+    // Funtion to Bind data to UI
+    private fun bindDataPackagePosting(packageModel: PackageModel) {
+        var benefitAdapter = BenefitAdapter()
+        benefitAdapter.submitList(packageModel.listBenefit)
+        // Change Layout
+        binding.includePackegePosting.clContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+        // Hide Unnecessary UI
+        binding.includePackegePosting.tvTitle.visibility = View.GONE
+        binding.includePackegePosting.tvPackageDescription.visibility = View.GONE
+
+        binding.includePackegePosting.tvPackageName.text = packageModel.name
+        binding.includePackegePosting.tvPackagePrice.text = "${formatPrice(packageModel.price)} VND"
+        binding.includePackegePosting.tvPackageDescription.text = packageModel.description
+        binding.includePackegePosting.rvFeatures.let {
+            it.adapter = benefitAdapter
+            it.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(it.context)
+        }
+    }
+
+    fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
+    }
+
+
 }
