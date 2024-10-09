@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.SuccessDialogFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
@@ -34,6 +35,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         binding = FragmentPaymentPostingBinding.inflate(layoutInflater, container, false)
         observeViewModel()
         setEventChangePackage()
+        setEventDonePayment()
 
         return binding.root
     }
@@ -62,6 +64,17 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
+    // Funtion to done Payment
+    private fun setEventDonePayment() {
+        binding.ctrRequestButton.setOnClickListener {
+            val dialog = SuccessDialogFragment()
+            dialog.show(requireActivity().supportFragmentManager, "SuccessDialog")
+
+            dialog.setOnConfirmClickListener {
+                // Do something
+            }
+        }
+    }
 
 
     // Funtion to Bind data to UI
@@ -134,6 +147,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
         }
     }
+
+
 
 
 }

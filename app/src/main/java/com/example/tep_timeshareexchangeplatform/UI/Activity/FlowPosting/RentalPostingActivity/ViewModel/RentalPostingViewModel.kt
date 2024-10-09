@@ -8,6 +8,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 
 class RentalPostingViewModel: ViewModel() {
+
+    private val initStep: Int = 6
+
     // Tracking Progress Step
     private val _step = MutableLiveData<Int>()
     val step: MutableLiveData<Int>
@@ -42,8 +45,8 @@ class RentalPostingViewModel: ViewModel() {
 
     // Init
     init {
-        _step.value = 1
-        _currentStepInProgress.value = 1
+        _step.value = initStep
+        _currentStepInProgress.value = initStep
     }
 
 
