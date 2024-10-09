@@ -18,6 +18,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.FlowPosting.RentalPostingActivity.TestActivity"
             android:exported="true" />
         <activity

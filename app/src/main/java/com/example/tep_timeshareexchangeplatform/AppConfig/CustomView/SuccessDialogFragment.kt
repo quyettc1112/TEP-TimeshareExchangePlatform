@@ -1,5 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView
 
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,15 @@ import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.example.tep_timeshareexchangeplatform.R
 
-class SuccessDialogFragment : DialogFragment() {
+class SuccessDialogFragment() : DialogFragment() {
+
+
+    // Define an interface to communicate with the Activity
+    interface OnDialogDismissListener {
+        fun onDialogDismissed()
+    }
+
+    var listener: OnDialogDismissListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +33,7 @@ class SuccessDialogFragment : DialogFragment() {
         // Set the confirmation button click listener
         view.findViewById<Button>(R.id.btnConfirm).setOnClickListener {
             dismiss() // Close the dialog on button click
+
         }
     }
 
@@ -38,10 +49,29 @@ class SuccessDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
-    fun setOnConfirmClickListener(listener: () -> Unit) {
-        view?.findViewById<Button>(R.id.btnConfirm)?.setOnClickListener {
-            listener()
+    // Override onDismiss to notify the listener (Activity) when the dialog is dismissed
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        listener?.onDialogDismissed() // Call the listener's method when dialog is dismissed
+    }
+
+    // Attach the listener from the activity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnDialogDismissListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnDialogDismissListener")
         }
     }
+
+    // Detach the listener to prevent memory leaks
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+
+
 
 }

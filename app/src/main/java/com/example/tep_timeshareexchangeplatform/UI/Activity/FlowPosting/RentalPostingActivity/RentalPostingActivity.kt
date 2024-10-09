@@ -96,10 +96,7 @@ class RentalPostingActivity : BaseActivity() {
             })
         }
     }
-    private fun setProcessStepOnClick() {
-        binding.progressBarLayout
 
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()

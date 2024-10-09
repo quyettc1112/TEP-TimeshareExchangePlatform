@@ -1,10 +1,12 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -14,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.BenefitAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentPaymentPostingBinding
 import java.text.DecimalFormat
 
@@ -67,13 +70,32 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     // Funtion to done Payment
     private fun setEventDonePayment() {
         binding.ctrRequestButton.setOnClickListener {
-            val dialog = SuccessDialogFragment()
-            dialog.show(requireActivity().supportFragmentManager, "SuccessDialog")
+            // Nạp layout của dialog
+            val inflater = LayoutInflater.from(requireContext())
+            val dialogView = inflater.inflate(R.layout.dialog_success, null)
 
-            dialog.setOnConfirmClickListener {
-                // Do something
+            // Tạo dialog với layout tuỳ chỉnh
+            val dialog = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .create()
+
+            // Ánh xạ các view từ dialog
+            val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+
+
+            // Thiết lập sự kiện khi bấm nút "Xác nhận"
+            btnConfirm.setOnClickListener {
+                // Xử lý thanh toán
+                dialog.dismiss() // Đóng dialog sau khi xử lý
+                startActivity(Intent(requireContext(), MyPostingActivity::class.java))
+                requireActivity().finish()
             }
+
+
+            // Hiển thị dialog
+            dialog.show()
         }
+
     }
 
 
@@ -82,7 +104,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         var benefitAdapter = BenefitAdapter()
         benefitAdapter.submitList(packageModel.listBenefit)
         // Change Layout
-        binding.includePackegePosting.clContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        binding.includePackegePosting.clContainer.layoutParams.height =
+            ViewGroup.LayoutParams.WRAP_CONTENT
 
         // Hide Unnecessary UI
         binding.includePackegePosting.tvTitle.visibility = View.GONE
@@ -103,7 +126,10 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     }
 
     // Funtion to Bind Timeshare Info Data to UI
-    private fun bindDataTimeshareInfo(myTimeshareModel: MyTimeshareModel, dateRange: Pair<Long?, Long?>) {
+    private fun bindDataTimeshareInfo(
+        myTimeshareModel: MyTimeshareModel,
+        dateRange: Pair<Long?, Long?>
+    ) {
         val startDate = dateRange.first ?: return
         val endDate = dateRange.second ?: return
         val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
@@ -142,13 +168,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 .load(myTimeshareModel.image)
                 .into(imUserImage)
             // User Name
-            tvUserName.text ="Đăng tải bởi Trần Cuơng Quyết"
+            tvUserName.text = "Đăng tải bởi Trần Cuơng Quyết"
 
 
         }
     }
-
-
 
 
 }
