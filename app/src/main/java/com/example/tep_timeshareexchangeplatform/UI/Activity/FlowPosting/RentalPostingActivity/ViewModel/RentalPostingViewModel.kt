@@ -17,6 +17,11 @@ class RentalPostingViewModel: ViewModel() {
     private val _currentStepInProgress = MutableLiveData<Int>()
     val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
 
+    // Tracking Date Selected
+    // LiveData to hold the pair of start and end dates
+    private val _dateRange = MutableLiveData<Pair<Long?, Long?>>()
+    val dateRange: LiveData<Pair<Long?, Long?>> get() = _dateRange
+
 
     // Tracking Location Selected
     private val _locationModel = MutableLiveData<LocationModel>()
@@ -80,5 +85,9 @@ class RentalPostingViewModel: ViewModel() {
         _packageStep4.value = packageModel
     }
 
+    // Function to save the start and end dates
+    fun setDateRange(startDate: Long?, endDate: Long?) {
+        _dateRange.value = Pair(startDate, endDate)
+    }
 
 }

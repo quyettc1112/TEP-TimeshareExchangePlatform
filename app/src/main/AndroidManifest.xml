@@ -18,6 +18,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.FlowPosting.RentalPostingActivity.TestActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
         <activity
@@ -55,9 +58,6 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.LoginActivity.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".UI.Activity.StartActivity.StartActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.SplashActivity.SplashActivity"

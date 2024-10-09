@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.google.android.material.datepicker.CalendarConstraints
@@ -19,7 +20,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class  DayPickerActivity : AppCompatActivity() {
+class  DayPickerActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,13 +40,7 @@ class  DayPickerActivity : AppCompatActivity() {
                     val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
                     val month = calendar.get(Calendar.MONTH)
                     val year = calendar.get(Calendar.YEAR)
-
-                    // Ví dụ: Chỉ cho phép chọn ngày từ 5/9/2024 đến 25/9/2024
-                    return if (year == 2024 && month == Calendar.SEPTEMBER) {
-                        dayOfMonth in 5..25
-                    } else {
-                        false // Không hợp lệ cho các ngày ngoài phạm vi trên
-                    }
+                    return true
                 }
 
 
@@ -81,11 +76,32 @@ class  DayPickerActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIntenFrom() {
+        val value = intent.getStringExtra(Constant.DEFAULT_SELECTION_DATE_KEY)
+        if (value != null) {
+            when (value) {
+                "A1" -> {
+                    // Handle the case where A1 sent the Intent
+                }
+                "A3" -> {
+                    // Handle the case where A3 sent the Intent
+                }
+            }
+        }
+
+    }
+
+
     private fun intentExtraValueToHome(value : String) {
         val intent = Intent()
         // Replace "locationName" with the actual selected location
         intent.putExtra(Constant.DEFAULT_SELECTION_DATE_KEY, value)
         setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
         finish()
     }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,12 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimeshareBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_timeshare) {
@@ -64,6 +71,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         expanedViewHandle()
         getImageFromGallery()
         sendRequestCreateTimeshare()
+        setEventChangeDate()
 
         return binding.root
     }
@@ -190,6 +198,66 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
 
     }
+
+    // Event to Change Date
+    private fun setEventChangeDate() {
+        binding.llCheckInCheckOutDate.setOnClickListener {
+            val constraintsBuilder = CalendarConstraints.Builder()
+                .setValidator(object : CalendarConstraints.DateValidator {
+                    override fun isValid(date: Long): Boolean {
+                        // Optional: Add logic to validate the selected date
+                        return true
+                    }
+                    override fun describeContents(): Int = 0
+                    override fun writeToParcel(dest: Parcel, flags: Int) {
+                        // Required to implement DateValidator
+                    }
+                })
+
+            // Create DateRangePicker with CalendarConstraints
+            val dateRangePicker =
+                MaterialDatePicker.Builder.dateRangePicker()
+                    .setTitleText(getString(R.string.date_range_picker))
+                    .setCalendarConstraints(constraintsBuilder.build())
+                    .build()
+
+            // Show DateRangePicker when button is clicked
+            dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
+
+            // Listen for positive button clicks (when a date is selected)
+            dateRangePicker.addOnPositiveButtonClickListener { selection ->
+                val startDate = selection?.first
+                val endDate = selection?.second
+
+                if (startDate != null && endDate != null) {
+                    rentalPostingViewModel.setDateRange(startDate, endDate)
+                    // Calculate total days between startDate and endDate
+                    val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
+
+                    // Update UI with the total number of days
+                    binding.etNightsCount.text = " $totalDays "
+
+                    // Format and display start date and end date
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val startDateString = dateFormat.format(Date(startDate))
+                    val endDateString = dateFormat.format(Date(endDate))
+
+                    binding.tvCheckInDate.text = startDateString
+                    binding.tvCheckOutDate.text = endDateString
+
+                    // Get day of the week for start date
+                    val startDayString = SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(startDate))
+                    binding.tvCheckInDayOfWeek.text = startDayString
+
+                    // Get day of the week for end date
+                    val endDayString = SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(endDate))
+                    binding.tvCheckOutDayOfWeek.text = endDayString
+                }
+            }
+
+        }
+    }
+
 
     // Get Image Form Gallery
     private fun getImageFromGallery() {

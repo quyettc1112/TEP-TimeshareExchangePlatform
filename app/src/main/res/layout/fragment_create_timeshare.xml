@@ -204,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
@@ -407,6 +407,7 @@
 
                             <!-- Date Selection Container -->
                             <LinearLayout
+                                android:id="@+id/llCheckInCheckOutDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_stroke_around"
@@ -443,7 +444,7 @@
 
                                     <!-- Check-In Day -->
                                     <TextView
-                                        android:id="@+id/tvCheckInDay"
+                                        android:id="@+id/tvCheckInDayOfWeek"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Thứ 2"
@@ -486,7 +487,7 @@
 
                                     <!-- Check-Out Day -->
                                     <TextView
-                                        android:id="@+id/tvCheckOutDay"
+                                        android:id="@+id/tvCheckOutDayOfWeek"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Thứ 2"
@@ -512,7 +513,7 @@
                                     android:textSize="16sp" />
 
                                 <!-- Nights Count Field -->
-                                <EditText
+                                <TextView
                                     android:id="@+id/etNightsCount"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
@@ -522,7 +523,6 @@
                                     android:enabled="false"
                                     android:fontFamily="@font/inter_bold"
                                     android:gravity="center"
-                                    android:hint="0"
                                     android:padding="8dp"
                                     android:text="0"
                                     android:textColor="@android:color/black"

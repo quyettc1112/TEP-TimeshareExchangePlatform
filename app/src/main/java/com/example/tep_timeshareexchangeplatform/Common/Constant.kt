@@ -39,6 +39,9 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val FRAGMENT_HOME_CODE = "FH"
+        const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
+
         val timeshareList = listOf(
             TimeshareModel(
                 1,

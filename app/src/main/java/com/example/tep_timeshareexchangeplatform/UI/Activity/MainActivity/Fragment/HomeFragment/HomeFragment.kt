@@ -113,8 +113,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
                           return true
                       }
-
-
                       override fun describeContents(): Int = 0
                       override fun writeToParcel(dest: Parcel, flags: Int) {
                           TODO("Not yet implemented")
