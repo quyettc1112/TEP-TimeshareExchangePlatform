@@ -32,7 +32,7 @@
                 android:id="@+id/im_imageTimeshare"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/im_matiral_timeshare" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -60,6 +60,7 @@
 
             <!--// Location-->
             <LinearLayout
+                android:id="@+id/ll_location"
                 tools:layout_editor_absoluteX="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,6 +130,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_number_night"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -156,6 +158,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_check_in_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -183,6 +186,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_check_out_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -210,6 +214,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_cancellation_policy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -250,6 +255,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_room_price_per_night"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -277,6 +283,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_estimated_total_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -308,6 +315,7 @@
 
                 <!-- User Image -->
                 <ImageView
+                    android:id="@+id/im_user_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
@@ -321,6 +329,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đăng tải của Cường Quyết"

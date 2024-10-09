@@ -16,6 +16,10 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareModel, MyTimeshareAdapter.MyTim
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
         BaseItemViewHolderCF<MyTimeshareModel, ItemMyTimeshareBinding>(binding) {
         override fun bind(item: MyTimeshareModel) {
+            // Hide Unessary View
+            binding.tvPrice.visibility = ViewGroup.GONE
+            binding.tvNumberOfNight.visibility = ViewGroup.GONE
+
             binding.tvResortName.text = item.name
             binding.tvRoomType.text = item.roomName
             binding.tvCheckinDate.text = "${item.checkInDate} - ${item.checkOutDate}"

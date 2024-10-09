@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.BenefitAdapter
@@ -43,6 +45,14 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 bindDataPackagePosting(packageModel)
             }
         }
+
+        rentalPostingViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareModel ->
+            rentalPostingViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
+                if (myTimeshareModel != null && dateRange != null) {
+                    bindDataTimeshareInfo(myTimeshareModel, dateRange)
+                }
+            }
+        }
     }
 
     // Funtion to Change Pakage
@@ -77,6 +87,52 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     fun formatPrice(price: Int): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)
+    }
+
+    // Funtion to Bind Timeshare Info Data to UI
+    private fun bindDataTimeshareInfo(myTimeshareModel: MyTimeshareModel, dateRange: Pair<Long?, Long?>) {
+        val startDate = dateRange.first ?: return
+        val endDate = dateRange.second ?: return
+        val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
+        binding.includeTimesharePosting.apply {
+            // Hide Unnecessary UI
+            llLocation.visibility = View.GONE
+
+            // Image
+            Glide.with(requireContext())
+                .load(myTimeshareModel.image)
+                .into(imImageTimeshare)
+
+            // Title
+            tvResortNameDtb.text = "${myTimeshareModel.name} | ${myTimeshareModel.roomName}"
+
+            // Number of Night
+            tvNumberNight.text = " ${totalDays} đêm"
+
+            // Checkin Date
+            tvCheckInDate.text = myTimeshareModel.checkInDate
+
+            // Checkout Date
+            tvCheckOutDate.text = myTimeshareModel.checkOutDate
+
+            // Cancel Policy
+            tvCancellationPolicy.text = "Không có"
+
+            // Room Price Per Night
+            tvRoomPricePerNight.text = "${myTimeshareModel.price} / 1 đêm"
+
+            // Estimated Total Price
+            tvEstimatedTotalPrice.text = "${myTimeshareModel.price} / 1 đêm"
+
+            // User Image
+            Glide.with(requireContext())
+                .load(myTimeshareModel.image)
+                .into(imUserImage)
+            // User Name
+            tvUserName.text ="Đăng tải bởi Trần Cuơng Quyết"
+
+
+        }
     }
 
 

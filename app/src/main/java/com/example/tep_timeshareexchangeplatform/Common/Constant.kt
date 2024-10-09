@@ -775,7 +775,7 @@ class Constant {
                 checkInDate = "18/08/2024",
                 checkOutDate = "23/08/2024",
                 numberOfNight = 6,
-                price = "1,000,000 VND",
+                price = "",
                 image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
             ),
             MyTimeshareModel(
