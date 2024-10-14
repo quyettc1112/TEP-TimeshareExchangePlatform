@@ -61,6 +61,8 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
                 tvNumBed.text = "${item.bedrooms}"
                 tvBed.text = "${item.bedsQueen} Queen, ${item.bedsKing} King, ${item.bedsTwin} Twin"
 
+                // Number of guests
+                tvNumPerson.text = item.sleeps.toString()
 
 
                 binding.root.setOnClickListener {

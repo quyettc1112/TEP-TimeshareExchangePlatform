@@ -10,7 +10,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDial
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyTimeshareDetailBinding
@@ -21,7 +21,7 @@ import com.google.android.flexbox.JustifyContent
 class MyTimeshareDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyTimeshareDetailBinding
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
-    private var facilityAdapter = FacilitieAdapter()
+    private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,7 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentActivity.RentalPaymentActivity.RentalPaymentActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
@@ -29,7 +29,7 @@ class TimeshareDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTimeshareDetailBinding
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
-    private var facilityAdapter = FacilitieAdapter()
+    private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
 
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)

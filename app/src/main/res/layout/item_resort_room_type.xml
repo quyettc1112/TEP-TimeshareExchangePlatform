@@ -94,7 +94,7 @@
                     android:layout_marginStart="5dp"
                     android:gravity="center|left"
                     android:maxLines="1"
-                    android:text="Phòng Tắm"
+                    android:text="@string/bath"
                     android:textSize="12dp" />
             </LinearLayout>
 
@@ -128,7 +128,7 @@
                     android:layout_marginStart="5dp"
                     android:gravity="center|left"
                     android:maxLines="1"
-                    android:text="Giường Ngủ King"
+                    android:text="@string/bed"
                     android:textSize="12dp" />
             </LinearLayout>
 
@@ -195,7 +195,7 @@
                     android:layout_marginStart="5dp"
                     android:gravity="center|left"
                     android:maxLines="1"
-                    android:text="2 Nguời lớn tối đa"
+                    android:text="@string/adult"
                     android:textSize="12dp" />
             </LinearLayout>
 

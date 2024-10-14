@@ -9,7 +9,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemFacilitieBinding
 
-class FacilitieAdapter : BaseAdapter<FacilitieModel, FacilitieAdapter.FacilitieViewHolder>() {
+class AmenitiesAdapter : BaseAdapter<FacilitieModel, AmenitiesAdapter.FacilitieViewHolder>() {
 
     inner class FacilitieViewHolder(binding: ItemFacilitieBinding) : BaseItemViewHolderCF<FacilitieModel, ItemFacilitieBinding>(binding){
         override fun bind(item: FacilitieModel) {
