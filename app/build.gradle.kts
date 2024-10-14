@@ -169,6 +169,11 @@ dependencies {
     // Circle indicator
     implementation ("me.relex:circleindicator:2.1.6")
 
+    //JWT decoder
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
 
 
 

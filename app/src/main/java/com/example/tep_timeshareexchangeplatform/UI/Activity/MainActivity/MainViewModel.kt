@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.UserRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.User
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,9 @@ import javax.inject.Inject
 class MainViewModel  @Inject constructor(
     private val authAPIRepository: AuthAPIRepository
 ) : ViewModel()  {
+
+    private val _user = MutableLiveData<UserJWTPayloadModel>()
+    val user: LiveData<UserJWTPayloadModel> = _user
 
     private val _roomCount = MutableLiveData(1)
     val roomCount: LiveData<Int> = _roomCount
@@ -40,6 +44,12 @@ class MainViewModel  @Inject constructor(
 
     fun getRoomCount(): String {
         return "${_adultCount.value} Người lớn, ${_childrenCount.value} Trẻ em, ${_roomCount.value} Phòng"
+    }
+
+    fun updateUser(userJWTPayloadModel: UserJWTPayloadModel) {
+        userJWTPayloadModel.let {
+            _user.value = it
+        }
     }
 
 

@@ -5,17 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.MemberShipActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
     private lateinit var binding: FragmentAccountBinding
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,18 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         super.onViewCreated(view, savedInstanceState)
         setUserActivitiesEvent()
         logoutDialog()
+
+        observeViewModel()
+    }
+
+    // Observer
+    private fun observeViewModel() {
+        mainViewModel.user.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.tvUserName.text = it.sub
+                binding.tvUserEmail.text = it.email
+            }
+        }
     }
 
 

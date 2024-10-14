@@ -1,6 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -13,16 +15,20 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthViewModel.AuthViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityLoginScreen2Binding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity_screen2 : BaseActivity() {
+    private val TAG = "LoginActivity_screen2"
     private lateinit var binding: ActivityLoginScreen2Binding
 
     // Inject AuthViewModel using Hilt
@@ -57,7 +63,7 @@ class LoginActivity_screen2 : BaseActivity() {
             when (resource.status) {
                 Status.LOADING -> {
                     // Show a loading spinner
-                    showLoading(true)
+                    showLoading("Đang đăng nhập", "Vui lòng chờ...")
                 }
                 Status.SUCCESS -> {
                     // Handle success, e.g., navigate to another screen
@@ -65,11 +71,19 @@ class LoginActivity_screen2 : BaseActivity() {
                     resource.data?.let { loginResponse ->
                         handleLoginSuccess(loginResponse)
                     }
+
+
                 }
                 Status.ERROR -> {
                     // Handle error, e.g., show a toast with error message
                     hideLoading()
-                    showErrorDialog(resource.message ?: getString(R.string.error_unknown), "Quay lại")
+                    MotionToast.Companion.createColorToast(this,
+                        "${resource.status}",
+                        "${resource.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, R.font.inter_thin));
                 }
             }
         }
@@ -88,6 +102,14 @@ class LoginActivity_screen2 : BaseActivity() {
             MotionToast.LONG_DURATION,
             ResourcesCompat.getFont(this, R.font.inter_thin));
 
+        val token: TokenManager = TokenManager(this)
+
+        token.saveTokens(accessToken, refreshToken)
+
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+
+
     }
 
     // Call loginProcess() function when user click on login button
@@ -98,7 +120,7 @@ class LoginActivity_screen2 : BaseActivity() {
 
             MotionToast.Companion.createColorToast(this,
                 "${getString(R.string.error_empty_email_password)}",
-                "",
+                "Nhập lại thông tin",
                 MotionToastStyle.ERROR,
                 MotionToast.GRAVITY_BOTTOM,
                 MotionToast.LONG_DURATION,

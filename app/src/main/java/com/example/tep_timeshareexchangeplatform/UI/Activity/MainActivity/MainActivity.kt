@@ -8,20 +8,25 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthViewModel.AuthViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment.AccountFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.ExchangeFragment.ExchangeFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.HomeFragment.HomeFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.PostingFragment.PostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment
+import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
 import com.google.android.gms.common.internal.GetServiceRequest
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +39,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
 
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -94,6 +100,25 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
         binding.cardView.animate().translationY(0f).duration = 30
     }
 
+
+    // Check User is logged in or not
+    private fun checkUserLoggedIn() {
+        val tokenManager = TokenManager(this)
+        if (tokenManager.isLoggedIn()) {
+            // Decode JWT token to JWTPayloadModel
+            val jwtPayloadModel = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
+
+            // Save tokens to shared preferences
+            jwtPayloadModel?.let { mainViewModel.updateUser(it) }
+        }
+    }
+
+
+
+    override fun onResume() {
+        super.onResume()
+        checkUserLoggedIn()
+    }
 
 
 }
