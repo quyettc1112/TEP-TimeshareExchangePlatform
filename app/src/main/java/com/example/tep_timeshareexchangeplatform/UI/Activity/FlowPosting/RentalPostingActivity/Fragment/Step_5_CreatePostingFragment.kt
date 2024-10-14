@@ -2,14 +2,13 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 
 import android.os.Bundle
 import android.os.Parcel
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreatePostingBinding

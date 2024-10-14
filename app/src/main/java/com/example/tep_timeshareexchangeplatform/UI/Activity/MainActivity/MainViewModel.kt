@@ -3,15 +3,9 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository.AuthAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Repository.UserRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.User
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.UserJWTPayloadModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
-import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.UserJWTPayloadModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class MainViewModel  @Inject constructor(

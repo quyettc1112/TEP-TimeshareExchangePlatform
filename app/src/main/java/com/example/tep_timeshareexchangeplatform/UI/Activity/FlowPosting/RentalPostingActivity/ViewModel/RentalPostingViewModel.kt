@@ -3,9 +3,9 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 
 class RentalPostingViewModel: ViewModel() {
 

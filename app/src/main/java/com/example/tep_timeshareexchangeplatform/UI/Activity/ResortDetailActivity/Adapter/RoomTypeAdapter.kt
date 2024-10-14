@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.RoomTypeModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeBinding
 
 class RoomTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<RoomTypeModel, RoomTypeAdapter.RoomTypeViewHolder>(){

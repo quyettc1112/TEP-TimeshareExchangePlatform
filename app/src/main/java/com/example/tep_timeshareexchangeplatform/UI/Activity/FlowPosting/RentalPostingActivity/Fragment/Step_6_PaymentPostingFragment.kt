@@ -10,9 +10,8 @@ import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.SuccessDialogFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.BenefitAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel

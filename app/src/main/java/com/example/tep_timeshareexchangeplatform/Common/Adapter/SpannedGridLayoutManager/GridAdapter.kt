@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.GridItemLayoutBinding
 

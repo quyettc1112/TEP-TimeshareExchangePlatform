@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model
+package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP
 
 import android.os.Parcel
 import android.os.Parcelable

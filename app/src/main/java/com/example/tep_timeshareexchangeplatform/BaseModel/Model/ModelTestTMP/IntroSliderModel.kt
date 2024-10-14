@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model
+package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP
 
 data class IntroSliderModel(
     val id: Int,

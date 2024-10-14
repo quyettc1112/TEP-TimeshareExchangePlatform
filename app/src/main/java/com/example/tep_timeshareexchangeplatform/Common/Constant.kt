@@ -1,19 +1,19 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.DestinationModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FAQModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.IntroSliderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyOrderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.MyTimeshareModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ReviewModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.RoomTypeModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.TimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.BlogModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FacilitieModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.RoomTypeModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 
 class Constant {

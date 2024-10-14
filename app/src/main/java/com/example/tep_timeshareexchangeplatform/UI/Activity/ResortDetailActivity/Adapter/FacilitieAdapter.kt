@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FacilitieModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemFacilitieBinding
 
 class FacilitieAdapter : BaseAdapter<FacilitieModel, FacilitieAdapter.FacilitieViewHolder>() {

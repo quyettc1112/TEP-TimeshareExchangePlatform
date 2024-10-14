@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.FAQModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemFaqBinding
 
 class FaqAdapter: BaseAdapter<FAQModel, FaqAdapter.FaqViewHolder>() {

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.IntroSliderModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemSliderIntroductionBinding
 
 class IntroSliderAdapter: BaseAdapter<IntroSliderModel, IntroSliderAdapter.IntroSliderViewHolder>() {

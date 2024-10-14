@@ -6,10 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.BlogModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.BlogModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemBlogBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
 
 class BlogAdapter : BaseAdapter<BlogModel, BlogAdapter.BlogViewHolder> (){
 

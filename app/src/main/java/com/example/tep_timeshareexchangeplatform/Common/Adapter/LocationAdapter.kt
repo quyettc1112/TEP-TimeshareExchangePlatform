@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.LocationModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemLocationBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
 
 class LocationAdapter: BaseAdapter<String, LocationAdapter.LocationViewHolder>() {
 

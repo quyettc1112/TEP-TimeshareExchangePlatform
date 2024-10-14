@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model
+package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP
 // Update TimeshareModel data class
 data class TimeshareModel(
     val id: Int,
