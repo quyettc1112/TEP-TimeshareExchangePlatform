@@ -1,12 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -15,11 +19,15 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivit
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareListActivity.TimeshareListActivity
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResortDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResortDetailBinding
@@ -27,6 +35,7 @@ class ResortDetailActivity : BaseActivity() {
     private var roomTypeAdapter = RoomTypeAdapter(true)
     private var facilitieAdapter = FacilitieAdapter()
     private var reviewAdapter = ReviewAdapter()
+    private val resortDetailViewModel: ResortDetailViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +48,21 @@ class ResortDetailActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val resortId = intent.getIntExtra("resortId", 0)
+        if (resortId != 0) {
+            resortDetailViewModel.getResortDetail(1)
+        } else {
+            finish()
+        }
+        // Observe Data
+        observeData()
+
+        // Init Adapter
+        initAdapter()
+
+
+        // Not yet Implemented
         resortImageListAdapter = ResortImageListAdapter(Constant.listImage) {
             val intent = Intent(this, ImageListActivity::class.java)
             intent.putExtras(Bundle().apply {
@@ -47,21 +71,43 @@ class ResortDetailActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        // Init Adapter
-        initAdapter()
 
-        // Set Resort Detail Info
-        setListImageResort()
-        setRoomTypeListResort()
-        setFacilitieListResort()
-        setReviewResort()
 
-        // Action Event
-        setTypeRoomClickAction()
-        setButtonSelectRoomClick()
-        actionCustomToolbar()
 
     }
+
+    private fun observeData() {
+        resortDetailViewModel.resortDetail.observe(this) { resources ->
+            when (resources.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    resources.data?.let { resortDetail ->
+                        // Set Resort Detail Info
+                        bindDataResortInfo(resortDetailViewModel.resortDetail.value?.data!!)
+
+                        setListImageResort()
+                        setRoomTypeListResort()
+                        setFacilitieListResort()
+                        setReviewResort()
+
+                        // Action Event
+                        setTypeRoomClickAction()
+                        setButtonSelectRoomClick()
+                        actionCustomToolbar()
+                    }
+                    hideLoadingWaiting()
+                }
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorDialog(resources.message.toString(), "")
+
+                }
+            }
+        }
+    }
+
 
     private fun actionCustomToolbar() {
         binding.customToolbar.onStartIconClick = {
@@ -70,9 +116,9 @@ class ResortDetailActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        roomTypeAdapter.submitList(Constant.listRoomType)
-        facilitieAdapter.submitList(Constant.listFacilite)
-        reviewAdapter.submitList(Constant.listReview)
+        roomTypeAdapter.submitList(listOf())
+        facilitieAdapter.submitList(listOf())
+        reviewAdapter.submitList(listOf())
     }
 
     private fun setTypeRoomClickAction() {
@@ -91,13 +137,30 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
+    // Binding Data Group Function
+    private fun bindDataResortInfo(resortDetailModel: ResortDetailModel) {
+        binding.apply {
+            tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
+            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
+            tvMinPrice.text = "${resortDetailViewModel.resortDetail.value?.data?.minPrice.toString()} VND / 1 đêm"
+            tvDescription.text = resortDetailViewModel.resortDetail.value?.data?.description.toString()
+            if (resortDetailModel.isActive) {
+                llVerify.visibility = View.VISIBLE
+            } else {
+                llVerify.visibility = View.GONE
+                tvFindMore.visibility = View.GONE
+            }
+        }
+    }
+
+
     private fun setListImageResort() {
         // List Destination
         val manager = SpannedGridLayoutManager(
             object : SpannedGridLayoutManager.GridSpanLookup {
                 override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
                     // Conditions for 2x2 items
-                    return when (position ) {
+                    return when (position) {
                         0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
                         1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
                         2 -> SpannedGridLayoutManager.SpanInfo(1, 1)

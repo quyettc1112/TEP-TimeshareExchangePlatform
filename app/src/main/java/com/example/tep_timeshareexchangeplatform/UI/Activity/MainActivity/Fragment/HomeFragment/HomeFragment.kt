@@ -206,7 +206,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun setItemResortClickListener() {
         resortAdapterMB.let {
             it.onItemClick = {
-                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
+                val intent = Intent(requireContext(), ResortDetailActivity::class.java)
+                intent.putExtra("resortId", it.id)
+                startActivity(intent)
             }
 
             it.onFavoriteClick = {

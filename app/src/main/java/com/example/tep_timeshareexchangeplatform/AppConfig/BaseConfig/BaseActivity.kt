@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
-import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.MyProgressDialog
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
 
@@ -21,11 +21,22 @@ open class  BaseActivity : AppCompatActivity() {
 
     var progressDialog: ProgressDialog? = null
 
-    open fun showLoading(
+    var myProgressDialog: MyProgressDialog? = null
+    open fun showLoadingWaiting(
         isShow: Boolean
     ) {
-
+        myProgressDialog = MyProgressDialog(this)
+        myProgressDialog!!.setCancelable(false)
+        myProgressDialog!!.show()
     }
+    open fun hideLoadingWaiting() {
+        myProgressDialog?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
+        }
+    }
+
 
     open fun goBackActivity(context: Context, nextActivity: Class<out Activity>) {
         val intent = Intent(context, nextActivity)

@@ -193,6 +193,7 @@
                         android:src="@drawable/ic_location" />
 
                     <TextView
+                        android:id="@+id/tv_location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -208,7 +209,7 @@
 
                 <!--// Verify Button-->
                 <LinearLayout
-                    android:id="@+id/linearLayout10"
+                    android:id="@+id/ll_verify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -240,6 +241,7 @@
 
                 <!--// Find More-->
                 <TextView
+                    android:id="@+id/tv_find_more"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -250,8 +252,8 @@
                     android:paddingStart="5dp"
                     android:text="Tìm hiểu thêm"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout10"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout10" />
+                    app:layout_constraintEnd_toEndOf="@+id/ll_verify"
+                    app:layout_constraintTop_toTopOf="@+id/ll_verify" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -363,6 +365,7 @@
 
                 <!--// Text Description-->
                 <TextView
+                    android:id="@+id/tv_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"

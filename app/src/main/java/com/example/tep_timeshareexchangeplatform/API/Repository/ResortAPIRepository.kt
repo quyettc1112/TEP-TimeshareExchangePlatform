@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.API.Repository
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.ResortAPIService
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -16,15 +17,29 @@ class ResortAPIRepository @Inject constructor(
 
     // function to call API to get resort list
     suspend fun getResortList(pageNo: Int, pageSize: Int, resortName: String?) : Resource<ResortModel> {
-        try {
+        return try {
             val response = resortAPIService.getResortList(pageNo, pageSize, resortName)
             if (response.isSuccessful) {
-                return Resource.success(response.body())
+                Resource.success(response.body())
             } else {
-                return Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
             }
         } catch (e: Exception) {
-            return Resource.error("Network Error: ${e.message}", null)
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // funtion to call API to get resort detail
+    suspend fun getResortDetail(resortId: Int) : Resource<ResortDetailModel> {
+        return try {
+            val response = resortAPIService.getResortDetail(resortId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
         }
     }
 
