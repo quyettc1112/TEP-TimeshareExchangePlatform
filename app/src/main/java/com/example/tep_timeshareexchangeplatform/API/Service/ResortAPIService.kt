@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.API.Service.ResortAPIService
+package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import retrofit2.Response

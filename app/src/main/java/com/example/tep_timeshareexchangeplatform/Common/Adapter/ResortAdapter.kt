@@ -1,31 +1,25 @@
 package com.example.tep_timeshareexchangeplatform.Common.Adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
 
-class ResortAdapter: BaseAdapter<ResortModel, ResortAdapter.ResortViewHolder>() {
+class ResortAdapter: BaseAdapter<ResortModel.Content, ResortAdapter.ResortViewHolder>() {
 
-    var onItemClick: ((ResortModel) -> Unit)? = null
-    var onFavoriteClick: ((ResortModel) -> Unit)? = null
+    var onItemClick: ((ResortModel.Content) -> Unit)? = null
+    var onFavoriteClick: ((ResortModel.Content) -> Unit)? = null
 
-    inner class ResortViewHolder(binding: ItemResortBinding): BaseItemViewHolderCF<ResortModel, ItemResortBinding>(binding) {
-        override fun bind(item: ResortModel) {
+    inner class ResortViewHolder(binding: ItemResortBinding): BaseItemViewHolderCF<ResortModel.Content, ItemResortBinding>(binding) {
+        override fun bind(item: ResortModel.Content) {
             binding.tvResortName.text = item.resortName
-            binding.tvRating.text = item.rating.toString()
-            binding.tvRatingCount.text = item.ratingCount
-            binding.tvLocation.text = item.location
-            binding.tvRoom.text = item.roomDetails
-            binding.tvPrice.text = item.price
-            binding.tvNumberOfNight.text = item.numberOfNights
-            Glide.with(binding.imResortImage.context)
-                .load(item.resortImage)
-                .into(binding.imResortImage)
+            binding.tvLocation.text = item.address
+            binding.tvPrice.text = "${item.minPrice} - ${item.maxPrice} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
@@ -34,16 +28,26 @@ class ResortAdapter: BaseAdapter<ResortModel, ResortAdapter.ResortViewHolder>() 
             binding.llFavorite.setOnClickListener {
                 onFavoriteClick?.let { it1 -> it1(item) }
             }
+            // Not yet implemented
+           /* binding.tvRating.text = item.rating.toString()
+            binding.tvRatingCount.text = item.ratingCount*/
+            /*Glide.with(binding.imResortImage.context)
+                .load(item.resortImage)
+                .into(binding.imResortImage)*/
+
+            // Hide Unnecessary Views
+            binding.tvNumberOfNight.visibility = View.GONE
         }
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<ResortModel> {
-        return object : DiffUtil.ItemCallback<ResortModel>() {
-            override fun areItemsTheSame(oldItem: ResortModel, newItem: ResortModel): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<ResortModel.Content> {
+        return object : DiffUtil.ItemCallback<ResortModel.Content>() {
+            override fun areItemsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: ResortModel, newItem: ResortModel): Boolean {
+
+            override fun areContentsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
                 return oldItem == newItem
             }
         }

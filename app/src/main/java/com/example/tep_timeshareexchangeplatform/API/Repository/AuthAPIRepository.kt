@@ -1,8 +1,8 @@
-package com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
+package com.example.tep_timeshareexchangeplatform.API.Repository
 
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
-import com.example.tep_timeshareexchangeplatform.API.Service.AuthAPIService.AuthAPIService
+import com.example.tep_timeshareexchangeplatform.API.Service.AuthAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler

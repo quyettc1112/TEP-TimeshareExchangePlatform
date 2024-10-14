@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.os.Parcel
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -29,40 +31,44 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
+@AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
-    private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
     private val timeshareAdapter = TimeshareAdapterRV()
     private val resortAdapterMB = ResortAdapter()
-    private val resortAdapterMT = ResortAdapter()
-    private val resortAdapterMN = ResortAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter : GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var dateResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var homeViewModel: HomeViewModel
     private val roomSelectionViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel.getResortList(0,5, "")
+
+
         gridAdapter = GridAdapter(Constant.destiantionList) { destinationModel ->
             // Xử lý sự kiện khi item được click
             Toast.makeText(requireContext(), "Clicked: ${destinationModel.destinationName}", Toast.LENGTH_SHORT).show()
         }
         timeshareAdapter.submitList(Constant.timeshareList)
-        resortAdapterMB.submitList(Constant.resortListMB)
-        resortAdapterMT.submitList(Constant.resortListMT)
-        resortAdapterMN.submitList(Constant.resortListMN)
+        resortAdapterMB.submitList(listOf())
         blogAdapter.submitList(Constant.blogList)
         // Khởi tạo AutoScrollViewPagerHelper
 
@@ -82,14 +88,149 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         initAdapter()
         setItemResortClickListener()
         setSearchComponentClickEvent()
-        observerSearchComponent()
         setAutoScroll()
-
-
+        observerSearchComponent()
+        observerViewModel()
 
         return binding.root
     }
 
+    // Observer ViewModel
+    private fun observerSearchComponent() {
+        // Quan sát các giá trị từ ViewModel
+        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số phòng
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số người lớn
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
+            // Cập nhật giao diện với số trẻ em
+            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+        })
+
+
+    }
+    private fun observerViewModel() {
+        homeViewModel.resortList.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    showLoading("Loading", "Please wait")
+                }
+                Status.SUCCESS -> {
+                    hideLoading()
+                    resource.data?.let { resortModel ->
+                        resortAdapterMB.submitList(resortModel.content)
+                    }
+
+                }
+                Status.ERROR -> {
+                    // Ẩn ProgressBar
+                    // Hiển thị thông báo lỗi
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun initAdapter() {
+        // List Timesahre Recomend
+        binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSuggestTimeshare.adapter = timeshareAdapter
+
+        // List Blog
+        binding.rcBlog.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcBlog.adapter = blogAdapter
+
+        // List Resort Recomend MB
+        binding.vpResortHotelMb.let {
+            it.adapter = resortAdapterMB
+            it.clipToPadding = true
+            it.clipChildren = false
+            it.offscreenPageLimit = 5
+            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
+
+        }
+
+        binding.vpResortHotelMn.let {
+            it.adapter = resortAdapterMB
+            it.clipToPadding = true
+            it.clipChildren = false
+            it.offscreenPageLimit = 5
+            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
+
+        }
+
+        binding.vpResortHotelMt.let {
+            it.adapter = resortAdapterMB
+            it.clipToPadding = true
+            it.clipChildren = false
+            it.offscreenPageLimit = 5
+            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
+
+        }
+
+        // List Destination
+        val manager = SpannedGridLayoutManager(
+            object : SpannedGridLayoutManager.GridSpanLookup {
+                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                    // Conditions for 2x2 items
+                    return when (position ) {
+                        0 -> SpannedGridLayoutManager.SpanInfo(2, 1)
+                        1 -> SpannedGridLayoutManager.SpanInfo(1, 2)
+                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        4 -> SpannedGridLayoutManager.SpanInfo(1, 2)
+                        5 -> SpannedGridLayoutManager.SpanInfo(2, 1)
+                        6 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        7 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        else -> {
+                            SpannedGridLayoutManager.SpanInfo(1, 1)
+                        }
+                    }
+                }
+            },
+            3,  // number of columns
+            1f // how big is default item
+        )
+        binding.rvTouristDestination.let {
+            it.adapter = gridAdapter
+            it.layoutManager = manager
+        }
+
+    }
+    private fun setItemResortClickListener() {
+        resortAdapterMB.let {
+            it.onItemClick = {
+                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
+            }
+
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        timeshareAdapter.let {
+            it.onItemClick = {
+                startActivity(Intent(requireContext(), TimeshareDetailActivity::class.java))
+            }
+            it.onFavoriteClick = {
+                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun setAutoScroll() {
+        // Auto Scroll
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
+    }
+
+
+    // Hanlde click event
     private fun setSearchComponentClickEvent() {
       binding.let {
           // Location Click Event
@@ -147,138 +288,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
       }
     }
 
-    private fun initAdapter() {
-        // List Timesahre Recomend
-        binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvSuggestTimeshare.adapter = timeshareAdapter
-
-        // List Blog
-        binding.rcBlog.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rcBlog.adapter = blogAdapter
-
-        // List Resort Recomend MB
-        binding.vpResortHotelMb.let {
-            it.adapter = resortAdapterMB
-            it.clipToPadding = true
-            it.clipChildren = false
-            it.offscreenPageLimit = 5
-            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
-
-
-
-
-        }
-        // List Resort Recomend MT
-        binding.vpResortHotelMt.let {
-            it.adapter = resortAdapterMT
-            it.clipToPadding = true
-            it.clipChildren = false
-            it.offscreenPageLimit = 5
-            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
-
-        }
-        // List Resort Recomend MN
-        binding.vpResortHotelMn.let {
-            it.adapter = resortAdapterMN
-            it.clipToPadding = true
-            it.clipChildren = false
-            it.offscreenPageLimit = 5
-            it.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_ALWAYS
-        }
-
-        // List Destination
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    return when (position ) {
-                        0 -> SpannedGridLayoutManager.SpanInfo(2, 1)
-                        1 -> SpannedGridLayoutManager.SpanInfo(1, 2)
-                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        4 -> SpannedGridLayoutManager.SpanInfo(1, 2)
-                        5 -> SpannedGridLayoutManager.SpanInfo(2, 1)
-                        6 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        7 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        else -> {
-                            SpannedGridLayoutManager.SpanInfo(1, 1)
-                        }
-                    }
-                }
-            },
-            3,  // number of columns
-            1f // how big is default item
-        )
-        binding.rvTouristDestination.let {
-            it.adapter = gridAdapter
-            it.layoutManager = manager
-        }
-
-    }
-
-    private fun setAutoScroll() {
-        // Auto Scroll
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
-    }
-
-    private fun setItemResortClickListener() {
-        resortAdapterMB.let {
-            it.onItemClick = {
-                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
-            }
-
-            it.onFavoriteClick = {
-                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
-            }
-        }
-        resortAdapterMT.let {
-            it.onItemClick = {
-                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
-            }
-            it.onFavoriteClick = {
-                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
-            }
-        }
-        resortAdapterMN.let {
-            it.onItemClick = {
-                startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
-            }
-
-            it.onFavoriteClick = {
-                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
-            }
-        }
-        timeshareAdapter.let {
-            it.onItemClick = {
-                startActivity(Intent(requireContext(), TimeshareDetailActivity::class.java))
-            }
-            it.onFavoriteClick = {
-                Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun observerSearchComponent() {
-        // Quan sát các giá trị từ ViewModel
-        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
-            // Cập nhật giao diện với số phòng
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
-        })
-
-        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
-            // Cập nhật giao diện với số người lớn
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
-        })
-
-        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
-            // Cập nhật giao diện với số trẻ em
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
-        })
-
-
-    }
 
     override fun onPause() {
         super.onPause()

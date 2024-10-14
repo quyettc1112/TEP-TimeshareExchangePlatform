@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.API.Service.AuthAPIService
+package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
