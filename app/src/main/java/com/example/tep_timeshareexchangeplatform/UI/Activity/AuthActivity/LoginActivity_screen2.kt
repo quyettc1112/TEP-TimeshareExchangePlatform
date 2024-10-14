@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintSet.Motion
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -12,6 +14,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.LoginResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthViewModel.AuthViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityLoginScreen2Binding
@@ -76,7 +80,14 @@ class LoginActivity_screen2 : BaseActivity() {
         // Handle login success, e.g., save tokens, navigate to another screen
         val accessToken = loginResponse.accessToken
         val refreshToken = loginResponse.refreshToken
-        Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show()
+        MotionToast.Companion.createColorToast(this,
+            "${getString(R.string.success_login)}",
+            "${getString(R.string.success_login_description)}",
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_thin));
+
     }
 
     // Call loginProcess() function when user click on login button
@@ -84,7 +95,17 @@ class LoginActivity_screen2 : BaseActivity() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
         if (email.isEmpty() || password.isEmpty()) {
-            showErrorDialog(getString(R.string.error_empty_email_password), "Quay lại")
+
+            MotionToast.Companion.createColorToast(this,
+                "${getString(R.string.error_empty_email_password)}",
+                "",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(this, R.font.inter_thin));
+
+
+           // showErrorDialog(getString(R.string.error_empty_email_password), "Quay lại")
             return
         }
         val loginDTO = LoginDTO(email, password)

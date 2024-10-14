@@ -33,6 +33,10 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="error_empty_email_password">Cần nhập đầy đủ thông tin đăng nhập</string>
     <string name="error_unknown">Có lỗi bất thường xảy ra</string>
 
+    // Success Log
+    <string name="success_login">Đăng nhập thành công</string>
+    <string name="success_login_description">Chào mừng bạn đến với TEP</string>
+
 
 
 

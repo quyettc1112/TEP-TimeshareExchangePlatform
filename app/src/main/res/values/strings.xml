@@ -34,6 +34,9 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="error_empty_email_password">Full login information required</string>
     <string name="error_unknown">An unusual error occurred.</string>
 
+    // Success Log
+    <string name="success_login">Loggin successfully</string>
+    <string name="success_login_description">Welcome back!</string>
 
 
 
