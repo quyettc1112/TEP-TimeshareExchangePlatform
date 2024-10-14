@@ -17,17 +17,7 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
     var onButtonBookClick: ((ResortDetailModel.UnitTypeDto) -> Unit)? = null
 
     inner class RoomTypeViewHolder(binding: ItemResortRoomTypeBinding): BaseItemViewHolderCF<ResortDetailModel.UnitTypeDto, ItemResortRoomTypeBinding> (binding) {
-       /* override fun bind(item: RoomTypeModel) {
-            binding.apply {
-               tvRoomName.text = item.roomName
-                Glide.with(itemView)
-                    .load(item.image)
-                    .into(imRoomTypeImage)
-                showDetailInfoVisibility(showFullInfo)
-            }
 
-
-        }*/
         fun showDetailInfoVisibility(isShow: Boolean) {
             binding.apply {
                 if (isShow) {
@@ -48,7 +38,7 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
                 Glide.with(itemView)
                     .load(R.drawable.im_matiral_timeshare)
                     .into(imRoomTypeImage)
-                showDetailInfoVisibility(false)
+                showDetailInfoVisibility(showFullInfo)
 
                 // Bathroom
                 tvNumBathroom.text = item.bathrooms.toString()
@@ -72,6 +62,9 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
                 binding.btnViewRoom.setOnClickListener {
                     onButtonBookClick?.invoke(item)
                 }
+
+                // Hide Price
+                binding.tvPrice.visibility = ViewGroup.GONE
             }
         }
     }

@@ -166,6 +166,12 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
+    private fun bindDataUnitTypeDetail(resortDetailModel: ResortDetailModel) {
+
+
+
+    }
+
     private fun setListImageResort() {
         // List Destination
         val manager = SpannedGridLayoutManager(

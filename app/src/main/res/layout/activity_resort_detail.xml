@@ -227,6 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
                         android:layout_weight="9"
+                        android:text="Đã xác thực và Đảm bảo bởi Unwind"
                         android:fontFamily="@font/inter_light"
                         android:maxLines="2"
                         android:paddingStart="5dp"
