@@ -71,9 +71,6 @@ class ResortDetailActivity : BaseActivity() {
             startActivity(intent)
         }
 
-
-
-
     }
 
     private fun observeData() {
