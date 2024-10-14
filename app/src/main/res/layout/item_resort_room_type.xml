@@ -46,7 +46,6 @@
             android:layout_marginStart="5dp"
             android:fontFamily="@font/inter_bold"
             android:maxLines="1"
-            android:text="Phòng Studio King"
             android:textColor="@color/black"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,15 +79,16 @@
                     android:src="@drawable/ic_bathtub" />
 
                 <TextView
+                    android:id="@+id/tv_num_bathroom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="1"
+
                     android:textSize="14dp" />
 
                 <TextView
-                    android:id="@+id/tv_location"
+                    android:id="@+id/tv_bathroom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -114,14 +114,15 @@
                     android:src="@drawable/ic_bedroom" />
 
                 <TextView
+                    android:id="@+id/tv_num_bed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="1"
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/tv_bed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -147,14 +148,15 @@
                     android:src="@drawable/ic_kitchen" />
 
                 <TextView
+                    android:id="@+id/tv_num_kitchen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="1"
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/tv_kitchen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -180,11 +182,11 @@
                     android:src="@drawable/ic_person" />
 
                 <TextView
+                    android:id="@+id/tv_num_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="2"
                     android:textSize="14dp" />
 
                 <TextView

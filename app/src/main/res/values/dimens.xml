@@ -11,5 +11,6 @@
     <dimen name="dimen_48">48dp</dimen>
     <dimen name="dimen_64">64dp</dimen>
     <dimen name="dimen_72">72dp</dimen>
+    <dimen name="unit_type_height">300dp</dimen>
 
 </resources>

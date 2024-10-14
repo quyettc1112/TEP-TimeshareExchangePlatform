@@ -23,7 +23,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Loca
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.AmenitiesAdaper
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.ImageUploadAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimeshareBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -36,7 +36,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private lateinit var binding: FragmentCreateTimeshareBinding
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
-    private var roomTypeAdapter = RoomTypeAdapter(false)
+    private var unitTypeAdapter = UnitTypeAdapter(false)
     private var amenitiesAdapter = AmenitiesAdaper()
     private var amenitiesEntertamentAdapter = AmenitiesAdaper()
     private var imageUploadAdapter = ImageUploadAdapter()
@@ -71,7 +71,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
     private fun initAdapter() {
-        roomTypeAdapter.submitList(Constant.listRoomType)
+        unitTypeAdapter.submitList(listOf())
         amenitiesAdapter.submitList(Constant.listAmenities)
         amenitiesEntertamentAdapter.submitList(Constant.listEntertament)
         policyAmentitiesAdapter.submitList(Constant.listPolicy)
@@ -162,7 +162,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         // Set Unit Type
         binding.rvBedType.apply {
-            adapter = roomTypeAdapter
+            adapter = unitTypeAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 

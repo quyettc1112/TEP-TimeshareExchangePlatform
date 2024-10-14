@@ -38,6 +38,10 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="success_login">Loggin successfully</string>
     <string name="success_login_description">Welcome back!</string>
 
+    // Resort Detail
+    <string name="bath">BathRoom</string>
+    <string name="bed">Bedroom</string>
+
 
 
     // Bottom Sheet Dialog

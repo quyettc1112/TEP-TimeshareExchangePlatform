@@ -24,11 +24,10 @@
         app:titleDetail="19/08 - 23/08  | 4 khách " />
 
     <!--// Resort Detail Scroll Container-->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customToolbar">
@@ -83,7 +82,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="Flamingo Dai Lai Resort"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +199,6 @@
                         android:fontFamily="@font/inter_light"
                         android:maxLines="2"
                         android:paddingStart="5dp"
-                        android:text="Đường Hồ Chí Minh, Phúc Yên, Vĩnh Phúc"
                         android:textSize="12sp" />
 
 
@@ -233,7 +230,6 @@
                         android:fontFamily="@font/inter_light"
                         android:maxLines="2"
                         android:paddingStart="5dp"
-                        android:text="Đã được xác minh bởi Unwind"
                         android:textSize="12sp" />
 
 
@@ -316,17 +312,20 @@
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--// Frame Layout Room Type-->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_resort_room_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:keepScreenOn="true"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-                    tools:layout_editor_absoluteX="20dp"
-                    tools:listitem="@layout/item_resort_room_type" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_resort_room_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+                        tools:listitem="@layout/item_resort_room_type" />
+
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -370,7 +369,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/inter_light"
-                    android:text="@string/description"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
                     tools:layout_editor_absoluteX="20dp" />
 
@@ -507,7 +505,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!--// Bottom Layout Container-->
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,6 +1,5 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
@@ -17,9 +17,8 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.FacilitieAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.RoomTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareListActivity.TimeshareListActivity
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 import com.google.android.flexbox.FlexDirection
@@ -32,7 +31,7 @@ class ResortDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResortDetailBinding
     private lateinit var resortImageListAdapter: ResortImageListAdapter
-    private var roomTypeAdapter = RoomTypeAdapter(true)
+    private var unitTypeAdapter = UnitTypeAdapter(true)
     private var facilitieAdapter = FacilitieAdapter()
     private var reviewAdapter = ReviewAdapter()
     private val resortDetailViewModel: ResortDetailViewModel by viewModels()
@@ -55,11 +54,13 @@ class ResortDetailActivity : BaseActivity() {
         } else {
             finish()
         }
-        // Observe Data
-        observeData()
 
         // Init Adapter
         initAdapter()
+
+        // Observe Data
+        observeData()
+
 
 
         // Not yet Implemented
@@ -85,7 +86,7 @@ class ResortDetailActivity : BaseActivity() {
                         bindDataResortInfo(resortDetailViewModel.resortDetail.value?.data!!)
 
                         setListImageResort()
-                        setRoomTypeListResort()
+                        bindDataUnitType(resortDetail.unitTypeDtoList)
                         setFacilitieListResort()
                         setReviewResort()
 
@@ -113,19 +114,19 @@ class ResortDetailActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        roomTypeAdapter.submitList(listOf())
+        unitTypeAdapter.submitList(listOf())
         facilitieAdapter.submitList(listOf())
         reviewAdapter.submitList(listOf())
     }
 
     private fun setTypeRoomClickAction() {
-        roomTypeAdapter.apply {
+        unitTypeAdapter.apply {
             onItemClick = {
                 val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
                 startActivity(intent)
             }
 
-            onButonBookClick = {
+            onButtonBookClick = {
                 val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
                 startActivity(intent)
             }
@@ -147,6 +148,14 @@ class ResortDetailActivity : BaseActivity() {
                 llVerify.visibility = View.GONE
                 tvFindMore.visibility = View.GONE
             }
+
+        }
+    }
+    private fun bindDataUnitType(resorts: List<ResortDetailModel.UnitTypeDto>) {
+        unitTypeAdapter.submitList(resorts)
+        binding.rvResortRoomType.apply {
+            adapter = unitTypeAdapter
+            layoutManager = LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -181,14 +190,6 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
-    private fun setRoomTypeListResort() {
-        binding.rvResortRoomType.apply {
-            adapter = roomTypeAdapter
-            layoutManager = LinearLayoutManager(this@ResortDetailActivity)
-        }
-
-
-    }
 
     private fun setFacilitieListResort() {
         val flexboxLayoutManager = FlexboxLayoutManager(this)
@@ -218,6 +219,17 @@ class ResortDetailActivity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    // Hàm để set chiều cao RecyclerView
+    fun setRecyclerViewHeightBasedOnItems(recyclerView: RecyclerView) {
+        val adapter = recyclerView.adapter ?: return
+        val itemHeight = resources.getDimensionPixelSize(R.dimen.unit_type_height) // Chiều cao mỗi item
+        val totalHeight = adapter.itemCount * itemHeight
+
+        recyclerView.layoutParams = recyclerView.layoutParams.apply {
+            height = totalHeight
+        }
     }
 
 
