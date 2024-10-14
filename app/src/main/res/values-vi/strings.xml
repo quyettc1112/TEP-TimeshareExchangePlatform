@@ -29,6 +29,14 @@ Sóng WiFi phủ khắp các khu vực chung của khách sạn cho
 phép quý khách luôn kết nối với gia đình và bè bạn.</string>
 
 
+    // Error Log
+    <string name="error_empty_email_password">Cần nhập đầy đủ thông tin đăng nhập</string>
+    <string name="error_unknown">Có lỗi bất thường xảy ra</string>
+
+
+
+
+
     // Bottom Sheet Dialog
     <string name="room">Phòng</string>
     <string name="adult">Người Lớn</string>

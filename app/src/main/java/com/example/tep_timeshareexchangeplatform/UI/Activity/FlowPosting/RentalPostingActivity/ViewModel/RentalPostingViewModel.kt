@@ -9,7 +9,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.PackageModel
 
 class RentalPostingViewModel: ViewModel() {
 
-    private val initStep: Int = 6
+    private val initStep: Int = 1
 
     // Tracking Progress Step
     private val _step = MutableLiveData<Int>()

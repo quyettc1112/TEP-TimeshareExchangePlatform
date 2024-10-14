@@ -3,5 +3,6 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 import androidx.lifecycle.ViewModel
 
 class AccountViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+
+
 }

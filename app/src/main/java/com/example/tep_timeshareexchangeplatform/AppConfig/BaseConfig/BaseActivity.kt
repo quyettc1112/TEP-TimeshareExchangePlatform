@@ -61,8 +61,8 @@ open class  BaseActivity : AppCompatActivity() {
         }
     }
 
-    open fun showErrorDialog(message: String) {
-        val errorDialog = ErrorDialog(this, message)
+    open fun showErrorDialog(message: String, textButton: String?) {
+        val errorDialog = ErrorDialog(this, message, textButton)
         errorDialog.show()
         errorDialog.window?.setGravity(Gravity.CENTER)
         errorDialog.window?.setLayout(

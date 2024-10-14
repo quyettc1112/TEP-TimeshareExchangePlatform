@@ -46,10 +46,10 @@ open class BaseFragment(view: Int) : Fragment(view) {
         showErrorMessage(message)
     }
 
-    protected fun showErrorMessage(message: String) {
+    protected fun showErrorMessage(message: String, textButton: String? = null) {
         val activity = requireActivity()
         if (activity is BaseActivity) {
-            activity.showErrorDialog(message)
+            activity.showErrorDialog(message, textButton)
         }
     }
 

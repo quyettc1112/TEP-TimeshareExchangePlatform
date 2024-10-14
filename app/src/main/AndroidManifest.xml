@@ -15,14 +15,12 @@
         android:label="Unwind"
         android:roundIcon="@drawable/logo_tep_app"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
             android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
             android:exported="false" />
-        <activity
-            android:name=".UI.Activity.FlowPosting.RentalPostingActivity.TestActivity"
-            android:exported="true" />
         <activity
             android:name=".UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
@@ -57,10 +55,10 @@
             android:name=".UI.Activity.ResortDetailActivity.ResortDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.LoginActivity.LoginActivity_screen2"
+            android:name=".UI.Activity.AuthActivity.LoginActivity_screen2"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.LoginActivity.LoginActivity"
+            android:name=".UI.Activity.AuthActivity.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.SplashActivity.SplashActivity"

@@ -1,23 +1,21 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.LoginActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.databinding.ActivityLoginScreen2Binding
+import com.example.tep_timeshareexchangeplatform.databinding.ActivityLoginBinding
 
-class LoginActivity_screen2 : BaseActivity() {
-
-    private lateinit var binding: ActivityLoginScreen2Binding
+class LoginActivity : BaseActivity() {
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        binding = ActivityLoginScreen2Binding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -25,10 +23,28 @@ class LoginActivity_screen2 : BaseActivity() {
             insets
         }
 
+        customToolbarEvent()
+        intentToAuth()
+    }
+    private fun customToolbarEvent() {
         binding.customToolbar.onStartIconClick = {
             finish()
         }
 
+    }
 
+    private fun intentToAuth() {
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity_screen2::class.java)
+            startActivity(intent)
+        }
+
+
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

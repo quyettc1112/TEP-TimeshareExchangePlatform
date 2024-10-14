@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.LoginActivity.LoginActivity_screen2">
+    tools:context=".UI.Activity.AuthActivity.LoginActivity_screen2">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
@@ -79,6 +79,7 @@
                     android:background="@drawable/background_stroke_around"
                     android:drawableStart="@drawable/ic_email_30px"
                     android:drawablePadding="12dp"
+                    android:maxLines="1"
                     android:ems="10"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
@@ -95,6 +96,7 @@
                     android:drawableStart="@drawable/ic_password_30px"
                     android:drawablePadding="12dp"
                     android:ems="10"
+                    android:maxLines="1"
                     android:hint="Mật Khẩu"
                     android:inputType="textPassword"
                     android:paddingStart="16dp"

@@ -30,6 +30,12 @@ luôn sẵn sàng hỗ trợ quý khách.
 Sóng WiFi phủ khắp các khu vực chung của khách sạn cho
 phép quý khách luôn kết nối với gia đình và bè bạn.</string>
 
+    // Error Log
+    <string name="error_empty_email_password">Full login information required</string>
+    <string name="error_unknown">An unusual error occurred.</string>
+
+
+
 
     // Bottom Sheet Dialog
     <string name="room">Room</string>
