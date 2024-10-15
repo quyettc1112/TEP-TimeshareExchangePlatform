@@ -122,6 +122,10 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
         <item>Hủy trước 24 giờ</item>
         <item>Không hoàn tiền</item>
     </string-array>
+    <string name="title_activity_transcation" translatable="false">TranscationActivity</string>
+    <string name="tab_text_1" translatable="false">Tất Cả</string>
+    <string name="tab_text_2" translatable="false">Thanh Toán</string>
+    <string name="tab_text_3" translatable="false">Rút Tiền</string>
 
 
 </resources>

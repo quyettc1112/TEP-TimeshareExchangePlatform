@@ -2,19 +2,20 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TEPTimeshareExchangePlatform" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/white</item>
-        <item name="android:windowLightStatusBar">true</item> <!-- Điều này sẽ làm cho các biểu tượng và văn bản màu đen -->
+        <item name="android:windowLightStatusBar">true
+        </item> <!-- Điều này sẽ làm cho các biểu tượng và văn bản màu đen -->
     </style>
 
     <style name="MyBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
         <!-- Customize colors, shapes, etc. here -->
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent
+        </item>
         <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
     </style>
 
 
-
-
     <style name="Theme.TEPTimeshareExchangePlatform.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="Theme.TEPTimeshareExchangePlatform.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
@@ -26,6 +27,14 @@
         <item name="windowMinWidthMinor">90%</item>
     </style>
 
+    <style name="Base.Theme.TEPTimeshareExchangePlatform.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Base.Theme.TEPTimeshareExchangePlatform.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Base.Theme.TEPTimeshareExchangePlatform.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Pa
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTransactionModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.RoomTypeModel
@@ -911,9 +912,53 @@ class Constant {
                 isVerify = true,
                 isPriceDemand = false
             )
+        )
 
 
+        val myTransactionList = listOf(
+            MyTransactionModel(
+                transactionID = "12412441",
+                recipientName = "Unwind",
+                paymentMethod = "Ví Thanh Toán",
+                transactionType = "Chuyển Tiền/Thanh toán Gói Tháng",
+                transactionTime = "08:00 23-08-2024",
+                walletBalance = "*******",
+                transactionAmount = "-1,000,000 VND",
+                type = 1
+            ),
 
+            MyTransactionModel(
+                transactionID = "98457392",
+                recipientName = "Cương Quyết",
+                paymentMethod = "Ngân Hàng",
+                transactionType = "Chuyển Tiền/Thanh toán Membership",
+                transactionTime = "08:00 15-10-2024",
+                walletBalance = "*******",
+                transactionAmount = "-3,500,000 VND",
+                type = 1
+            ),
+
+            MyTransactionModel(
+                transactionID = "58234987",
+                recipientName = "Cương Quyết",
+                paymentMethod = "Ví Thanh Toán",
+                transactionType = "Rút Tiền về vi của",
+                transactionTime = "08:00 05-11-2024",
+                walletBalance = "*******",
+                transactionAmount = "+5,000,000 VND",
+                type = 2
+            ),
+
+            MyTransactionModel(
+                transactionID = "76342890",
+                recipientName = "Unwind",
+                paymentMethod = "Ví Thanh Toán",
+                transactionType = "Rút Tiền về vi của",
+                transactionTime = "08:00 20-12-2024",
+                walletBalance = "*******",
+                transactionAmount = "+7,200,000 VND",
+                type = 2
+            ),
         )
     }
 }
