@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/primary_background_F9"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Activity.UserActivity.PricingSupportActivity.PricingSupportActivity">
+
+
+    <!--// Custom Toolbar-->
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/customToolbar5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:title="Hỗ Trợ Định Giá"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showStartText="false" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout13"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/customToolbar5">
+
+        <!--// Room Info-->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView6"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- // Image-->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialCardView"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="10dp"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/yellow_stroke_image"
+                    app:strokeWidth="1dp">
+
+                    <ImageView
+                        android:id="@+id/im_imageTimeshare"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/im_matiral_timeshare" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <!--// Room Info-->
+                <LinearLayout
+                    android:id="@+id/linearLayout17"
+                    android:layout_width="0dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!--// Resort name-->
+                    <TextView
+                        android:id="@+id/tv_resortName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semibold"
+                        android:maxLines="1"
+                        android:text="Flamingo Đại Lải "
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/tv_roomName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:gravity="top"
+                        android:maxLines="2"
+                        android:text="Phòng King 3 giường ngủ, 1 Phòng bếp, 1 Phòng khách"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
+
+                <!--// Staff Info-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout17">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_user_default_avt"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <!--// Staff Name-->
+                    <TextView
+                        android:id="@+id/tv_staff_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Nhân Viên: Nguyễn Văn A"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+
+                    <!--// Staff Phone-->
+                    <TextView
+                        android:id="@+id/tv_staff_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="SĐT: 0987654321"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_staff_name" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView6">
+
+            <!-- Mức giá đề xuất -->
+            <TextView
+                android:id="@+id/tv_price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Mức giá đề xuất cho bạn"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <!-- Layout ngang chứa phần tiền tệ và trường nhập giá -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Phần chứa chữ VNĐ với nền xanh -->
+                <TextView
+                    android:id="@+id/tv_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_dropdown_dark_frame"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="VNĐ"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <!-- Trường nhập giá -->
+                <EditText
+                    android:id="@+id/et_price_input"
+                    android:layout_width="0dp"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_stroke_around"
+                    android:hint="Nhập giá"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Ghi chú -->
+            <TextView
+                android:id="@+id/tv_note_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Ghi chú"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_note"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@android:drawable/edit_text"
+                android:gravity="top"
+                android:enabled="false"
+                android:hint="Nhập ghi chú"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Nút Thay Đổi Mức Giá -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_change_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect_white"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:text="Thay Đổi Mức Giá"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <!-- Nút Chấp Nhận Mức Giá -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_accept_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/ripple_effect_white"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:padding="12dp"
+            android:text="Chấp Nhận Mức Giá"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
