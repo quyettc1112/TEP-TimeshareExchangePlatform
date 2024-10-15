@@ -33,6 +33,9 @@ class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingV
             binding.tvPackageName.text = item.packageName
             binding.tvDuration.text = item.packageDuration
 
+            // Price Demand
+            binding.btnAcceptPrice.visibility = if (item.isPriceDemand) View.VISIBLE else View.GONE
+
 
             // Hide Unused Info
             binding.tvNumberOfNight.visibility = View.GONE

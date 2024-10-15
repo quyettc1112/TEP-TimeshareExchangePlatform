@@ -872,7 +872,8 @@ class Constant {
                 priceRange = "1.000.000 - 3.000.000 VND",
                 packageName = "Gói Cơ Bản - 1 ",
                 packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = false
+                isVerify = false,
+                isPriceDemand = false
             ),
             MyPostingModel(
                 id = 2,
@@ -883,7 +884,8 @@ class Constant {
                 priceRange = "1.000.000 - 3.000.000 VND",
                 packageName = "Gói Nâng Cao - 2 ",
                 packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true
+                isVerify = true,
+                isPriceDemand = false
             ),
             MyPostingModel(
                 id = 3,
@@ -894,7 +896,8 @@ class Constant {
                 priceRange = "Đang Chờ Định Giá",
                 packageName = "Gói Premium - 3 ",
                 packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true
+                isVerify = true,
+                isPriceDemand = true
             ),
             MyPostingModel(
                 id = 4,
@@ -905,7 +908,8 @@ class Constant {
                 priceRange = "1.000.000 - 3.000.000 VND",
                 packageName = "Gói Ủy Quyền - 4",
                 packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true
+                isVerify = true,
+                isPriceDemand = false
             )
 
 

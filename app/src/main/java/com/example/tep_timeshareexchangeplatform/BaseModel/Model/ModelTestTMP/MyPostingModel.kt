@@ -9,5 +9,6 @@ data class MyPostingModel(
     val priceRange: String, // Số đêm (4 đêm)
     val packageName: String,        // Tên gói đăng bài (Gói Nâng Cao - 2)
     val packageDuration: String,    // Thời hạn gói (11/09/2024 - 11/03/2025)
-    val isVerify: Boolean
+    val isVerify: Boolean,
+    val isPriceDemand: Boolean
 )
