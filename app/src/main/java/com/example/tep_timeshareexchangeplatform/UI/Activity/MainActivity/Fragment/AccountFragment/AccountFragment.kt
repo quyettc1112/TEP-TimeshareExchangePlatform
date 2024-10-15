@@ -15,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Memb
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
@@ -68,6 +69,9 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
             // Bài Đăng của tôi
             llMyPosting.setOnClickListener {startActivity(Intent(requireContext(), MyPostingActivity::class.java))}
+
+            // Giao dịch của tôi
+            llMyTransaction.setOnClickListener { startActivity(Intent(requireContext(), MyTransactionActivity::class.java)) }
         }
 
     }

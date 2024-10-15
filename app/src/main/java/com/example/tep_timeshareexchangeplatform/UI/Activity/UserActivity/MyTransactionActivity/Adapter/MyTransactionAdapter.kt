@@ -10,6 +10,9 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTransactionBinding
 
 class MyTransactionAdapter : BaseAdapter<MyTransactionModel, MyTransactionAdapter.MyTransactionViewHolder>() {
+
+    var onItemClick: ((MyTransactionModel) -> Unit)? = null
+
     inner class MyTransactionViewHolder(binding: ItemTransactionBinding)
         : BaseItemViewHolderCF<MyTransactionModel, ItemTransactionBinding>(binding) {
         override fun bind(item: MyTransactionModel) {
@@ -36,6 +39,10 @@ class MyTransactionAdapter : BaseAdapter<MyTransactionModel, MyTransactionAdapte
 
             // Set Payment Method
             binding.tvTransactionType.text = item.paymentMethod
+
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
 
 
         }

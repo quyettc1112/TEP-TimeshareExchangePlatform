@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTransactionModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Adapter.MyTransactionAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.TransactionType
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTranscationBinding
 
@@ -51,6 +53,9 @@ class PlaceholderFragment : Fragment() {
             }
         }
         myTransactionAdapter.submitList(filteredTransactions)
+        myTransactionAdapter.onItemClick = {
+            startActivity(Intent(context, MyTransactionDetailActivity::class.java))
+        }
     }
 
     override fun onCreateView(
@@ -66,7 +71,6 @@ class PlaceholderFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
         }
-
 
 
         return root
