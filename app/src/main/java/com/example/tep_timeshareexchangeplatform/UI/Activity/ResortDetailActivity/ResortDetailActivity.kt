@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
@@ -120,13 +121,11 @@ class ResortDetailActivity : BaseActivity() {
     private fun setTypeRoomClickAction() {
         unitTypeAdapter.apply {
             onItemClick = {
-                val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
-                startActivity(intent)
+                bindDataUnitTypeDetailDialog(resortDetailViewModel.resortDetail.value?.data!!)
             }
 
             onButtonBookClick = {
-                val intent = Intent(this@ResortDetailActivity, TimeshareListActivity::class.java)
-                startActivity(intent)
+                bindDataUnitTypeDetailDialog(resortDetailViewModel.resortDetail.value?.data!!)
             }
         }
 
@@ -166,8 +165,9 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindDataUnitTypeDetail(resortDetailModel: ResortDetailModel) {
-
+    private fun bindDataUnitTypeDetailDialog(resortDetailModel: ResortDetailModel) {
+        val resortDetailDialog = CustomDialog(this)
+        resortDetailDialog.show()
 
 
     }

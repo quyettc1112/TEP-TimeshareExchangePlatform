@@ -9,34 +9,21 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity">
 
-    <!--// Custom Toolbar-->
-    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:title="Flamingo Đại Lải | Studio King"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showTitleDetail="false"
-        app:showStartText="false" />
-
     <!--// Timeshare Detail-->
     <ScrollView
-        android:visibility="visible"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/customToolbar">
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--// Layout Container for Timeshare Detail-->
         <LinearLayout
-            android:background="@color/primary_background_F9"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/primary_background_F9"
+            android:orientation="vertical">
 
             <!--// Timeshare Detail Image-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,9 +33,9 @@
                 <!--// Image List-->
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"
-                    android:maxWidth="360dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:maxWidth="360dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -58,8 +45,8 @@
                     android:id="@+id/indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/viewPager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -91,13 +78,13 @@
 
             <!--// Resort Info and Map-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:paddingStart="20dp"
+                android:paddingTop="10dp"
                 android:paddingEnd="20dp"
-                android:paddingBottom="10dp"
-                android:layout_height="wrap_content">
+                android:paddingBottom="10dp">
 
                 <!--// Resort Name-->
                 <TextView
@@ -112,19 +99,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <!--// Type Room-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/white"
-                android:layout_marginTop="2dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
 
                 <!--// Resort Info-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -343,11 +328,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:background="@color/white"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white">
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout7"
@@ -372,15 +357,15 @@
                 <!--// Frame Layout Facilities-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_resort_facilities"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
                     android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
                     tools:layout_editor_absoluteX="20dp"
-                    tools:listitem="@layout/item_facilitie"/>
+                    tools:listitem="@layout/item_facilitie" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -389,11 +374,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:background="@color/white"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white">
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout8"
@@ -417,50 +402,53 @@
 
                 <!--// Room Terms-->
                 <com.google.android.flexbox.FlexboxLayout
-                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
                     <LinearLayout
-                        android:layout_marginEnd="20dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_no_pet"/>
+                            android:src="@drawable/ic_no_pet" />
+
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cấm vật nuôi"/>
+                            android:layout_marginTop="5dp"
+                            android:text="Cấm vật nuôi" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginEnd="10dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_no_smooking"/>
+                            android:src="@drawable/ic_no_smooking" />
+
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cấm hút thuốc"/>
+                            android:layout_marginTop="5dp"
+                            android:text="Cấm hút thuốc" />
 
                     </LinearLayout>
 
                 </com.google.android.flexbox.FlexboxLayout>
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -470,11 +458,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:background="@color/white"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white">
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout9"
@@ -498,27 +486,23 @@
 
                 <!--// Cancel Policy Content-->
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/inter_light"
                     android:text="Không có chính sách hủy"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
 
 
-
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <!--// Do Nothing-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
         </LinearLayout>
     </ScrollView>
