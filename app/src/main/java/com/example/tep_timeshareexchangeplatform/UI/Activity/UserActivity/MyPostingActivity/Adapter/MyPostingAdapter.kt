@@ -12,7 +12,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBindin
 class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingViewHolder>() {
 
     var onItemClick: ((MyPostingModel) -> Unit)? = null
-
+    var onItemPricingClick: ((MyPostingModel) -> Unit)? = null
     inner class MyPostingViewHolder(binding : ItemMyPostingBinding)
         : BaseItemViewHolderCF<MyPostingModel, ItemMyPostingBinding> (binding) {
         override fun bind(item: MyPostingModel) {
@@ -46,6 +46,10 @@ class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingV
 
             // Event Click
             binding.btnAcceptPrice.setOnClickListener {
+                onItemPricingClick?.invoke(item)
+            }
+
+            binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
         }

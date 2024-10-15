@@ -30,6 +30,10 @@ class PricingSupportActivity : BaseActivity() {
             showPriceSupport()
         }
 
+        binding.customToolbar5.onStartIconClick = {
+            finish()
+        }
+
 
 
     }

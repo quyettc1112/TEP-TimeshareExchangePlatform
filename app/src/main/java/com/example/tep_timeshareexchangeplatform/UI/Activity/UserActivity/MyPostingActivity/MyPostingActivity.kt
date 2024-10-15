@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter.MyPostingAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity.PricingSupportActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,10 @@ class MyPostingActivity : BaseActivity() {
     private fun innitAdapter() {
         myPostingAdapter.submitList(Constant.listMyPosting)
         myPostingAdapter.onItemClick = {
+            startActivity(Intent(this, MyPostingDetailActivity::class.java))
+        }
+
+        myPostingAdapter.onItemPricingClick = {
             startActivity(Intent(this, PricingSupportActivity::class.java))
         }
     }
