@@ -10,6 +10,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.My
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 
 class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingViewHolder>() {
+
+    var onItemClick: ((MyPostingModel) -> Unit)? = null
+
     inner class MyPostingViewHolder(binding : ItemMyPostingBinding)
         : BaseItemViewHolderCF<MyPostingModel, ItemMyPostingBinding> (binding) {
         override fun bind(item: MyPostingModel) {
@@ -39,6 +42,12 @@ class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingV
 
             // Hide Unused Info
             binding.tvNumberOfNight.visibility = View.GONE
+
+
+            // Event Click
+            binding.btnAcceptPrice.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
         }
 
     }

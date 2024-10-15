@@ -19,7 +19,10 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.UserActivity.PricingSupportActivity.PricingSupportActivity"
+            android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity.PricingSupportActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"

@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginA
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
@@ -62,7 +63,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             // Xem List Order
             llMyOrder.setOnClickListener {startActivity(Intent(requireContext(), MyOrderActivity::class.java))}
 
+            // Hỗ trợ
             llHelpCenter.setOnClickListener { startActivity(Intent(requireContext(), MemberShipActivity::class.java)) }
+
+            // Bài Đăng của tôi
+            llMyPosting.setOnClickListener {startActivity(Intent(requireContext(), MyPostingActivity::class.java))}
         }
 
     }

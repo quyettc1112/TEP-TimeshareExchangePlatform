@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.PricingSupportActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity
 
 import android.app.AlertDialog
 import android.os.Bundle
