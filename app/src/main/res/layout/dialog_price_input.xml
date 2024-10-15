@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Nhập mức giá bạn mong muốn -->
+    <TextView
+        android:id="@+id/tv_price_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhập mức giá bạn mong muốn"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Layout chứa phần tiền tệ và trường nhập giá -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Phần chứa chữ VNĐ với nền xanh -->
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VNĐ"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:textColor="@android:color/white"
+            android:background="@android:drawable/editbox_dropdown_dark_frame"/>
+
+        <!-- Trường nhập giá -->
+        <EditText
+            android:id="@+id/et_price_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nhập giá"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- Nút Chấp Nhận Mức Giá -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_accept_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chấp Nhận Mức Giá"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:background="@drawable/ripple_effect_white"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>
