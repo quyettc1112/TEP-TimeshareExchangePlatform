@@ -9,6 +9,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.In
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
@@ -861,5 +862,54 @@ class Constant {
             ),
             )
 
+        val listMyPosting = listOf(
+            MyPostingModel(
+                id = 1,
+                name = "Flamingo Đại Lải",
+                roomName = "Phòng Studio King, 1 Giường, 4 Người",
+                location = "Thành Phố Hồ Chí Minh, Việt Nam",
+                stayDates = "18/08/2024 - 23/08/2024",
+                priceRange = "1.000.000 - 3.000.000 VND",
+                packageName = "Gói Cơ Bản - 1 ",
+                packageDuration = "11/09/2024 - 11/03/2025",
+                isVerify = false
+            ),
+            MyPostingModel(
+                id = 2,
+                name = "Vinpearl Nha Trang",
+                roomName = "Biệt thự 3 phòng ngủ, hướng biển",
+                location = "Thành Phố Hồ Chí Minh, Việt Nam",
+                stayDates = "10/10/2024 - 15/10/2024",
+                priceRange = "1.000.000 - 3.000.000 VND",
+                packageName = "Gói Nâng Cao - 2 ",
+                packageDuration = "11/09/2024 - 11/03/2025",
+                isVerify = true
+            ),
+            MyPostingModel(
+                id = 3,
+                name = "InterContinental Phú Quốc",
+                roomName = "Phòng Suite với ban công và hướng biển",
+                location = "Thành Phố Hồ Chí Minh, Việt Nam",
+                stayDates = "01/11/2024 - 05/11/2024",
+                priceRange = "Đang Chờ Định Giá",
+                packageName = "Gói Premium - 3 ",
+                packageDuration = "11/09/2024 - 11/03/2025",
+                isVerify = true
+            ),
+            MyPostingModel(
+                id = 4,
+                name = "InterContinental Phú Quốc",
+                roomName = "Phòng Suite với ban công và hướng biển",
+                location = "Thành Phố Hồ Chí Minh, Việt Nam",
+                stayDates = "01/11/2024 - 05/11/2024",
+                priceRange = "1.000.000 - 3.000.000 VND",
+                packageName = "Gói Ủy Quyền - 4",
+                packageDuration = "11/09/2024 - 11/03/2025",
+                isVerify = true
+            )
+
+
+
+        )
     }
 }

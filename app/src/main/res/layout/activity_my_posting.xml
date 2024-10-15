@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity">
 
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="Đăng Bài Của Tôi"
+        app:showStartText="false"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <!--// Filter-->
     <LinearLayout
         android:id="@+id/linearLayout15"
@@ -16,7 +24,7 @@
         android:weightSum="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
 
         <EditText
             android:id="@+id/search_input"
@@ -43,12 +51,13 @@
 
     <!--// List of My Posting-->
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_my_posting"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:paddingTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="120dp"
         tools:listitem="@layout/item_my_posting"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15" />

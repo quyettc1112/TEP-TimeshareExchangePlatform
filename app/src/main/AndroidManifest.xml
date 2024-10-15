@@ -20,7 +20,7 @@
         tools:targetApi="31">
         <activity
             android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />

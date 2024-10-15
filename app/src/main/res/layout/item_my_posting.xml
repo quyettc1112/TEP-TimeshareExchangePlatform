@@ -41,7 +41,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="75dp"
             android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/inter_bold"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="Flamingo Đại Lải"
                 android:textColor="@color/black"
                 android:textSize="16dp"
@@ -111,11 +111,12 @@
                         android:src="@drawable/ic_room_ts" />
 
                     <TextView
-                        android:id="@+id/tv_room"
+                        android:id="@+id/tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:gravity="center|left"
+                        android:fontFamily="@font/inter_extrabold"
                         android:maxLines="1"
                         android:text="123 Timeshare cho thuê có sẵn"
                         android:textSize="12dp" />
@@ -393,7 +394,7 @@
             android:layout_marginTop="35dp"
             android:background="@drawable/ripple_effect_white"
             android:fontFamily="@font/inter_bold"
-            android:text="Xem thêm...."
+            android:text="Ẩn Bài Đăng"
             android:textAllCaps="false"
             android:textColor="@color/primary_background"
             android:textSize="20dp"

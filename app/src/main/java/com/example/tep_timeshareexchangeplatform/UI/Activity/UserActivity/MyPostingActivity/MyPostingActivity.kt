@@ -6,8 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter.MyPostingAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +20,8 @@ class MyPostingActivity : BaseActivity() {
 
 
     private val viewModel: MyPostingViewModel by viewModels()
+
+    private var myPostingAdapter = MyPostingAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,5 +33,24 @@ class MyPostingActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        innitAdapter()
+        bindDataMyPostingList()
+
+    }
+    private fun innitAdapter() {
+        myPostingAdapter.submitList(Constant.listMyPosting)
+    }
+
+    private fun bindDataMyPostingList() {
+        binding.rvMyPosting.apply {
+            adapter = myPostingAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@MyPostingActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
