@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort
 
 
 import android.os.Parcel
@@ -6,7 +6,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 
-data class ResortModel(
+data class ResortModelResponse(
     @SerializedName("content") val content: List<Content>,
     @SerializedName("pageable") val pageable: Pageable,
     @SerializedName("last") val last: Boolean,

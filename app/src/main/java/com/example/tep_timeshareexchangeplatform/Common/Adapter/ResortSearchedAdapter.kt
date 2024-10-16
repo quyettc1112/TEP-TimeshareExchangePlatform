@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemLocationSearchedBinding
 
-class ResortSearchedAdapter : BaseAdapter<ResortModel.Content, ResortSearchedAdapter.ResortSearchedViewHolder>(){
+class ResortSearchedAdapter : BaseAdapter<ResortModelResponse.Content, ResortSearchedAdapter.ResortSearchedViewHolder>(){
 
     // Store the original unfiltered list
     inner class ResortSearchedViewHolder(binding: ItemLocationSearchedBinding) :
-        BaseItemViewHolderCF<ResortModel.Content, ItemLocationSearchedBinding>(binding) {
-        override fun bind(item: ResortModel.Content) {
+        BaseItemViewHolderCF<ResortModelResponse.Content, ItemLocationSearchedBinding>(binding) {
+        override fun bind(item: ResortModelResponse.Content) {
             binding.apply {
                 Glide.with(itemView)
                     .load(item.logo)
@@ -31,13 +31,13 @@ class ResortSearchedAdapter : BaseAdapter<ResortModel.Content, ResortSearchedAda
     }
 
     // DiffUtil callback for differ
-    override fun differCallBack(): DiffUtil.ItemCallback<ResortModel.Content> {
-        return object : DiffUtil.ItemCallback<ResortModel.Content>() {
-            override fun areItemsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<ResortModelResponse.Content> {
+        return object : DiffUtil.ItemCallback<ResortModelResponse.Content>() {
+            override fun areItemsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
+            override fun areContentsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem == newItem
             }
         }

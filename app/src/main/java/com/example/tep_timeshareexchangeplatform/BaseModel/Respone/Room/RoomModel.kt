@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Room
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room
 
 
 import com.google.gson.annotations.SerializedName

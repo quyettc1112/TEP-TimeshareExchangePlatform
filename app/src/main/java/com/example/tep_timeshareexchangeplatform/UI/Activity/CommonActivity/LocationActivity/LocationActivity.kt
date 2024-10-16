@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortSearchedAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -209,7 +209,7 @@ class LocationActivity : BaseActivity() {
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-    private fun intentExtraValueToPostingFlow(content: ResortModel.Content) {
+    private fun intentExtraValueToPostingFlow(content: ResortModelResponse.Content) {
         val intent = Intent()
         // Replace "locationName" with the actual selected location
         intent.putExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION, content)

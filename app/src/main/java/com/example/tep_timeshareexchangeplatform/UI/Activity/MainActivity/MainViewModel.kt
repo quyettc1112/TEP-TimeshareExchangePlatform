@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.User.UserJWTPayloadModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 @HiltViewModel

@@ -4,18 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
 
-class ResortAdapter: BaseAdapter<ResortModel.Content, ResortAdapter.ResortViewHolder>() {
+class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.ResortViewHolder>() {
 
-    var onItemClick: ((ResortModel.Content) -> Unit)? = null
-    var onFavoriteClick: ((ResortModel.Content) -> Unit)? = null
+    var onItemClick: ((ResortModelResponse.Content) -> Unit)? = null
+    var onFavoriteClick: ((ResortModelResponse.Content) -> Unit)? = null
 
-    inner class ResortViewHolder(binding: ItemResortBinding): BaseItemViewHolderCF<ResortModel.Content, ItemResortBinding>(binding) {
-        override fun bind(item: ResortModel.Content) {
+    inner class ResortViewHolder(binding: ItemResortBinding): BaseItemViewHolderCF<ResortModelResponse.Content, ItemResortBinding>(binding) {
+        override fun bind(item: ResortModelResponse.Content) {
             binding.tvResortName.text = item.resortName
             binding.tvLocation.text = item.address
             binding.tvPrice.text = "${item.minPrice} - ${item.maxPrice} VND"
@@ -40,13 +40,13 @@ class ResortAdapter: BaseAdapter<ResortModel.Content, ResortAdapter.ResortViewHo
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<ResortModel.Content> {
-        return object : DiffUtil.ItemCallback<ResortModel.Content>() {
-            override fun areItemsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<ResortModelResponse.Content> {
+        return object : DiffUtil.ItemCallback<ResortModelResponse.Content>() {
+            override fun areItemsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ResortModel.Content, newItem: ResortModel.Content): Boolean {
+            override fun areContentsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem == newItem
             }
         }

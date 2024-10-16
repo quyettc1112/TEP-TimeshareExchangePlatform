@@ -612,6 +612,7 @@
 
             <!--// List Image-->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/crl_content_image"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

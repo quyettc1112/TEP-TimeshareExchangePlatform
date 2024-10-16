@@ -6,16 +6,16 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeBinding
 
-class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDetailModel.UnitTypeDto, UnitTypeAdapter.RoomTypeViewHolder>(){
+class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDetailModelResponse.UnitTypeDto, UnitTypeAdapter.RoomTypeViewHolder>(){
 
-    var onItemClick: ((ResortDetailModel.UnitTypeDto) -> Unit)? = null
-    var onButtonBookClick: ((ResortDetailModel.UnitTypeDto) -> Unit)? = null
+    var onItemClick: ((ResortDetailModelResponse.UnitTypeDto) -> Unit)? = null
+    var onButtonBookClick: ((ResortDetailModelResponse.UnitTypeDto) -> Unit)? = null
 
-    inner class RoomTypeViewHolder(binding: ItemResortRoomTypeBinding): BaseItemViewHolderCF<ResortDetailModel.UnitTypeDto, ItemResortRoomTypeBinding> (binding) {
+    inner class RoomTypeViewHolder(binding: ItemResortRoomTypeBinding): BaseItemViewHolderCF<ResortDetailModelResponse.UnitTypeDto, ItemResortRoomTypeBinding> (binding) {
 
         fun showDetailInfoVisibility(isShow: Boolean) {
             binding.apply {
@@ -29,7 +29,7 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
             }
         }
 
-        override fun bind(item: ResortDetailModel.UnitTypeDto) {
+        override fun bind(item: ResortDetailModelResponse.UnitTypeDto) {
             binding.apply {
                 // Name of the room
                 tvRoomName.text = item.title
@@ -70,13 +70,13 @@ class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDeta
 
 
 
-    override fun differCallBack(): DiffUtil.ItemCallback<ResortDetailModel.UnitTypeDto> {
-        return object : DiffUtil.ItemCallback<ResortDetailModel.UnitTypeDto>() {
-            override fun areItemsTheSame(oldItem: ResortDetailModel.UnitTypeDto, newItem: ResortDetailModel.UnitTypeDto): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<ResortDetailModelResponse.UnitTypeDto> {
+        return object : DiffUtil.ItemCallback<ResortDetailModelResponse.UnitTypeDto>() {
+            override fun areItemsTheSame(oldItem: ResortDetailModelResponse.UnitTypeDto, newItem: ResortDetailModelResponse.UnitTypeDto): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ResortDetailModel.UnitTypeDto, newItem: ResortDetailModel.UnitTypeDto): Boolean {
+            override fun areContentsTheSame(oldItem: ResortDetailModelResponse.UnitTypeDto, newItem: ResortDetailModelResponse.UnitTypeDto): Boolean {
                 return oldItem == newItem
             }
         }

@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -133,13 +133,13 @@ class ResortDetailActivity : BaseActivity() {
     }
 
     // Binding Data Group Function
-    private fun bindDataResortInfo(resortDetailModel: ResortDetailModel) {
+    private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
             tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
             tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
             tvMinPrice.text = "${resortDetailViewModel.resortDetail.value?.data?.minPrice.toString()} VND / 1 đêm"
             tvDescription.text = resortDetailViewModel.resortDetail.value?.data?.description.toString()
-            if (resortDetailModel.isActive) {
+            if (resortDetailModelResponse.isActive) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
@@ -148,7 +148,7 @@ class ResortDetailActivity : BaseActivity() {
 
         }
     }
-    private fun bindDataUnitType(resorts: List<ResortDetailModel.UnitTypeDto>) {
+    private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
         unitTypeAdapter.submitList(resorts)
         binding.rvResortRoomType.apply {
             adapter = unitTypeAdapter
@@ -165,11 +165,9 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindDataUnitTypeDetailDialog(resortDetailModel: ResortDetailModel) {
-        val resortDetailDialog = CustomDialog(this)
-        resortDetailDialog.show()
-
-
+    private fun bindDataUnitTypeDetailDialog(resortDetailModelResponse: ResortDetailModelResponse) {
+        val unitTypeDetail = CustomDialog(this)
+        unitTypeDetail.show()
     }
 
     private fun setListImageResort() {

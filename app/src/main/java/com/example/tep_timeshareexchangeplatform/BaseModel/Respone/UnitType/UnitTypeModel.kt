@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.UnitType
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType
 
 
 import com.google.gson.annotations.SerializedName

@@ -1,9 +1,9 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ResortDetailModel(
+data class ResortDetailModelResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("resortName") val resortName: String,
     @SerializedName("logo") val logo: String,

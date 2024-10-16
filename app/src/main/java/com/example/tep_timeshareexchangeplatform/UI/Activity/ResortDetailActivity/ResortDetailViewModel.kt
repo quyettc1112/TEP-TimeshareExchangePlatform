@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,8 +15,8 @@ class ResortDetailViewModel @Inject constructor(
     private val resortAPIRepository: ResortAPIRepository
 ) : ViewModel() {
 
-    private val _resortDetail = MutableLiveData<Resource<ResortDetailModel>>()
-    val resortDetail: MutableLiveData<Resource<ResortDetailModel>> = _resortDetail
+    private val _resortDetail = MutableLiveData<Resource<ResortDetailModelResponse>>()
+    val resortDetail: MutableLiveData<Resource<ResortDetailModelResponse>> = _resortDetail
 
     fun getResortDetail(resortId: Int) {
         viewModelScope.launch {

@@ -4,19 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Service.RoomAPIService
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Room.RoomModel
+import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class RentalPostingViewModel @Inject constructor(
-    private val roomAPIRepository: RoomAPIRepository
+    private val roomAPIRepository: RoomAPIRepository,
+    private val resortAPIRepository: ResortAPIRepository,
+    private val timeshareRepository: TimeshareRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -77,16 +83,32 @@ class RentalPostingViewModel @Inject constructor(
     fun setDateRange(startDate: Long?, endDate: Long?) {
         _dateRange.value = Pair(startDate, endDate)
     }
+    fun resetDateRange() {
+        _dateRange.value = Pair(null, null)
+    }
+    fun getNumberOfNights(): Int {
+        val range = _dateRange.value
+        return if (range != null) {
+            val (start, end) = range
+            if (start != null && end != null) {
+                ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            } else {
+                0
+            }
+        } else {
+            0
+        }
+    }
 
 
 
     // ----------------------------------------------------------//
     // Tracking Location Selected
-    private val _resortModel = MutableLiveData<ResortModel.Content>()
-    val resortModel: MutableLiveData<ResortModel.Content>
-        get() = _resortModel
-    fun updateResortModel(resortModel: ResortModel.Content){
-        _resortModel.value = resortModel
+    private val _resortModelResponse = MutableLiveData<ResortModelResponse.Content>()
+    val resortModelResponse: MutableLiveData<ResortModelResponse.Content>
+        get() = _resortModelResponse
+    fun updateResortModel(resortModelResponse: ResortModelResponse.Content){
+        _resortModelResponse.value = resortModelResponse
     }
 
 
@@ -128,6 +150,36 @@ class RentalPostingViewModel @Inject constructor(
         }
     }
 
+
+    // ----------------------------------------------------------//
+    // Call Unit Type Detail
+    // Init MutableLiveData for Unit Type Detail
+    private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>>()
+    val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>> = _unitTypeDetail
+    fun getUnitTypeDetail(token: String, unitTypeID: Int) {
+        viewModelScope.launch {
+            _unitTypeDetail.postValue(Resource.loading(null))
+            resortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {
+                _unitTypeDetail.postValue(it)
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------//
+    // Tracking Timeshare DTO
+    private val _timeshareDTO = MutableLiveData<Resource<PostingTimeshareResponse>>()
+    val timeshareDTO: MutableLiveData<Resource<PostingTimeshareResponse>> = _timeshareDTO
+
+    // Function to post Timeshare DTO
+    fun postTimeshareDTO(token: String, timeshareDTO: TimeshareDTO) {
+        viewModelScope.launch {
+            _timeshareDTO.postValue(Resource.loading(null))
+            timeshareRepository.postTimeshare(token, timeshareDTO).let {
+                _timeshareDTO.postValue(it)
+            }
+        }
+    }
 
 
 

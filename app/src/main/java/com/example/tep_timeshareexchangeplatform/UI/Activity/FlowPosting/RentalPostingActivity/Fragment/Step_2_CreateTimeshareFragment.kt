@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,25 +19,29 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Room.RoomDisplayModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Room.RoomModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.AmenitiesAdaper
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Adapter.ImageUploadAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimeshareBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -79,11 +82,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun observeViewModel() {
         // Bind Data of Location Model
-        rentalPostingViewModel.resortModel.observe(viewLifecycleOwner) { resortModel ->
+        rentalPostingViewModel.resortModelResponse.observe(viewLifecycleOwner) { resortModel ->
             bindDataResortLocation(resortModel)
             if (resortModel != null) {
                 // Show Progress Step 1
                 rentalPostingViewModel.updateTaskProgress(1)
+                rentalPostingViewModel.resetDateRange()
 
                 // Call API to get Room List
                 val token = TokenManager(requireContext()).getAccessToken()
@@ -100,18 +104,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             showStepEventHandle(currentTask)
         }
 
-        // Tracking Data of Unit Room
+        // Tracking Data of Room List
         rentalPostingViewModel.roomList.observe(viewLifecycleOwner) { roomList ->
             when (roomList.status) {
                 Status.LOADING -> {
-                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                     bindDataSpinner(roomList.data)
                 }
                 Status.ERROR -> {
-                    Log.d("CheckCAll", "observeViewModel: ${roomList.message}, ${roomList.status}")
                     MotionToast.Companion.createColorToast(requireActivity(),
                         "${roomList.status}",
                         "${roomList.message}",
@@ -119,6 +120,65 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(requireContext(), R.font.inter_thin));
+                }
+            }
+        }
+
+        // Tracking Data of Unit Type
+        rentalPostingViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
+            when(unitType.status) {
+                Status.LOADING -> {
+                    binding.includeUnitType.llProcessbar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.includeUnitType.llProcessbar.visibility = View.GONE
+                    bindDataUnitType(unitType.data!!)
+
+                    // Open Step 3
+                    rentalPostingViewModel.updateTaskProgress(3)
+                }
+                Status.ERROR -> {
+                    MotionToast.Companion.createColorToast(requireActivity(),
+                        "${unitType.status}",
+                        "${unitType.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin));
+                }
+            }
+
+        }
+
+        // Tracking Date Range
+        rentalPostingViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
+            if (rentalPostingViewModel.getNumberOfNights() > 0) {
+                // Update Step 4
+                rentalPostingViewModel.updateTaskProgress(4)
+                rentalPostingViewModel.updateTaskProgress(5)
+            } else binding.crlContentAmenities.visibility = View.GONE
+        }
+
+        // Tracking Data of Post Timeshare
+        rentalPostingViewModel.timeshareDTO.observe(viewLifecycleOwner) { timeshareDTO ->
+            when (timeshareDTO.status) {
+                Status.LOADING -> {
+                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(requireActivity(),
+                        "${timeshareDTO.status}",
+                        "${timeshareDTO.data}",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin));
+                    rentalPostingViewModel.updateStep(3)
+                }
+                Status.ERROR -> {
+                    (activity as RentalPostingActivity).showErrorDialog("${timeshareDTO.message}", "Back")
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
                 }
             }
         }
@@ -141,6 +201,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         when (currentTask) {
             1 -> {
                binding.crlRoomDistribution.visibility = View.VISIBLE
+
+                binding.includeUnitType.root.visibility = View.GONE
+                binding.crlDayCheckIn.visibility = View.GONE
+                binding.crlContentAmenities.visibility = View.GONE
+                binding.crlContentImage.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+
             }
             2 -> {
                 binding.includeUnitType.root.visibility = View.VISIBLE
@@ -152,13 +219,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.crlContentAmenities.visibility = View.VISIBLE
             }
             5 -> {
-                binding.crlImage.visibility = View.VISIBLE
+                binding.crlContentImage.visibility = View.VISIBLE
                 binding.btnNext.visibility = View.VISIBLE
             }
         }
     }
-
-
     private fun nextStepHandle() {
         binding.btnYesRoomDistribution.setOnClickListener {
             rentalPostingViewModel.updateTaskProgress(2)
@@ -167,13 +232,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
     // Binding Data of Resort Location
-    private fun bindDataResortLocation(resortModel: ResortModel.Content) {
-        if (resortModel != null) {
+    private fun bindDataResortLocation(resortModelResponse: ResortModelResponse.Content) {
+        if (resortModelResponse != null) {
             binding.let {
-                it.tvResortName.text = resortModel.resortName
-                it.tvLocation.text = resortModel.address
+                it.tvResortName.text = resortModelResponse.resortName
+                it.tvLocation.text = resortModelResponse.address
                 Glide.with(requireContext())
-                    .load(resortModel.logo)
+                    .load(resortModelResponse.logo)
                     .placeholder(R.drawable.ripple_effect)
                     .into(it.ivResortImage)
                 binding.llResortLocation.visibility = View.VISIBLE
@@ -184,14 +249,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             binding.btnSelectResortLocation.visibility = View.VISIBLE
         }
     }
-
     private fun bindDataSpinner(roomList: List<RoomModel>?) {
 
         val spinnerBinding = binding.includeUnitType
         val roomDisplayList: List<String> = roomList
-            ?.map { it.roomInfoCode ?: "Unknown Room" } ?: emptyList()
+            ?.map { "Phòng: ${it.roomInfoName}, Code: ${it.roomInfoCode}" ?: "Unknown Room" } ?: emptyList()
 
-        spinnerBinding.spUnitType.setSelection(0)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerBinding.spUnitType.adapter = adapter
@@ -203,14 +266,60 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 val selectedRoom = roomList?.get(position)
 
                 // Lấy thông tin id của RoomModel tương ứng
-                val selectedRoomId = selectedRoom?.id
-                Toast.makeText(requireContext(), "Selected Room ID: $selectedRoomId", Toast.LENGTH_SHORT).show()
+                val unitTypeID = selectedRoom?.unitTypeId
+
+                // Call API to get Unit Type Detail
+                val token = TokenManager(requireContext()).getAccessToken()
+                if (token != null && unitTypeID != null) {
+                    rentalPostingViewModel.getUnitTypeDetail(token, unitTypeID)
+                } else {
+                    MotionToast.Companion.createColorToast(requireActivity(),
+                        "Error",
+                        "Token is null",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin));
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Không có gì được chọn
             }
         }
+    }
+    private fun bindDataUnitType(unitType: UnitTypeModel) {
+        val binding = binding.includeUnitType
+        // Hide Unnecessary View
+        binding.rvUnitType.visibility = View.GONE
+        binding.includeItemUnitType.llAmennities.visibility = View.GONE
+        binding.includeItemUnitType.tvPrice.visibility = View.GONE
+
+
+        // Bind data to item unit type
+        binding.includeItemUnitType.root.visibility = View.VISIBLE
+        binding.includeItemUnitType.apply {
+            tvRoomName.text = unitType.title
+            tvNumBathroom.text = unitType.bathrooms.toString()
+            tvNumKitchen.text = 1.toString()
+            tvKitchen.text = unitType.kitchen
+            tvNumBed.text = "${unitType.bedrooms}"
+            tvBed.text = "${unitType.bedsQueen} Queen, ${unitType.bedsKing} King, ${unitType.bedsTwin} Twin"
+            tvNumPerson.text = unitType.sleeps.toString()
+           /* Glide.with(requireContext())
+                .load(unitType.photos)
+                .placeholder(R.drawable.ripple_effect)
+                .into(imRoomTypeImage)*/
+        }
+
+        binding.includeItemUnitType.btnViewRoom.setOnClickListener {
+            bindDataUnitTypeDetailDialog(unitType)
+        }
+
+    }
+    private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
+        val unitTypeDetail = CustomDialog(requireContext())
+        unitTypeDetail.show()
     }
 
     // User click to change location of Resort
@@ -221,6 +330,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
             })
             locationResultLauncher.launch(intent)
+
+
         }
         binding.btnSelectResortLocation.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
@@ -228,25 +339,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
             })
             locationResultLauncher.launch(intent)
+
+
         }
     }
 
     // Set Value for of Resort Location
     private fun setValueUnitRoom() {
-        // Set Spinner
-       /* var adapterSpiner = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.spinner_items, android.R.layout.simple_spinner_item
-        )
-        adapterSpiner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.customSpinnerBed.adapter = adapterSpiner
-        binding.customSpinnerViewDiretion.adapter = adapterSpiner
 
-        // Set Unit Type
-        binding.rvBedType.apply {
-            adapter = unitTypeAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }*/
 
         // Set List Amenities
         binding.rvAmenities.apply {
@@ -346,7 +446,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedLocation: ResortModel.Content? = data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
+                    val selectedLocation: ResortModelResponse.Content? = data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
                     selectedLocation?.let {
                         rentalPostingViewModel.updateResortModel(it)
                     }
@@ -370,12 +470,32 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun sendRequestCreateTimeshare() {
         binding.btnNext.setOnClickListener {
-            showLoading("Đang tạo yêu cầu tạo mới Timeshare", "Vui lòng chờ", true, object : (DialogInterface) -> Unit {
-                override fun invoke(dialog: DialogInterface) {
-                    dialog.dismiss()
-                    rentalPostingViewModel.updateStep(3)
-                }
-            })
+            val token = TokenManager(requireContext()).getAccessToken()
+
+            // Định dạng theo kiểu yyyy-MM-dd
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+
+            val startDateFormatted = rentalPostingViewModel.dateRange.value?.first?.let { dateFormatter.format(it) } ?: ""
+            val endDateFormatted = rentalPostingViewModel.dateRange.value?.second?.let { dateFormatter.format(it) } ?: ""
+
+            val timeshareDTO = TimeshareDTO(
+                status = "Available",
+                startYear = 2024,
+                endYear = 2025,
+                startDate = startDateFormatted,
+                endDate = endDateFormatted,
+                roomInfoId = rentalPostingViewModel.unitTypeDetail.value?.data?.id!!
+            )
+
+            Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
+
+            if (token != null) {
+                rentalPostingViewModel.postTimeshareDTO(token, timeshareDTO)
+            } else {
+                Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+            }
+
+
         }
 
     }

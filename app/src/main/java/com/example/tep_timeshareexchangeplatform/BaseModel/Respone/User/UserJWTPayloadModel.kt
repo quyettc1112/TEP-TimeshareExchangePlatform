@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.User
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User
 
 import com.google.gson.annotations.SerializedName
 
