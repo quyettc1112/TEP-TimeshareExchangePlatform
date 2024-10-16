@@ -92,16 +92,17 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_see_more"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="100dp"
                 android:background="@drawable/ripple_effect_white"
+                android:backgroundTint="#B0BEC5"
                 android:fontFamily="@font/inter_bold"
                 android:text="Xem thêm...."
                 android:textAllCaps="false"
-                android:textColor="@color/primary_background"
+                android:textColor="@color/white"
                 android:textSize="20dp" />
 
             <!--// Have Timeshare Yet ?-->
@@ -146,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="@color/blue_btn_search"
+                    android:backgroundTint="#B0BEC5"
                     android:text="Chưa, tự tôi sẽ thiết lập Timeshare của mình để cho thuê."
                     android:textAllCaps="false"
                     android:textColor="@color/white"

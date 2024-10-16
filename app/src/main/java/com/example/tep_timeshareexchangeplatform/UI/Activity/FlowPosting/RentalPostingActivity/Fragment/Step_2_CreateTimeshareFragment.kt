@@ -43,10 +43,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var imageUploadAdapter = ImageUploadAdapter()
     private var policyAmentitiesAdapter = AmenitiesAdaper()
     private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
-    private var isUnitTypeExpanded = false
-    private var isDayCheckInExpanded = false
-    private var isAmenitiesExpanded = false
-    private var isImageInfoExpanded = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,12 +59,26 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         observeViewModel()
         setEventChangeLocation()
         setValueUnitRoom()
-        expanedViewHandle()
         getImageFromGallery()
         sendRequestCreateTimeshare()
         setEventChangeDate()
 
         return binding.root
+    }
+
+    private fun observeViewModel() {
+        // Bind Data of Location Model
+        rentalPostingViewModel.resortModel.observe(viewLifecycleOwner) { resortModel ->
+            bindDataResortLocation(resortModel)
+            if (resortModel != null) {
+                rentalPostingViewModel.updateTaskProgress(1)
+            }
+        }
+
+        // Tracking Data of Step Create Timeshare
+        rentalPostingViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
+            showStepEventHandle(currentTask)
+        }
     }
 
     private fun initAdapter() {
@@ -82,58 +92,51 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
-    // Observe Location Model
-    private fun observeViewModel() {
-        // Bind Data of Location Model
-        rentalPostingViewModel.resortModel.observe(viewLifecycleOwner) { resortModel ->
-            if (resortModel != null) {
-                binding.let {
-                    it.tvResortName.text = resortModel.resortName
-                    it.tvLocation.text = resortModel.address
-                    Glide.with(requireContext())
-                        .load(resortModel.logo)
-                        .placeholder(R.drawable.ripple_effect)
-                        .into(it.ivResortImage)
-                    binding.llResortLocation.visibility = View.VISIBLE
-                    binding.btnSelectResortLocation.visibility = View.GONE
-                    isUnitTypeExpanded = true
-                    handleViewVisibility(binding.llContentUnitType, isUnitTypeExpanded)
-                }
-            } else {
-                binding.llResortLocation.visibility = View.GONE
-                binding.btnSelectResortLocation.visibility = View.VISIBLE
 
+    // Function to update the visibility of tasks based on progress
+    private fun showStepEventHandle(currentTask: Int) {
+        when (currentTask) {
+            1 -> {
+               binding.crlRoomDistribution.visibility = View.VISIBLE
+            }
+            2 -> {
+                binding.crlUnitTypeInfo.visibility = View.VISIBLE
+            }
+
+            3 -> {
+                binding.crlDayCheckIn.visibility = View.VISIBLE
+            }
+
+            4 -> {
+                binding.crlContentAmenities.visibility = View.VISIBLE
+            }
+
+            5 -> {
+                binding.crlImage.visibility = View.VISIBLE
             }
         }
     }
 
-    // Click to Open or Close View
-    private fun expanedViewHandle() {
-        binding.crlUnitTypeInfo.setOnClickListener {
-            isUnitTypeExpanded = !isUnitTypeExpanded
-            handleViewVisibility(binding.llContentUnitType, isUnitTypeExpanded)
-        }
-        binding.crlDayCheckInInfo.setOnClickListener {
-            isDayCheckInExpanded = !isDayCheckInExpanded
-            handleViewVisibility(binding.llCheckInCheckOut, isDayCheckInExpanded)
-        }
-        binding.crlAmenitiesInfo.setOnClickListener {
-            isAmenitiesExpanded = !isAmenitiesExpanded
-            handleViewVisibility(binding.llContentAmenities, isAmenitiesExpanded)
-        }
-        binding.crlImageInfo.setOnClickListener {
-            isImageInfoExpanded = !isImageInfoExpanded
-            handleViewVisibility(binding.llImage, isImageInfoExpanded)
-        }
 
-    }
-    private fun handleViewVisibility(view: View, isExpanded: Boolean) {
-        view.visibility = if (isExpanded) {
-            View.VISIBLE
+    // Binding Data of Resort Location
+    private fun bindDataResortLocation(resortModel: ResortModel.Content) {
+        if (resortModel != null) {
+            binding.let {
+                it.tvResortName.text = resortModel.resortName
+                it.tvLocation.text = resortModel.address
+                Glide.with(requireContext())
+                    .load(resortModel.logo)
+                    .placeholder(R.drawable.ripple_effect)
+                    .into(it.ivResortImage)
+                binding.llResortLocation.visibility = View.VISIBLE
+                binding.btnSelectResortLocation.visibility = View.GONE
+            }
         } else {
-            View.GONE
+            binding.llResortLocation.visibility = View.GONE
+            binding.btnSelectResortLocation.visibility = View.VISIBLE
         }
     }
+
 
     // User click to change location of Resort
     private fun setEventChangeLocation() {
