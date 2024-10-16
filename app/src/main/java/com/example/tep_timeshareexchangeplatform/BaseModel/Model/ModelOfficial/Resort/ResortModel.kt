@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial
+package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort
 
 
 import android.os.Parcel

@@ -1,7 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

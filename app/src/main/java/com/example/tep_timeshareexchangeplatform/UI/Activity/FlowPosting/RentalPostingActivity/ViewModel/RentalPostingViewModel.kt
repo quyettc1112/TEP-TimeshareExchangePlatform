@@ -3,11 +3,21 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
+import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Service.RoomAPIService
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
-
-class RentalPostingViewModel: ViewModel() {
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+@HiltViewModel
+class RentalPostingViewModel @Inject constructor(
+    private val roomAPIRepository: RoomAPIRepository
+) : ViewModel() {
 
     private val initStep: Int = 1
 
@@ -100,6 +110,28 @@ class RentalPostingViewModel: ViewModel() {
     fun updatePackageStep4(packageModel: PackageModel){
         _packageStep4.value = packageModel
     }
+
+
+
+    // ----------------------------------------------------------//
+    // Call List Room of Resort API Selected
+    // Init MutableLiveData for resort list
+    private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
+    val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
+    // Function to get resort list
+    fun getRoomListByResortId(token: String, resortID: Int) {
+        viewModelScope.launch {
+            _roomList.postValue(Resource.loading(null))
+            roomAPIRepository.getRoomListByResortId(token, resortID).let {
+                _roomList.postValue(it)
+            }
+        }
+    }
+
+
+
+
+
 
     // Init
     init {

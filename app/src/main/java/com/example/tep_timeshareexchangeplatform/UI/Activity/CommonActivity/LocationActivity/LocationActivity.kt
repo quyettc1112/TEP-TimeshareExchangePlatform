@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.LocationAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortSearchedAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -23,7 +21,6 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Loca
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityLocationBinding
 import com.google.android.flexbox.FlexDirection

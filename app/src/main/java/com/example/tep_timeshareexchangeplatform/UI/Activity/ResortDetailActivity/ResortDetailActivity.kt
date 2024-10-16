@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R

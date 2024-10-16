@@ -1,6 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Until.JwtDetach
 
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.UserJWTPayloadModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.User.UserJWTPayloadModel
 import android.util.Base64
 import com.google.gson.Gson
 class JwtDecoder() {

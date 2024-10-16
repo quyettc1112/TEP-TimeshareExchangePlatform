@@ -3,8 +3,8 @@ package com.example.tep_timeshareexchangeplatform.API.Repository
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.ResortAPIService
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortDetailModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortDetailModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.Resort.ResortModel
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
 

@@ -22,7 +22,9 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RentalPostingActivity : BaseActivity() {
     private lateinit var binding: ActivityRentalPostingBinding
     private lateinit var processBarManager: ProcessBarManager
