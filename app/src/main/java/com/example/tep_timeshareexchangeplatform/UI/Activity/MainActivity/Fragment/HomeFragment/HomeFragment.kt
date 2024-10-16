@@ -2,10 +2,8 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 
 import android.app.Activity
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.os.Parcel
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +21,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.BlogAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ResortAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
@@ -31,7 +29,6 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
@@ -207,7 +204,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         resortAdapterMB.let {
             it.onItemClick = {
                 val intent = Intent(requireContext(), ResortDetailActivity::class.java)
-                intent.putExtra("resortId", it.id)
+                intent.putExtra(Constant.DEFAULT_RESORT_ID, it.id)
                 startActivity(intent)
             }
 

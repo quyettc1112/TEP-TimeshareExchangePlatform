@@ -18,11 +18,10 @@
             android:layout_height="50dp">
             <ImageView
                 android:layout_gravity="center"
-                android:id="@+id/icon"
-                android:scaleType="fitXY"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_location" />
+                android:id="@+id/im_logo"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -36,7 +35,7 @@
             android:layout_marginStart="16dp">
 
             <TextView
-                android:id="@+id/city_name"
+                android:id="@+id/tv_resortName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thành Phố Đà Lạt"
@@ -45,7 +44,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/city_location"
+                android:id="@+id/tv_location"
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

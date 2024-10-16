@@ -87,7 +87,7 @@
             android:name=".UI.Activity.CommonActivity.DayPickerActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.LocationActivity"
+            android:name=".UI.Activity.CommonActivity.LocationActivity.LocationActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MainActivity.MainActivity"

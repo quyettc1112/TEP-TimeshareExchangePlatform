@@ -44,6 +44,8 @@ class Constant {
         const val FRAGMENT_HOME_CODE = "FH"
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 
+        const val DEFAULT_RESORT_ID = "resortId"
+
         val timeshareList = listOf(
             TimeshareModel(
                 1,

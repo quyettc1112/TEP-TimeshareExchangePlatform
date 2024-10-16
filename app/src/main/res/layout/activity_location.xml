@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.CommonActivity.LocationActivity">
+    tools:context=".UI.Activity.CommonActivity.LocationActivity.LocationActivity">
 
 <!--    // Search bar-->
     <LinearLayout
@@ -189,7 +189,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_location_searched"
+        android:id="@+id/rv_resort_searched"
         android:visibility="gone"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

@@ -48,7 +48,7 @@ class ResortDetailActivity : BaseActivity() {
             insets
         }
 
-        val resortId = intent.getIntExtra("resortId", 0)
+        val resortId = intent.getIntExtra(Constant.DEFAULT_RESORT_ID, 0)
         if (resortId != 0) {
             resortDetailViewModel.getResortDetail(resortId)
         } else {
