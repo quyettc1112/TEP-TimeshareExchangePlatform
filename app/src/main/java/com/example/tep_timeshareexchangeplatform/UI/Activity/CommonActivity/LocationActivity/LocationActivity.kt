@@ -213,11 +213,11 @@ class LocationActivity : BaseActivity() {
         finish()
     }
     private fun intentExtraValueToPostingFlow(content: ResortModel.Content) {
-       /* val intent = Intent()
+        val intent = Intent()
         // Replace "locationName" with the actual selected location
-        intent.putExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, locationModel)
+        intent.putExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION, content)
         setResult(Activity.RESULT_OK, intent)
-        finish()*/
+        finish()
     }
     private fun checkIntentFromPostingFlow(): Boolean {
         if (intent.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW) != null) {

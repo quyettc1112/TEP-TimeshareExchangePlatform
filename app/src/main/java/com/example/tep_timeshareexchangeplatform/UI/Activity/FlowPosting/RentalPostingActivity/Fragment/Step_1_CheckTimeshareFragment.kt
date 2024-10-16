@@ -10,7 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
@@ -95,9 +95,9 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedLocation: LocationModel? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW)
+                    val selectedLocation: ResortModel.Content? = data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
                     selectedLocation?.let {
-                        rentalPostingViewModel.updateLocationModel(selectedLocation)
+                        rentalPostingViewModel.updateResortModel(selectedLocation)
                         rentalPostingViewModel.updateStep(2)
                     }
                 }

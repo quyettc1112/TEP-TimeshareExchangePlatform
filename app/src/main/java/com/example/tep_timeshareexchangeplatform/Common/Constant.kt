@@ -45,6 +45,7 @@ class Constant {
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 
         const val DEFAULT_RESORT_ID = "resortId"
+        const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
         val timeshareList = listOf(
             TimeshareModel(

@@ -14,9 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
@@ -84,12 +85,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     // Observe Location Model
     private fun observeViewModel() {
         // Bind Data of Location Model
-        rentalPostingViewModel.locationModel.observe(viewLifecycleOwner) { locationModel ->
-            if (locationModel != null) {
+        rentalPostingViewModel.resortModel.observe(viewLifecycleOwner) { resortModel ->
+            if (resortModel != null) {
                 binding.let {
-                    it.tvResortName.text = locationModel.name
-                    it.tvLocation.text = locationModel.location
-                    it.ivResortImage.setImageResource(locationModel.image)
+                    it.tvResortName.text = resortModel.resortName
+                    it.tvLocation.text = resortModel.address
+                    Glide.with(requireContext())
+                        .load(resortModel.logo)
+                        .placeholder(R.drawable.ripple_effect)
+                        .into(it.ivResortImage)
                     binding.llResortLocation.visibility = View.VISIBLE
                     binding.btnSelectResortLocation.visibility = View.GONE
                     isUnitTypeExpanded = true
@@ -264,9 +268,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedLocation: LocationModel? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW)
+                    val selectedLocation: ResortModel.Content? = data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
                     selectedLocation?.let {
-                        rentalPostingViewModel.updateLocationModel(it)
+                        rentalPostingViewModel.updateResortModel(it)
                     }
                 }
             }

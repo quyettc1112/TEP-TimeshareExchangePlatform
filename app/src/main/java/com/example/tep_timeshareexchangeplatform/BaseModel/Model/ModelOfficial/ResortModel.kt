@@ -1,6 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial
 
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 
@@ -27,7 +29,47 @@ data class ResortModel(
         @SerializedName("address") val address: String,
         @SerializedName("timeshareCompanyId") val timeshareCompanyId: Int,
         @SerializedName("isActive") val isActive: Boolean
-    )
+    ) : Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString().toString(),
+            parcel.readString().toString(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString().toString(),
+            parcel.readString().toString(),
+            parcel.readInt(),
+            parcel.readByte() != 0.toByte()
+        ) {
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            dest.writeInt(id)
+            dest.writeString(resortName)
+            dest.writeString(logo)
+            dest.writeInt(minPrice)
+            dest.writeInt(maxPrice)
+            dest.writeString(status)
+            dest.writeString(address)
+            dest.writeInt(timeshareCompanyId)
+            dest.writeByte(if (isActive) 1 else 0)
+        }
+
+        companion object CREATOR : Parcelable.Creator<Content> {
+            override fun createFromParcel(parcel: Parcel): Content {
+                return Content(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Content?> {
+                return arrayOfNulls(size)
+            }
+        }
+
+    }
 
     data class Pageable(
         @SerializedName("pageNumber") val pageNumber: Int,

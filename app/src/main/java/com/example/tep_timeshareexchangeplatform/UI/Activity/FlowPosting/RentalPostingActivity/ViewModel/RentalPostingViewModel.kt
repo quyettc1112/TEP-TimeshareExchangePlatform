@@ -3,7 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.Rental
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelOfficial.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 
@@ -27,9 +27,9 @@ class RentalPostingViewModel: ViewModel() {
 
 
     // Tracking Location Selected
-    private val _locationModel = MutableLiveData<LocationModel>()
-    val locationModel: MutableLiveData<LocationModel>
-        get() = _locationModel
+    private val _resortModel = MutableLiveData<ResortModel.Content>()
+    val resortModel: MutableLiveData<ResortModel.Content>
+        get() = _resortModel
 
 
     // Tracking MyTimeshareModel Selected
@@ -73,8 +73,8 @@ class RentalPostingViewModel: ViewModel() {
     }
 
 
-    fun updateLocationModel(locationModel: LocationModel){
-        _locationModel.value = locationModel
+    fun updateResortModel(resortModel: ResortModel.Content){
+        _resortModel.value = resortModel
     }
 
 
