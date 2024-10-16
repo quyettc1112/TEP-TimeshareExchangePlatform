@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -166,6 +168,23 @@ class RentalPostingViewModel @Inject constructor(
     }
 
 
+
+    // ----------------------------------------------------------//
+    // Call List Unit Type of Resort API Selected
+    // Init MutableLiveData for List Unit Type
+    private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>>()
+    val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>> = _unitTypeList
+    // Function to get unit type list
+    fun getUnitTypeListByResortId(token: String, resortID: Int) {
+        viewModelScope.launch {
+            _unitTypeList.postValue(Resource.loading(null))
+            resortAPIRepository.getUnitTypeListByResortId(token, resortID).let {
+                _unitTypeList.postValue(it)
+            }
+        }
+    }
+
+
     // ----------------------------------------------------------//
     // Tracking Timeshare DTO
     private val _timeshareDTO = MutableLiveData<Resource<PostingTimeshareResponse>>()
@@ -181,6 +200,39 @@ class RentalPostingViewModel @Inject constructor(
         }
     }
 
+    // ----------------------------------------------------------//
+    // Tracking unit type selection option no
+    private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel>()
+    val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel>
+        get() = _unitTypeSelectionOptionNo
+    fun updateUnitTypeSelectionOptionNo(unitTypeModel: UnitTypeModel){
+        _unitTypeSelectionOptionNo.value = unitTypeModel
+    }
+
+    // ----------------------------------------------------------//
+    // Call API create room
+    private val _roomModel = MutableLiveData<Resource<PostRoomRespone>>()
+    val roomModel: MutableLiveData<Resource<PostRoomRespone>> = _roomModel
+    fun postRoom(token: String, roomDTO: RoomDTO) {
+        viewModelScope.launch {
+            _roomModel.postValue(Resource.loading(null))
+            roomAPIRepository.postRoom(token, roomDTO).let {
+                _roomModel.postValue(it)
+            }
+        }
+    }
+
+
+
+
+
+    // Tracking Yes or No for Step 2
+    private val isYesOrNo = MutableLiveData<Boolean>()
+    val isYesOrNoSelected: MutableLiveData<Boolean>
+        get() = isYesOrNo
+    fun updateIsYesOrNo(isYesOrNo: Boolean){
+        this.isYesOrNo.value = isYesOrNo
+    }
 
 
 
@@ -190,6 +242,7 @@ class RentalPostingViewModel @Inject constructor(
         _step.value = initStep
         _currentStepInProgress.value = initStep
         _stepCreateTimeshare.value = 0
+        isYesOrNo.value = false
     }
 
 

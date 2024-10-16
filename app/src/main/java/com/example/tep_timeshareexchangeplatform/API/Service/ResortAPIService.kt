@@ -25,6 +25,13 @@ interface ResortAPIService {
         @Path("resortId") resortId: Int
     ): Response<ResortDetailModelResponse>
 
+    // Get List Unit Type Of Resort
+    @GET("public/unit-types/resort/{resortId}")
+    suspend fun getUnitTypeListByResortId(
+        @Header("Authorization") token: String,
+        @Path("resortId") resortId: Int
+    ): Response<List<UnitTypeModel>>
+
 
     @GET("public/unit-type/{unitTypeId}")
     suspend fun getUnitTypeDetailById(

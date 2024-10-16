@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -248,14 +248,25 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!--// Unit Room-->
+
+
             <include
-                android:id="@+id/include_unit_type"
+                android:id="@+id/include_unit_type_yes"
                 android:visibility="gone"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 layout="@layout/include_yes_distribution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/include_unit_type_no"
+                android:visibility="gone"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                layout="@layout/include_no_distribution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -707,7 +718,7 @@
                 android:layout_height="200dp"
                 android:orientation="vertical" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"

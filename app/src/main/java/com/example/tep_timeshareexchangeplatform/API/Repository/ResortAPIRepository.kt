@@ -23,7 +23,8 @@ class ResortAPIRepository @Inject constructor(
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
-                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+                val errorHandler = response.errorBody()?.string()
+                Resource.error("Error: ${response.code()}, Message: $errorHandler", null)
             }
         } catch (e: Exception) {
             Resource.error("Network Error: ${e.message}", null)
@@ -37,13 +38,32 @@ class ResortAPIRepository @Inject constructor(
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
-                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+                val errorHandler = response.errorBody()?.string()
+                Resource.error("Error: ${response.code()}, Message: $errorHandler", null)
             }
         } catch (e: Exception) {
             Resource.error("Network Error: ${e.message}", null)
         }
     }
 
+    // function to call API to get unit type list by resort id
+    suspend fun getUnitTypeListByResortId(token: String, resortId: Int) : Resource<List<UnitTypeModel>> {
+        return try {
+            val response = resortAPIService.getUnitTypeListByResortId("Bearer $token", resortId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorHandler = response.errorBody()?.string()
+                Resource.error("Error: ${response.code()}, Message: $errorHandler", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+
+    // function to call API to get unit type list by resort id
     suspend fun getUnitTypeDetailById(token: String, unitTypeId: Int) : Resource<UnitTypeModel> {
         return try {
             val response = resortAPIService.getUnitTypeDetailById("Bearer $token", unitTypeId)

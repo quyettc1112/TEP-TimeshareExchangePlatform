@@ -6,10 +6,11 @@
     android:background="@drawable/background_stroke_around"
     android:layout_marginBottom="20dp"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="310dp">
     <!--// Image-->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView2"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         app:cardCornerRadius="8dp"
@@ -23,7 +24,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/im_material_resort" />
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <!--// Resort Info-->
     <androidx.constraintlayout.widget.ConstraintLayout
