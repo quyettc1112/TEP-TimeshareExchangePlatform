@@ -12,9 +12,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -116,12 +116,12 @@ class RentalPostingViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Tracking MyTimeshareModel Selected
-    private val _myTimeshareModel = MutableLiveData<MyTimeshareModel>()
-    val myTimeshareModelSelected: MutableLiveData<MyTimeshareModel>
-        get() = _myTimeshareModel
+    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse>()
+    val myTimeshareModelSelected: MutableLiveData<MyTimeshareResponse>
+        get() = _myTimeshareResponse
     // Funtion to update myTimeshareModel
-    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareModel){
-        _myTimeshareModel.value = myTimeshareModel
+    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareResponse){
+        _myTimeshareResponse.value = myTimeshareModel
     }
 
 
@@ -218,6 +218,20 @@ class RentalPostingViewModel @Inject constructor(
             _roomModel.postValue(Resource.loading(null))
             roomAPIRepository.postRoom(token, roomDTO).let {
                 _roomModel.postValue(it)
+            }
+        }
+    }
+
+
+    // ----------------------------------------------------------//
+    // Call API get my timeshare list
+    private val _myTimeshareList = MutableLiveData<Resource<List<MyTimeshareResponse>>>()
+    val myTimeshareList: MutableLiveData<Resource<List<MyTimeshareResponse>>> = _myTimeshareList
+    fun getMyTimeshareList(token: String) {
+        viewModelScope.launch {
+            _myTimeshareList.postValue(Resource.loading(null))
+            timeshareRepository.getMyTimeshareList(token).let {
+                _myTimeshareList.postValue(it)
             }
         }
     }

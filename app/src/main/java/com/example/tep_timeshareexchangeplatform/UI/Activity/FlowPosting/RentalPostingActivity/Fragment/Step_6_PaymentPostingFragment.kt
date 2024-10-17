@@ -10,8 +10,8 @@ import android.widget.Button
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.BenefitAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.ViewModel.RentalPostingViewModel
@@ -50,10 +50,10 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
         }
 
-        rentalPostingViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareModel ->
+        rentalPostingViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareResponse ->
             rentalPostingViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
-                if (myTimeshareModel != null && dateRange != null) {
-                    bindDataTimeshareInfo(myTimeshareModel, dateRange)
+                if (myTimeshareResponse != null && dateRange != null) {
+                    bindDataTimeshareInfo(myTimeshareResponse, dateRange)
                 }
             }
         }
@@ -126,7 +126,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     // Funtion to Bind Timeshare Info Data to UI
     private fun bindDataTimeshareInfo(
-        myTimeshareModel: MyTimeshareModel,
+        myTimeshareResponse: MyTimeshareResponse,
         dateRange: Pair<Long?, Long?>
     ) {
         val startDate = dateRange.first ?: return
@@ -135,37 +135,34 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         binding.includeTimesharePosting.apply {
             // Hide Unnecessary UI
             llLocation.visibility = View.GONE
+            tvRoomPricePerNight.visibility = View.GONE
+            tvEstimatedTotalPrice.visibility = View.GONE
 
-            // Image
+          /*  // Image
             Glide.with(requireContext())
-                .load(myTimeshareModel.image)
-                .into(imImageTimeshare)
+                .load(myTimeshareResponse.image)
+                .into(imImageTimeshare)*/
 
             // Title
-            tvResortNameDtb.text = "${myTimeshareModel.name} | ${myTimeshareModel.roomName}"
+            tvResortNameDtb.text = "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomName}"
 
             // Number of Night
             tvNumberNight.text = " ${totalDays} đêm"
 
             // Checkin Date
-            tvCheckInDate.text = myTimeshareModel.checkInDate
+            tvCheckInDate.text = myTimeshareResponse.startDate
 
             // Checkout Date
-            tvCheckOutDate.text = myTimeshareModel.checkOutDate
+            tvCheckOutDate.text = myTimeshareResponse.endDate
 
             // Cancel Policy
             tvCancellationPolicy.text = "Không có"
 
-            // Room Price Per Night
-            tvRoomPricePerNight.text = "${myTimeshareModel.price} / 1 đêm"
-
-            // Estimated Total Price
-            tvEstimatedTotalPrice.text = "${myTimeshareModel.price} / 1 đêm"
 
             // User Image
-            Glide.with(requireContext())
-                .load(myTimeshareModel.image)
-                .into(imUserImage)
+         /*   Glide.with(requireContext())
+                .load(myTimeshareResponse.image)
+                .into(imUserImage)*/
             // User Name
             tvUserName.text = "Đăng tải bởi Trần Cuơng Quyết"
 

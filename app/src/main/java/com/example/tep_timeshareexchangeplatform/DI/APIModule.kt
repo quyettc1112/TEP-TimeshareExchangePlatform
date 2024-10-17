@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.DI
 
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
+import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI.Companion.NETWORK_TIMEOUT
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.google.api.core.ApiService
 import com.google.firebase.BuildConfig
@@ -15,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -54,6 +56,9 @@ object APIModule {
             .Builder()
             .addInterceptor(requestInterceptor)
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .build()
     } else {
         OkHttpClient
@@ -67,6 +72,8 @@ object APIModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
+
+
     }
 
 

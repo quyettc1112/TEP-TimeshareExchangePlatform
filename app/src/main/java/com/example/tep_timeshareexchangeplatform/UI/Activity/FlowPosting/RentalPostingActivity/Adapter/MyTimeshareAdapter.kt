@@ -7,25 +7,25 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBinding
 
-class MyTimeshareAdapter: BaseAdapter<MyTimeshareModel, MyTimeshareAdapter.MyTimeshareViewHolder>() {
+class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse, MyTimeshareAdapter.MyTimeshareViewHolder>() {
 
-    var onItemClick: ((MyTimeshareModel) -> Unit)? = null
+    var onItemClick: ((MyTimeshareResponse) -> Unit)? = null
 
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
-        BaseItemViewHolderCF<MyTimeshareModel, ItemMyTimeshareBinding>(binding) {
-        override fun bind(item: MyTimeshareModel) {
+        BaseItemViewHolderCF<MyTimeshareResponse, ItemMyTimeshareBinding>(binding) {
+        override fun bind(item: MyTimeshareResponse) {
             // Hide Unessary View
             binding.tvPrice.visibility = ViewGroup.GONE
             binding.tvNumberOfNight.visibility = ViewGroup.GONE
+            binding.tvPrice.visibility = ViewGroup.GONE
 
-            binding.tvResortName.text = item.name
+            binding.tvResortName.text = item.resortName
             binding.tvRoomType.text = item.roomName
-            binding.tvCheckinDate.text = "${item.checkInDate} - ${item.checkOutDate}"
-            binding.tvNumberOfNight.text =  " | ${item.numberOfNight.toString()} đêm"
-            binding.tvPrice.text = item.price.toString()
-            Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)
+            binding.tvCheckinDate.text = "${item.startDate} - ${item.endDate}"
+           /* Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)*/
 
             binding.btnSelect.setOnClickListener {
                 onItemClick?.invoke(item)
@@ -33,13 +33,19 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareModel, MyTimeshareAdapter.MyTim
         }
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MyTimeshareModel> {
-        return object : DiffUtil.ItemCallback<MyTimeshareModel>() {
-            override fun areItemsTheSame(oldItem: MyTimeshareModel, newItem: MyTimeshareModel): Boolean {
-                return oldItem.id == newItem.id
+    override fun differCallBack(): DiffUtil.ItemCallback<MyTimeshareResponse> {
+        return object : DiffUtil.ItemCallback<MyTimeshareResponse>() {
+            override fun areItemsTheSame(
+                oldItem: MyTimeshareResponse,
+                newItem: MyTimeshareResponse
+            ): Boolean {
+                return oldItem.timeShareId == newItem.timeShareId
             }
 
-            override fun areContentsTheSame(oldItem: MyTimeshareModel, newItem: MyTimeshareModel): Boolean {
+            override fun areContentsTheSame(
+                oldItem: MyTimeshareResponse,
+                newItem: MyTimeshareResponse
+            ): Boolean {
                 return oldItem == newItem
             }
         }
