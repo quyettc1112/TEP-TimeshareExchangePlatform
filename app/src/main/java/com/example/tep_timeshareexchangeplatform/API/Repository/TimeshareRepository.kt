@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.TimeshareAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
@@ -37,6 +38,22 @@ class TimeshareRepository @Inject constructor(
     suspend fun getMyTimeshareList(auth: String) : Resource<List<MyTimeshareResponse>> {
         return try {
             val response = timeshareAPIService.getMyTimeshareList("Bearer $auth")
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: $errorMessage", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get My Timeshare Detail
+    suspend fun getMyTimeshareDetail(auth: String, timeshareId: Int) : Resource<MyTimeshareDetailResponse> {
+        return try {
+            val response = timeshareAPIService.getMyTimeshareDetail("Bearer $auth", timeshareId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

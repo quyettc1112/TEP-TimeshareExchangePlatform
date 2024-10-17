@@ -65,12 +65,9 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         rentalPostingViewModel.myTimeshareList.observe(viewLifecycleOwner) { resources ->
             when (resources.status) {
                 Status.LOADING -> {
-                    Toast.makeText(requireContext(), "Loading My Timeshare List", Toast.LENGTH_SHORT).show()
                     (activity as RentalPostingActivity).showLoadingWaiting(true)
                 }
-
                 Status.SUCCESS -> {
-                    Toast.makeText(requireContext(), "Success My Timeshare List", Toast.LENGTH_SHORT).show()
                     (activity as RentalPostingActivity).hideLoadingWaiting()
                     resources.data?.let {
                         myTimeshareAdapter.submitList(it)
@@ -87,11 +84,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                         MotionToast.LONG_DURATION,
                         null
                     )
-                    Log.d("CheckcallMylist", "Error ${resources.message}")
                 }
             }
-
         }
+
     }
 
     private fun initAdapter() {
@@ -104,7 +100,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         // Item click
         myTimeshareAdapter.setItemOnclickListener {
             val intent = Intent(requireContext(), MyTimeshareDetailActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, it)
+            intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, it.timeShareId)
             selectMyTimeshareResultLauncher.launch(intent)
         }
 

@@ -170,7 +170,7 @@
 
                 <!--// Verify Button-->
                 <LinearLayout
-                    android:id="@+id/linearLayout10"
+                    android:id="@+id/ll_verify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -202,6 +202,7 @@
 
                 <!--// Find More-->
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -212,8 +213,7 @@
                     android:paddingStart="5dp"
                     android:text="Tìm hiểu thêm"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout10"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout10" />
+                    app:layout_constraintTop_toTopOf="@+id/ll_verify" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -273,6 +273,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_check_in"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Th 7, 28 thg 9 2024 (14:00)"
@@ -297,6 +298,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_check_out"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="CN, 29 thg 9 2024 (12:00)"
@@ -397,6 +399,7 @@
                                 android:src="@drawable/ic_bathtub" />
 
                             <TextView
+                                android:id="@+id/tv_num_bathroom"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -431,6 +434,7 @@
                                 android:src="@drawable/ic_bedroom" />
 
                             <TextView
+                                android:id="@+id/tv_num_bed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -464,6 +468,7 @@
                                 android:src="@drawable/ic_kitchen" />
 
                             <TextView
+                                android:id="@+id/tv_num_kitchen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -497,6 +502,7 @@
                                 android:src="@drawable/ic_person" />
 
                             <TextView
+                                android:id="@+id/tv_num_person"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"

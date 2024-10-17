@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -235,6 +236,7 @@ class RentalPostingViewModel @Inject constructor(
             }
         }
     }
+
 
 
 
