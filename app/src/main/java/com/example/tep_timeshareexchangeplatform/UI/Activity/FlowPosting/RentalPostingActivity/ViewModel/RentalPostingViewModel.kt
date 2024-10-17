@@ -9,6 +9,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -237,6 +238,18 @@ class RentalPostingViewModel @Inject constructor(
         }
     }
 
+    // ----------------------------------------------------------//
+    // Call API get my timeshare Detail
+    private val _myTimeshareDetail = MutableLiveData<Resource<MyTimeshareDetailResponse>>()
+    val myTimeshareDetail: MutableLiveData<Resource<MyTimeshareDetailResponse>> = _myTimeshareDetail
+    fun getMyTimeshareDetail(token: String, timeShareId: Int) {
+        viewModelScope.launch {
+            _myTimeshareDetail.postValue(Resource.loading(null))
+            timeshareRepository.getMyTimeshareDetail(token, timeShareId).let {
+                _myTimeshareDetail.postValue(it)
+            }
+        }
+    }
 
 
 

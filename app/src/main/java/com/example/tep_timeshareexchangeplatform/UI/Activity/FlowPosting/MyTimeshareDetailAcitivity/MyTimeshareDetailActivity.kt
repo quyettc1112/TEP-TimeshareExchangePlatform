@@ -13,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
@@ -73,7 +74,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    Log.d("CheckCall API", "observeViewModel: ${it.message}")
                     MotionToast.Companion.createColorToast(
                         this,
                         "Error",
@@ -128,7 +128,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
             tvNumBathroom.text = myTimeshareDetailResponse.unitType.bathrooms.toString()
             tvNumBed.text = myTimeshareDetailResponse.unitType.bedrooms.toString()
             tvNumPerson.text = myTimeshareDetailResponse.unitType.sleeps.toString()
-
         }
         
         
@@ -175,18 +174,19 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
                     }
                     override fun positiveAction() {
-                        // Fake Data
-                        val myTimeshareModel =  MyTimeshareModel(
-                            id = 1,
-                            name = "Flamingo Đại Lải",
-                            roomName = "Phòng Studio King, 1 Giường, 4 Người",
-                            checkInDate = "18/08/2024",
-                            checkOutDate = "23/08/2024",
-                            numberOfNight = 6,
-                            price = "1,000,000 VND",
-                            image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
-                        )
-                        intentValueToPostingFlow(myTimeshareModel)
+                        val timeshareDetail = myTimeshareDetailViewModel.myTimeshareDetail.value?.data
+                        val myTimeshareResponse = timeshareDetail?.let { it1 ->
+                            MyTimeshareResponse(
+                                timeShareId = it1.timeShareId,
+                                resortName = timeshareDetail.resortName,
+                                roomName = timeshareDetail.roomName,
+                                bathRoom = timeshareDetail.unitType.bathrooms,
+                                bedRooms = timeshareDetail.unitType.bedrooms,
+                                startDate = timeshareDetail.startDate,
+                                endDate = timeshareDetail.endDate
+                            )
+                        }
+                        intentValueToPostingFlow(myTimeshareResponse!!)
                     }
                 }
             )
@@ -195,9 +195,9 @@ class MyTimeshareDetailActivity : BaseActivity() {
     }
 
 
-    private fun intentValueToPostingFlow(myTimeshareModel : MyTimeshareModel) {
+    private fun intentValueToPostingFlow(myTimeshareResponse: MyTimeshareResponse) {
         val intent = Intent()
-        intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, myTimeshareModel)
+        intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, myTimeshareResponse)
         setResult(RESULT_OK, intent)
         finish()
     }

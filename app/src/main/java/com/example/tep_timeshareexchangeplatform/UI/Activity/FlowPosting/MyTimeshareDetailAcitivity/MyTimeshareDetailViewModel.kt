@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +28,22 @@ class MyTimeshareDetailViewModel @Inject constructor(
                 _myTimeshareDetail.postValue(it)
             }
         }
+    }
+    // ----------------------------------------------------------//
+    // Map Timeshare Detail to MyTimeshareResponse
+    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse>()
+    val myTimeshareResponse: MutableLiveData<MyTimeshareResponse> = _myTimeshareResponse
+    fun mapTimeshareDetailToMyTimeshareResponse(timeshareDetail: MyTimeshareDetailResponse) {
+        val myTimeshareResponse = MyTimeshareResponse(
+            timeShareId = timeshareDetail.timeShareId,
+            resortName = timeshareDetail.resortName,
+            roomName = timeshareDetail.roomName,
+            bathRoom = timeshareDetail.unitType.bathrooms,
+            bedRooms = timeshareDetail.unitType.bedrooms,
+            startDate = timeshareDetail.startDate,
+            endDate = timeshareDetail.endDate
+        )
+        _myTimeshareResponse.postValue(myTimeshareResponse)
     }
 
 }

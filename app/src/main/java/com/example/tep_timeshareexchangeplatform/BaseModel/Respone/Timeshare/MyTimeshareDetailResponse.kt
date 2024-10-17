@@ -1,6 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare
 
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -46,7 +48,21 @@ data class MyTimeshareDetailResponse(
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
     @SerializedName("unitType") val unitType: UnitType
-) {
+) : Parcelable{
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        TODO("unitType")
+    ) {
+    }
+
     data class UnitType(
         @SerializedName("id") val id: Int,
         @SerializedName("title") val title: String,
@@ -66,4 +82,30 @@ data class MyTimeshareDetailResponse(
         @SerializedName("sleeps") val sleeps: Int,
         @SerializedName("view") val view: String
     )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(timeShareId)
+        parcel.writeString(resortName)
+        parcel.writeString(roomCode)
+        parcel.writeString(roomName)
+        parcel.writeInt(roomId)
+        parcel.writeString(resortAddress)
+        parcel.writeInt(resortId)
+        parcel.writeString(startDate)
+        parcel.writeString(endDate)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<MyTimeshareDetailResponse> {
+        override fun createFromParcel(parcel: Parcel): MyTimeshareDetailResponse {
+            return MyTimeshareDetailResponse(parcel)
+        }
+
+        override fun newArray(size: Int): Array<MyTimeshareDetailResponse?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

@@ -29,6 +29,9 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentHomeBinding
 import com.google.android.material.datepicker.CalendarConstraints
@@ -116,19 +119,25 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         homeViewModel.resortList.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 Status.LOADING -> {
-                    showLoading("Loading", "Please wait")
+                    (activity as MainActivity).showLoadingWaiting(true)
                 }
                 Status.SUCCESS -> {
-                    hideLoading()
+                    (activity as MainActivity).hideLoadingWaiting()
                     resource.data?.let { resortModel ->
                         resortAdapterMB.submitList(resortModel.content)
                     }
 
                 }
                 Status.ERROR -> {
-                    // Ẩn ProgressBar
-                    // Hiển thị thông báo lỗi
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    MotionToast.Companion.createToast(
+                        requireActivity(),
+                        "Error",
+                        "Error ${resource.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
                 }
             }
         })
