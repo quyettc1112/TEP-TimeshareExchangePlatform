@@ -36,49 +36,47 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2">
         <!--// Resort Name-->
-        <TextView
-            android:id="@+id/tv_resortName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:fontFamily="@font/inter_bold"
-            android:maxLines="1"
-            android:text="Flamingo Đại Lải"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
 
 
         <!--// Resort Info-->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resortName">
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_resortName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:maxLines="2"
+                android:text="Flamingo Đại Lải sdfsdfsdfsdffsdf"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- // Location-->
             <LinearLayout
+                android:id="@+id/linearLayout20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:minHeight="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_resortName">
 
                 <ImageView
                     android:layout_width="12dp"
@@ -91,18 +89,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:gravity="center|left"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text="Đại Lải, Phúc Yên, Việt Nam"
                     android:textSize="12dp" />
             </LinearLayout>
 
-            <!-- // Room-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:minHeight="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout20">
 
                 <ImageView
                     android:layout_width="12dp"
@@ -119,9 +118,10 @@
                     android:text="123 Timeshare cho thuê có sẵn"
                     android:textSize="12dp" />
             </LinearLayout>
+            <!-- // Room-->
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -218,7 +218,7 @@
         android:text="@string/book_now"
         android:textColor="@color/white"
         android:textSize="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
 
