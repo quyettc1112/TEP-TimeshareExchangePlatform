@@ -17,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentPackageActivity
@@ -84,9 +85,12 @@ class MemberShipActivity : BaseActivity() {
 
     private fun clickRequestPaymentButton() {
         binding.ctrRequestButton.setOnClickListener {
-            val intent = Intent(this, PaymentPackageActivity::class.java)
+            val dialogFragment = MemberInfoDialog.newInstance()
+            dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+
+            /*val intent = Intent(this, PaymentPackageActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
-            startActivity(intent)
+            startActivity(intent)*/
         }
     }
 

@@ -116,6 +116,13 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
         <item>Option 2</item>
         <item>Option 3</item>
     </string-array>
+
+
+    <string-array name="spinner_gender_items">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
     <string-array name="cancellation_policy_options">
         <item>Chọn</item>
         <item>Hủy miễn phí</item>
