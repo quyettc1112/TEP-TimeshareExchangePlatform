@@ -1,23 +1,17 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentPackageActivity
@@ -87,10 +81,14 @@ class MemberShipActivity : BaseActivity() {
         binding.ctrRequestButton.setOnClickListener {
             val dialogFragment = MemberInfoDialog.newInstance()
             dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+            dialogFragment.setOnClickRequestButton(object : MemberInfoDialog.OnClickRequestButton {
+                override fun onClickRequestButton() {
+                    val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
+                    intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
+                    startActivity(intent)
+                }
+            })
 
-            /*val intent = Intent(this, PaymentPackageActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
-            startActivity(intent)*/
         }
     }
 

@@ -1,25 +1,32 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.databinding.DialogMemberInfoBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.Calendar
 
 class MemberInfoDialog: DialogFragment() {
+
+
+    interface OnClickRequestButton {
+        fun onClickRequestButton()
+    }
+    private var onClickRequestButton: OnClickRequestButton? = null
+    fun setOnClickRequestButton(onClickRequestButton: OnClickRequestButton) {
+        this.onClickRequestButton = onClickRequestButton
+    }
+
+
     private lateinit var binding: DialogMemberInfoBinding // Assume you're using View Binding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -130,6 +137,7 @@ class MemberInfoDialog: DialogFragment() {
                 MotionToast.LONG_DURATION,
                 null)
             dismiss()
+
         }
     }
 
