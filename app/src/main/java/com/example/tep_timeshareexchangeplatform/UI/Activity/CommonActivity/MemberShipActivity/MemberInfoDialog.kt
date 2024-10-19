@@ -136,7 +136,7 @@ class MemberInfoDialog: DialogFragment() {
                 MotionToast.GRAVITY_BOTTOM,
                 MotionToast.LONG_DURATION,
                 null)
-            dismiss()
+            onClickRequestButton?.onClickRequestButton()
 
         }
     }

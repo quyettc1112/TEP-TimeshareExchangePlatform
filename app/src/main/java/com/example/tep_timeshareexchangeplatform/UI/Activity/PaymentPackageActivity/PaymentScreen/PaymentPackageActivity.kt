@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -8,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.BillingScreen.BillingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityPaymentPackageBinding
 import java.text.DecimalFormat
@@ -27,6 +29,7 @@ class PaymentPackageActivity : BaseActivity() {
         }
         setCustomToolBar()
         getIntentData()
+        onRequestButtonClicked()
     }
 
     private fun setCustomToolBar() {
@@ -40,7 +43,7 @@ class PaymentPackageActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
-        val packageId: Int = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+        val packageId: Int = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 1)
         if(packageId == 0) {
             finish()
             return
@@ -78,7 +81,6 @@ class PaymentPackageActivity : BaseActivity() {
 
     }
 
-
     private fun bindDataPaymentInfo(packageEnum: PackageEnum) {
         // Hide Unessary Views
         binding.includePackagePosting.rvFeatures.visibility = View.GONE
@@ -93,6 +95,11 @@ class PaymentPackageActivity : BaseActivity() {
             tvTotalAmount.text = "${formatPrice(packageEnum.packageModel.price)} VND"
         }
 
+    }
+    private fun onRequestButtonClicked() {
+        binding.ctrRequestButton.setOnClickListener {
+            startActivity(Intent(this, BillingActivity::class.java))
+        }
     }
 
     override fun onBackPressed() {
