@@ -1,17 +1,11 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
@@ -80,12 +74,9 @@ class PaymentPackageActivity : BaseActivity() {
                 PackageEnum.PREMIUM_SERVICE -> TODO()
                 PackageEnum.DELEGATED_SERVICE -> TODO()
             }
-
         }
 
     }
-
-
 
 
     private fun bindDataPaymentInfo(packageEnum: PackageEnum) {

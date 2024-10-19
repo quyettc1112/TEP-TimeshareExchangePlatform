@@ -19,7 +19,10 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.PaymentPackageActivity.PaymentPackageActivity"
+            android:name=".UI.Activity.PaymentPackageActivity.BillingScreen.BillingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UI.Activity.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity"
