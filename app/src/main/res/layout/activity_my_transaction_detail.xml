@@ -33,679 +33,499 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/primary_background_F9"
             android:orientation="vertical">
-
-            <!--// Tittle-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Tài Khoản/ Thẻ Thanh Toán"
-                android:fontFamily="@font/inter_bold"
-                android:textSize="20sp"
-                android:layout_marginStart="10dp"
-
-
-
-                />
-
-            <!--// Payment Method-->
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
+            <!--// Transaction Detail-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="10"
+                android:paddingBottom="20dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp">
-
-                <!--// VNPay Button-->
-                <com.google.android.material.card.MaterialCardView
-                    android:clickable="true"
-                    app:cardElevation="5dp"
-                    android:layout_margin="5dp"
-                    app:strokeWidth="2dp"
-                    app:cardCornerRadius="20dp"
-                    android:layout_weight="5"
-                    android:layout_width="0dp"
-                    android:layout_height="70dp">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <!--// Image VNPay-->
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView6"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="10dp"
-                            app:cardCornerRadius="50dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="12dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/ic_vnpay" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <!--// Text VNPay-->
-                        <TextView
-                            android:id="@+id/textView22"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:fontFamily="@font/inter_semibold"
-                            android:maxLines="1"
-                            android:text="VNPay"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/cardView6"
-                            app:layout_constraintTop_toTopOf="@+id/cardView6" />
-
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:fontFamily="@font/inter_light"
-                            android:maxLines="1"
-                            android:text="Miễn Phí"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardView6"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/cardView6"
-                            app:layout_constraintTop_toBottomOf="@+id/textView22" />
-                        
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!--// VNPay Button-->
-                <com.google.android.material.card.MaterialCardView
-                    android:clickable="true"
-                    app:cardElevation="5dp"
-                    android:layout_margin="5dp"
-                    app:strokeWidth="2dp"
-                    app:cardCornerRadius="20dp"
-                    android:layout_weight="5"
-                    android:layout_width="0dp"
-                    android:layout_height="70dp">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <!--// Image VNPay-->
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView7"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="10dp"
-                            app:cardCornerRadius="50dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="16dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/ic_logo_only" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <!--// Text VNPay-->
-                        <TextView
-                            android:id="@+id/textView23"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:fontFamily="@font/inter_semibold"
-                            android:maxLines="1"
-                            android:text="Ví Unwind"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/cardView7"
-                            app:layout_constraintTop_toTopOf="@+id/cardView7" />
-
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:fontFamily="@font/inter_light"
-                            android:maxLines="1"
-                            android:text="259.000đ"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardView7"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/cardView7"
-                            app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-
-            </LinearLayout>
-
-            <!--// Package-->
-            <LinearLayout
-                android:id="@+id/ll_content_my_timeshare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-                <include
-                    android:id="@+id/include_packege_posting"
-                    layout="@layout/item_package_posting"
-                    android:visibility="visible" />
-            </LinearLayout>
-
-            <!--// Info Transaction-->
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_margin="10dp"
-                android:background="@drawable/background_stroke_around"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!--// Title Text-->
+                <!--// Property Name-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/crl_package_info"
+                    android:id="@+id/constraintLayout15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/background_stroke_around"
-                    android:backgroundTint="@color/blue_header_section"
-                    android:padding="8dp"
+                    android:minHeight="70dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!--// Image-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView5"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="10dp"
+                        app:cardCornerRadius="50dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/im_receiver"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_logo_only" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!--// Name Properties-->
+                    <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:maxLines="1"
+                        android:text="Unwind"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toEndOf="@+id/cardView5"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// Name Properties-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:maxLines="1"
+                        android:text="- 179.000 VND"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+                        app:layout_constraintStart_toEndOf="@+id/cardView5"
+                        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--// Transaction Detail-->
+                <LinearLayout
+                    android:id="@+id/linearLayout21"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout15">
+
+                    <!--// Trạng Thái-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:id="@+id/textView27"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Trạng Thái"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- // Status-->
+                        <LinearLayout
+                            android:id="@+id/materialCardView3"
+                            android:layout_width="130dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/background_rating"
+                            android:backgroundTint="@color/green_rental"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:strokeColor="@color/white">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:gravity="center"
+                                    android:text="Thành Công"
+                                    android:textColor="@color/quantum_googgreen"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Thời Gian-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Thời Gian"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="08:00 24/03/2025"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Tittle Quá trình giao dich-->
+                    <TextView
+                        android:id="@+id/tv_transaction_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Quá trình giao dịch"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <!--// Ma giao dich-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Mã Giao Dịch"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_transaction_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="3737982723"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--//Payment Method-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Phương Thức Thanh Toán"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_payment_method"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Ví Unwind"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--//Total Fee-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Tổng Phí"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_total_fee"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Miễn Phí"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+                <!--// Help Center-->
+                <LinearLayout
+                    android:background="@drawable/background_stroke_around"
+                    android:backgroundTint="@color/i_blue_light"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout21">
+
+                    <TextView
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/blue_full"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Liên hệ hỗ trợ"
+                        android:gravity="center"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--// Order Detail-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+                <!--// Order Detail-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
 
+                    <!--//Dịch Vụ-->
                     <TextView
-                        android:id="@+id/titleTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/inter_medium"
-                        android:maxWidth="300dp"
-                        android:padding="5dp"
-                        android:text="Thông tin gói dịch vụ"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                
-                <!--// Service Name-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textView24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Dịch Vụ"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_service_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="Member Ship"
-                        android:textSize="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
+                        android:id="@+id/tv_service_title"
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_service_name"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// User Name-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Người Dùng"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Thông Tin Dịch Vụ"
                         android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="Trần Cương Quyết"
-                        android:textSize="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textSize="14dp" />
 
-                    <LinearLayout
+                    <!--// Ma giao dich-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Email Name-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Email"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="quyet@gmail.com"
-                        android:textSize="16dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Dịch Vụ"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_service_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Gói Membership"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--//Order ID-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_email"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Price Service-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Giá Dịch Vụ"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_price_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="179.000 VNĐ"
-                        android:textSize="16dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
 
-                    <LinearLayout
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Mã Đơn Hàng"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_order_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="ãsf5hg8jgh7865sd5s"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--//Desciptiuon-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_price_service"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Duration -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Chu kỳ"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="1 Tháng"
-                        android:textSize="16dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView26">
+                        <!--// Fullname-->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Mô Ta"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_duration"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Fee Service -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Phí dịch vụ"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_fee_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="Miễn Phí"
-                        android:textSize="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/primary_background_F9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_fee_service"
-                        tools:layout_editor_absoluteX="16dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Total Price-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Tạm Tính"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_total_fee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:text="179.000 VNĐ"
-                        android:textSize="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <!-- // Status-->
+                        <TextView
+                            android:id="@+id/tv_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="6.5"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Miễn Phí"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
-
-            </LinearLayout>
-
-            <!--// DO Nothing-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"/>
 
 
         </LinearLayout>
     </ScrollView>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_stroke_around"
-        android:backgroundTint="@color/white"
-        android:paddingStart="20dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <!--// Coupon Option-->
-        <LinearLayout
-            android:id="@+id/ll_coupon_option"
-            android:padding="5dp"
-            android:background="@drawable/background_stroke_around"
-            android:backgroundTint="@color/primary_background_F9"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:translationZ="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout18"
-            tools:layout_editor_absoluteX="20dp">
-
-            <!-- Icon on the left -->
-            <ImageView
-                android:id="@+id/icon_promotion"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_vouncher" />
-
-
-
-            <!-- Text for promotion -->
-            <TextView
-                android:id="@+id/tv_promotion_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ưu đãi"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Spacer to push the right-side content -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <!-- Text and arrow on the right -->
-            <TextView
-                android:id="@+id/tv_choose_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="Chọn hoặc nhập mã"
-                android:textColor="#808080" />
-
-            <ImageView
-                android:id="@+id/arrow_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="Arrow icon"
-                android:src="@drawable/ic_arrow_right" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            app:layout_constraintTop_toBottomOf="@id/ll_coupon_option"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout18"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/primary_background_F9"/>
-
-        <!--// Total Price-->
-        <LinearLayout
-            android:id="@+id/linearLayout18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/ctr_request_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <!-- Total Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- Label for Total -->
-                <TextView
-                    android:id="@+id/tvTotalLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tổng"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <!-- Total Amount -->
-                <TextView
-                    android:id="@+id/tvTotalAmount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter_extrabold"
-                    android:text="179.000 VNĐ"
-                    android:textAlignment="textEnd"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!--// Button Request-->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ctr_request_button"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/ripple_effect_white"
-            android:backgroundTint="#5F8BFF"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="Xác Nhân Thanh Toán"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 
