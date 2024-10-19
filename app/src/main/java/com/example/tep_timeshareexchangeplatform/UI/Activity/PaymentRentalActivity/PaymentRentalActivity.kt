@@ -1,16 +1,15 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentActivity.RentalPaymentActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentRentalActivity
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentBinding
 
-class RentalPaymentActivity : BaseActivity() {
+class PaymentRentalActivity : BaseActivity() {
     private lateinit var binding: ActivityRentalPaymentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +33,7 @@ class RentalPaymentActivity : BaseActivity() {
     }
 
     private fun intentToRentalPaymentConfirmActivity() {
-        val intent = Intent(this, RentalPaymentConfirmActivity::class.java)
+        val intent = Intent(this, PaymentRentalConfirmActivity::class.java)
         startActivity(intent)
     }
 }

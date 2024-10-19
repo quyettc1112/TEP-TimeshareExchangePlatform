@@ -47,6 +47,8 @@ class Constant {
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
+        const val DEFAULT_MEMBERSHIP_PACKAGE_SELECTION = "membershipPackageSelection"
+
         val timeshareList = listOf(
             TimeshareModel(
                 1,

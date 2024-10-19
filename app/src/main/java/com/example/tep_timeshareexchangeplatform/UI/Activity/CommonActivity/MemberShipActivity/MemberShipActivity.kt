@@ -3,20 +3,30 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Mem
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.MemberShipAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentPackageActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMemberShipBinding
 
-class MemberShipActivity : AppCompatActivity() {
+class MemberShipActivity : BaseActivity() {
     private lateinit var binding: ActivityMemberShipBinding
     private var memberShipAdapter = MemberShipAdapter()
+    private val memberShipViewModel : MemberShipViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +49,7 @@ class MemberShipActivity : AppCompatActivity() {
         binding.imgNext.setOnClickListener {
            startActivity(Intent(this, RentalPostingActivity::class.java))
         }
+        clickRequestPaymentButton()
 
     }
 
@@ -53,5 +64,31 @@ class MemberShipActivity : AppCompatActivity() {
             setViewPager(binding.vpMemberShip)
             tintIndicator(ContextCompat.getColor(context, R.color.blue_full))
         }
+        // Lắng nghe sự kiện thay đổi trang
+        binding.vpMemberShip.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> {
+                        memberShipViewModel.updateCurrentPackage(PackageEnum.MEMBERSHIP_MONTHLY.packageModel)
+                        Log.d("CheckCurrentPackage", "Updated to MONTHLY")
+                    }
+                    1 -> {
+                        memberShipViewModel.updateCurrentPackage(PackageEnum.MEMBERSHIP_YEARLY.packageModel)
+                        Log.d("CheckCurrentPackage", "Updated to YEARLY")
+                    }
+                }
+            }
+        })
     }
+
+    private fun clickRequestPaymentButton() {
+        binding.ctrRequestButton.setOnClickListener {
+            val intent = Intent(this, PaymentPackageActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
+            startActivity(intent)
+        }
+    }
+
+
 }

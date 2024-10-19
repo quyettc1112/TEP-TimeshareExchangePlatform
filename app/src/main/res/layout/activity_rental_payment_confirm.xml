@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PaymentActivity.RentalPaymentActivity.RentalPaymentConfirmActivity">
+    tools:context=".UI.Activity.PaymentRentalActivity.PaymentRentalConfirmActivity">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
