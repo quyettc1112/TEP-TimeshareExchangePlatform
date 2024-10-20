@@ -8,11 +8,18 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
+import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.MyProgressDialog
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
@@ -63,6 +70,59 @@ open class  BaseActivity : AppCompatActivity() {
         progressDialog?.show()
 
     }
+    open fun showSuccessDialog(
+        context: Context,
+        message: String?,
+        onClickListener: View.OnClickListener? = null
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_success, null)
+
+        // Tạo dialog với layout tuỳ chỉnh
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+        val textSuccess = dialogView.findViewById<TextView>(R.id.tvSuccessMessage)
+        textSuccess.text = message
+
+        // Ánh xạ các view từ dialog
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        btnConfirm.setOnClickListener {
+            onClickListener?.onClick(it) ?: dialog.dismiss()
+        }
+
+
+        // Hiển thị dialog
+        dialog.show()
+    }
+
+    open fun showFailedDialog(
+        context: Context,
+        message: String?,
+        onClickListener: View.OnClickListener? = null
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_failed, null)
+
+        // Tạo dialog với layout tuỳ chỉnh
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
+        textSuccess.text = message
+
+        // Ánh xạ các view từ dialog
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        btnConfirm.setOnClickListener {
+            onClickListener?.onClick(it) ?: dialog.dismiss()
+        }
+
+
+        // Hiển thị dialog
+        dialog.show()
+    }
+
 
     open fun hideLoading() {
         progressDialog?.let {
@@ -182,6 +242,9 @@ open class  BaseActivity : AppCompatActivity() {
         val intent = Intent(this, activity)
         startActivity(intent)
     }
+
+
+
 
 
 

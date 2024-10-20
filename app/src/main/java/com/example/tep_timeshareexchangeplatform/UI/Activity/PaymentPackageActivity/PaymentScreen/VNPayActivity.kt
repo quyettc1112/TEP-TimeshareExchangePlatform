@@ -3,7 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActi
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
@@ -13,11 +13,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityVnpayBinding
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONException
 import org.json.JSONObject
@@ -37,25 +40,19 @@ class VNPayActivity : BaseActivity() {
             insets
         }
 
-        getIntentData()
+        webViewLoadSetup()
     }
 
-    private fun getIntentData() {
+    private fun webViewLoadSetup() {
         val urlIntent = intent.getStringExtra(Constant.PAYMENT_URL)
-
         // Set WebViewClient to prevent opening external browser
         binding.webView.webViewClient = WebViewClient()
-
         // Enable JavaScript if needed (optional)
         binding.webView.settings.javaScriptEnabled = true
-
         // Load the URL in the WebView
-
         binding.webView.settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
-
-
         binding.webView.loadUrl(urlIntent.toString())
-
+        showLoadingWaiting(true)
 
         binding.webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
@@ -64,59 +61,42 @@ class VNPayActivity : BaseActivity() {
             ): Boolean {
                 if (!urlIntent!!.contains("https://sandbox.vnpayment.vn/paymentv2")) {
                     view.loadUrl("about:blank")
+                    finish()
                     return true
                 } else {
+                    hideLoadingWaiting()
                     val url = request.url.toString()
-                    view.loadUrl(url);
-                    MotionToast.Companion.createToast(
-                        this@VNPayActivity,
-                        "shouldOverrideUrlLoading",
-                        "Đang chuyển hướng đến trang thanh toán...",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-
+                    view.loadUrl(url)
                     return super.shouldOverrideUrlLoading(view, url)
                 }
             }
 
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                MotionToast.Companion.createToast(
-                    this@VNPayActivity,
-                    "onPageFinished",
-                    "Đang chuyển hướng đến trang thanh toán...",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-
                 // Kiểm tra URL để xử lý kết quả thanh toán nếu cần
                 if (url.contains("https://fams-management.tech/api/payment/payment-infor")) {
                     // Sử dụng evaluateJavascript để lấy nội dung JSON từ trang
+                    showLoadingWaiting(true)
+                    view.loadUrl("about:blank")
                     view.evaluateJavascript(
                         "(function() { return document.body.innerText; })();"
                     ) { jsonResult ->
                         // Xử lý chuỗi JSON trả về từ trang
                         if (jsonResult != null && jsonResult.contains("responseCode")) {
                             try {
-                                // Loại bỏ dấu ngoặc kép dư thừa (do evaluateJavascript trả về chuỗi có dấu "")
-                                val json = jsonResult.replace("\\\"", "\"").replace("\"{", "{").replace("}\"", "}")
+                                val gson = Gson()
+                                val cleanedJson = jsonResult.replace("\\\"", "\"").replace("\"{", "{").replace("}\"", "}")
+                                val vnPayResponse = gson.fromJson(cleanedJson, VNPayResponse::class.java)
+                                // Check response code
+                                val responseCodeEnum: VnpResponseCode = VnpResponseCode.fromCode(vnPayResponse.responseCode)!!
+                                if (responseCodeEnum!!.equals(VnpResponseCode.SUCCESS)) {
+                                    hideLoadingWaiting()
+                                    showSuccess(responseCodeEnum)
+                                } else {
+                                    hideLoadingWaiting()
+                                    showFailed(responseCodeEnum)
+                                }
 
-                                // Parse JSON
-                                val jsonObject = JSONObject(json)
-                                val amount = jsonObject.getString("amount")
-                                val responseCode = jsonObject.getString("responseCode")
-                                val transactionTime = jsonObject.getString("transactionTime")
-                                val orderDetail = jsonObject.getString("orderDetail")
-
-                                // In ra thông tin hoặc xử lý logic tùy ý
-                                Log.d("PaymentResult", "Amount: $amount, ResponseCode: $responseCode, TransactionTime: $transactionTime, OrderDetail: $orderDetail")
-
-                                // Bạn có thể cập nhật UI, lưu thông tin hoặc thực hiện các xử lý khác ở đây
                             } catch (e: JSONException) {
                                 e.printStackTrace()
                             }
@@ -124,8 +104,6 @@ class VNPayActivity : BaseActivity() {
                     }
                 }
             }
-
-
             override fun shouldInterceptRequest(
                 view: WebView?,
                 request: WebResourceRequest
@@ -166,12 +144,47 @@ class VNPayActivity : BaseActivity() {
                 }
                 return super.shouldInterceptRequest(view, request)
             }
-
-
-
-
         }
 
+    }
 
+    private fun showSuccess(responseCodeEnum: VnpResponseCode) {
+        MotionToast.Companion.createToast(
+            this@VNPayActivity,
+            "PaymentResult ${responseCodeEnum.code}",
+            responseCodeEnum.getString(this@VNPayActivity),
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_TOP,
+            MotionToast.LONG_DURATION,
+            null
+        )
+        showSuccessDialog(
+            this@VNPayActivity,
+            responseCodeEnum.getString(this@VNPayActivity),
+            object: View.OnClickListener {
+                override fun onClick(v: View?) {
+                    finish()
+                }
+            })
+    }
+
+    private fun showFailed(responseCodeEnum: VnpResponseCode) {
+        MotionToast.Companion.createToast(
+            this@VNPayActivity,
+            "PaymentResult ${responseCodeEnum.code}",
+            responseCodeEnum.getString(this@VNPayActivity),
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_TOP,
+            MotionToast.LONG_DURATION,
+            null
+        )
+        showFailedDialog(
+            this@VNPayActivity,
+            responseCodeEnum.getString(this@VNPayActivity),
+            object: View.OnClickListener {
+                override fun onClick(v: View?) {
+                    finish()
+                }
+            })
     }
 }
