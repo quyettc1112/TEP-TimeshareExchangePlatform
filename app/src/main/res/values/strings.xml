@@ -109,8 +109,6 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="setting">Setting language</string>
 
 
-
-
     <!--// VNPay Response Code-->
     <string name="vnp_success">Transaction successful</string>
     <string name="vnp_suspicious_transaction">Successful deduction. The transaction is suspected (related to fraud, abnormal transaction).</string>
@@ -125,12 +123,6 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="vnp_bank_maintenance">The payment bank is under maintenance.</string>
     <string name="vnp_transaction_password_exceeded">Transaction failed: Incorrect transaction password entered too many times. Please try again.</string>
     <string name="vnp_other_errors">Other errors (remaining errors not listed in the error code list)</string>
-
-
-
-
-
-
 
 
     <!-- TODO: Remove or change this placeholder text -->

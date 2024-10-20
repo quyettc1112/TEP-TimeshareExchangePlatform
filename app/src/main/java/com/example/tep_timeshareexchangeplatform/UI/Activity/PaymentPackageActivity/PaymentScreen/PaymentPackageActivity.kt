@@ -2,8 +2,10 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -11,17 +13,26 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.BillingScreen.BillingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityPaymentPackageBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 
+@AndroidEntryPoint
 class PaymentPackageActivity : BaseActivity() {
     private lateinit var binding: ActivityPaymentPackageBinding
+    private val paymentPackageViewModel: PaymentPackageViewModel by viewModels()
+    private var packageId: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+            override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityPaymentPackageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        observeData()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -32,18 +43,39 @@ class PaymentPackageActivity : BaseActivity() {
         onRequestButtonClicked()
     }
 
+    private fun observeData() {
+        paymentPackageViewModel.responseUrl.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    intentToVNPAYActivity(it.data?.url.toString())
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Thất Bại",
+                        "${it.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        }
+    }
     private fun setCustomToolBar() {
         binding.customToolbar6.onStartIconClick = {
             finish()
         }
     }
-    fun formatPrice(price: Int): String {
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(price)
-    }
-
     private fun getIntentData() {
-        val packageId: Int = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 1)
+        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 1)
         if(packageId == 0) {
             finish()
             return
@@ -80,7 +112,6 @@ class PaymentPackageActivity : BaseActivity() {
         }
 
     }
-
     private fun bindDataPaymentInfo(packageEnum: PackageEnum) {
         // Hide Unessary Views
         binding.includePackagePosting.rvFeatures.visibility = View.GONE
@@ -98,13 +129,23 @@ class PaymentPackageActivity : BaseActivity() {
     }
     private fun onRequestButtonClicked() {
         binding.ctrRequestButton.setOnClickListener {
-            startActivity(Intent(this, BillingActivity::class.java))
+            val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId } ?: return@setOnClickListener
+            paymentPackageViewModel.getResponsePaymentUrl(packageEnum.packageModel.price, packageEnum.packageModel.name)
         }
+    }
+    private fun intentToVNPAYActivity(url : String) {
+        val intent = Intent(this, VNPayActivity::class.java)
+        intent.putExtra(Constant.PAYMENT_URL, url)
+        startActivity(intent)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+    fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
     }
 
 

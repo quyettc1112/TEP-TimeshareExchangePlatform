@@ -49,6 +49,8 @@ class Constant {
 
         const val DEFAULT_MEMBERSHIP_PACKAGE_SELECTION = "membershipPackageSelection"
 
+        const val PAYMENT_URL = "paymentUrl"
+
         val timeshareList = listOf(
             TimeshareModel(
                 1,

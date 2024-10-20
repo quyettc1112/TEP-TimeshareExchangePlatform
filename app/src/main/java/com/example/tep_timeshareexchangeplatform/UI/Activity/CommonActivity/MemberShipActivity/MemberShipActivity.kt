@@ -79,7 +79,13 @@ class MemberShipActivity : BaseActivity() {
 
     private fun clickRequestPaymentButton() {
         binding.ctrRequestButton.setOnClickListener {
-            val dialogFragment = MemberInfoDialog.newInstance()
+
+            val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
+            startActivity(intent)
+
+
+          /*  val dialogFragment = MemberInfoDialog.newInstance()
             dialogFragment.show(supportFragmentManager, dialogFragment.tag)
             dialogFragment.setOnClickRequestButton(object : MemberInfoDialog.OnClickRequestButton {
                 override fun onClickRequestButton() {
@@ -87,7 +93,7 @@ class MemberShipActivity : BaseActivity() {
                     intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
                     startActivity(intent)
                 }
-            })
+            })*/
 
         }
     }
