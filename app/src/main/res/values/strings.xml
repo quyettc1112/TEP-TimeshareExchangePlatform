@@ -107,6 +107,32 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="term_policy">Term &amp; Policies</string>
     <string name="privacy_policy">Privacy Policies</string>
     <string name="setting">Setting language</string>
+
+
+
+
+    <!--// VNPay Response Code-->
+    <string name="vnp_success">Transaction successful</string>
+    <string name="vnp_suspicious_transaction">Successful deduction. The transaction is suspected (related to fraud, abnormal transaction).</string>
+    <string name="vnp_internet_banking_not_registered">Transaction failed: The customer\'s card/account has not registered for Internet Banking service at the bank.</string>
+    <string name="vnp_authentication_failed_3_times">Transaction failed: The customer failed to authenticate card/account information more than 3 times.</string>
+    <string name="vnp_payment_timeout">Transaction failed: Payment timeout has expired. Please try again.</string>
+    <string name="vnp_account_blocked">Transaction failed: The customer\'s card/account is locked.</string>
+    <string name="vnp_otp_incorrect">Transaction failed: The customer entered the incorrect OTP. Please try again.</string>
+    <string name="vnp_unsuccessful_transaction">Transaction successful: The customer canceled the transaction.</string>
+    <string name="vnp_insufficient_funds">Transaction failed: Your account does not have enough balance to complete the transaction.</string>
+    <string name="vnp_daily_limit_exceeded">Transaction failed: Your account has exceeded the daily transaction limit.</string>
+    <string name="vnp_bank_maintenance">The payment bank is under maintenance.</string>
+    <string name="vnp_transaction_password_exceeded">Transaction failed: Incorrect transaction password entered too many times. Please try again.</string>
+    <string name="vnp_other_errors">Other errors (remaining errors not listed in the error code list)</string>
+
+
+
+
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 

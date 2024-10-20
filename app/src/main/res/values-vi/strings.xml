@@ -109,6 +109,22 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="setting">Cài đặt ngôn ngữ</string>
 
 
+    <!--//  VNPay Response Code-->
+    <string name="vnp_success">Giao dịch thành công</string>
+    <string name="vnp_suspicious_transaction">Trừ tiền thành công. Giao dịch bị nghi ngờ (liên quan tới lừa đảo, giao dịch bất thường).</string>
+    <string name="vnp_internet_banking_not_registered">Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng chưa đăng ký dịch vụ InternetBanking tại ngân hàng.</string>
+    <string name="vnp_authentication_failed_3_times">Giao dịch không thành công do: Khách hàng xác thực thông tin thẻ/tài khoản không đúng quá 3 lần</string>
+    <string name="vnp_payment_timeout">Giao dịch không thành công do: Đã hết hạn chờ thanh toán. Xin quý khách vui lòng thực hiện lại giao dịch.</string>
+    <string name="vnp_account_blocked">Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng bị khóa.</string>
+    <string name="vnp_otp_incorrect">Giao dịch không thành công do Quý khách nhập sai mật khẩu xác thực giao dịch (OTP). Xin quý khách vui lòng thực hiện lại giao dịch.</string>
+    <string name="vnp_unsuccessful_transaction">Giao dịch thành công do: Khách hàng hủy giao dịch</string>
+    <string name="vnp_insufficient_funds">Giao dịch không thành công do: Tài khoản của quý khách không đủ số dư để thực hiện giao dịch.</string>
+    <string name="vnp_daily_limit_exceeded">Giao dịch không thành công do: Tài khoản của Quý khách đã vượt quá hạn mức giao dịch trong ngày.</string>
+    <string name="vnp_bank_maintenance">Ngân hàng thanh toán đang bảo trì.</string>
+    <string name="vnp_transaction_password_exceeded">Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch.</string>
+    <string name="vnp_other_errors">Các lỗi khác (lỗi còn lại, không có trong danh sách mã lỗi đã liệt kê)</string>
+
+
     <string-array name="spinner_items">
         <item>Option 1</item>
         <item>Option 2</item>
