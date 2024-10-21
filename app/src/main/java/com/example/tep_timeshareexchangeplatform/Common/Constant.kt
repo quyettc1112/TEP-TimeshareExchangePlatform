@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Re
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.RoomTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 
 class Constant {
 
@@ -94,7 +95,8 @@ class Constant {
                 price = "3.000.000 VND",
                 numberOfNights = " | 5 đêm"
             ),
-            TimeshareModel(4,
+            TimeshareModel(
+                4,
                 verifyText = true,
                 favoriteIcon = R.drawable.baseline_favorite_border_24,
                 imageTimeshare = R.drawable.im_matiral_timeshare,
@@ -107,7 +109,8 @@ class Constant {
                 price = "2.500.000 VND",
                 numberOfNights = " | 5 đêm"
             ),
-            TimeshareModel(5,
+            TimeshareModel(
+                5,
                 verifyText = true,
                 favoriteIcon = R.drawable.baseline_favorite_border_24,
                 imageTimeshare = R.drawable.im_matiral_timeshare,
@@ -190,7 +193,7 @@ class Constant {
                 numberOfNights = "| 1 đêm"
             ),
             ResortModel(
-                id =7,
+                id = 7,
                 resortImage = R.drawable.im_material_mt,
                 resortName = "Phú Quốc Resort",
                 rating = 4.0f,
@@ -247,7 +250,7 @@ class Constant {
                 numberOfNights = "| 1 đêm"
             ),
             ResortModel(
-                id =7,
+                id = 7,
                 resortImage = R.drawable.im_material_mt,
                 resortName = "Phú Quốc Resort",
                 rating = 4.0f,
@@ -447,7 +450,7 @@ class Constant {
                 destinationName = "Vũng Tàu",
             ),
 
-        )
+            )
 
         val blogList = listOf(
             BlogModel(1, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
@@ -457,18 +460,78 @@ class Constant {
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
         val cityList = listOf(
-            LocationModel(1, "Thành Phố Đà Lạt", "Lâm Đồng, Việt Nam", R.drawable.im_material_da_lat, 1),
-            LocationModel(2,"Thành Phố Hội An", "Quảng Nam, Việt Nam", R.drawable.im_material_vung_tau, 1),
-            LocationModel(3,"Thành Phố Hạ Long", "Quảng Ninh, Việt Nam", R.drawable.im_material_vung_tau, 1),
-            LocationModel(4,"Thành Phố Quy Nhơn", "Bình Định, Việt Nam", R.drawable.im_material_vung_tau,1 ),
-            LocationModel(5,"Thành Phố Đồng Hới", "Quảng Bình, Việt Nam", R.drawable.im_material_vung_tau,1),
-            LocationModel(6,"Khách sạn Gia Vinh", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_nha_trang,2),
-            LocationModel(7,"Khách sạn Cương Quyết", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_quy_nhon,2),
-            LocationModel(8,"Khách sạn Nguyễn Tấn", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_phan_thiet,2),
-            LocationModel(9,"Khách sạn Thành Đạt", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_quy_nhon,2),
-            LocationModel(10,"Khách sạn Thanh Long", "Bà Rịa - Vũng Tàu, Việt Nam", R.drawable.im_material_phu_yen,2),
+            LocationModel(
+                1,
+                "Thành Phố Đà Lạt",
+                "Lâm Đồng, Việt Nam",
+                R.drawable.im_material_da_lat,
+                1
+            ),
+            LocationModel(
+                2,
+                "Thành Phố Hội An",
+                "Quảng Nam, Việt Nam",
+                R.drawable.im_material_vung_tau,
+                1
+            ),
+            LocationModel(
+                3,
+                "Thành Phố Hạ Long",
+                "Quảng Ninh, Việt Nam",
+                R.drawable.im_material_vung_tau,
+                1
+            ),
+            LocationModel(
+                4,
+                "Thành Phố Quy Nhơn",
+                "Bình Định, Việt Nam",
+                R.drawable.im_material_vung_tau,
+                1
+            ),
+            LocationModel(
+                5,
+                "Thành Phố Đồng Hới",
+                "Quảng Bình, Việt Nam",
+                R.drawable.im_material_vung_tau,
+                1
+            ),
+            LocationModel(
+                6,
+                "Khách sạn Gia Vinh",
+                "Bà Rịa - Vũng Tàu, Việt Nam",
+                R.drawable.im_material_nha_trang,
+                2
+            ),
+            LocationModel(
+                7,
+                "Khách sạn Cương Quyết",
+                "Bà Rịa - Vũng Tàu, Việt Nam",
+                R.drawable.im_material_quy_nhon,
+                2
+            ),
+            LocationModel(
+                8,
+                "Khách sạn Nguyễn Tấn",
+                "Bà Rịa - Vũng Tàu, Việt Nam",
+                R.drawable.im_material_phan_thiet,
+                2
+            ),
+            LocationModel(
+                9,
+                "Khách sạn Thành Đạt",
+                "Bà Rịa - Vũng Tàu, Việt Nam",
+                R.drawable.im_material_quy_nhon,
+                2
+            ),
+            LocationModel(
+                10,
+                "Khách sạn Thanh Long",
+                "Bà Rịa - Vũng Tàu, Việt Nam",
+                R.drawable.im_material_phu_yen,
+                2
+            ),
 
-        )
+            )
 
 
         val listImage = listOf(
@@ -482,8 +545,16 @@ class Constant {
 
         // Get List Room Type
         val listRoomType = listOf(
-            RoomTypeModel(1, "Phòng Studio", "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg"),
-            RoomTypeModel(2, "Phòng Queen", "https://i.pinimg.com/736x/09/b6/5f/09b65f9ba22e9a314d059b814e7d62a3.jpg"),
+            RoomTypeModel(
+                1,
+                "Phòng Studio",
+                "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg"
+            ),
+            RoomTypeModel(
+                2,
+                "Phòng Queen",
+                "https://i.pinimg.com/736x/09/b6/5f/09b65f9ba22e9a314d059b814e7d62a3.jpg"
+            ),
         )
 
         // Get list Facilitie
@@ -602,40 +673,10 @@ class Constant {
         )
 
         val listMemberShip = listOf(
-            PackageModel(
-                id = 1,
-                name = "Gói Tháng",
-                price = 99000,
-                description = "Gói dành cho những ai muốn trải nghiệm dịch vụ của chúng tôi trong 1 tháng",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Đặt phòng nhanh chóng",
-                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
-                    "Miễn phí hủy phòng",
-                    "Hỗ trợ 24/7"
-                )
-            ),
+            PackageEnum.MEMBERSHIP_MONTHLY.packageModel,
+            PackageEnum.MEMBERSHIP_YEARLY.packageModel,
 
-            PackageModel(
-                id = 2,
-                name = "Gói Năm",
-                price = 990000,
-                description = "Gói dành cho những ai muốn trải nghiệm dịch vụ của chúng tôi trong 1 tháng",
-                duration = 1,
-                type = "Gói Năm",
-                listBenefit = listOf(
-                    "Đặt phòng nhanh chóng",
-                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
-                    "Miễn phí hủy phòng",
-                    "Hỗ trợ 24/7",
-                    "Đặt phòng nhanh chóng",
-                    "Giảm giá 10% cho lần đặt phòng tiếp theo",
-
-                )
-            ),
-
-        )
+            )
 
         val listIntroSlider = listOf(
             IntroSliderModel(
@@ -662,7 +703,7 @@ class Constant {
                 image = R.drawable.ic_meterial_slider_3
             ),
 
-        )
+            )
 
         val listTimeshareCompany = listOf(
             "https://alma.vn/wp-content/uploads/2019/01/ALMA__logo.png",
@@ -678,31 +719,31 @@ class Constant {
             FAQModel(
                 id = 1,
                 title = "Tôi có thể đặt phòng trực tuyến không?",
-                desc = "Có, bạn có thể đặt phòng trực tuyến thông qua ứng dụng hoặc website của chúng tôi." ,
+                desc = "Có, bạn có thể đặt phòng trực tuyến thông qua ứng dụng hoặc website của chúng tôi.",
                 isExpandable = false
             ),
             FAQModel(
                 id = 2,
                 title = "Tôi có thể hủy phòng không?",
-                desc = "Có, bạn có thể hủy phòng thông qua ứng dụng hoặc website của chúng tôi." ,
+                desc = "Có, bạn có thể hủy phòng thông qua ứng dụng hoặc website của chúng tôi.",
                 isExpandable = false
             ),
             FAQModel(
                 id = 3,
                 title = "Tôi có thể thay đổi ngày đặt phòng không?",
-                desc = "Có, bạn có thể thay đổi ngày đặt phòng thông qua ứng dụng hoặc website của chúng tôi." ,
+                desc = "Có, bạn có thể thay đổi ngày đặt phòng thông qua ứng dụng hoặc website của chúng tôi.",
                 isExpandable = false
             ),
             FAQModel(
                 id = 4,
                 title = "Tôi có thể đặt phòng cho người khác không?",
-                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi." ,
+                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi.",
                 isExpandable = false
             ),
             FAQModel(
                 id = 5,
                 title = "Tôi có thể đặt phòng cho người khác không?",
-                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi." ,
+                desc = "Có, bạn có thể đặt phòng cho người khác thông qua ứng dụng hoặc website của chúng tôi.",
                 isExpandable = false
             )
         )
@@ -757,7 +798,7 @@ class Constant {
             ),
 
 
-        )
+            )
 
         val listPolicy = listOf(
             AmenitiesModel(
@@ -774,7 +815,7 @@ class Constant {
             ),
 
 
-        )
+            )
 
         val listMyTimeShare = listOf(
             MyTimeshareModel(
@@ -808,7 +849,7 @@ class Constant {
                 image = "https://i.pinimg.com/474x/2b/49/9d/2b499d27792e5239ed304a0ae6869a01.jpg"
             ),
 
-        )
+            )
 
         val listPackage = listOf(
             PackageModel(
@@ -868,7 +909,7 @@ class Constant {
                     "Gán cờ “Được xác minh” của Unwind",
                 )
             ),
-            )
+        )
 
         val listMyPosting = listOf(
             MyPostingModel(

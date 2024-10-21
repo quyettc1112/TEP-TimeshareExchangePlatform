@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -30,10 +31,12 @@ class MemberShipActivity : BaseActivity() {
     private lateinit var binding: ActivityMemberShipBinding
     private var memberShipAdapter = MemberShipAdapter()
     private val memberShipViewModel: MemberShipViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        tokenManager = TokenManager(this)
         binding = ActivityMemberShipBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -43,6 +46,7 @@ class MemberShipActivity : BaseActivity() {
         }
         initAdapter()
         initViewPagerView()
+        observeData()
 
         binding.customToolbar4.onStartIconClick = {
             onBackPressed()
@@ -57,6 +61,8 @@ class MemberShipActivity : BaseActivity() {
     }
 
     private fun observeData() {
+
+        // Check Call Create Customer
         memberShipViewModel.customerResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -80,12 +86,10 @@ class MemberShipActivity : BaseActivity() {
                         MotionToast.LONG_DURATION,
                         null
                     )
-                    finish()
                 }
 
                 Status.ERROR -> {
-                    hideLoadingWaiting()
-                    Log.d("CheckError", it.message.toString() + " " + it.message.toString())
+                    Log.d("CheckErrorCreate", it.message.toString() + " " + it.message.toString())
                     MotionToast.createColorToast(
                         this,
                         "Error",
@@ -95,6 +99,52 @@ class MemberShipActivity : BaseActivity() {
                         MotionToast.LONG_DURATION,
                         null
                     )
+                    hideLoadingWaiting()
+                }
+            }
+        }
+
+        // Check Call Is Customer Exist
+        memberShipViewModel.isCustomerExist.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
+                    intent.putExtra(
+                        Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION,
+                        memberShipViewModel.currentPackage.value!!.id
+                    )
+                    startActivity(intent)
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    if (it.message.toString().contains("404")) {
+                        val dialogFragment = MemberInfoDialog.newInstance()
+                        dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+                        dialogFragment.setOnClickRequestButton(object : MemberInfoDialog.OnClickRequestButton {
+                            override fun onClickRequestButton(customerDTO: CustomerDTO) {
+                                // Call API Create Customer
+                                memberShipViewModel.callCreateCustomer(tokenManager.getAccessToken()
+                                    .toString(), customerDTO)
+                            }
+                        })
+                    } else {
+                        Log.d("CheckError", it.message.toString() + " " + it.message.toString())
+                        MotionToast.createColorToast(
+                            this,
+                            "Error",
+                            it.message.toString(),
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            null
+                        )
+                    }
                 }
             }
         }
@@ -133,28 +183,20 @@ class MemberShipActivity : BaseActivity() {
 
     private fun clickRequestPaymentButton() {
         binding.ctrRequestButton.setOnClickListener {
-
-            val token = TokenManager(this).getAccessToken()
-
-            val dialogFragment = MemberInfoDialog.newInstance()
-            dialogFragment.show(supportFragmentManager, dialogFragment.tag)
-            dialogFragment.setOnClickRequestButton(object : MemberInfoDialog.OnClickRequestButton {
-                override fun onClickRequestButton(customerDTO: CustomerDTO) {
-                    if (token != null) {
-                        Log.d("CheckCustomerDTO", customerDTO.toString())
-                        val customerDTOCheck = CustomerDTO(
-                            "Trần Cương Quyết",
-                            "2024-01-11",
-                            "Check Create Customer",
-                            "string",
-                            "012414412"
-                        )
-                        memberShipViewModel.callCreateCustomer(token, customerDTO)
-                        observeData()
-                    }
-                }
-            })
-
+            val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken()!!)
+            if (tokenManager.getAccessToken() != null && user != null) {
+                memberShipViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!, user.userId)
+            } else {
+                MotionToast.createColorToast(
+                    this,
+                    "Error",
+                    "Token is null",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+            }
         }
     }
 

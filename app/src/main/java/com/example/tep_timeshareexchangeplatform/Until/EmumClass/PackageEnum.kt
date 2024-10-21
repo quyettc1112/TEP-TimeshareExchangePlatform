@@ -9,10 +9,10 @@ enum class PackageEnum(val packageModel: PackageModel) {
     MEMBERSHIP_MONTHLY(
         PackageModel(
             id = 1,
-            name = "Gói Tháng",
-            price = 99000,
+            name = "Gói 6 Tháng",
+            price = 119000,
             description = "Gói trao đổi timeshare trong 1 tháng.",
-            duration = 1,  // Thời gian sử dụng là 1 tháng
+            duration = 6,  // Thời gian sử dụng là 1 tháng
             type = "Membership",
             listBenefit = listOf(
                 "Đặt phòng nhanh chóng",
@@ -27,7 +27,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
         PackageModel(
             id = 2,
             name = "Gói Năm",
-            price = 990000,
+            price = 239000,
             description = "Gói trao đổi timeshare trong 1 năm.",
             duration = 12,  // Thời gian sử dụng là 1 năm
             type = "Membership",

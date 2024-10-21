@@ -32,4 +32,19 @@ class CustomerAPIRepository@Inject constructor(
         }
     }
 
+    // Check if customer exist
+    suspend fun getIsCustomerExist(token: String, userId: Int): Resource<CustomerResponse> {
+        return try {
+            val response = customerAPIService.getIsCustomerExist("Bearer $token", userId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 }
