@@ -7,19 +7,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.databinding.DialogMemberInfoBinding
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class MemberInfoDialog: DialogFragment() {
 
 
     interface OnClickRequestButton {
-        fun onClickRequestButton()
+        fun onClickRequestButton(customerDTO: CustomerDTO)
     }
     private var onClickRequestButton: OnClickRequestButton? = null
     fun setOnClickRequestButton(onClickRequestButton: OnClickRequestButton) {
@@ -28,6 +32,8 @@ class MemberInfoDialog: DialogFragment() {
 
 
     private lateinit var binding: DialogMemberInfoBinding // Assume you're using View Binding
+    private var gender: String = ""
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return Dialog(requireContext(), R.style.FullScreen)
@@ -75,6 +81,18 @@ class MemberInfoDialog: DialogFragment() {
 
         // Apply the adapter to the spinner
         binding.spGender.adapter = adapter
+
+        binding.spGender.setSelection(0)
+        binding.spGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Handle the selected item
+                gender = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
+        }
     }
 
     private fun showDatePickerDialog() {
@@ -97,13 +115,13 @@ class MemberInfoDialog: DialogFragment() {
     private fun handleInput() {
         val fullName = binding.edtFullname.text.toString()
         val phoneNumber = binding.edtPhone.text.toString()
-        val email = binding.edtEmail.text.toString()
         val address = binding.edtAddress.text.toString()
+        val dob = binding.tvDob.text.toString()
+        val gender = gender
 
         // Clear previous errors
         binding.edtFullname.error = null
         binding.edtPhone.error = null
-        binding.edtEmail.error = null
         binding.edtAddress.error = null
 
         // Check for null or empty values
@@ -117,27 +135,41 @@ class MemberInfoDialog: DialogFragment() {
             binding.edtPhone.error = "Số Điện Thoại không được để trống"
             isValid = false
         }
-        if (email.isEmpty()) {
-            binding.edtEmail.error = "Email không được để trống"
-            isValid = false
-        }
         if (address.isEmpty()) {
             binding.edtAddress.error = "Địa Chỉ không được để trống"
             isValid = false
         }
 
+
+        // Parse and format the DOB if valid
+        val dobFormatted: String? = try {
+            val inputFormat = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val parsedDate = inputFormat.parse(dob)
+            outputFormat.format(parsedDate) // Format the date as "yyyy-MM-dd"
+        } catch (e: Exception) {
+            null // If parsing fails, set it to null
+        }
+
+        if (dobFormatted == null) {
+            isValid = false
+            // You can set error handling for DOB here if required
+        }
+
         // Only proceed if all fields are valid
         if (isValid) {
-            // Handle valid input (e.g., save data, send it to the server)
-            MotionToast.Companion.createColorToast(requireActivity(),
-                "Thành Công",
-                "Cập Nhật Thông Tin Thành Công",
-                MotionToastStyle.SUCCESS,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null)
-            onClickRequestButton?.onClickRequestButton()
+            // Create the DTO object with valid data
+            val customerDTO = CustomerDTO(
+                fullName = fullName,
+                dob = dobFormatted ?: "", // Set this if you have a field for DOB
+                address = address,
+                gender = gender, // Set this if you have a field for gender
+                phone = phoneNumber
+            )
 
+
+            // Pass the DTO to the listener
+            onClickRequestButton?.onClickRequestButton(customerDTO)
         }
     }
 
@@ -146,5 +178,7 @@ class MemberInfoDialog: DialogFragment() {
         fun newInstance(): MemberInfoDialog {
             return MemberInfoDialog()
         }
+
+
     }
 }

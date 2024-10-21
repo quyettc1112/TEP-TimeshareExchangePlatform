@@ -107,6 +107,7 @@ class LoginActivity_screen2 : BaseActivity() {
         token.saveTokens(accessToken, refreshToken)
 
         startActivity(Intent(this, MainActivity::class.java))
+        Log.d("CheckToken", "Access" + accessToken)
         finish()
 
 
