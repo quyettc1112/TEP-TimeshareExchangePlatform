@@ -1,9 +1,12 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment
 
+import com.google.gson.annotations.SerializedName
+
 data class VNPayResponse(
-    val amount: Int,
-    val responseCode: String,
-    val transactionTime: String,
-    val orderDetail: String
+    @SerializedName("amount") val amount: Int,
+    @SerializedName("responseCode") val responseCode: String,
+    @SerializedName("transactionTime") val transactionTime: String,
+    @SerializedName("orderDetail") val orderDetail: String,
+    @SerializedName("walletTransactionId") val walletTransactionId: String
 ) {
 }

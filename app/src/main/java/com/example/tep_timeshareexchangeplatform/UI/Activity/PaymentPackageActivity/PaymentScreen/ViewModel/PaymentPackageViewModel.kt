@@ -1,11 +1,10 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen.ViewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

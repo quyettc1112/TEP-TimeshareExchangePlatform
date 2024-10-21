@@ -52,6 +52,8 @@ class Constant {
 
         const val PAYMENT_URL = "paymentUrl"
 
+        const val PAYMENT_SUCCESS = "paymentSuccess"
+
         val timeshareList = listOf(
             TimeshareModel(
                 1,

@@ -2,22 +2,21 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActi
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.BillingScreen.BillingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen.ViewModel.PaymentPackageViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityPaymentPackageBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +43,9 @@ class PaymentPackageActivity : BaseActivity() {
         setCustomToolBar()
         getIntentData()
         onRequestButtonClicked()
+
+        // When Payment Sucess, finish this activity
+        initActivityResultLauncher()
     }
 
     private fun observeData() {
@@ -52,6 +54,7 @@ class PaymentPackageActivity : BaseActivity() {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     intentToVNPAYActivity(it.data?.url.toString())
@@ -72,21 +75,23 @@ class PaymentPackageActivity : BaseActivity() {
             }
         }
     }
+
     private fun setCustomToolBar() {
         binding.customToolbar6.onStartIconClick = {
             finish()
         }
     }
+
     private fun getIntentData() {
         packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 1)
-        if(packageId == 0) {
+        if (packageId == 0) {
             finish()
             return
         }
         val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId } ?: return
 
         if (packageEnum.packageModel.type == "Membership") {
-            when(packageEnum) {
+            when (packageEnum) {
                 PackageEnum.MEMBERSHIP_MONTHLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
@@ -97,6 +102,7 @@ class PaymentPackageActivity : BaseActivity() {
 
                     }
                 }
+
                 PackageEnum.MEMBERSHIP_YEARLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
@@ -115,6 +121,7 @@ class PaymentPackageActivity : BaseActivity() {
         }
 
     }
+
     private fun bindDataPaymentInfo(packageEnum: PackageEnum) {
         // Hide Unessary Views
         binding.includePackagePosting.rvFeatures.visibility = View.GONE
@@ -130,26 +137,40 @@ class PaymentPackageActivity : BaseActivity() {
         }
 
     }
+
     private fun onRequestButtonClicked() {
         binding.ctrRequestButton.setOnClickListener {
-            val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId } ?: return@setOnClickListener
-            paymentPackageViewModel.getResponsePaymentUrl(packageEnum.packageModel.price, packageEnum.packageModel.name)
+            val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId }
+                ?: return@setOnClickListener
+            paymentPackageViewModel.getResponsePaymentUrl(
+                packageEnum.packageModel.price,
+                packageEnum.packageModel.name
+            )
         }
     }
-    private fun intentToVNPAYActivity(url : String) {
+
+    private fun intentToVNPAYActivity(url: String) {
         val intent = Intent(this, VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
-        startActivity(intent)
+        intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, packageId)
+        paymentResultLauncher.launch(intent)
     }
-    private fun initActivityResultLauncher() {
-       /* paymentResultLauncher = registerForActivityResult()*/
 
+    private fun initActivityResultLauncher() {
+        paymentResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == RESULT_OK) {
+                    val data: Intent? = result.data
+                    finish()
+                }
+            }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
     }
+
     fun formatPrice(price: Int): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)

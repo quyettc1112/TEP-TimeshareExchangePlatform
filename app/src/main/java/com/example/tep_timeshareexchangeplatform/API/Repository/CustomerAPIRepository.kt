@@ -5,6 +5,7 @@ import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -36,6 +37,21 @@ class CustomerAPIRepository@Inject constructor(
     suspend fun getIsCustomerExist(token: String, userId: Int): Resource<CustomerResponse> {
         return try {
             val response = customerAPIService.getIsCustomerExist("Bearer $token", userId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Extend membership
+    suspend fun extendMembership(token: String, uuid: String, membershipId: Int): Resource<MemberShipResponse> {
+        return try {
+            val response = customerAPIService.extendMembership("Bearer $token", uuid, membershipId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

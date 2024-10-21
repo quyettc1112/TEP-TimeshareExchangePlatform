@@ -7,10 +7,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PaymentPackageActivity.BillingScreen.BillingActivity">
+    tools:context=".UI.Activity.PaymentPackageActivity.PaymentScreen.BillingActivity">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolbar7"
+        android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -27,7 +27,7 @@
         android:translationZ="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/customToolbar7"
+        app:layout_constraintTop_toTopOf="@+id/custom_toolbar"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/anim_payment_success" />
