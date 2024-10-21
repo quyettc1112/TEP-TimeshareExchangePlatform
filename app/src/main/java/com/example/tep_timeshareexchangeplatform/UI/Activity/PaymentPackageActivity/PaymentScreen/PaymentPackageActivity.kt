@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -25,9 +27,10 @@ import java.text.DecimalFormat
 class PaymentPackageActivity : BaseActivity() {
     private lateinit var binding: ActivityPaymentPackageBinding
     private val paymentPackageViewModel: PaymentPackageViewModel by viewModels()
-    private var packageId: Int = 0
+    private lateinit var paymentResultLauncher: ActivityResultLauncher<Intent>
 
-            override fun onCreate(savedInstanceState: Bundle?) {
+    private var packageId: Int = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityPaymentPackageBinding.inflate(layoutInflater)
@@ -137,6 +140,10 @@ class PaymentPackageActivity : BaseActivity() {
         val intent = Intent(this, VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
         startActivity(intent)
+    }
+    private fun initActivityResultLauncher() {
+       /* paymentResultLauncher = registerForActivityResult()*/
+
     }
 
     override fun onBackPressed() {

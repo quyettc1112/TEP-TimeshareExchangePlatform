@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.MemberShipActivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

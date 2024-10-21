@@ -15,8 +15,12 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
     private lateinit var binding: FragmentResortBinding
@@ -24,9 +28,6 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
     private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
 
-    companion object {
-        fun newInstance() = ResortFragment()
-    }
     private val viewModel: ResortViewModel by viewModels()
 
 
@@ -62,6 +63,30 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
         setResortClickListener()
 
         return binding.root
+    }
+
+    private fun initAdapter() {
+        resortAdapter.submitList(listOf())
+
+
+
+
+    }
+
+    private fun observeResortList() {
+        viewModel.resortList.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                }
+                Status.ERROR -> {
+                    // Handle error
+                }
+                Status.LOADING -> {
+                    // Show loading
+                }
+            }
+        }
     }
 
     private fun setResortListAdapter() {

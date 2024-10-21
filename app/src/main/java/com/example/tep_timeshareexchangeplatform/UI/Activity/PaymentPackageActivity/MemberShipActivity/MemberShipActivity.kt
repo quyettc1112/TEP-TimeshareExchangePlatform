@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.MemberShipActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.Adapter.MemberShipAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMemberShipBinding
@@ -84,8 +84,7 @@ class MemberShipActivity : BaseActivity() {
             intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION , memberShipViewModel.currentPackage.value!!.id)
             startActivity(intent)
 
-
-          /*  val dialogFragment = MemberInfoDialog.newInstance()
+            /*val dialogFragment = MemberInfoDialog.newInstance()
             dialogFragment.show(supportFragmentManager, dialogFragment.tag)
             dialogFragment.setOnClickRequestButton(object : MemberInfoDialog.OnClickRequestButton {
                 override fun onClickRequestButton() {

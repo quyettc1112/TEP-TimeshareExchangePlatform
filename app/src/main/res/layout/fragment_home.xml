@@ -281,7 +281,7 @@
                          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                          tools:listitem="@layout/item_timeshare_ver_1"
                          android:layout_width="match_parent"
-                         android:layout_height="300dp">
+                         android:layout_height="320dp">
 
                      </androidx.recyclerview.widget.RecyclerView>
                   </LinearLayout>
@@ -295,7 +295,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:orientation="vertical"
-                android:background="#F9F9F9">
+                android:background="@color/white">
 
 
                 <!-- // Suggest Title-->
@@ -375,13 +375,11 @@
                         android:id="@+id/vp_resort_hotel_mb"
                         android:layout_gravity="center"
                         tools:listitem="@layout/item_resort"
-                        android:layout_marginTop="5dp"
                         android:paddingEnd="15dp"
                         android:paddingStart="15dp"
-                        android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp">
+                        android:layout_height="320dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -434,13 +432,12 @@
                         android:id="@+id/vp_resort_hotel_mt"
                         android:layout_gravity="center"
                         tools:listitem="@layout/item_resort"
-                        android:layout_marginTop="5dp"
                         android:paddingEnd="15dp"
                         android:paddingStart="15dp"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp">
+                        android:layout_height="320dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -493,13 +490,11 @@
                         android:id="@+id/vp_resort_hotel_mn"
                         android:layout_gravity="center"
                         tools:listitem="@layout/item_resort"
-                        android:layout_marginTop="5dp"
                         android:paddingEnd="15dp"
                         android:paddingStart="15dp"
-                        android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp">
+                        android:layout_height="320dp">
                     </androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
@@ -585,7 +580,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginTop="2dp">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -636,11 +631,9 @@
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--// MN-->
-                <!--// List Resort & Hotel-->
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
+
                     android:layout_width="match_parent"
                     android:layout_height="310dp">
                     <!-- // Suggest Title-->
@@ -663,11 +656,6 @@
 
 
             </LinearLayout>
-
-
-
-
-
 
 
         </LinearLayout>

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MemberShipActivity.MemberShipActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.PostingFragment.Adapter.IntroSliderAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.DialogPostingBottomNavBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentPostingBinding
