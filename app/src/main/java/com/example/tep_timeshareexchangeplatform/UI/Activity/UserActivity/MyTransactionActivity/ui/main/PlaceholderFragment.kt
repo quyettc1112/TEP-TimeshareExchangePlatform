@@ -60,6 +60,11 @@ class PlaceholderFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
         observeData()
+        myTransactionAdapter.onItemClick = {
+            val intent = Intent(requireContext(), MyTransactionDetailActivity::class.java)
+            intent.putExtra(Constant.TRANSACTION_ID, it.id)
+            startActivity(intent)
+        }
 
         return root
     }

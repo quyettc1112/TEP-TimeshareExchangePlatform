@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -29,18 +30,27 @@ open class  BaseActivity : AppCompatActivity() {
     var progressDialog: ProgressDialog? = null
 
     var myProgressDialog: MyProgressDialog? = null
-    open fun showLoadingWaiting(
-        isShow: Boolean
-    ) {
-        myProgressDialog = MyProgressDialog(this)
-        myProgressDialog!!.setCancelable(false)
-        myProgressDialog!!.show()
-    }
-    open fun hideLoadingWaiting() {
-        myProgressDialog?.let {
-            if (it.isShowing) {
-                it.dismiss()
+    open fun showLoadingWaiting(isShow: Boolean) {
+        if (!isFinishing && !isDestroyed) {
+            if (myProgressDialog == null) {
+                myProgressDialog = MyProgressDialog(this).apply {
+                    setCancelable(false)
+                }
             }
+            if (!myProgressDialog!!.isShowing) {
+                myProgressDialog!!.show()
+            }
+        }
+    }
+
+    open fun hideLoadingWaiting() {
+        try {
+            if (myProgressDialog?.isShowing == true) {
+                myProgressDialog?.dismiss()
+                myProgressDialog = null // Clean up the reference to avoid memory leaks
+            }
+        } catch (e: Exception) {
+            Log.e("DialogError", "Error dismissing progress dialog: ${e.message}")
         }
     }
 

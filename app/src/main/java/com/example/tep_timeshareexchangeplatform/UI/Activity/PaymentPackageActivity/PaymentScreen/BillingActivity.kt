@@ -41,10 +41,10 @@ class BillingActivity : BaseActivity() {
             return
         }
         binding.apply {
-            tvMoneyTrancsaction.text = "${formatPrice(memberShipResponse.walletTransactionDto.money)} VND"
-            paymentDate.text = memberShipResponse.walletTransactionDto.createdAt
-            transactionId.text = memberShipResponse.walletTransactionDto.id
-
+            tvPrice.text = "${formatPrice(memberShipResponse.walletTransactionDto.money)} VND"
+            tvDate.text = memberShipResponse.walletTransactionDto.createdAt
+            tvTransactionId.text = memberShipResponse.walletTransactionDto.id
+            tvDescription.text = memberShipResponse.walletTransactionDto.description
             clickHandle(memberShipResponse.walletTransactionDto.id)
 
         }
@@ -63,9 +63,6 @@ class BillingActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        binding.customToolbar.onStartIconClick = {
-            onBackPressed()
-        }
     }
 
     override fun onBackPressed() {
