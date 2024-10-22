@@ -122,6 +122,7 @@ class LoginActivity : BaseActivity() {
             return
         }
         val loginDTO = LoginDTO(email, password)
+        Log.d("CheckLogin", "Email: ${email} Password: ${password}")
         authViewModel.login(loginDTO)
     }
 
@@ -133,6 +134,11 @@ class LoginActivity : BaseActivity() {
     private fun clickLoginButton() {
         binding.btnLogin.setOnClickListener {
             loginProcess()
+        }
+
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 

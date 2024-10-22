@@ -198,6 +198,7 @@ class VNPayActivity : BaseActivity() {
                 }
 
                 Status.ERROR -> {
+                    Log.d("Error Payment", TokenManager(this).getAccessToken().toString())
                     hideLoadingWaiting()
                     Log.e("Error Payment", "observeData: ${it.message}")
                     showFailedDialog(

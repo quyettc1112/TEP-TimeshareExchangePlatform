@@ -28,7 +28,7 @@ interface CustomerAPIService {
     ) : Response<CustomerResponse>
 
     // Extend Membership of Customer
-    @POST("customer/membership")
+    @POST("customer/VNPAY/membership")
     suspend fun extendMembership(
         @Header ("Authorization") token: String,
         @Query ("uuid") uuid: String,

@@ -89,10 +89,10 @@ class RegisterActivity : BaseActivity() {
             if (validateAllFields()) {
                 // Auto Set Create as Customer
                 val registerDTO = RegisterDTO(
-                    binding.edtUserName.text.toString().trim(),
-                    binding.edtEmail.text.toString().trim(),
-                    binding.edtPassword.text.toString().trim(),
-                    1
+                    email = binding.edtEmail.text.toString().trim(),
+                    username = binding.edtUserName.text.toString().trim(),
+                    password = binding.edtPassword.text.toString().trim(),
+                    roleId = 1
                 )
 
                 // Call API Register
