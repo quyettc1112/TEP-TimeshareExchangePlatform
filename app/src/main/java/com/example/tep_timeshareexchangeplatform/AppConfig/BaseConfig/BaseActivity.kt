@@ -123,6 +123,35 @@ open class  BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    open fun showInfoDialog(
+        context: Context,
+        message: String?,
+        onClickListener: View.OnClickListener? = null
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_info, null)
+
+        // Tạo dialog với layout tuỳ chỉnh
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
+        textSuccess.text = message
+
+        // Ánh xạ các view từ dialog
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        btnConfirm.setOnClickListener {
+            onClickListener?.onClick(it) ?: dialog.dismiss()
+        }
+
+
+        // Hiển thị dialog
+        dialog.show()
+    }
+
+
+
 
     open fun hideLoading() {
         progressDialog?.let {

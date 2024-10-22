@@ -6,11 +6,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ui.main.SectionsPagerAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTranscationBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MyTransactionActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MyTransactionActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTranscationBinding
 

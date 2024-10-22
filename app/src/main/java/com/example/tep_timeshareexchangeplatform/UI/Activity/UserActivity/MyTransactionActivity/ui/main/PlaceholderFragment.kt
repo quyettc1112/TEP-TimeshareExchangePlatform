@@ -2,29 +2,38 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTra
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTransactionModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Adapter.MyTransactionAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ViewModel.MyTransactionViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.TransactionType
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTranscationBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A placeholder fragment containing a simple view.
- */
+@AndroidEntryPoint
 class PlaceholderFragment : Fragment() {
 
     private lateinit var pageViewModel: PageViewModel
+    private val viewModel: MyTransactionViewModel by viewModels()
     private var _binding: FragmentTranscationBinding? = null
-
     private var myTransactionAdapter = MyTransactionAdapter()
 
     // This property is only valid between onCreateView and
@@ -36,51 +45,82 @@ class PlaceholderFragment : Fragment() {
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
         }
+        viewModel.getWalletList(TokenManager(requireContext()).getAccessToken().toString())
 
-        // Get the transaction type for this tab
-        val transactionType = when (arguments?.getInt(ARG_SECTION_NUMBER)) {
-            1 -> TransactionType.ALL
-            2 -> TransactionType.TRANSFER
-            3 -> TransactionType.WITHDRAW
-            else -> TransactionType.ALL
-        }
-        // Filter the data based on transaction type
-        val filteredTransactions = getTransactionData().filter { transaction ->
-            when (transactionType) {
-                TransactionType.ALL -> true
-                TransactionType.TRANSFER -> transaction.type == 1
-                TransactionType.WITHDRAW -> transaction.type == 2
-            }
-        }
-        myTransactionAdapter.submitList(filteredTransactions)
-        myTransactionAdapter.onItemClick = {
-            startActivity(Intent(context, MyTransactionDetailActivity::class.java))
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentTranscationBinding.inflate(inflater, container, false)
         val root = binding.root
-
         _binding!!.recyclerView.apply {
             adapter = myTransactionAdapter
             layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
         }
-
+        observeData()
 
         return root
     }
 
+    private fun observeData() {
+        viewModel.walletListResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.llLoading.visibility = View.GONE
+                    it.data?.let { response ->
+                        // Get the transaction type for this tab
+                        val transactionType = when (arguments?.getInt(ARG_SECTION_NUMBER)) {
+                            1 -> TransactionType.ALL
+                            2 -> TransactionType.TRANSFER
+                            3 -> TransactionType.WITHDRAW
+                            else -> TransactionType.ALL
+                        }
 
-    private fun getTransactionData(): List<MyTransactionModel> {
-        // Return your actual data here
-        return Constant.myTransactionList
+                        // Filter the data based on transaction type
+                        val listTransaction = response.transactions.filter { transaction ->
+                            when (transactionType) {
+                                TransactionType.ALL -> true
+                                TransactionType.TRANSFER -> transaction.money <= 0
+                                TransactionType.WITHDRAW -> transaction.money > 0
+                            }
+                        }
+                        myTransactionAdapter.submitList(listTransaction)
+                    }
+                }
+
+                Status.ERROR -> {
+                    binding.llLoading.visibility = View.GONE
+                    if (it.message!!.contains("404")) {
+                        (activity as MyTransactionActivity).showInfoDialog(
+                            requireContext(),
+                            "Bạn chưa có giao dịch nào",
+                            object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    (activity as MyTransactionActivity).finish()
+                                }
+                            }
+                        )
+                    } else
+                        MotionToast.Companion.createToast(
+                            requireActivity(),
+                            "Error",
+                            it.message.toString(),
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            null
+                        )
+                }
+
+                Status.LOADING -> {
+                    binding.llLoading.visibility = View.VISIBLE
+                }
+            }
+        }
     }
+
 
     companion object {
         /**
@@ -106,5 +146,10 @@ class PlaceholderFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 }

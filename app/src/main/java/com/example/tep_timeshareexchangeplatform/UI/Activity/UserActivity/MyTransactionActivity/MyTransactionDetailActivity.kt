@@ -1,17 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDetailRespone
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ViewModel.MyTransactionDetailViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ViewModel.MyTransactionViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -24,7 +22,7 @@ import java.text.DecimalFormat
 class MyTransactionDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyTransactionDetailBinding
 
-    private val viewModel: MyTransactionDetailViewModel by viewModels()
+    private val viewModel: MyTransactionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +39,11 @@ class MyTransactionDetailActivity : BaseActivity() {
     }
 
     private fun getDataIntent() {
-        /*val intentValue = intent.getStringExtra(Constant.TRANSACTION_ID)
+        val intentValue = intent.getStringExtra(Constant.TRANSACTION_ID)
         if (intentValue != null) {
-            viewModel.getWalletDetail(TokenManager(this).getAccessToken().toString(), "intentValue")
+            viewModel.getWalletDetail(TokenManager(this).getAccessToken().toString(), intentValue)
             observeData()
-        }*/
-        viewModel.getWalletDetail(TokenManager(this).getAccessToken().toString(), "6905f134-92e3-4940-9be7-16b9d4696ce0")
-
+        }
     }
 
     private fun observeData() {
