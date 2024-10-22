@@ -199,9 +199,10 @@ class VNPayActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
+                    Log.e("Error Payment", "observeData: ${it.message}")
                     showFailedDialog(
                         this@VNPayActivity,
-                        "Payment Failed",
+                        it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 finish()

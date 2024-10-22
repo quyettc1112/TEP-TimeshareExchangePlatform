@@ -31,7 +31,7 @@ class BillingActivity : BaseActivity() {
             insets
         }
         bindData()
-        clickHandle()
+
     }
 
     private fun bindData() {
@@ -45,6 +45,8 @@ class BillingActivity : BaseActivity() {
             paymentDate.text = memberShipResponse.walletTransactionDto.createdAt
             transactionId.text = memberShipResponse.walletTransactionDto.id
 
+            clickHandle(memberShipResponse.walletTransactionDto.id)
+
         }
 
     }
@@ -54,9 +56,11 @@ class BillingActivity : BaseActivity() {
         return formatter.format(price)
     }
 
-    private fun clickHandle() {
+    private fun clickHandle(transactionId: String) {
         binding.ctrRequestButton.setOnClickListener {
-            startActivity(Intent(this, MyTransactionDetailActivity::class.java))
+            val intent = Intent(this, MyTransactionDetailActivity::class.java)
+            intent.putExtra(Constant.TRANSACTION_ID, transactionId)
+            startActivity(intent)
         }
 
         binding.customToolbar.onStartIconClick = {

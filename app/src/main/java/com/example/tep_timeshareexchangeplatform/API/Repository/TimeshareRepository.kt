@@ -20,7 +20,10 @@ class TimeshareRepository @Inject constructor(
     }
 
     // Create Timeshare
-    suspend fun postTimeshare(auth: String, timeshareDTO: TimeshareDTO) : Resource<PostingTimeshareResponse> {
+    suspend fun postTimeshare(
+        auth: String,
+        timeshareDTO: TimeshareDTO
+    ): Resource<PostingTimeshareResponse> {
         return try {
             val response = timeshareAPIService.postTimeshare("Bearer $auth", timeshareDTO)
             if (response.isSuccessful) {
@@ -35,7 +38,7 @@ class TimeshareRepository @Inject constructor(
     }
 
     // Get My Timeshare List
-    suspend fun getMyTimeshareList(auth: String) : Resource<List<MyTimeshareResponse>> {
+    suspend fun getMyTimeshareList(auth: String): Resource<List<MyTimeshareResponse>> {
         return try {
             val response = timeshareAPIService.getMyTimeshareList("Bearer $auth")
             if (response.isSuccessful) {
@@ -51,7 +54,10 @@ class TimeshareRepository @Inject constructor(
 
 
     // Get My Timeshare Detail
-    suspend fun getMyTimeshareDetail(auth: String, timeshareId: Int) : Resource<MyTimeshareDetailResponse> {
+    suspend fun getMyTimeshareDetail(
+        auth: String,
+        timeshareId: Int
+    ): Resource<MyTimeshareDetailResponse> {
         return try {
             val response = timeshareAPIService.getMyTimeshareDetail("Bearer $auth", timeshareId)
             if (response.isSuccessful) {

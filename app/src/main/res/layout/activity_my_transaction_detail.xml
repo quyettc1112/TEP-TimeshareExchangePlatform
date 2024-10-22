@@ -95,12 +95,12 @@
 
                     <!--// Name Properties-->
                     <TextView
+                        android:id="@+id/tv_price_transaction"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/inter_bold"
                         android:maxLines="1"
-                        android:text="- 179.000 VND"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         app:layout_constraintBottom_toBottomOf="@+id/cardView5"
@@ -209,7 +209,6 @@
                             android:layout_marginStart="10dp"
                             android:layout_weight="6.5"
                             android:fontFamily="@font/inter_bold"
-                            android:text="08:00 24/03/2025"
                             android:textColor="@color/black"
                             android:textSize="14dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -240,6 +239,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView26">
                         <!--// Fullname-->
                         <TextView
+                            android:id="@+id/textView30"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3.5"
@@ -256,14 +256,16 @@
                             android:id="@+id/tv_transaction_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="6.5"
                             android:fontFamily="@font/inter_bold"
-                            android:text="3737982723"
+                            android:maxLines="2"
+                            android:layout_marginStart="100dp"
+                            android:text="6905f134-92e3-4940-9be7-16b9d4696ce0"
                             android:textColor="@color/black"
                             android:textSize="14dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView30"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -294,7 +296,6 @@
                             android:id="@+id/tv_payment_method"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="6.5"
                             android:fontFamily="@font/inter_bold"
                             android:text="Ví Unwind"
@@ -302,7 +303,8 @@
                             android:textSize="14dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!--//Total Fee-->
@@ -447,6 +449,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         android:weightSum="10"
                         app:layout_constraintEnd_toEndOf="parent"
