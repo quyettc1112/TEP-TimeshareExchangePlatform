@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -184,7 +185,6 @@ class VNPayActivity : BaseActivity() {
                                 // Intent to FInsish Activity
                                 val intent = intent
                                 setResult(RESULT_OK, intent)
-
                                 // Intent to Billing Activity
                                 val intentToBilling = Intent(this@VNPayActivity, BillingActivity::class.java)
                                 intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)

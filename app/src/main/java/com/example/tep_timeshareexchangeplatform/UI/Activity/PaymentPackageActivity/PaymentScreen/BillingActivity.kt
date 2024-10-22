@@ -7,11 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBillingBinding
+import java.text.DecimalFormat
 
 class BillingActivity : BaseActivity() {
     private lateinit var binding: ActivityBillingBinding
@@ -31,10 +35,23 @@ class BillingActivity : BaseActivity() {
     }
 
     private fun bindData() {
-        val intent = intent.getSerializableExtra(Constant.PAYMENT_SUCCESS)
-        Log.d("CheckGetIntentDATa", "bindData: $intent")
+        val memberShipResponse = intent.getParcelableExtra<MemberShipResponse>(Constant.PAYMENT_SUCCESS)
+        if (memberShipResponse == null) {
+            Log.e("BillingActivity", "memberShipResponse is null")
+            return
+        }
+        binding.apply {
+            tvMoneyTrancsaction.text = "${formatPrice(memberShipResponse.walletTransactionDto.money)} VND"
+            paymentDate.text = memberShipResponse.walletTransactionDto.createdAt
+            transactionId.text = memberShipResponse.walletTransactionDto.id
 
+        }
 
+    }
+
+    fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
     }
 
     private fun clickHandle() {

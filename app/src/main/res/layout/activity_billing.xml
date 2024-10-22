@@ -77,6 +77,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvStatusPayment">
 
                     <TextView
+                        android:id="@+id/tv_money_trancsaction"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter_extrabold"
@@ -124,7 +125,7 @@
                     android:fontFamily="@font/inter_bold"
                     android:text="16:08 - 18/10/2024"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/payment_time"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/payment_time" />
@@ -147,12 +148,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
+                    android:maxLines="1"
                     android:text="693347776265 >"
                     android:textColor="#FF4081"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/transaction_details"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/transaction_details" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_details" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -211,6 +212,7 @@
 
                         <!--// Name-->
                         <TextView
+                            android:id="@+id/tv_sender_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
