@@ -22,6 +22,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.AuthActivity.RegisterActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.CommonActivity.MapViewActivity.MapViewActivity"
             android:exported="true" />
         <activity
@@ -86,10 +89,10 @@
             android:name=".UI.Activity.ResortDetailActivity.ResortDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.AuthActivity.LoginActivity_screen2"
+            android:name=".UI.Activity.AuthActivity.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.AuthActivity.LoginActivity"
+            android:name=".UI.Activity.AuthActivity.AuthActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.SplashActivity.SplashActivity"
