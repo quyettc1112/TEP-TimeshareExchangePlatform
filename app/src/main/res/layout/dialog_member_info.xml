@@ -154,8 +154,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView27"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
             </LinearLayout>
 
             <!--// Số Điện Thoại-->
