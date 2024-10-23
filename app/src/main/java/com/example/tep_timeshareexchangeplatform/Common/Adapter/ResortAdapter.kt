@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortBinding
+import java.text.DecimalFormat
 
 class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.ResortViewHolder>() {
 
@@ -18,7 +20,9 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
         override fun bind(item: ResortModelResponse.Content) {
             binding.tvResortName.text = item.resortName
             binding.tvLocation.text = item.address
-            binding.tvPrice.text = "${item.minPrice} - ${item.maxPrice} VND"
+
+
+            binding.tvPrice.text = "${formatPrice(item.minPrice)} - ${formatPrice(item.maxPrice)} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
@@ -37,6 +41,12 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
             // Hide Unnecessary Views
             binding.tvNumberOfNight.visibility = View.GONE
         }
+
+        fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+
 
     }
 

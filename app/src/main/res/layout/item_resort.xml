@@ -35,6 +35,7 @@
         <!--// Resort Info-->
 
 
+        <!--// Resort Price-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
@@ -50,10 +51,11 @@
             <!--// Resort Info-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout2"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
                 android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -83,13 +85,13 @@
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/ic_location" />
+                        android:src="@drawable/ic_location"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:gravity="center|left"
                         android:maxLines="2"
                         android:text="Đại Lải, Phúc Yên, Việt Nam"
@@ -102,6 +104,7 @@
                     android:gravity="center|left"
                     android:minHeight="20dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout20">
 
@@ -127,19 +130,22 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--// Resort Price-->
+
         <LinearLayout
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center|left"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_extrabold"
                 android:gravity="center|left"
@@ -148,6 +154,7 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_numberOfNight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,30 +167,51 @@
         </LinearLayout>
 
 
-        <!--  // Rating-->
+
+
+        <!-- // Ratign-->
         <LinearLayout
-            android:id="@+id/materialCardView3"
-            android:layout_width="130dp"
-            android:layout_height="30dp"
-            android:background="@drawable/background_rating"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
             app:strokeColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:gravity="center|right"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/baseline_star_24" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/background_stroke_around"
+                    android:backgroundTint="#F23161"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/inter_semibold"
+                        android:gravity="center"
+                        android:text="4.5"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/baseline_star_24" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tv_rating"
@@ -191,17 +219,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:gravity="center"
-                    android:text="4.5"
-                    android:textColor="#007EF2"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:id="@+id/tv_rating_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:text="254 đánh giá"
+                    android:text="Rất tốt (254)"
                     android:textSize="12dp" />
             </LinearLayout>
 
@@ -209,20 +227,22 @@
         </LinearLayout>
 
 
+
         <!--// Book Now Button-->
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/appCompatButton"
             android:layout_width="120dp"
             android:layout_height="45dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/background_stroke_around"
             android:backgroundTint="@color/blue_btn_search"
             android:fontFamily="@font/inter_semibold"
             android:text="@string/book_now"
             android:textColor="@color/white"
             android:textSize="10dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
         </androidx.appcompat.widget.AppCompatButton>
 
@@ -231,6 +251,7 @@
 
         <LinearLayout
             android:id="@+id/ll_favorite"
+            android:visibility="gone"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="10dp"
