@@ -3,13 +3,19 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
+import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class MainViewModel  @Inject constructor(
-    private val authAPIRepository: AuthAPIRepository
+    private val authAPIRepository: AuthAPIRepository,
+    private val postingAPIRepository: PostingAPIRepository,
 ) : ViewModel()  {
 
     private val _user = MutableLiveData<UserJWTPayloadModel>()
@@ -43,6 +49,18 @@ class MainViewModel  @Inject constructor(
     fun updateUser(userJWTPayloadModel: UserJWTPayloadModel) {
         userJWTPayloadModel.let {
             _user.value = it
+        }
+    }
+
+    // Call API Postings
+    private val _postingsResponse = MutableLiveData<Resource<PostingsResponse>>()
+    val postingsResponse: MutableLiveData<Resource<PostingsResponse>> get() = _postingsResponse
+    fun getPostings(pageNo: Int, pageSize: Int, resortName: String)  {
+        viewModelScope.launch {
+            _postingsResponse.postValue(Resource.loading(null))
+            postingAPIRepository.getPostings(pageNo, pageSize, resortName).let {
+                _postingsResponse.postValue(it)
+            }
         }
     }
 

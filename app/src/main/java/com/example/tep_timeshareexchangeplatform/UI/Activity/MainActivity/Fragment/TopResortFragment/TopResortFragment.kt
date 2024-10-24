@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
@@ -14,14 +15,20 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
 
     private lateinit var binding: FragmentTopResortBinding
     private lateinit var FragmentAdapter: FragmentAdapter
     private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
+    private val topResortViewModel: TopResortViewModel by viewModels()
 
 
     override fun onAttach(context: Context) {
@@ -36,16 +43,36 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        observeViewModel()
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
         setUpTabLayoutViewPager()
         setEventSearchComponent()
         return binding.root
+    }
+
+    private fun observeViewModel(){
+        topResortViewModel.postingsResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+
+                }
+
+                Status.ERROR -> {
+                    // Show error
+                }
+            }
+        }
     }
 
     private fun setUpTabLayoutViewPager(){

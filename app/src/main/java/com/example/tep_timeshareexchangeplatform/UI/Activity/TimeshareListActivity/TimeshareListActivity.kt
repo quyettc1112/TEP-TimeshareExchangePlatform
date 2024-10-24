@@ -35,7 +35,7 @@ class TimeshareListActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        timeshareAdapter.submitList(Constant.timeshareList)
+       /* timeshareAdapter.submitList(Constant.timeshareList)*/
     }
 
     private fun setCustomToolbarAction() {

@@ -67,7 +67,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             // Xử lý sự kiện khi item được click
             Toast.makeText(requireContext(), "Clicked: ${destinationModel.destinationName}", Toast.LENGTH_SHORT).show()
         }
-        timeshareAdapter.submitList(Constant.timeshareList)
+       /* timeshareAdapter.submitList(Constant.timeshareList)*/
         resortAdapterMB.submitList(listOf())
         blogAdapter.submitList(Constant.blogList)
         // Khởi tạo AutoScrollViewPagerHelper
