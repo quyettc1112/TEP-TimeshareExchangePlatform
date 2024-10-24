@@ -25,6 +25,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class ResortDetailActivity : BaseActivity() {
@@ -137,7 +138,7 @@ class ResortDetailActivity : BaseActivity() {
         binding.apply {
             tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
             tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
-            tvMinPrice.text = "${resortDetailViewModel.resortDetail.value?.data?.minPrice.toString()} VND / 1 đêm"
+            tvMinPrice.text = "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
             tvDescription.text = resortDetailViewModel.resortDetail.value?.data?.description.toString()
             if (resortDetailModelResponse.isActive) {
                 llVerify.visibility = View.VISIBLE
@@ -147,6 +148,11 @@ class ResortDetailActivity : BaseActivity() {
             }
 
         }
+    }
+
+    fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
     }
     private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
         unitTypeAdapter.submitList(resorts)
@@ -169,7 +175,6 @@ class ResortDetailActivity : BaseActivity() {
         val unitTypeDetail = CustomDialog(this)
         unitTypeDetail.show()
     }
-
     private fun setListImageResort() {
         // List Destination
         val manager = SpannedGridLayoutManager(

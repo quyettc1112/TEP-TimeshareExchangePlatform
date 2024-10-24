@@ -314,19 +314,16 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_resort_room_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="10dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-                        tools:listitem="@layout/item_resort_room_type" />
-
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_resort_room_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+                    tools:layout_editor_absoluteX="20dp"
+                    tools:listitem="@layout/item_resort_room_type" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -536,13 +533,14 @@
             android:id="@+id/tv_min_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:fontFamily="@font/inter_bold"
             android:text="1.300.000đ / 1 đêm"
-            android:layout_marginStart="20dp"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_select_room"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toTopOf="@+id/btn_select_room" />
 
         <!--// Select Room Button-->
         <androidx.appcompat.widget.AppCompatButton
