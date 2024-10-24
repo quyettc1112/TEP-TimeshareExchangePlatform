@@ -48,7 +48,7 @@ class TimeshareFragment : BaseFragment(R.layout.fragment_timeshare) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        viewModel.getPostings(0,10,"")
         binding = FragmentTimeshareBinding.inflate(layoutInflater, container, false)
         binding.rcTimeshare.layoutManager =
             GridLayoutManager(requireActivity(), 2, LinearLayoutManager.VERTICAL, false)
@@ -94,7 +94,7 @@ class TimeshareFragment : BaseFragment(R.layout.fragment_timeshare) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getPostings(0,10,"")
+
 
     }
 }
