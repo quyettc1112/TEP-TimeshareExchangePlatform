@@ -56,6 +56,8 @@ class Constant {
         const val PAYMENT_SUCCESS = "paymentSuccess"
         const val TRANSACTION_ID = "transactionId"
 
+        const val DEFAULT_POSTING_ID = "postingId"
+
         fun formatPrice(price: Int): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)

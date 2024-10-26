@@ -28,15 +28,15 @@
             android:name=".UI.Activity.CommonActivity.MapViewActivity.MapViewActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PaymentPackageActivity.PaymentScreen.VNPayActivity"
+            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.VNPayActivity"
             android:enableOnBackInvokedCallback="true"
             android:exported="true"
             tools:targetApi="tiramisu" />
         <activity
-            android:name=".UI.Activity.PaymentPackageActivity.PaymentScreen.BillingActivity"
+            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.BillingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity"
+            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity"
@@ -56,37 +56,37 @@
             android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.FlowPosting.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
+            android:name=".UI.Activity.PostingFlow.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.FlowPosting.ExchangePostingActivity.ExchangePostingActivity"
+            android:name=".UI.Activity.PostingFlow.ExchangePostingActivity.ExchangePostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.FlowPosting.RentalPostingActivity.RentalPostingActivity"
+            android:name=".UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PaymentPackageActivity.MemberShipActivity.MemberShipActivity"
+            android:name=".UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PaymentRentalActivity.PaymentRentalConfirmActivity"
+            android:name=".UI.Activity.Payment.PaymentRentalActivity.PaymentRentalConfirmActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PaymentRentalActivity.PaymentRentalActivity"
+            android:name=".UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity"
+            android:name=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.TimeshareListActivity.TimeshareListActivity"
+            android:name=".UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.ResortDetailActivity.ImageListActivity"
+            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ImageListActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.ResortDetailActivity.ResortDetailActivity"
+            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.AuthActivity.LoginActivity"
@@ -104,7 +104,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.Activity.CommonActivity.DayPickerActivity"
+            android:name=".UI.Activity.CommonActivity.DayPickerActivity.DayPickerActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.LocationActivity.LocationActivity"

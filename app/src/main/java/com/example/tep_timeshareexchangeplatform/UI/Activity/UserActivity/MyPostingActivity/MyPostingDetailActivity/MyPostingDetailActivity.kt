@@ -1,21 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingDetailBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyTimeshareDetailBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -48,7 +43,7 @@ class MyPostingDetailActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        facilityAdapter.submitList(Constant.listFacilite)
+        facilityAdapter.submitList(listOf())
     }
     private fun setListImageTimeshare() {
         // Set List Image Timeshare

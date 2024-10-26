@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".UI.Activity.ResortDetailActivity.ImageListActivity">
+    tools:context=".UI.Activity.CommonActivity.ResortDetailActivity.ImageListActivity">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar

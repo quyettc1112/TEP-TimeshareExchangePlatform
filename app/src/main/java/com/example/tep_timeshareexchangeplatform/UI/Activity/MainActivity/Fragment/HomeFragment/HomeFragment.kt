@@ -26,8 +26,8 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var dateResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var homeViewModel: HomeViewModel
-    private val roomSelectionViewModel: MainViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,20 +98,45 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     // Observer ViewModel
     private fun observerSearchComponent() {
         // Quan sát các giá trị từ ViewModel
-        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
+        mainViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
             // Cập nhật giao diện với số phòng
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+            binding.tvTourist.text = mainViewModel.getRoomCount()
         })
 
-        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
+        mainViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
             // Cập nhật giao diện với số người lớn
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+            binding.tvTourist.text = mainViewModel.getRoomCount()
         })
 
-        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
+        mainViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
             // Cập nhật giao diện với số trẻ em
-            binding.tvTourist.text = roomSelectionViewModel.getRoomCount()
+            binding.tvTourist.text = mainViewModel.getRoomCount()
         })
+
+        mainViewModel.postingsResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    timeshareAdapter.submitList(it.data?.content)
+                }
+
+                Status.ERROR -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createToast(
+                        requireActivity(),
+                        "Error",
+                        it.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(false)
+                }
+            }
+        }
 
 
     }
@@ -223,7 +248,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
         timeshareAdapter.let {
             it.onItemClick = {
-                startActivity(Intent(requireContext(), TimeshareDetailActivity::class.java))
+                val intent = Intent(requireContext(), PostingDetailActivity::class.java)
+                intent.putExtra(Constant.DEFAULT_POSTING_ID, it.rentalPostingId)
+                startActivity(intent)
             }
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()

@@ -7,7 +7,7 @@
     android:background="@color/primary_background_F9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.TimeshareDetailActivity.TimeshareDetailActivity">
+    tools:context=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
@@ -103,12 +103,14 @@
                 <!--// Resort Name-->
                 <TextView
                     android:id="@+id/tvResortName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:fontFamily="@font/inter_extrabold"
                     android:text="Flamingo Dai Lai | Studio King"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_favorite"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -216,6 +218,7 @@
                         android:src="@drawable/ic_location" />
 
                     <TextView
+                        android:id="@+id/tv_location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -231,7 +234,8 @@
 
                 <!--// Verify Button-->
                 <LinearLayout
-                    android:id="@+id/linearLayout10"
+                    android:id="@+id/ll_verify"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -263,6 +267,8 @@
 
                 <!--// Find More-->
                 <TextView
+                    android:id="@+id/tv_see_more"
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -334,6 +340,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_check_in_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Th 7, 28 thg 9 2024 (14:00)"
@@ -358,6 +365,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_check_out_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="CN, 29 thg 9 2024 (12:00)"
@@ -382,6 +390,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_night"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4 đêm"
@@ -458,6 +467,7 @@
                                 android:src="@drawable/ic_bathtub" />
 
                             <TextView
+                                android:id="@+id/tv_num_bath"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -466,7 +476,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
-                                android:id="@+id/tv_location"
+                                android:id="@+id/tv_bath"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -492,6 +502,7 @@
                                 android:src="@drawable/ic_bedroom" />
 
                             <TextView
+                                android:id="@+id/tv_num_bed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -500,6 +511,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_bed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -525,6 +537,7 @@
                                 android:src="@drawable/ic_kitchen" />
 
                             <TextView
+                                android:id="@+id/tv_num_kitchen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -533,6 +546,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_kitchen"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -558,6 +572,7 @@
                                 android:src="@drawable/ic_person" />
 
                             <TextView
+                                android:id="@+id/tv_num_person"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -566,6 +581,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_person"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -745,6 +761,7 @@
 
                 <!--// Cancel Policy Content-->
                 <TextView
+                    android:id="@+id/tv_cancel_policy"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -908,12 +925,14 @@
                     <!--// Resort Name-->
                     <TextView
                         android:id="@+id/tvResortName_dtb"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:maxLines="2"
                         android:fontFamily="@font/inter_bold"
                         android:text="Flamingo Dai Lai | Studio King"
                         android:textColor="@color/black"
                         android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -934,6 +953,7 @@
                             android:src="@drawable/ic_location" />
 
                         <TextView
+                            android:id="@+id/tv_location_dtb"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center"
@@ -988,6 +1008,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_night_dtb"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1015,6 +1036,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_check_in_date_dtb"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1042,6 +1064,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_check_out_date_dtb"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1069,11 +1092,11 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_cancel_policy_dtb"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="Không có"
                                 android:textColor="#000000"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -1109,6 +1132,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_room_price_per_night"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1136,6 +1160,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
+                                android:id="@+id/tv_estimated_total_price"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

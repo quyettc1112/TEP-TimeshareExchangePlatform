@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/checkTimeshareFragment"
-        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment"
+        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment"
         android:label="CheckTimeshareFragment" >
         <action
             android:id="@+id/action_checkTimeshareFragment_to_resortLocationFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/resortLocationFragment"
-        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.FlowPosting.RentalPostingActivity.Fragment.ResortLocationFragment"
+        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.ResortLocationFragment"
         android:label="fragment_resort_location"
         tools:layout="@layout/fragment_resort_location" >
         <action
