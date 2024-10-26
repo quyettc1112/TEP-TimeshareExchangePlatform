@@ -45,7 +45,7 @@ interface CustomerAPIService {
     ) : Response<List<PostingsResponse.Content>>
 
     // Get My Posting Detail
-    @POST("customer/rental/posting/{postingId}")
+    @GET("customer/rental/posting/{postingId}")
     suspend fun getMyPostingDetail(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int

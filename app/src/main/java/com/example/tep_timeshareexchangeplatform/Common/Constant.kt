@@ -18,6 +18,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Ro
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
 import java.text.DecimalFormat
 
 class Constant {
@@ -57,11 +58,15 @@ class Constant {
         const val TRANSACTION_ID = "transactionId"
 
         const val DEFAULT_POSTING_ID = "postingId"
+        const val DEFAULT_MY_POSTING_ID = "myPostingId"
+
 
         fun formatPrice(price: Int): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
+
+
 
 
         val resortListMT = listOf(

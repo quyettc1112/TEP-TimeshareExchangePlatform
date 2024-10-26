@@ -95,12 +95,15 @@ class MyPostingActivity : BaseActivity() {
 
     }
 
-
     private fun innitAdapter() {
         myPostingAdapter.submitList(listOf())
         myPostingAdapter.onItemClick = {
-            startActivity(Intent(this, MyPostingDetailActivity::class.java))
+            val intent = Intent(this, MyPostingDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.rentalPostingId)
+            startActivity(intent)
         }
+
+
 
         myPostingAdapter.onItemPricingClick = {
             startActivity(Intent(this, PricingSupportActivity::class.java))

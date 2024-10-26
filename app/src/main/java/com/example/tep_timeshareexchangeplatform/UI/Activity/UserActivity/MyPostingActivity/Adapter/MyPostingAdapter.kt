@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapte
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
 
@@ -40,8 +41,14 @@ class MyPostingAdapter : BaseAdapter<PostingsResponse.Content, MyPostingAdapter.
            /* binding.tvPackageName.text = item.packageName
             binding.tvDuration.text = item.packageDuration*/
 
-            // Price Demand
-            /*binding.btnAcceptPrice.visibility = if (item.isPriceDemand) View.VISIBLE else View.GONE*/
+
+            // Post Status
+            if (item.status == "AwaitingConfirmation") {
+                binding.btnAcceptPrice.visibility = View.VISIBLE
+            } else {
+                binding.btnAcceptPrice.visibility = View.GONE
+            }
+
 
 
             // Hide Unused Info

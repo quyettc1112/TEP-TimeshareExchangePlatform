@@ -156,6 +156,7 @@
                         android:src="@drawable/ic_location" />
 
                     <TextView
+                        android:id="@+id/tvLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -171,7 +172,7 @@
 
                 <!--// Verify Button-->
                 <LinearLayout
-                    android:id="@+id/linearLayout10"
+                    android:id="@+id/llVerify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -203,6 +204,7 @@
 
                 <!--// Find More-->
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
@@ -274,6 +276,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tvCheckInDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Th 7, 28 thg 9 2024 (14:00)"
@@ -298,6 +301,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tvCheckOutDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="CN, 29 thg 9 2024 (12:00)"
@@ -322,6 +326,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tvNights"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4 đêm"
@@ -339,7 +344,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <include layout="@layout/item_package_posting"/>
+                <include android:id="@+id/include_package_posting" layout="@layout/item_package_posting"/>
 
             </LinearLayout>
 
@@ -418,6 +423,7 @@
                                 android:src="@drawable/ic_bathtub" />
 
                             <TextView
+                                android:id="@+id/tv_num_bath"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -426,7 +432,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
-                                android:id="@+id/tv_location"
+                                android:id="@+id/tv_bath"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -452,6 +458,7 @@
                                 android:src="@drawable/ic_bedroom" />
 
                             <TextView
+                                android:id="@+id/tv_num_bed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -460,6 +467,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_bed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -485,6 +493,7 @@
                                 android:src="@drawable/ic_kitchen" />
 
                             <TextView
+                                android:id="@+id/tv_num_kitchen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -493,6 +502,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_kitchen"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -518,6 +528,7 @@
                                 android:src="@drawable/ic_person" />
 
                             <TextView
+                                android:id="@+id/tv_num_person"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
@@ -526,6 +537,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
+                                android:id="@+id/tv_person"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -705,6 +717,7 @@
 
                 <!--// Cancel Policy Content-->
                 <TextView
+                    android:id="@+id/tv_cancel_policy"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -835,6 +848,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"

@@ -406,7 +406,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept_price"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginBottom="10dp"
