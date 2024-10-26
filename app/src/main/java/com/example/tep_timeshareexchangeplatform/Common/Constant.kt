@@ -64,191 +64,6 @@ class Constant {
         }
 
 
-        val timeshareList = listOf(
-            TimeshareModel(
-                1,
-                verifyText = true,
-                favoriteIcon = R.drawable.baseline_favorite_border_24,
-                imageTimeshare = R.drawable.im_matiral_timeshare,
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                timeshareName = "Nha Trang Resort - Cương Quyết",
-                location = "Khánh Hòa, Việt Nam",
-                date = "26/08/2024 - 30/08/2024",
-                roomDetails = "Phòng Studio, 1 Giường, 4 Người, Emegency, Fukami",
-                price = "1.300.000 VND",
-                numberOfNights = " | 4 đêm"
-            ),
-            TimeshareModel(
-                2,
-                verifyText = true,
-                favoriteIcon = R.drawable.baseline_favorite_border_24,
-                imageTimeshare = R.drawable.im_matiral_timeshare,
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                timeshareName = "Phú Quốc Resort",
-                location = "Rạch Giá, Kiên Giang, Việt Nam",
-                date = "01/09/2024 - 05/09/2024",
-                roomDetails = "Phòng Deluxe, 2 Giường, 6 Người",
-                price = "2.000.000 VND",
-                numberOfNights = " | 5 đêm"
-            ),
-            TimeshareModel(
-                3,
-                verifyText = true,
-                favoriteIcon = R.drawable.baseline_favorite_border_24,
-                imageTimeshare = R.drawable.im_matiral_timeshare,
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                timeshareName = "Đà Nẵng Resort",
-                location = "Đà Nẵng, Việt Nam",
-                date = "10/10/2024 - 15/10/2024",
-                roomDetails = "Phòng Suite, 1 Giường, 2 Người",
-                price = "3.000.000 VND",
-                numberOfNights = " | 5 đêm"
-            ),
-            TimeshareModel(
-                4,
-                verifyText = true,
-                favoriteIcon = R.drawable.baseline_favorite_border_24,
-                imageTimeshare = R.drawable.im_matiral_timeshare,
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                timeshareName = "Vịnh Hạ Long Resort",
-                location = "Quảng Ninh, Việt Nam",
-                date = "20/11/2024 - 25/11/2024",
-                roomDetails = "Phòng Deluxe, 1 Giường, 3 Người",
-                price = "2.500.000 VND",
-                numberOfNights = " | 5 đêm"
-            ),
-            TimeshareModel(
-                5,
-                verifyText = true,
-                favoriteIcon = R.drawable.baseline_favorite_border_24,
-                imageTimeshare = R.drawable.im_matiral_timeshare,
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                timeshareName = "Biển Vịnh Hạ Long Resort",
-                location = "Quảng Ninh, Việt Nam",
-                date = "20/11/2024 - 25/11/2024",
-                roomDetails = "Phòng Deluxe, 1 Giường, 3 Người",
-                price = "2.500.000 VND",
-                numberOfNights = " | 5 đêm"
-            )
-        )
-
-        val resortListMB = listOf(
-            ResortModel(
-                id = 1,
-                resortImage = R.drawable.im_material_resort,
-                resortName = "Nha Trang Resort",
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                location = "Khánh Hòa, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "550.000 - 1.300.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 2,
-                resortImage = R.drawable.im_material_resort,
-                resortName = "Phú Quốc Resort",
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                location = "Kiên Giang, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "750.000 - 2.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 3,
-                resortImage = R.drawable.im_material_resort,
-                resortName = "Đà Nẵng Resort",
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                location = "Đà Nẵng, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "1.000.000 - 3.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 4,
-                resortImage = R.drawable.im_material_resort,
-                resortName = "Hạ Long Resort",
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                location = "Quảng Ninh, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "650.000 - 2.500.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 5,
-                resortImage = R.drawable.im_material_resort,
-                resortName = "Đại Lải Resort",
-                rating = 4.2f,
-                ratingCount = "180 đánh giá",
-                location = "Vĩnh Phúc, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = " 700.000 - 1.800.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 6,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Nha Trang Resort",
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                location = "Khánh Hòa, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "550.000 - 1.300.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 7,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Phú Quốc Resort",
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                location = "Kiên Giang, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "750.000 - 2.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 8,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Đà Nẵng Resort",
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                location = "Đà Nẵng, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "1.000.000 - 3.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 9,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Hạ Long Resort",
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                location = "Quảng Ninh, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "650.000 - 2.500.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 10,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Đại Lải Resort",
-                rating = 4.2f,
-                ratingCount = "180 đánh giá",
-                location = "Vĩnh Phúc, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = " 700.000 - 1.800.000 VND",
-                numberOfNights = "| 1 đêm"
-            )
-        )
         val resortListMT = listOf(
             ResortModel(
                 id = 6,
@@ -361,63 +176,7 @@ class Constant {
                 numberOfNights = "| 1 đêm"
             )
         )
-        val resortListMN = listOf(
-            ResortModel(
-                id = 11,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Nha Trang Resort",
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                location = "Khánh Hòa, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "550.000 - 1.300.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 12,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Phú Quốc Resort",
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                location = "Kiên Giang, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "750.000 - 2.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 13,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Đà Nẵng Resort",
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                location = "Đà Nẵng, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "1.000.000 - 3.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 14,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Hạ Long Resort",
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                location = "Quảng Ninh, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "650.000 - 2.500.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 15,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Đại Lải Resort",
-                rating = 4.2f,
-                ratingCount = "180 đánh giá",
-                location = "Vĩnh Phúc, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = " 700.000 - 1.800.000 VND",
-                numberOfNights = "| 1 đêm"
-            )
-        )
+
 
 
         val destiantionList = listOf(
@@ -471,79 +230,7 @@ class Constant {
             BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
-        val cityList = listOf(
-            LocationModel(
-                1,
-                "Thành Phố Đà Lạt",
-                "Lâm Đồng, Việt Nam",
-                R.drawable.im_material_da_lat,
-                1
-            ),
-            LocationModel(
-                2,
-                "Thành Phố Hội An",
-                "Quảng Nam, Việt Nam",
-                R.drawable.im_material_vung_tau,
-                1
-            ),
-            LocationModel(
-                3,
-                "Thành Phố Hạ Long",
-                "Quảng Ninh, Việt Nam",
-                R.drawable.im_material_vung_tau,
-                1
-            ),
-            LocationModel(
-                4,
-                "Thành Phố Quy Nhơn",
-                "Bình Định, Việt Nam",
-                R.drawable.im_material_vung_tau,
-                1
-            ),
-            LocationModel(
-                5,
-                "Thành Phố Đồng Hới",
-                "Quảng Bình, Việt Nam",
-                R.drawable.im_material_vung_tau,
-                1
-            ),
-            LocationModel(
-                6,
-                "Khách sạn Gia Vinh",
-                "Bà Rịa - Vũng Tàu, Việt Nam",
-                R.drawable.im_material_nha_trang,
-                2
-            ),
-            LocationModel(
-                7,
-                "Khách sạn Cương Quyết",
-                "Bà Rịa - Vũng Tàu, Việt Nam",
-                R.drawable.im_material_quy_nhon,
-                2
-            ),
-            LocationModel(
-                8,
-                "Khách sạn Nguyễn Tấn",
-                "Bà Rịa - Vũng Tàu, Việt Nam",
-                R.drawable.im_material_phan_thiet,
-                2
-            ),
-            LocationModel(
-                9,
-                "Khách sạn Thành Đạt",
-                "Bà Rịa - Vũng Tàu, Việt Nam",
-                R.drawable.im_material_quy_nhon,
-                2
-            ),
-            LocationModel(
-                10,
-                "Khách sạn Thanh Long",
-                "Bà Rịa - Vũng Tàu, Việt Nam",
-                R.drawable.im_material_phu_yen,
-                2
-            ),
 
-            )
 
 
         val listImage = listOf(
@@ -555,34 +242,6 @@ class Constant {
             "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
         )
 
-        // Get List Room Type
-        val listRoomType = listOf(
-            RoomTypeModel(
-                1,
-                "Phòng Studio",
-                "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg"
-            ),
-            RoomTypeModel(
-                2,
-                "Phòng Queen",
-                "https://i.pinimg.com/736x/09/b6/5f/09b65f9ba22e9a314d059b814e7d62a3.jpg"
-            ),
-        )
-
-        // Get list Facilitie
-        val listFacilite = listOf(
-            FacilitieModel(1, "Điều hoà nhiệt độ", R.drawable.ic_air_conditioner),
-            FacilitieModel(2, "Lễ tân 24h", R.drawable.ic_receptionist),
-            FacilitieModel(3, "Chỗ đỗ xe", R.drawable.ic_car_aprking),
-            FacilitieModel(4, "Sân thượng", R.drawable.ic_roff_top),
-            FacilitieModel(5, "Phòng gia đình", R.drawable.ic_family_room),
-            FacilitieModel(6, "Chỗ đỗ xe", R.drawable.ic_car_aprking),
-            FacilitieModel(7, "Sân thượng", R.drawable.ic_roff_top),
-            FacilitieModel(8, "Phòng gia đình", R.drawable.ic_family_room),
-            FacilitieModel(9, "Phòng gia đình", R.drawable.ic_family_room),
-            FacilitieModel(10, "Phòng gia đình", R.drawable.ic_family_room),
-            FacilitieModel(11, "Phòng gia đình", R.drawable.ic_family_room),
-        )
 
         // Get list Review
         val listReview = listOf(
@@ -604,7 +263,6 @@ class Constant {
 
 
         )
-
 
         val myOrderList = listOf(
             MyOrderModel(
@@ -829,40 +487,6 @@ class Constant {
 
             )
 
-        val listMyTimeShare = listOf(
-            MyTimeshareModel(
-                id = 1,
-                name = "Flamingo Đại Lải",
-                roomName = "Phòng Studio King, 1 Giường, 4 Người",
-                checkInDate = "18/08/2024",
-                checkOutDate = "23/08/2024",
-                numberOfNight = 6,
-                price = "",
-                image = "https://i.pinimg.com/564x/5e/f1/72/5ef1725d7e391e26605f07f74eec6d6b.jpg"
-            ),
-            MyTimeshareModel(
-                id = 2,
-                name = "Vinpearl Nha Trang",
-                roomName = "Biệt thự 3 phòng ngủ, hướng biển",
-                checkInDate = "10/10/2024",
-                checkOutDate = "15/10/2024",
-                numberOfNight = 5,
-                price = "3,500,000 VND",
-                image = "https://i.pinimg.com/474x/04/36/58/043658561a6c9b4315050324c877cbcc.jpg"
-            ),
-            MyTimeshareModel(
-                id = 3,
-                name = "InterContinental Phú Quốc",
-                roomName = "Phòng Suite với ban công và hướng biển",
-                checkInDate = "01/11/2024",
-                checkOutDate = "05/11/2024",
-                numberOfNight = 4,
-                price = "5,000,000 VND",
-                image = "https://i.pinimg.com/474x/2b/49/9d/2b499d27792e5239ed304a0ae6869a01.jpg"
-            ),
-
-            )
-
         val listPackage = listOf(
             PackageModel(
                 id = 1,
@@ -974,51 +598,5 @@ class Constant {
             )
         )
 
-
-        val myTransactionList = listOf(
-            MyTransactionModel(
-                transactionID = "12412441",
-                recipientName = "Unwind",
-                paymentMethod = "Ví Thanh Toán",
-                transactionType = "Chuyển Tiền/Thanh toán Gói Tháng",
-                transactionTime = "08:00 23-08-2024",
-                walletBalance = "*******",
-                transactionAmount = "-1,000,000 VND",
-                type = 1
-            ),
-
-            MyTransactionModel(
-                transactionID = "98457392",
-                recipientName = "Cương Quyết",
-                paymentMethod = "Ngân Hàng",
-                transactionType = "Chuyển Tiền/Thanh toán Membership",
-                transactionTime = "08:00 15-10-2024",
-                walletBalance = "*******",
-                transactionAmount = "-3,500,000 VND",
-                type = 1
-            ),
-
-            MyTransactionModel(
-                transactionID = "58234987",
-                recipientName = "Cương Quyết",
-                paymentMethod = "Ví Thanh Toán",
-                transactionType = "Rút Tiền về vi của",
-                transactionTime = "08:00 05-11-2024",
-                walletBalance = "*******",
-                transactionAmount = "+5,000,000 VND",
-                type = 2
-            ),
-
-            MyTransactionModel(
-                transactionID = "76342890",
-                recipientName = "Unwind",
-                paymentMethod = "Ví Thanh Toán",
-                transactionType = "Rút Tiền về vi của",
-                transactionTime = "08:00 20-12-2024",
-                walletBalance = "*******",
-                transactionAmount = "+7,200,000 VND",
-                type = 2
-            ),
-        )
     }
 }

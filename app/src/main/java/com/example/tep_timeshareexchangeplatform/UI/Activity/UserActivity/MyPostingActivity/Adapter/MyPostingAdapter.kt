@@ -7,15 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
+import java.text.DecimalFormat
 
-class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingViewHolder>() {
+class MyPostingAdapter : BaseAdapter<PostingsResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
 
-    var onItemClick: ((MyPostingModel) -> Unit)? = null
-    var onItemPricingClick: ((MyPostingModel) -> Unit)? = null
+    var onItemClick: ((PostingsResponse.Content) -> Unit)? = null
+    var onItemPricingClick: ((PostingsResponse.Content) -> Unit)? = null
     inner class MyPostingViewHolder(binding : ItemMyPostingBinding)
-        : BaseItemViewHolderCF<MyPostingModel, ItemMyPostingBinding> (binding) {
-        override fun bind(item: MyPostingModel) {
+        : BaseItemViewHolderCF<PostingsResponse.Content, ItemMyPostingBinding> (binding) {
+        override fun bind(item: PostingsResponse.Content) {
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
@@ -25,19 +27,21 @@ class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingV
             else binding.llStatus.visibility = View.GONE*/
 
             // Posting Info
-            binding.tvResortName.text = "${item.name} | ${item.roomName}"
-            binding.tvLocation.text = item.location
-            binding.tvDate.text = item.stayDates
+            binding.tvResortName.text = "${item.resortName} | ${item.roomName}"
+            binding.tvLocation.text = item.address
+            binding.tvDate.text = item.checkinDate + " - " + item.checkoutDate
 
             // Price Info
-            binding.tvPrice.text = item.priceRange
+            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND | 1 đêm"
 
+            // Status
+            binding.tvStatus.text = item.status
             // Package Info
-            binding.tvPackageName.text = item.packageName
-            binding.tvDuration.text = item.packageDuration
+           /* binding.tvPackageName.text = item.packageName
+            binding.tvDuration.text = item.packageDuration*/
 
             // Price Demand
-            binding.btnAcceptPrice.visibility = if (item.isPriceDemand) View.VISIBLE else View.GONE
+            /*binding.btnAcceptPrice.visibility = if (item.isPriceDemand) View.VISIBLE else View.GONE*/
 
 
             // Hide Unused Info
@@ -54,17 +58,29 @@ class MyPostingAdapter : BaseAdapter<MyPostingModel, MyPostingAdapter.MyPostingV
             }
         }
 
+        fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MyPostingModel> {
-        return object : DiffUtil.ItemCallback<MyPostingModel>() {
-            override fun areItemsTheSame(oldItem: MyPostingModel, newItem: MyPostingModel): Boolean {
-                return oldItem.id == newItem.id
+    override fun differCallBack(): DiffUtil.ItemCallback<PostingsResponse.Content> {
+        return object : DiffUtil.ItemCallback<PostingsResponse.Content>() {
+            override fun areItemsTheSame(
+                oldItem: PostingsResponse.Content,
+                newItem: PostingsResponse.Content
+            ): Boolean {
+                return oldItem.rentalPostingId == newItem.rentalPostingId
             }
 
-            override fun areContentsTheSame(oldItem: MyPostingModel, newItem: MyPostingModel): Boolean {
+            override fun areContentsTheSame(
+                oldItem: PostingsResponse.Content,
+                newItem: PostingsResponse.Content
+            ): Boolean {
                 return oldItem == newItem
             }
+
         }
     }
 

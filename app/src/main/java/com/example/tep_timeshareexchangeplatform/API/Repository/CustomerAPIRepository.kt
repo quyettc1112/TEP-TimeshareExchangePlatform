@@ -6,6 +6,9 @@ import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -52,6 +55,38 @@ class CustomerAPIRepository@Inject constructor(
     suspend fun extendMembership(token: String, uuid: String, membershipId: Int): Resource<MemberShipResponse> {
         return try {
             val response = customerAPIService.extendMembership("Bearer $token", uuid, membershipId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get my posting list
+    suspend fun getMyPostingList(token: String): Resource<List<PostingsResponse.Content>> {
+        return try {
+            val response = customerAPIService.getMyPostingList("Bearer $token")
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get my posting detail
+    suspend fun getMyPostingDetail(token: String, postingId: Int): Resource<PostingDetailResponse> {
+        return try {
+            val response = customerAPIService.getMyPostingDetail("Bearer $token", postingId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
