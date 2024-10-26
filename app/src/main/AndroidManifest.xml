@@ -22,6 +22,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.Payment.DepositActivity.DepositActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.AuthActivity.RegisterActivity"
             android:exported="true" />
         <activity
