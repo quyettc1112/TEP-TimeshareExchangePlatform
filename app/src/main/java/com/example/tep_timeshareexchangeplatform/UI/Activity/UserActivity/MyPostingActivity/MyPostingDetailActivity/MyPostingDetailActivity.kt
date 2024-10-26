@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -30,7 +31,7 @@ class MyPostingDetailActivity : BaseActivity() {
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
-    private val viewModel : MyPostingDetailViewModel by viewModels()
+    private val viewModel: MyPostingDetailViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,12 +57,12 @@ class MyPostingDetailActivity : BaseActivity() {
     }
 
     private fun getIntentValue() {
-        val  intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+        val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getMyPostingDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
-        } else  {
+        } else {
             MotionToast.Companion.createColorToast(
                 this,
                 "Bạn chưa đăng nhập",
@@ -105,7 +106,7 @@ class MyPostingDetailActivity : BaseActivity() {
     private fun bindData(postingDetailResponse: PostingDetailResponse) {
         // Hide Unessary View
         binding.includePackagePosting.apply {
-           tvPackageDescription.visibility = View.GONE
+            tvPackageDescription.visibility = View.GONE
         }
 
         // Custom Toolbar Data
@@ -116,7 +117,8 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Resort Info
         binding.apply {
-            tvResortName.text = postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
+            tvResortName.text =
+                postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
             tvLocation.text = postingDetailResponse.address
 
             if (postingDetailResponse.isVerify) {
@@ -172,16 +174,18 @@ class MyPostingDetailActivity : BaseActivity() {
             if (postingDetailResponse.cancelType.toString() == "null") {
                 tvCancelPolicy.text = "Không có"
                 includeDetailBilling.tvCancellationPolicy.text = "Không có"
-            } else  {
+            } else {
                 tvCancelPolicy.text = postingDetailResponse.cancelType.toString()
-                includeDetailBilling.tvCancellationPolicy.text = postingDetailResponse.cancelType.toString()
+                includeDetailBilling.tvCancellationPolicy.text =
+                    postingDetailResponse.cancelType.toString()
             }
 
         }
 
         // UI DTB
         binding.includeDetailBilling.apply {
-            tvResortNameDtb.text = postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
+            tvResortNameDtb.text =
+                postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
             tvCheckInDate.text = postingDetailResponse.checkinDate
             tvCheckOutDate.text = postingDetailResponse.checkoutDate
             tvNumberNight.text = "${postingDetailResponse.nights} đêm"
@@ -193,36 +197,54 @@ class MyPostingDetailActivity : BaseActivity() {
         // Data for Request
         binding.apply {
             tvPrice.text = "${postingDetailResponse.totalPrice} đ"
-            tvDate.text = "${postingDetailResponse.checkinDate} - ${postingDetailResponse.checkoutDate}"
+            tvDate.text =
+                "${postingDetailResponse.checkinDate} - ${postingDetailResponse.checkoutDate}"
 
         }
 
         // Set Amenities
         facilityAdapter.submitList(postingDetailResponse.resortAmenities)
 
-        // Update Status
-        if (postingDetailResponse.status == "PendingApproval") {
-            binding.tvStatus.text = "Đang chờ duyệt"
-        } else if (postingDetailResponse.status == "approved") {
-            binding.tvStatus.text = "Đã duyệt"
-        } else if (postingDetailResponse.status == "rejected") {
-            binding.tvStatus.text = "Đã từ chối"
-        } else if (postingDetailResponse.status == "expired") {
-            binding.tvStatus.text = "Hết hạn"
-        } else if (postingDetailResponse.status == "cancelled") {
-            binding.tvStatus.text = "Đã hủy"
-        } else if (postingDetailResponse.status == "completed") {
-            binding.tvStatus.text = "Hoàn thành"
-        } else {
-            binding.tvStatus.text = "Không xác định"
+        binding.apply {
+            // Thiết lập văn bản trạng thái
+            tvStatus.text = when (postingDetailResponse.status) {
+                "PendingApproval" -> "Đang chờ duyệt"
+                "Processing" -> "Đang xử lý"
+                "PendingPricing" -> "Đã từ chối"
+                "AwaitingConfirmation" -> "Hết hạn"
+                "Closed" -> "Đã hủy"
+                "Completed" -> "Hoàn thành"
+                "Expired" -> "Hoàn thành"
+                else -> "Không xác định"
+            }
+
+            // Thiết lập màu nền và màu chữ dựa trên trạng thái
+            val (backgroundColor, textColor) = when (postingDetailResponse.status) {
+                "PendingApproval" -> Pair(R.color.pendingApprovalBackground, R.color.pendingApprovalText)
+                "Processing" -> Pair(R.color.processingBackground, R.color.processingText)
+                "PendingPricing" -> Pair(R.color.pendingPricingBackground, R.color.pendingPricingText)
+                "AwaitingConfirmation" -> Pair(R.color.awaitingConfirmationBackground, R.color.awaitingConfirmationText)
+                "Closed" -> Pair(R.color.closedBackground, R.color.closedText)
+                "Completed" -> Pair(R.color.completedBackground, R.color.completedText)
+                "Expired" -> Pair(R.color.expiredBackground, R.color.expiredText)
+                else -> Pair(R.color.unknownBackground, R.color.unknownText)
+            }
+
+            // Áp dụng màu nền cho `ctr_request_button`
+            ctrRequestButton.backgroundTintList = ContextCompat.getColorStateList(this@MyPostingDetailActivity, backgroundColor)
+
+            // Áp dụng màu chữ cho `tvStatus`
+            tvStatus.setTextColor(ContextCompat.getColor(this@MyPostingDetailActivity, textColor))
         }
 
 
 
     }
+
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
     }
+
     private fun setListImageTimeshare() {
         // Set List Image Timeshare
         binding.viewPager.apply {
@@ -241,6 +263,7 @@ class MyPostingDetailActivity : BaseActivity() {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
         }
     }
+
     private fun setAmenitiesListTimeshare() {
         val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.flexDirection = FlexDirection.ROW
@@ -250,10 +273,12 @@ class MyPostingDetailActivity : BaseActivity() {
             it.adapter = facilityAdapter
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         autoScrollHelper.pauseAutoScroll()
     }
+
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
             "bedsFull" to "Full",

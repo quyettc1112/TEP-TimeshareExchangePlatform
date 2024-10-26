@@ -119,6 +119,38 @@
     <!--    Dark Toast bg-->
     <color name="dark_bg_color">#2F3032</color>
 
+    <!-- Màu cho trạng thái Pending Approval -->
+    <color name="pendingApprovalBackground">#FFFFCC00</color> <!-- Màu nền vàng nhạt -->
+    <color name="pendingApprovalText">#FF000000</color> <!-- Màu chữ đen -->
+
+    <!-- Màu cho trạng thái Processing -->
+    <color name="processingBackground">#FF00FF00</color> <!-- Màu nền xanh lá cây -->
+    <color name="processingText">#FF000000</color> <!-- Màu chữ Đen -->
+
+    <!-- Màu cho trạng thái Pending Pricing -->
+    <color name="pendingPricingBackground">#FFFF0000</color> <!-- Màu nền đỏ -->
+    <color name="pendingPricingText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
+    <!-- Màu cho trạng thái Awaiting Confirmation -->
+    <color name="awaitingConfirmationBackground">#FF808080</color> <!-- Màu nền xám -->
+    <color name="awaitingConfirmationText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
+    <!-- Màu cho trạng thái Closed -->
+    <color name="closedBackground">#FF8B0000</color> <!-- Màu nền đỏ thẫm -->
+    <color name="closedText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
+    <!-- Màu cho trạng thái Completed -->
+    <color name="completedBackground">#FF006400</color> <!-- Màu nền xanh lá đậm -->
+    <color name="completedText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
+    <!-- Màu cho trạng thái Expired -->
+    <color name="expiredBackground">#FFB22222</color> <!-- Màu nền đỏ gạch -->
+    <color name="expiredText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
+    <!-- Màu cho trạng thái không xác định (Unknown) -->
+    <color name="unknownBackground">#FF808080</color> <!-- Màu nền xám -->
+    <color name="unknownText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
+
 
 
 
