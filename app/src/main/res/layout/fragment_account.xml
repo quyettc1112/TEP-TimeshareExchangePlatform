@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -69,6 +70,8 @@
                     android:id="@+id/ll_membership"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+                    <!--// User Name-->
                     <TextView
                         android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
@@ -80,10 +83,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <!--// Wallet Container -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_wallet"
-                        android:layout_width="140dp"
-                        android:layout_height="60dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
                         android:layout_marginTop="10dp"
                         android:clickable="true"
                         app:cardCornerRadius="20dp"
@@ -94,8 +98,8 @@
                         app:strokeWidth="2dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-
-                            android:layout_width="match_parent"
+                            android:minWidth="210dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent">
 
                             <androidx.cardview.widget.CardView
@@ -119,38 +123,59 @@
 
                             <TextView
                                 android:id="@+id/textView23"
-                                android:layout_width="0dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
                                 android:fontFamily="@font/inter_semibold"
                                 android:maxLines="1"
                                 android:text="Ví Unwind"
                                 android:textColor="@color/black"
                                 android:textSize="12dp"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/cardView7"
                                 app:layout_constraintTop_toTopOf="@+id/cardView7" />
 
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:id="@+id/textView33"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
+                                android:layout_marginEnd="10dp"
                                 android:fontFamily="@font/inter_bold"
                                 android:maxLines="1"
-                                android:text="259.000đ"
+                                android:text="500.000 đ"
                                 android:textColor="@color/black"
-                                android:textSize="12dp"
+                                android:textSize="16dp"
                                 app:layout_constraintBottom_toBottomOf="@+id/cardView7"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/btn_nap_tien"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toEndOf="@+id/cardView7"
-                                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                                app:layout_constraintTop_toBottomOf="@+id/textView23"
+                                app:layout_constraintVertical_bias="0.0" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_deposit"
+                                android:clickable="true"
+                                android:layout_marginEnd="10dp"
+                                android:layout_width="60dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/background_stroke_around"
+                                android:backgroundTint="@color/blue_btn_search"
+                                android:padding="5dp"
+                                android:text="Nạp Tiền"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="10dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </com.google.android.material.card.MaterialCardView>
 
+                    <!--// Membership Animation-->
                     <com.airbnb.lottie.LottieAnimationView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -160,7 +185,7 @@
                         app:lottie_loop="true"
                         app:lottie_rawRes="@raw/anim_membership" />
 
-
+                    <!--// Membership Text-->
                     <TextView
                         android:id="@+id/is_membership"
                         android:layout_width="wrap_content"
@@ -472,6 +497,7 @@
 
             </LinearLayout>
 
+            <!--// Help Center Container-->
             <LinearLayout
                 android:id="@+id/ll_help_center"
                 android:layout_width="match_parent"

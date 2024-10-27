@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
@@ -32,7 +33,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAccountBinding.inflate(layoutInflater, container, false)
-
+        depositButtonClick()
         return binding.root
     }
 
@@ -52,7 +53,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             }
         }
     }
-
 
     private fun setUserActivitiesEvent() {
         binding.apply {
@@ -99,6 +99,17 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 )
             }
         }
+
+    }
+
+    private fun depositButtonClick() {
+        binding.cardWallet.setOnClickListener {
+            startActivity(Intent(requireContext(), DepositActivity::class.java))
+        }
+        binding.btnDeposit.setOnClickListener {
+            startActivity(Intent(requireContext(), DepositActivity::class.java))
+        }
+
 
     }
 

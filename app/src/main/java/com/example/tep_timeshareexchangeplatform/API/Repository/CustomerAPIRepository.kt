@@ -51,20 +51,7 @@ class CustomerAPIRepository@Inject constructor(
         }
     }
 
-    // Extend membership
-    suspend fun extendMembership(token: String, uuid: String, membershipId: Int): Resource<MemberShipResponse> {
-        return try {
-            val response = customerAPIService.extendMembership("Bearer $token", uuid, membershipId)
-            if (response.isSuccessful) {
-                Resource.success(response.body())
-            } else {
-                val errorMessage = ErrorHandler.parseError(response.errorBody())
-                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
-            }
-        } catch (e: Exception) {
-            Resource.error("Network Error: ${e.message}", null)
-        }
-    }
+
 
 
     // Get my posting list

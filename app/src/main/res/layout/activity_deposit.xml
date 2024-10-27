@@ -75,12 +75,13 @@
                         android:id="@+id/materialCardView9"
                         android:layout_width="200dp"
                         android:layout_height="70dp"
+                        app:strokeColor="@color/blue_btn_search"
                         android:layout_margin="5dp"
                         android:layout_weight="5"
                         android:clickable="true"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="5dp"
-                        app:strokeWidth="2dp">
+                        app:strokeWidth="1dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -303,6 +304,8 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_marginEnd="10dp"
+                                android:checked="true"
+                                android:enabled="false"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

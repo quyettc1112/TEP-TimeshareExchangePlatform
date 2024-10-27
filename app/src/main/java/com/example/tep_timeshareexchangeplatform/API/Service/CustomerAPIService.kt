@@ -29,13 +29,7 @@ interface CustomerAPIService {
         @Path ("userId") userId: Int
     ) : Response<CustomerResponse>
 
-    // Extend Membership of Customer
-    @POST("customer/VNPAY/membership")
-    suspend fun extendMembership(
-        @Header ("Authorization") token: String,
-        @Query ("uuid") uuid: String,
-        @Query ("membership_id") membershipId: Int
-    ) : Response<MemberShipResponse>
+
 
 
     // Get My Posting List
