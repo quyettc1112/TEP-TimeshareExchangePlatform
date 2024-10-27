@@ -48,8 +48,6 @@ class VNPayActivity : BaseActivity() {
         }
         observeData()
 
-
-
         webViewLoadSetup()
     }
 
@@ -271,12 +269,12 @@ class VNPayActivity : BaseActivity() {
                         if (responseCodeEnum!!.equals(VnpResponseCode.SUCCESS)) {
                             hideLoadingWaiting()
                             // Call API to extend membership
+                            val paymentType = intent.getSerializableExtra(Constant.PAYMENT_METHOD_TYPE) as PaymentType
                             checkPaymentType(
-                                PaymentType.PURCHASE_PACKAGE,
+                                paymentType,
                                 vnPayResponse.walletTransactionId,
                                 packageId
                             )
-
 
                         } else {
                             hideLoadingWaiting()

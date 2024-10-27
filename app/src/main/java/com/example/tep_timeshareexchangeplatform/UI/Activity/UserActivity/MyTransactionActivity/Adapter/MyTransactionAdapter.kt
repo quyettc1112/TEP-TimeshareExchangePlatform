@@ -41,7 +41,7 @@ class MyTransactionAdapter :
             binding.walletNumber.text = item.*/
 
             // Set Payment Method
-            binding.tvTransactionType.text = item.paymentMethod
+            binding.tvTransactionType.text ="Phương Thức: " + item.paymentMethod
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)

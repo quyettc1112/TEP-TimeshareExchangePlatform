@@ -2,7 +2,6 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPac
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.TokenWatcher
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -60,7 +59,7 @@ class PaymentPackageActivity : BaseActivity() {
 
     private fun observeData() {
         // Observe Extend Membership By VNPAY
-        paymentPackageViewModel.responseUrl.observe(this) {
+        paymentPackageViewModel.responseVNPAYUrl.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
