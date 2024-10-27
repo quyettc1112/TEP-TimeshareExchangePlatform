@@ -16,11 +16,11 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.VNPayViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -30,7 +30,6 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityVnpayBindin
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONException
-import org.json.JSONObject
 
 @AndroidEntryPoint
 class VNPayActivity : BaseActivity() {
@@ -48,12 +47,129 @@ class VNPayActivity : BaseActivity() {
             insets
         }
         observeData()
+
+
+
         webViewLoadSetup()
+    }
+
+    private fun observeData() {
+        // Observe Purchase Package by VN Pay
+        viewModel.memberShipResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                // Intent to Billing Activity
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, PaymentResultActivity::class.java)
+                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                                startActivity(intentToBilling)
+
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
+
+        // Observe Deposit Wallet by VN Pay
+        viewModel.walletDepositResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                val intentToBilling = Intent(this@VNPayActivity, PaymentResultActivity::class.java)
+                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                                startActivity(intentToBilling)
+                                Log.d("WalletDepositResponseData", it.data.toString())
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
+    }
+
+    private fun callAPIExtendMembership(uuid: String, membershipId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.extendMembership(token, uuid, membershipId)
+    }
+
+    private fun callAPIDepositWallet(uuid: String) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.depositMoney(token, uuid)
+    }
+
+    private fun checkPaymentType(
+        paymentType: PaymentType,
+        walletTransactionId: String,
+        packageId: Int
+    ) {
+        when (paymentType) {
+            PaymentType.PURCHASE_PACKAGE -> {
+                callAPIExtendMembership(
+                    walletTransactionId,
+                    packageId
+                )
+            }
+
+            PaymentType.DEPOSIT_WALLET -> {
+                callAPIDepositWallet(walletTransactionId)
+            }
+        }
     }
 
     private fun webViewLoadSetup() {
         val urlIntent = intent.getStringExtra(Constant.PAYMENT_URL)
         val packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+
         // Set WebViewClient to prevent opening external browser
         binding.webView.webViewClient = WebViewClient()
         // Enable JavaScript if needed (optional)
@@ -83,45 +199,7 @@ class VNPayActivity : BaseActivity() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
                 // Kiểm tra URL để xử lý kết quả thanh toán nếu cần
-                if (url.contains("https://fams-management.tech/api/payment/payment-infor")) {
-                    // Sử dụng evaluateJavascript để lấy nội dung JSON từ trang
-                    showLoadingWaiting(true)
-                    view.loadUrl("about:blank")
-                    view.evaluateJavascript(
-                        "(function() { return document.body.innerText; })();"
-                    ) { jsonResult ->
-                        // Xử lý chuỗi JSON trả về từ trang
-                        if (jsonResult != null && jsonResult.contains("responseCode")) {
-                            try {
-                                val gson = Gson()
-                                val cleanedJson =
-                                    jsonResult.replace("\\\"", "\"").replace("\"{", "{")
-                                        .replace("}\"", "}")
-                                val vnPayResponse =
-                                    gson.fromJson(cleanedJson, VNPayResponse::class.java)
-                                // Check response code
-                                val responseCodeEnum: VnpResponseCode =
-                                    VnpResponseCode.fromCode(vnPayResponse.responseCode)!!
-
-                                // Check Success or Failed
-                                if (responseCodeEnum!!.equals(VnpResponseCode.SUCCESS)) {
-                                    hideLoadingWaiting()
-                                    // Call API to extend membership
-                                    callAPIExtendMembership(
-                                        vnPayResponse.walletTransactionId,
-                                        packageId
-                                    )
-                                } else {
-                                    hideLoadingWaiting()
-                                    showFailed(responseCodeEnum)
-                                }
-
-                            } catch (e: JSONException) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                }
+                processPaymentInfo(url, view, packageId)
             }
 
             override fun shouldInterceptRequest(
@@ -168,56 +246,51 @@ class VNPayActivity : BaseActivity() {
 
     }
 
-    private fun observeData() {
-        viewModel.memberShipResponse.observe(this) {
-            when (it.status) {
-                Status.LOADING -> {
-                    showLoadingWaiting(true)
-                }
+    private fun processPaymentInfo(url: String, view: WebView, packageId: Int) {
+        if (url.contains("https://fams-management.tech/api/payment/payment-infor")) {
+            // Sử dụng evaluateJavascript để lấy nội dung JSON từ trang
+            showLoadingWaiting(true)
+            view.loadUrl("about:blank")
+            view.evaluateJavascript(
+                "(function() { return document.body.innerText; })();"
+            ) { jsonResult ->
+                // Xử lý chuỗi JSON trả về từ trang
+                if (jsonResult != null && jsonResult.contains("responseCode")) {
+                    try {
+                        val gson = Gson()
+                        val cleanedJson =
+                            jsonResult.replace("\\\"", "\"").replace("\"{", "{")
+                                .replace("}\"", "}")
+                        val vnPayResponse =
+                            gson.fromJson(cleanedJson, VNPayResponse::class.java)
+                        // Get Response Code
+                        val responseCodeEnum: VnpResponseCode =
+                            VnpResponseCode.fromCode(vnPayResponse.responseCode)!!
 
-                Status.SUCCESS -> {
-                    hideLoadingWaiting()
-                    showSuccessDialog(
-                        this@VNPayActivity,
-                        "Payment Success",
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                // Intent to FInsish Activity
-                                val intent = intent
-                                setResult(RESULT_OK, intent)
-                                // Intent to Billing Activity
-                                val intentToBilling = Intent(this@VNPayActivity, BillingActivity::class.java)
-                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)
-                                startActivity(intentToBilling)
+                        // Check Success or Failed
+                        if (responseCodeEnum!!.equals(VnpResponseCode.SUCCESS)) {
+                            hideLoadingWaiting()
+                            // Call API to extend membership
+                            checkPaymentType(
+                                PaymentType.PURCHASE_PACKAGE,
+                                vnPayResponse.walletTransactionId,
+                                packageId
+                            )
 
-                                // Finish Activity
-                                finish()
-                            }
-                        })
 
-                }
+                        } else {
+                            hideLoadingWaiting()
+                            showFailed(responseCodeEnum)
+                        }
 
-                Status.ERROR -> {
-                    Log.d("Error Payment", TokenManager(this).getAccessToken().toString())
-                    hideLoadingWaiting()
-                    Log.e("Error Payment", "observeData: ${it.message}")
-                    showFailedDialog(
-                        this@VNPayActivity,
-                        it.message.toString(),
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                finish()
-                            }
-                        })
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
     }
 
-    private fun callAPIExtendMembership(uuid: String, membershipId: Int) {
-        val token = TokenManager(this).getAccessToken().toString()
-        viewModel.extendMembership(token, uuid, membershipId)
-    }
 
     private fun showFailed(responseCodeEnum: VnpResponseCode) {
         MotionToast.Companion.createToast(
@@ -238,4 +311,5 @@ class VNPayActivity : BaseActivity() {
                 }
             })
     }
+
 }

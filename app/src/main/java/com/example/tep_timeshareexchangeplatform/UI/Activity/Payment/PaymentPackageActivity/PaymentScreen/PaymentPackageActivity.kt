@@ -2,23 +2,30 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPac
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.TokenWatcher
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.PaymentPackageViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityPaymentPackageBinding
+import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 
@@ -27,6 +34,8 @@ class PaymentPackageActivity : BaseActivity() {
     private lateinit var binding: ActivityPaymentPackageBinding
     private val paymentPackageViewModel: PaymentPackageViewModel by viewModels()
     private lateinit var paymentResultLauncher: ActivityResultLauncher<Intent>
+
+    private var selectedCard: MaterialCardView? = null
 
     private var packageId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +55,11 @@ class PaymentPackageActivity : BaseActivity() {
 
         // When Payment Sucess, finish this activity
         initActivityResultLauncher()
+        onPaymentMethodSelected()
     }
 
     private fun observeData() {
+        // Observe Extend Membership By VNPAY
         paymentPackageViewModel.responseUrl.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -74,6 +85,48 @@ class PaymentPackageActivity : BaseActivity() {
                 }
             }
         }
+
+        // Observe Extend Membership By Wallet
+        paymentPackageViewModel.memberShipResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val intent = Intent(this, PaymentResultActivity::class.java)
+                    intent.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                    paymentResultLauncher.launch(intent)
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this,
+                        "${it.message}",
+                        null
+                    )
+                }
+            }
+        }
+
+        // Observe Selected Payment Method
+        paymentPackageViewModel.selectedPaymentMethod.observe(this, Observer { method ->
+            when (method) {
+                PaymentMethod.VNPAY -> {
+                    updateCardViewAppearance(binding.cardVnpay, true)
+                    updateCardViewAppearance(binding.cardUnwind, false)
+                }
+
+                PaymentMethod.UNWIND -> {
+                    updateCardViewAppearance(binding.cardUnwind, true)
+                    updateCardViewAppearance(binding.cardVnpay, false)
+                }
+            }
+        })
+
+
     }
 
     private fun setCustomToolBar() {
@@ -95,7 +148,8 @@ class PaymentPackageActivity : BaseActivity() {
                 PackageEnum.MEMBERSHIP_MONTHLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
-                        tvPackagePrice.text = "${formatPrice(packageEnum.packageModel.price)} VND"
+                        tvPackagePrice.text =
+                            "${formatPrice(packageEnum.packageModel.price)} VND"
                         tvPackageName.text = packageEnum.packageModel.name.toString()
                         llTypePackage.setBackgroundResource(R.drawable.lite_gradient)
                         bindDataPaymentInfo(packageEnum)
@@ -106,7 +160,8 @@ class PaymentPackageActivity : BaseActivity() {
                 PackageEnum.MEMBERSHIP_YEARLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
-                        tvPackagePrice.text = "${formatPrice(packageEnum.packageModel.price)} VND"
+                        tvPackagePrice.text =
+                            "${formatPrice(packageEnum.packageModel.price)} VND"
                         tvPackageName.text = packageEnum.packageModel.name.toString()
                         llTypePackage.setBackgroundResource(R.drawable.pro_gradient)
                         bindDataPaymentInfo(packageEnum)
@@ -140,12 +195,58 @@ class PaymentPackageActivity : BaseActivity() {
 
     private fun onRequestButtonClicked() {
         binding.ctrRequestButton.setOnClickListener {
+
+            // Get Token
+            val token = TokenManager(this@PaymentPackageActivity)
+            if (token.getAccessToken() == null) {
+                MotionToast.Companion.createColorToast(
+                    this,
+                    "Thất Bại",
+                    "Vui lòng đăng nhập để thực hiện chức năng này",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                return@setOnClickListener
+            }
+
+            // Get Payment Method
+            val paymentMethod = paymentPackageViewModel.selectedPaymentMethod.value
+
+            // Get Package Enum
             val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId }
                 ?: return@setOnClickListener
-            paymentPackageViewModel.getResponsePaymentUrl(
-                packageEnum.packageModel.price,
-                packageEnum.packageModel.name
-            )
+
+            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
+            when (paymentMethod) {
+                // Call API to check Wallet Balance, Intent to PaymentResultActivity
+                PaymentMethod.UNWIND -> {
+                    paymentPackageViewModel.extendMembershipByWallet(
+                        token.getAccessToken().toString(), packageId
+                    )
+                }
+
+                // Call API to get Payment URL, Intent to VNPayActivity
+                PaymentMethod.VNPAY -> {
+                    paymentPackageViewModel.getResponsePaymentUrl(
+                        packageEnum.packageModel.price,
+                        packageEnum.packageModel.name
+                    )
+                }
+
+                else -> {
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Thất Bại",
+                        "Vui lòng chọn phương thức thanh toán",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
         }
     }
 
@@ -153,6 +254,7 @@ class PaymentPackageActivity : BaseActivity() {
         val intent = Intent(this, VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
         intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, packageId)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE)
         paymentResultLauncher.launch(intent)
     }
 
@@ -169,6 +271,28 @@ class PaymentPackageActivity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    private fun onPaymentMethodSelected() {
+        binding.cardUnwind.setOnClickListener {
+            selectedCard = binding.cardUnwind
+            paymentPackageViewModel.selectPaymentMethod(PaymentMethod.UNWIND)
+        }
+        binding.cardVnpay.setOnClickListener {
+            selectedCard = binding.cardVnpay
+            paymentPackageViewModel.selectPaymentMethod(PaymentMethod.VNPAY)
+        }
+    }
+
+    // Hàm để cập nhật giao diện của CardView
+    private fun updateCardViewAppearance(cardView: MaterialCardView, isSelected: Boolean) {
+        cardView.apply {
+            strokeWidth = if (isSelected) 4 else 0
+            strokeColor = ContextCompat.getColor(
+                this@PaymentPackageActivity,
+                if (isSelected) R.color.blue_see_more else R.color.white
+            )
+        }
     }
 
     fun formatPrice(price: Int): String {

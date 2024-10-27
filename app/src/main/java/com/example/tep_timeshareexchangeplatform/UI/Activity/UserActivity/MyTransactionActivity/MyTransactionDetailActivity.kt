@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDetailRespone
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.ViewModel.MyTransactionViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -36,6 +38,10 @@ class MyTransactionDetailActivity : BaseActivity() {
         }
         observeData()
         getDataIntent()
+
+        binding.customToolbar.onStartIconClick =  {
+            onBackPressed()
+        }
     }
 
     private fun getDataIntent() {
@@ -84,7 +90,7 @@ class MyTransactionDetailActivity : BaseActivity() {
             tvTotalFee.text = "${ formatPrice(walletDetailResponse.fee)} VND"
             tvDescription.text = walletDetailResponse.description.toString()
         }
-        binding.customToolbar6.setTitleDetail(walletDetailResponse.createdAt)
+        binding.customToolbar.setTitleDetail(walletDetailResponse.createdAt)
     }
 
     fun formatPrice(price: Int): String {
@@ -92,5 +98,10 @@ class MyTransactionDetailActivity : BaseActivity() {
         return formatter.format(price)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
 
 }

@@ -12,12 +12,10 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity
-import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
-import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBillingBinding
 import java.text.DecimalFormat
 
-class BillingActivity : BaseActivity() {
+class PaymentResultActivity : BaseActivity() {
     private lateinit var binding: ActivityBillingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +35,7 @@ class BillingActivity : BaseActivity() {
     private fun bindData() {
         val memberShipResponse = intent.getParcelableExtra<MemberShipResponse>(Constant.PAYMENT_SUCCESS)
         if (memberShipResponse == null) {
-            Log.e("BillingActivity", "memberShipResponse is null")
+            Log.e("PaymentResultActivity", "memberShipResponse is null")
             return
         }
         binding.apply {
@@ -58,10 +56,16 @@ class BillingActivity : BaseActivity() {
 
     private fun clickHandle(transactionId: String) {
         binding.ctrRequestButton.setOnClickListener {
-            val intent = Intent(this, MyTransactionDetailActivity::class.java)
-            intent.putExtra(Constant.TRANSACTION_ID, transactionId)
-            startActivity(intent)
+            // Done, Finish Payment Activity
+            val intent = intent
+            setResult(RESULT_OK, intent)
+
+            // Go to MyTransactionDetailActivity
+            val intentToTransactionDetail = Intent(this, MyTransactionDetailActivity::class.java)
+            intentToTransactionDetail.putExtra(Constant.TRANSACTION_ID, transactionId)
+            startActivity(intentToTransactionDetail)
         }
+
 
     }
 

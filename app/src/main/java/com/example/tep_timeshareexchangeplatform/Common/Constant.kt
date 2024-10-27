@@ -59,6 +59,7 @@ class Constant {
 
         const val DEFAULT_POSTING_ID = "postingId"
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
+        const val PAYMENT_METHOD_TYPE = "paymentMethod"
 
 
         fun formatPrice(price: Int): String {
