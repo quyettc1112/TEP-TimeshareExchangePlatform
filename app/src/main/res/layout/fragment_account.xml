@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,6 +24,7 @@
         app:showStartIcon="false"
         app:showStartText="false" />
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,8 +36,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@color/primary_background"
+            android:gravity="center"
             android:orientation="vertical">
 
             <!--// Option Container-->
@@ -48,38 +48,133 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="vertical">
+
+
                 <!--// User Avatar-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_user_avt"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:src="@drawable/ic_user_default_avt"
                     android:translationZ="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.151"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
-                <!--// User Name-->
-                <TextView
-                    android:id="@+id/tv_user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/inter_extrabold"
-                    android:text="Trần Cương Quyết"
-                    android:textSize="20dp" />
+                <!--   // Member Ship Contaner-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ll_membership"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_extrabold"
+                        android:text="Trần Cương Quyết"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_user_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_light"
-                    android:text="some thing in here"
-                    android:textSize="16dp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_wallet"
+                        android:layout_width="140dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+                        app:strokeWidth="2dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cardView7"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                app:cardCornerRadius="50dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="16dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_logo_only" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/textView23"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:fontFamily="@font/inter_semibold"
+                                android:maxLines="1"
+                                android:text="Ví Unwind"
+                                android:textColor="@color/black"
+                                android:textSize="12dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/cardView7"
+                                app:layout_constraintTop_toTopOf="@+id/cardView7" />
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:maxLines="1"
+                                android:text="259.000đ"
+                                android:textColor="@color/black"
+                                android:textSize="12dp"
+                                app:layout_constraintBottom_toBottomOf="@+id/cardView7"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/cardView7"
+                                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_user_name"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_user_name"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/anim_membership" />
+
+
+                    <TextView
+                        android:id="@+id/is_membership"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_light"
+                        android:text="Bạn Đã Là Thành Viên Của Unwind"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_wallet" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Option Component-->
                 <LinearLayout
@@ -129,8 +224,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:orientation="horizontal"
                         android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
                         android:weightSum="10">
 
                         <ImageView
@@ -374,17 +469,18 @@
 
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_help_center"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="2dp"
                 android:background="@color/white"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:gravity="center"
-                android:layout_marginTop="2dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
 
                 <!--// Unwind Help Center-->
@@ -397,31 +493,28 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_weight="3"
-                        android:layout_marginStart="5dp"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/logo_unwind_horizontal"/>
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="3"
+                        android:src="@drawable/logo_unwind_horizontal" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="@string/help_center"
                         android:layout_weight="6"
-                        android:textColor="@color/blue_btn_search"
                         android:fontFamily="@font/inter_extrabold"
-                        android:textSize="16dp"
-                        />
+                        android:paddingStart="20dp"
+                        android:text="@string/help_center"
+                        android:textColor="@color/blue_btn_search"
+                        android:textSize="16dp" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                 </LinearLayout>
@@ -430,14 +523,14 @@
 
             <!--// Version and Policy-->
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
-                android:layout_width="match_parent"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="10dp"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp">
 
                 <!--// Versionr-->
                 <LinearLayout
@@ -450,29 +543,26 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="20dp"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/ic_info"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_info" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="@string/version"
+                        android:layout_weight="8"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
-                        />
+                        android:paddingStart="20dp"
+                        android:text="@string/version"
+                        android:textSize="16dp" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                 </LinearLayout>
@@ -488,29 +578,26 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="20dp"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/ic_info"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_info" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="@string/term_policy"
+                        android:layout_weight="8"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
-                        />
+                        android:paddingStart="20dp"
+                        android:text="@string/term_policy"
+                        android:textSize="16dp" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                 </LinearLayout>
@@ -526,28 +613,26 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="20dp"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/ic_privacy_polices"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_privacy_polices" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="@string/privacy_policy"
+                        android:layout_weight="8"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
-                        />
+                        android:paddingStart="20dp"
+                        android:text="@string/privacy_policy"
+                        android:textSize="16dp" />
+
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/baseline_navigate_next_24_black"/>
-
-
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_navigate_next_24_black" />
 
 
                 </LinearLayout>
@@ -564,44 +649,42 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="20dp"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/ic_lang_setting"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_lang_setting" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:paddingStart="20dp"
                         android:layout_gravity="left|center"
-                        android:text="@string/setting"
+                        android:layout_weight="8"
                         android:fontFamily="@font/inter_semibold"
-                        android:textSize="16dp"
-                        />
+                        android:paddingStart="20dp"
+                        android:text="@string/setting"
+                        android:textSize="16dp" />
+
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_gravity="left|center"
-                        android:src="@drawable/baseline_navigate_next_24_black"/>
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_navigate_next_24_black" />
 
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_logout"
-                    android:background="@drawable/ripple_effect_white"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:text="@string/btn_logout"
-                    android:textSize="20dp"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/primary_background"
                     android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="150dp"
-                    />
+                    android:background="@drawable/ripple_effect_white"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/btn_logout"
+                    android:textColor="@color/primary_background"
+                    android:textSize="20dp" />
 
             </LinearLayout>
-
 
 
         </LinearLayout>

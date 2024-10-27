@@ -49,7 +49,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         mainViewModel.user.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvUserName.text = it.sub
-                binding.tvUserEmail.text = it.email
             }
         }
     }
@@ -61,30 +60,53 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             llSettingLang.setOnClickListener { (activity as? BaseActivity)?.showLanguageDialog() }
 
             // Xem List Order
-            llMyOrder.setOnClickListener {startActivity(Intent(requireContext(), MyOrderActivity::class.java))}
+            llMyOrder.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyOrderActivity::class.java
+                    )
+                )
+            }
 
             // Hỗ trợ
-            llHelpCenter.setOnClickListener { startActivity(Intent(requireContext(), MemberShipActivity::class.java)) }
+            llHelpCenter.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MemberShipActivity::class.java
+                    )
+                )
+            }
 
             // Bài Đăng của tôi
-            llMyPosting.setOnClickListener {startActivity(Intent(requireContext(), MyPostingActivity::class.java))}
+            llMyPosting.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyPostingActivity::class.java
+                    )
+                )
+            }
 
             // Giao dịch của tôi
-            llMyTransaction.setOnClickListener { startActivity(Intent(requireContext(), MyTransactionActivity::class.java)) }
+            llMyTransaction.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyTransactionActivity::class.java
+                    )
+                )
+            }
         }
 
     }
+
     private fun logoutDialog() {
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(requireContext(), AuthActivity::class.java))
         }
     }
-
-
-
-
-
-
 
 
 }
