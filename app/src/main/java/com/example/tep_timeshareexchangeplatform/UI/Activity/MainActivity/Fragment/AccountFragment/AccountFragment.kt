@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActi
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
@@ -116,6 +117,8 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     private fun logoutDialog() {
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(requireContext(), AuthActivity::class.java))
+            val tokenManager = TokenManager(requireContext())
+            tokenManager.clearTokens()
         }
     }
 

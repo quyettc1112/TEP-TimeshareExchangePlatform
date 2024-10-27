@@ -65,6 +65,19 @@ class MainViewModel  @Inject constructor(
     }
 
 
+    private val _isLogin = MutableLiveData(false)
+    val isLogin: LiveData<Boolean> = _isLogin
+    fun setLogin(isLogin: Boolean) {
+        _isLogin.value = isLogin
+    }
+
+    private val _isMember = MutableLiveData(false)
+    val isMember: LiveData<Boolean> = _isMember
+    fun setMember(isMember: Boolean) {
+        _isMember.value = isMember
+    }
+
+
 
 
 

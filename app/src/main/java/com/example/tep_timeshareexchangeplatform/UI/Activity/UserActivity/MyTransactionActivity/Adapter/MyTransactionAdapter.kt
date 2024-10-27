@@ -57,8 +57,6 @@ class MyTransactionAdapter :
 
 
 
-
-
     }
 
     override fun differCallBack(): DiffUtil.ItemCallback<WalletListResponse.Transaction> {

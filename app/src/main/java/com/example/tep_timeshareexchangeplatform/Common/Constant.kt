@@ -61,6 +61,12 @@ class Constant {
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
 
+        const val USER_LOGIN_STATE = "userLoginState"
+        const val CUSTOMER_OBJECT = "customerObject"
+
+        const val LOGGED_OUT = "loggedOut"
+
+
 
         fun formatPrice(price: Int): String {
             val formatter = DecimalFormat("#,###")
