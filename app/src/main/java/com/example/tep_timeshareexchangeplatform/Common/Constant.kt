@@ -62,7 +62,7 @@ class Constant {
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
 
         const val USER_LOGIN_STATE = "userLoginState"
-        const val CUSTOMER_OBJECT = "customerObject"
+        const val CUSTOMER_INFO = "customerInfo"
 
         const val LOGGED_OUT = "loggedOut"
 

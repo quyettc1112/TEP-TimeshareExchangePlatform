@@ -103,7 +103,7 @@ class MemberShipActivity : BaseActivity() {
             }
         }
 
-        // Check Call Is Customer Exist
+       /* // Check Call Is Customer Exist
         memberShipViewModel.isCustomerExist.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -147,7 +147,7 @@ class MemberShipActivity : BaseActivity() {
                     }
                 }
             }
-        }
+        }*/
     }
 
     private fun initAdapter() {
@@ -185,7 +185,7 @@ class MemberShipActivity : BaseActivity() {
         binding.ctrRequestButton.setOnClickListener {
             val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken()!!)
             if (tokenManager.getAccessToken() != null && user != null) {
-                memberShipViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!, user.userId)
+               // memberShipViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!, user.userId)
             } else {
                 MotionToast.createColorToast(
                     this,

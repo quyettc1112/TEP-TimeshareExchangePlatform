@@ -15,7 +15,7 @@ class PostingViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
 
-    // Call API Get Is Customer Exist
+    /*// Call API Get Is Customer Exist
     private val _isCustomerExist = MutableLiveData<Resource<CustomerResponse>>()
     val isCustomerExist: MutableLiveData<Resource<CustomerResponse>>
         get() = _isCustomerExist
@@ -26,6 +26,6 @@ class PostingViewModel @Inject constructor(
                 _isCustomerExist.postValue(it)
             }
         }
-    }
+    }*/
 
 }

@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -28,42 +29,50 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
+class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
 
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpUserLogState()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        tokenManager = TokenManager(this)
+
+        // Check User is logged in or not, member or customer
+        checkUserStateLog()
+
         changeLangEvent()
         setUpBottomNav()
-
     }
 
-    private fun setUpUserLogState() {
-        val intent = intent
-        val userLogState = intent.getSerializableExtra(Constant.USER_LOGIN_STATE) as UserLogState
+    private fun checkUserStateLog() {
+        val userLogState = tokenManager.getUserLogState()
         when (userLogState) {
-            UserLogState.LOGGED_IN_AS_USER -> {
-                Toast.makeText(this, "Logged in as user", Toast.LENGTH_SHORT).show()
+            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
             }
+
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
-                Toast.makeText(this, "Logged in as customer", Toast.LENGTH_SHORT).show()
+                mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+            }
+
+            UserLogState.LOGGED_IN_AS_USER -> {
+                mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_USER)
             }
 
             UserLogState.LOGGED_OUT -> {
-                Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             }
         }
     }
@@ -80,7 +89,8 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
         config.setLocale(locale)
         this.resources.updateConfiguration(config, this.resources.displayMetrics)
     }
-    private fun setUpBottomNav(){
+
+    private fun setUpBottomNav() {
         val listFragment: ArrayList<Fragment> = ArrayList()
         listFragment.add(HomeFragment())
         listFragment.add(TopResortFragment())
@@ -102,14 +112,16 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
         }
         binding.niceBottomNav.apply {
             setBadge(4)
-            onItemSelected = {idFragemnt ->
+            onItemSelected = { idFragemnt ->
                 binding.vp2Main.setCurrentItem(idFragemnt, true)
             }
         }
     }
+
     override fun hideBottomNav() {
         binding.cardView.animate().translationY(binding.cardView.height.toFloat()).duration = 30
     }
+
     override fun showBottomNav() {
         binding.cardView.animate().translationY(0f).duration = 30
     }
@@ -120,12 +132,12 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener{
         val tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn()) {
             // Decode JWT token to JWTPayloadModel
-            val jwtPayloadModel = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
+            val jwtPayloadModel =
+                JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             // Save tokens to shared preferences
             jwtPayloadModel?.let { mainViewModel.updateUser(it) }
         }
     }
-
 
 
     override fun onResume() {

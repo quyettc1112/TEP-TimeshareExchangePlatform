@@ -5,8 +5,7 @@ import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
@@ -37,9 +36,9 @@ class CustomerAPIRepository@Inject constructor(
     }
 
     // Check if customer exist
-    suspend fun getIsCustomerExist(token: String, userId: Int): Resource<CustomerResponse> {
+    suspend fun getIsCustomerExist(token: String): Resource<CustomerInfoResponse> {
         return try {
-            val response = customerAPIService.getIsCustomerExist("Bearer $token", userId)
+            val response = customerAPIService.getIsCustomerExist("Bearer $token")
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

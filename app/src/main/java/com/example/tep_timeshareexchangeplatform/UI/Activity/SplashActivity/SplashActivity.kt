@@ -38,7 +38,7 @@ class SplashActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        observeViewModel()
+      //  observeViewModel()
 
 
         // Load the animations
@@ -46,11 +46,13 @@ class SplashActivity : BaseActivity() {
         val textAnimation = AnimationUtils.loadAnimation(this, R.anim.text_fade_in)
 
         bindind.logoImageView.startAnimation(logoAnimation)
-        checkJwtUserValid()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+      /*  checkJwtUserValid()*/
 
     }
 
-    private fun observeViewModel() {
+   /* private fun observeViewModel() {
         splashViewModel.customerResponse.observe(this) { response ->
             when (response.status) {
                 Status.LOADING -> {
@@ -59,22 +61,19 @@ class SplashActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra(Constant.USER_LOGIN_STATE,  UserLogState.LOGGED_IN_AS_CUSTOMER)
-                    intent.putExtra(Constant.CUSTOMER_OBJECT, response.data)
                     startActivity(intent)
                 }
 
                 Status.ERROR -> {
                     if(response.message?.contains("404") == true) {
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(Constant.USER_LOGIN_STATE,  UserLogState.LOGGED_IN_AS_USER)
                         startActivity(intent)
                     }
                 }
             }
         }
 
-    }
+    }*/
 
 
     private fun checkJwtUserValid() {
@@ -85,7 +84,7 @@ class SplashActivity : BaseActivity() {
             val userJWTPayloadModel =
                 JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             // Call check customer exist API
-            splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString(), userJWTPayloadModel!!.userId)
+         //   splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString(), userJWTPayloadModel!!.userId)
         } else {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(Constant.USER_LOGIN_STATE,  UserLogState.LOGGED_OUT)

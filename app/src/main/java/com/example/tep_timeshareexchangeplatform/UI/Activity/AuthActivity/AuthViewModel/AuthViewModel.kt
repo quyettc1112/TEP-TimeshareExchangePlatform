@@ -8,7 +8,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RegisterDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.RegisterResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -46,17 +46,18 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    // Check Customer Exist
-    private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
-    val customerResponse: MutableLiveData<Resource<CustomerResponse>> get() = _customerResponse
-    fun getIsCustomerExist(token: String, userId: Int) {
+    // Check if customer exist, customer Info
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
+    val customerInfoResponse: LiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    // Call Check if customer exist, customer Info Function
+    fun getIsCustomerExist(token: String) {
         viewModelScope.launch {
-            _customerResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token, userId).let {
-                _customerResponse.postValue(it)
-            }
+            _customerInfoResponse.postValue(Resource.loading(null))
+            val result = customerAPIRepository.getIsCustomerExist(token)
+            _customerInfoResponse.postValue(result)
         }
     }
+
 
 
 }

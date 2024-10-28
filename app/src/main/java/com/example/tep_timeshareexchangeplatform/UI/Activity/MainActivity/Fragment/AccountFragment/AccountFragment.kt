@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -16,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActi
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
@@ -23,9 +25,12 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
     private lateinit var binding: FragmentAccountBinding
     private val mainViewModel: MainViewModel by activityViewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tokenManager = TokenManager(requireContext())
 
     }
 
@@ -48,12 +53,93 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
     // Observer
     private fun observeViewModel() {
-        mainViewModel.user.observe(viewLifecycleOwner) {
+        // Get User Info
+        mainViewModel.userJWTPayload.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvUserName.text = it.sub
             }
         }
+
+        mainViewModel.userLogState.observe(viewLifecycleOwner) {
+            setUserLoginState(it)
+        }
     }
+
+    private fun setUserLoginState(userLogState: UserLogState) {
+        when (userLogState) {
+            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                binding.apply {
+                    // Change Button Text
+                    btnLogout.text = getString(R.string.btn_logout)
+                    btnLogout.setTextColor(resources.getColor(R.color.black))
+                    btnLogout.backgroundTintList = null
+                    llCustomerContainer.visibility = View.VISIBLE
+
+                    // Un Hide Wallet
+                    cardWalletContainer.visibility = View.VISIBLE
+
+                    // Un Hide is Member
+                    tvIsMembership.visibility = View.VISIBLE
+                    animMembership.visibility = View.VISIBLE
+
+                }
+            }
+
+            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
+                binding.apply {
+                    // Change Button Text
+                    btnLogout.text = getString(R.string.btn_logout)
+                    btnLogout.setTextColor(resources.getColor(R.color.black))
+                    btnLogout.backgroundTintList = null
+                    llCustomerContainer.visibility = View.VISIBLE
+
+                    // Un Hide Wallet
+                    cardWalletContainer.visibility = View.VISIBLE
+
+                    // Hide is Member
+                    tvIsMembership.visibility = View.GONE
+                    animMembership.visibility = View.GONE
+
+                }
+            }
+
+            UserLogState.LOGGED_IN_AS_USER -> {
+                binding.apply {
+                    // Change Button Text
+                    btnLogout.text = getString(R.string.btn_logout)
+                    btnLogout.setTextColor(resources.getColor(R.color.black))
+                    btnLogout.backgroundTintList = null
+                    llCustomerContainer.visibility = View.VISIBLE
+
+                    // Hide Wallet
+                    cardWalletContainer.visibility = View.GONE
+                    // Hide is Member
+                    tvIsMembership.visibility = View.GONE
+                    animMembership.visibility = View.GONE
+
+                }
+            }
+
+            UserLogState.LOGGED_OUT -> {
+                binding.apply {
+                    // Change Button Text
+                    btnLogout.text = getString(R.string.login)
+                    btnLogout.setTextColor(resources.getColor(R.color.white))
+                    btnLogout.backgroundTintList = resources.getColorStateList(R.color.blue_btn_search)
+
+                    // Hide Customer Container
+                    llCustomerContainer.visibility = View.GONE
+                }
+            }
+            else -> { /* nothing to do */ }
+        }
+    }
+
+
+
+
+
+
 
     private fun setUserActivitiesEvent() {
         binding.apply {
@@ -104,7 +190,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     }
 
     private fun depositButtonClick() {
-        binding.cardWallet.setOnClickListener {
+        binding.cardWalletContainer.setOnClickListener {
             startActivity(Intent(requireContext(), DepositActivity::class.java))
         }
         binding.btnDeposit.setOnClickListener {
@@ -117,8 +203,8 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     private fun logoutDialog() {
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(requireContext(), AuthActivity::class.java))
-            val tokenManager = TokenManager(requireContext())
-            tokenManager.clearTokens()
+            mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
+            tokenManager.clearAllToken()
         }
     }
 

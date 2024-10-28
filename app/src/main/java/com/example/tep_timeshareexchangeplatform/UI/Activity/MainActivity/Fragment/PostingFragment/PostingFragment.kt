@@ -44,12 +44,12 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     ): View {
         binding = FragmentPostingBinding.inflate(inflater, container, false)
         setIntroSlider()
-        observeData()
+        //observeData()
 
         return binding.root
     }
 
-    private fun observeData() {
+   /* private fun observeData() {
         // Check Call Is Customer Exist
         viewModel.isCustomerExist.observe(requireActivity()) {
             when (it.status) {
@@ -87,7 +87,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
             }
         }
 
-    }
+    }*/
 
     @SuppressLint("ResourceAsColor")
     private fun setIntroSlider() {
@@ -123,14 +123,14 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
         // Event Dialog
 
         // Rental click
-        binding.llLayoutRentTimeshare.setOnClickListener {
+       /* binding.llLayoutRentTimeshare.setOnClickListener {
             val tokenManager = TokenManager(requireContext())
             val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             viewModel.callIsCustomerExist(
                 tokenManager.getAccessToken().toString(),
                 user?.userId!!
             )
-        }
+        }*/
 
         // Exchange Click
         binding.llLayoutExchangeTimeshare.setOnClickListener {

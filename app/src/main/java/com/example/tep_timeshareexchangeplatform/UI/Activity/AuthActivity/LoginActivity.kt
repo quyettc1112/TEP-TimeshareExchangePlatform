@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -40,11 +41,12 @@ class LoginActivity : BaseActivity() {
 
     // Inject AuthViewModel using Hilt
     private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
+        tokenManager = TokenManager(this)
         binding = ActivityLoginScreen2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -75,9 +77,10 @@ class LoginActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     // Handle success, e.g., navigate to another screen
-                    hideLoadingWaiting()
                     resource.data?.let { loginResponse ->
                         handleLoginSuccess(loginResponse)
+                        // Check if customer exist
+                        authViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString())
                     }
                 }
 
@@ -92,92 +95,33 @@ class LoginActivity : BaseActivity() {
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(this, R.font.inter_thin)
                     );
+                    tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
                 }
             }
         }
 
-        authViewModel.customerResponse.observe(this) { response ->
-            when (response.status) {
+
+        authViewModel.customerInfoResponse.observe(this) { resource ->
+            when (resource.status) {
                 Status.LOADING -> {
+                    // Show a loading spinner
                     showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    handelCheckCustomer(response)
+                    // Handle success, e.g., navigate to another screen
+                    hideLoadingWaiting()
+                    resource.data?.let { customerInfoResponse ->
+                        handleCheckCustomerExist(customerInfoResponse)
+                    }
                 }
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    if (response.message?.contains("404") == true) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(Constant.USER_LOGIN_STATE, UserLogState.LOGGED_IN_AS_USER)
-                        startActivity(intent)
-                    }
+                    // SAve user log state, Intent to main
+                    tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+                    intentToMain()
                 }
-            }
-        }
-    }
-
-    private fun handelCheckCustomer(response: Resource<CustomerResponse>) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val currentDate = LocalDate.now()
-            val expiryDate = LocalDate.parse(
-                response.data?.memberExpiryDate.toString(),
-                DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            )
-
-            if (expiryDate.isAfter(currentDate)) {
-                // Ngày hết hạn còn hiệu lực so với ngày hiện tại
-                hideLoadingWaiting()
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(Constant.USER_LOGIN_STATE, UserLogState.LOGGED_IN_AS_CUSTOMER)
-                startActivity(intent)
-            } else {
-                // Ngày hết hạn đã qua
-                hideLoadingWaiting()
-                // Giả sử bạn có một hàm hiển thị thông báo hết hạn
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(Constant.USER_LOGIN_STATE, UserLogState.LOGGED_IN_AS_USER)
-                startActivity(intent)
-
-                MotionToast.Companion.createColorToast(
-                    this,
-                    "Hêt hạn Gói thành viên",
-                    "Gia hạn gói thành viên để sử dụng dịch vụ",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(this, R.font.inter_thin)
-                );
-            }
-        } else {
-            // Sử dụng SimpleDateFormat cho các phiên bản API thấp hơn
-            val currentDate = Calendar.getInstance().time
-            val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            val expiryDate = dateFormat.parse(response.data?.memberExpiryDate.toString())
-
-            if (expiryDate != null && expiryDate.after(currentDate)) {
-                // Ngày hết hạn còn hiệu lực so với ngày hiện tại
-                hideLoadingWaiting()
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(Constant.USER_LOGIN_STATE, UserLogState.LOGGED_IN_AS_CUSTOMER)
-                startActivity(intent)
-            } else {
-                // Ngày hết hạn đã qua
-                hideLoadingWaiting()
-                Toast.makeText(this, "Hết hạn", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(Constant.USER_LOGIN_STATE, UserLogState.LOGGED_IN_AS_USER)
-                startActivity(intent)
-                MotionToast.Companion.createColorToast(
-                    this,
-                    "Hêt hạn Gói thành viên",
-                    "Gia hạn gói thành viên để sử dụng dịch vụ",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(this, R.font.inter_thin)
-                );
             }
         }
     }
@@ -197,13 +141,20 @@ class LoginActivity : BaseActivity() {
             ResourcesCompat.getFont(this, R.font.inter_thin)
         );
 
-        val token: TokenManager = TokenManager(this)
-        token.saveTokens(accessToken, refreshToken)
+        // Save tokens
+        tokenManager.saveTokens(accessToken, refreshToken)
+        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
 
-        val userJWTPayloadModel = JwtDecoder().parseJwtUsingGson(accessToken)
+    }
 
-        userJWTPayloadModel?.let { authViewModel.getIsCustomerExist(accessToken, it.userId) }
-
+    private fun handleCheckCustomerExist(customerInfoResponse : CustomerInfoResponse) {
+        // Check is member or not
+        if (customerInfoResponse.isMember) {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+        } else {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+        }
+        intentToMain()
     }
 
     // Call loginProcess() function when user click on login button
@@ -225,11 +176,11 @@ class LoginActivity : BaseActivity() {
             return
         }
         val loginDTO = LoginDTO(email, password)
+
+        // Call login function in AuthViewModel
         authViewModel.login(loginDTO)
     }
 
-
-    /// Group function here for click event
     // Group function here for click event
     private fun clickLoginButton() {
         binding.btnLogin.setOnClickListener {
@@ -240,6 +191,11 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun intentToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
 }

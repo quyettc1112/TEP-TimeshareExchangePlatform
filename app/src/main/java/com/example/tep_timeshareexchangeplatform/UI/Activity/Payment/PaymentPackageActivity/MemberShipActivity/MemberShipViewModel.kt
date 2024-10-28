@@ -41,7 +41,7 @@ class MemberShipViewModel @Inject constructor(
         }
     }
 
-    // Call API Get Is Customer Exist
+  /*  // Call API Get Is Customer Exist
     private val _isCustomerExist = MutableLiveData<Resource<CustomerResponse>>()
     val isCustomerExist: MutableLiveData<Resource<CustomerResponse>>
         get() = _isCustomerExist
@@ -52,7 +52,7 @@ class MemberShipViewModel @Inject constructor(
                 _isCustomerExist.postValue(it)
             }
         }
-    }
+    }*/
 
 
 

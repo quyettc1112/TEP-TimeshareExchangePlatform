@@ -15,7 +15,7 @@ class SplashViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ): ViewModel() {
 
-    // Check Customer Exist
+    /*// Check Customer Exist
     private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
     val customerResponse: MutableLiveData<Resource<CustomerResponse>> get() = _customerResponse
     fun getIsCustomerExist(token: String, userId: Int) {
@@ -25,5 +25,5 @@ class SplashViewModel @Inject constructor(
                 _customerResponse.postValue(it)
             }
         }
-    }
+    }*/
 }
