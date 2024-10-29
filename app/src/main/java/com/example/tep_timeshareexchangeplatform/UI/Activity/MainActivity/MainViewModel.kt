@@ -20,6 +20,40 @@ class MainViewModel  @Inject constructor(
     private val postingAPIRepository: PostingAPIRepository,
 ) : ViewModel()  {
 
+    private val initStep: Int = 1
+
+
+    // ----------------------------------------------------------//
+    // Tracking Progress Step
+    private val _step = MutableLiveData<Int>()
+    val step: MutableLiveData<Int>
+        get() = _step
+    fun updateStep(step: Int){
+        if (step >= _currentStepInProgress.value!!){
+            updateCurrentStepInProgress(step)
+        }
+        _step.value = step
+    }
+
+    // Tracking Current Step In Progress
+    private val _currentStepInProgress = MutableLiveData<Int>()
+    val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
+    fun updateCurrentStepInProgress(step: Int){
+        _currentStepInProgress.value = step
+    }
+    // Function to check if a step can be navigated to
+    fun canNavigateToStep(step: Int): Boolean {
+        return _currentStepInProgress.value?.let { step <= it } ?: false
+    }
+    // Function to reset the current step
+    fun resetSteps() {
+        _currentStepInProgress.value = 1
+    }
+
+
+
+
+
     private val _userJWTPayload = MutableLiveData<UserJWTPayloadModel>()
     val userJWTPayload: LiveData<UserJWTPayloadModel> = _userJWTPayload
 

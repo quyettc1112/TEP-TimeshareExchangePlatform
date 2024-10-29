@@ -34,6 +34,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     private lateinit var tokenManager: TokenManager
 
     private val viewModel: PostingViewModel by viewModels()
+    private val viewModelMain: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +67,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
                         intentToMemberShipActivity()
                     }
                 }
+
                 Status.ERROR -> {
                     (activity as MainActivity).hideLoadingWaiting()
                     MotionToast.Companion.createColorToast(
@@ -79,6 +81,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
                     )
 
                 }
+
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
                 }
@@ -97,7 +100,8 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
         }
         // Event next Button
         binding.btnNext.setOnClickListener {
-            binding.vpPostingIntroduction.currentItem = binding.vpPostingIntroduction.currentItem + 1
+            binding.vpPostingIntroduction.currentItem =
+                binding.vpPostingIntroduction.currentItem + 1
             if (binding.vpPostingIntroduction.currentItem == introSliderAdapter.itemCount - 1) {
                 showPostingOptionDialog()
             }
@@ -106,7 +110,8 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
 
     private fun showPostingOptionDialog() {
         val dialog = BottomSheetDialog(requireContext(), R.style.MyBottomSheetDialogTheme)
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_posting_bottom_nav, null)
+        val view =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_posting_bottom_nav, null)
         val binding = DialogPostingBottomNavBinding.bind(view)
         view.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -125,11 +130,13 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
             if (tokenManager.getAccessToken() != null) {
                 callIsCustomerExist()
             } else {
-                MotionToast.createColorToast(
+                dialog.dismiss()
+                (activity as MainActivity).binding.vp2Main.currentItem = 4
+                MotionToast.Companion.createColorToast(
                     requireActivity(),
-                    "Error",
-                    "Token is null",
-                    MotionToastStyle.ERROR,
+                    "Lỗi",
+                    "Bạn cần đăng nhập để thực hiện chức năng này",
+                    MotionToastStyle.INFO,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
                     null

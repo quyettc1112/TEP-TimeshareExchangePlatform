@@ -61,6 +61,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onNewIntent(intent)
     }
 
+
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
         val customerInfo = tokenManager.getCustomerInfo()
@@ -88,7 +89,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             }
         }
     }
-
 
     private fun changeLangEvent() {
         val preferenceHelper = PreferenceHelper(this)
@@ -150,7 +150,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             jwtPayloadModel?.let { mainViewModel.updateUser(it) }
         }
     }
-
 
     override fun onResume() {
         super.onResume()
