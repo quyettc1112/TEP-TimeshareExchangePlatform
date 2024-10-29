@@ -55,6 +55,13 @@ class Constant {
         const val PAYMENT_URL = "paymentUrl"
 
         const val PAYMENT_SUCCESS = "paymentSuccess"
+
+        const val PAYMENT_SUCCESS_PACKAGE = "paymentSuccessPackage"
+
+        const val PAYMENT_SUCCESS_POSTING = "paymentSuccessPosting"
+
+        const val PAYMENT_SUCCESS_DEPOSIT = "paymentSuccessDeposit"
+
         const val TRANSACTION_ID = "transactionId"
 
         const val DEFAULT_POSTING_ID = "postingId"

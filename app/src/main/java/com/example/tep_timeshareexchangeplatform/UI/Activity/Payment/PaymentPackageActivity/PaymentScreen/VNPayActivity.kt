@@ -71,7 +71,7 @@ class VNPayActivity : BaseActivity() {
                                 // Intent to Billing Activity
                                 val intentToBilling =
                                     Intent(this@VNPayActivity, PaymentResultActivity::class.java)
-                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS_PACKAGE, it.data)
                                 startActivity(intentToBilling)
 
                                 // Finish Activity
@@ -111,7 +111,7 @@ class VNPayActivity : BaseActivity() {
                                 val intent = intent
                                 setResult(RESULT_OK, intent)
                                 val intentToBilling = Intent(this@VNPayActivity, PaymentResultActivity::class.java)
-                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS_DEPOSIT, it.data)
                                 startActivity(intentToBilling)
                                 Log.d("WalletDepositResponseData", it.data.toString())
                                 // Finish Activity

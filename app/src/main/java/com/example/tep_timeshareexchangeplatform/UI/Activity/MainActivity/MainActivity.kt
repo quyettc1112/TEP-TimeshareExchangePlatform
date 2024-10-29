@@ -155,6 +155,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     override fun onResume() {
         super.onResume()
         checkUserLoggedIn()
+        checkUserStateLog()
     }
 
 

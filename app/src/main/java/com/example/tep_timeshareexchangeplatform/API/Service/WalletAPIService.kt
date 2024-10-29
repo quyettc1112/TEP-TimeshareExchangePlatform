@@ -23,7 +23,7 @@ interface WalletAPIService {
     ): Response<WalletDetailRespone>
 
     // Get List Transaction
-    @GET("wallet/customer")
+    @GET("wallet/customer/wallet-transaction")
     suspend fun getWalletTransaction(
         @Header("Authorization") token: String
     ): Response<WalletListResponse>
