@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,30 +45,30 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
-
     private lateinit var binding: FragmentHomeBinding
     private val timeshareAdapter = TimeshareAdapterRV()
     private val resortAdapterMB = ResortAdapter()
     private val blogAdapter = BlogAdapter()
-    lateinit var gridAdapter : GridAdapter
+    lateinit var gridAdapter: GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var dateResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        homeViewModel.getResortList(0,5, "")
-
-
+        homeViewModel.getResortList(0, 5, "")
         gridAdapter = GridAdapter(Constant.destiantionList) { destinationModel ->
             // Xử lý sự kiện khi item được click
-            Toast.makeText(requireContext(), "Clicked: ${destinationModel.destinationName}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Clicked: ${destinationModel.destinationName}",
+                Toast.LENGTH_SHORT
+            ).show()
         }
-       /* timeshareAdapter.submitList(Constant.timeshareList)*/
+        /* timeshareAdapter.submitList(Constant.timeshareList)*/
         resortAdapterMB.submitList(listOf())
         blogAdapter.submitList(Constant.blogList)
         // Khởi tạo AutoScrollViewPagerHelper
@@ -132,6 +133,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                         null
                     )
                 }
+
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(false)
                 }
@@ -140,12 +142,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
 
     }
+
     private fun observerViewModel() {
         homeViewModel.resortList.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     (activity as MainActivity).hideLoadingWaiting()
                     resource.data?.let { resortModel ->
@@ -153,6 +157,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
 
                 }
+
                 Status.ERROR -> {
                     MotionToast.Companion.createToast(
                         requireActivity(),
@@ -170,11 +175,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun initAdapter() {
         // List Timesahre Recomend
-        binding.rvSuggestTimeshare.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSuggestTimeshare.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvSuggestTimeshare.adapter = timeshareAdapter
 
         // List Blog
-        binding.rcBlog.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcBlog.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rcBlog.adapter = blogAdapter
 
         // List Resort Recomend MB
@@ -210,7 +217,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             object : SpannedGridLayoutManager.GridSpanLookup {
                 override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
                     // Conditions for 2x2 items
-                    return when (position ) {
+                    return when (position) {
                         0 -> SpannedGridLayoutManager.SpanInfo(2, 1)
                         1 -> SpannedGridLayoutManager.SpanInfo(1, 2)
                         2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
@@ -234,6 +241,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
 
     }
+
     private fun setItemResortClickListener() {
         resortAdapterMB.let {
             it.onItemClick = {
@@ -257,6 +265,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
     }
+
     private fun setAutoScroll() {
         // Auto Scroll
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
@@ -267,60 +276,61 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     // Hanlde click event
     private fun setSearchComponentClickEvent() {
-      binding.let {
-          // Location Click Event
-          it.llLocation.setOnClickListener {
-              val intent = Intent(requireContext(), LocationActivity::class.java)
-              locationResultLauncher.launch(intent)
-          }
-          it.llTourist.setOnClickListener {
-              val roomSelectionDialog = RoomSelectionDialog.newInstance()
-              roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
-          }
-          it.llDate.setOnClickListener{
-              val constraintsBuilder = CalendarConstraints.Builder()
-                  .setValidator(object : CalendarConstraints.DateValidator {
-                      override fun isValid(date: Long): Boolean {
-                          // Định dạng ngày để kiểm tra các ngày không hợp lệ
-                          val calendar = Calendar.getInstance().apply { timeInMillis = date }
-                          val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-                          val month = calendar.get(Calendar.MONTH)
-                          val year = calendar.get(Calendar.YEAR)
+        binding.let {
+            // Location Click Event
+            it.llLocation.setOnClickListener {
+                val intent = Intent(requireContext(), LocationActivity::class.java)
+                locationResultLauncher.launch(intent)
+            }
+            it.llTourist.setOnClickListener {
+                val roomSelectionDialog = RoomSelectionDialog.newInstance()
+                roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
+            }
+            it.llDate.setOnClickListener {
+                val constraintsBuilder = CalendarConstraints.Builder()
+                    .setValidator(object : CalendarConstraints.DateValidator {
+                        override fun isValid(date: Long): Boolean {
+                            // Định dạng ngày để kiểm tra các ngày không hợp lệ
+                            val calendar = Calendar.getInstance().apply { timeInMillis = date }
+                            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+                            val month = calendar.get(Calendar.MONTH)
+                            val year = calendar.get(Calendar.YEAR)
 
-                          return true
-                      }
-                      override fun describeContents(): Int = 0
-                      override fun writeToParcel(dest: Parcel, flags: Int) {
-                          TODO("Not yet implemented")
-                      }
+                            return true
+                        }
 
-                  })
+                        override fun describeContents(): Int = 0
+                        override fun writeToParcel(dest: Parcel, flags: Int) {
+                            TODO("Not yet implemented")
+                        }
 
-              // Tạo DateRangePicker với CalendarConstraints
-              val dateRangePicker =
-                  MaterialDatePicker.Builder.dateRangePicker()
-                      .setTitleText(getString(R.string.date_range_picker))
-                      .setCalendarConstraints(constraintsBuilder.build())
-                      .build()
+                    })
 
-              // Hiển thị DateRangePicker khi nhấn nút
-              dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
+                // Tạo DateRangePicker với CalendarConstraints
+                val dateRangePicker =
+                    MaterialDatePicker.Builder.dateRangePicker()
+                        .setTitleText(getString(R.string.date_range_picker))
+                        .setCalendarConstraints(constraintsBuilder.build())
+                        .build()
+
+                // Hiển thị DateRangePicker khi nhấn nút
+                dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
 
 
-              // Lắng nghe sự kiện khi người dùng chọn ngày
-              dateRangePicker.addOnPositiveButtonClickListener { selection ->
-                  val startDate = selection?.first
-                  val endDate = selection?.second
+                // Lắng nghe sự kiện khi người dùng chọn ngày
+                dateRangePicker.addOnPositiveButtonClickListener { selection ->
+                    val startDate = selection?.first
+                    val endDate = selection?.second
 
-                  val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                  val startDateString = startDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
-                  val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val startDateString = startDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
+                    val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
 
-                  binding.tvDate.text =  "$startDateString - $endDateString"
+                    binding.tvDate.text = "$startDateString - $endDateString"
 
-              }
-          }
-      }
+                }
+            }
+        }
     }
 
 
@@ -347,7 +357,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedLocation = data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
+                    val selectedLocation =
+                        data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
                     selectedLocation?.let {
                         binding.tvLocation.text = selectedLocation
                     }

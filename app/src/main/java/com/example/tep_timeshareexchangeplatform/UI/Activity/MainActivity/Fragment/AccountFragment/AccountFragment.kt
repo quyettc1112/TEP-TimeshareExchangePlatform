@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
@@ -62,6 +63,12 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
         mainViewModel.userLogState.observe(viewLifecycleOwner) {
             setUserLoginState(it)
+        }
+
+        mainViewModel.customerInfo.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.tvBalance.text = Constant.formatPrice(it.walletAvailableMoney) + " đ"
+            }
         }
     }
 

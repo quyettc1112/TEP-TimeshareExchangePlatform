@@ -26,6 +26,7 @@ class SplashActivity : BaseActivity() {
 
     private lateinit var bindind: ActivitySplashBinding
     private val splashViewModel: SplashViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +34,13 @@ class SplashActivity : BaseActivity() {
         bindind = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(bindind.root)
 
+        tokenManager = TokenManager(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-      //  observeViewModel()
+        observeViewModel()
 
 
         // Load the animations
@@ -46,49 +48,58 @@ class SplashActivity : BaseActivity() {
         val textAnimation = AnimationUtils.loadAnimation(this, R.anim.text_fade_in)
 
         bindind.logoImageView.startAnimation(logoAnimation)
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-      /*  checkJwtUserValid()*/
+        checkJwtUserValid()
 
     }
 
-   /* private fun observeViewModel() {
-        splashViewModel.customerResponse.observe(this) { response ->
+    private fun observeViewModel() {
+        splashViewModel.customerInfoResponse.observe(this) { response ->
             when (response.status) {
                 Status.LOADING -> {
                     // Do Nothing
                 }
-
                 Status.SUCCESS -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    if (response.data!!.isMember) {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                        tokenManager.saveCustomerInfo(response.data)
+                    }
+                    else {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                        tokenManager.saveCustomerInfo(response.data)
+                    }
+                    handlerLooper()
                 }
 
                 Status.ERROR -> {
-                    if(response.message?.contains("404") == true) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                    if (response.message?.contains("404") == true) {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+                        handlerLooper()
                     }
                 }
             }
         }
 
-    }*/
+    }
 
+
+
+    private fun handlerLooper() {
+       Handler(Looper.getMainLooper()).postDelayed({
+           val intent = Intent(this, MainActivity::class.java)
+           startActivity(intent)
+       }, 1000)
+    }
 
     private fun checkJwtUserValid() {
-        val tokenManager = TokenManager(this)
-
-        // TODO: Check Is Login and Non Expired JWT Token
         if (tokenManager.isLoggedIn()) {
             val userJWTPayloadModel =
                 JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             // Call check customer exist API
-         //   splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString(), userJWTPayloadModel!!.userId)
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+            splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString())
+
         } else {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(Constant.USER_LOGIN_STATE,  UserLogState.LOGGED_OUT)
-            startActivity(intent)
+            handlerLooper()
         }
     }
 }

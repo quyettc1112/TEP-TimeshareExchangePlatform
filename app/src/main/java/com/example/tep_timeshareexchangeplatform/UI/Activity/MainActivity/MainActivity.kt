@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -56,15 +57,26 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         setUpBottomNav()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+    }
+
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
+        val customerInfo = tokenManager.getCustomerInfo()
         when (userLogState) {
             UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                if (customerInfo != null) {
+                    mainViewModel.setCustomerInfo(customerInfo)
+                }
             }
 
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                if (customerInfo != null) {
+                    mainViewModel.setCustomerInfo(customerInfo)
+                }
             }
 
             UserLogState.LOGGED_IN_AS_USER -> {

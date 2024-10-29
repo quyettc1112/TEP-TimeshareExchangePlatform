@@ -151,8 +151,10 @@ class LoginActivity : BaseActivity() {
         // Check is member or not
         if (customerInfoResponse.isMember) {
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+            tokenManager.saveCustomerInfo(customerInfoResponse)
         } else {
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+            tokenManager.saveCustomerInfo(customerInfoResponse)
         }
         intentToMain()
     }
@@ -172,7 +174,7 @@ class LoginActivity : BaseActivity() {
                 MotionToast.LONG_DURATION,
                 ResourcesCompat.getFont(this, R.font.inter_thin)
             );
-            // showErrorDialog(getString(R.string.error_empty_email_password), "Quay lại")
+            showErrorDialog(getString(R.string.error_empty_email_password), "Quay lại")
             return
         }
         val loginDTO = LoginDTO(email, password)
@@ -195,6 +197,7 @@ class LoginActivity : BaseActivity() {
 
     private fun intentToMain() {
         val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
     }
 

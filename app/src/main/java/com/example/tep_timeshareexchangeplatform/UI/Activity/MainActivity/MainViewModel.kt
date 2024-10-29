@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
@@ -71,6 +72,13 @@ class MainViewModel  @Inject constructor(
     val userLogState: LiveData<UserLogState> = _userLogState
     fun setUserLogState(state: UserLogState) {
         _userLogState.value = state
+    }
+
+    // Tracking Customer Info
+    private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
+    val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
+    fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
+        _customerInfo.value = customerInfoResponse
     }
 
 

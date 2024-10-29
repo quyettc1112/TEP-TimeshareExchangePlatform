@@ -65,6 +65,7 @@ class Constant {
         const val CUSTOMER_INFO = "customerInfo"
 
         const val LOGGED_OUT = "loggedOut"
+        const val AVAILABLE_MONEY = "availableMoney"
 
 
 

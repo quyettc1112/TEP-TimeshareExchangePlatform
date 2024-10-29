@@ -1,6 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer
 
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -30,4 +32,47 @@ data class CustomerInfoResponse(
     @SerializedName("walletId") val walletId: Int,
     @SerializedName("walletAvailableMoney") val walletAvailableMoney: Int,
     @SerializedName("isMember") val isMember: Boolean
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readInt(),
+        TODO("userUserName"),
+        parcel.readString().toString(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(fullName)
+        parcel.writeString(memberExpiryDate)
+        parcel.writeString(membershipName)
+        parcel.writeInt(userId)
+        parcel.writeString(userRoleRoleName)
+        parcel.writeByte(if (isActive) 1 else 0)
+        parcel.writeInt(walletId)
+        parcel.writeInt(walletAvailableMoney)
+        parcel.writeByte(if (isMember) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<CustomerInfoResponse> {
+        override fun createFromParcel(parcel: Parcel): CustomerInfoResponse {
+            return CustomerInfoResponse(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CustomerInfoResponse?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+}
