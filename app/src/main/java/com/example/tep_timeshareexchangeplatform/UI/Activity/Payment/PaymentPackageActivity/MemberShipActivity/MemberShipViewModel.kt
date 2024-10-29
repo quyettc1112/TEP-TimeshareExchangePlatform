@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class MemberShipViewModel @Inject constructor(
 
     // Call API Create Customer
     private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
-    val customerResponse: MutableLiveData<Resource<CustomerResponse>>
+    val createCustomerResponse: MutableLiveData<Resource<CustomerResponse>>
         get() = _customerResponse
     fun callCreateCustomer(token: String, customerDTO: CustomerDTO) {
         viewModelScope.launch {
@@ -41,18 +41,19 @@ class MemberShipViewModel @Inject constructor(
         }
     }
 
-  /*  // Call API Get Is Customer Exist
-    private val _isCustomerExist = MutableLiveData<Resource<CustomerResponse>>()
-    val isCustomerExist: MutableLiveData<Resource<CustomerResponse>>
-        get() = _isCustomerExist
-    fun callIsCustomerExist(token: String, userId: Int) {
+    // Call Get New Available Balance
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
+    val customerInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    fun getCustomerInfo(token: String) {
         viewModelScope.launch {
-            _isCustomerExist.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token, userId).let {
-                _isCustomerExist.postValue(it)
+            _customerInfoResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getIsCustomerExist(token).let {
+                _customerInfoResponse.postValue(it)
             }
         }
-    }*/
+    }
+
+
 
 
 

@@ -33,7 +33,7 @@ class PaymentPackageActivity : BaseActivity() {
     private lateinit var binding: ActivityPaymentPackageBinding
     private val paymentPackageViewModel: PaymentPackageViewModel by viewModels()
     private lateinit var paymentResultLauncher: ActivityResultLauncher<Intent>
-
+    private lateinit var tokenManager: TokenManager
     private var selectedCard: MaterialCardView? = null
 
     private var packageId: Int = 0
@@ -42,6 +42,8 @@ class PaymentPackageActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityPaymentPackageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+        checkTokenValid()
         observeData()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -55,6 +57,25 @@ class PaymentPackageActivity : BaseActivity() {
         // When Payment Sucess, finish this activity
         initActivityResultLauncher()
         onPaymentMethodSelected()
+    }
+
+    private fun checkTokenValid() {
+        tokenManager = TokenManager(this)
+        if (!tokenManager.isLoggedIn()) {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Thất Bại",
+                "Vui lòng đăng nhập để thực hiện chức năng này",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            finish()
+        }
+        val customerInfo = tokenManager.getCustomerInfo()
+        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} đ"
+
     }
 
     private fun observeData() {
@@ -95,7 +116,7 @@ class PaymentPackageActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     val intent = Intent(this, PaymentResultActivity::class.java)
-                    intent.putExtra(Constant.PAYMENT_SUCCESS, it.data)
+                    intent.putExtra(Constant.PAYMENT_SUCCESS_PACKAGE, it.data)
                     paymentResultLauncher.launch(intent)
                 }
 
@@ -135,7 +156,7 @@ class PaymentPackageActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
-        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 1)
+        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
         if (packageId == 0) {
             finish()
             return
@@ -173,6 +194,11 @@ class PaymentPackageActivity : BaseActivity() {
                 PackageEnum.DELEGATED_SERVICE -> TODO()
             }
         }
+
+        if (tokenManager.getCustomerInfo()?.walletAvailableMoney!! < packageEnum.packageModel.price) {
+            binding.cardUnwind.isEnabled = false }
+
+
 
     }
 

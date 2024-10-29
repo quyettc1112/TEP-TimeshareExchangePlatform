@@ -125,6 +125,7 @@
 
 
                             <TextView
+                                android:id="@+id/tv_wallet_balancel"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"

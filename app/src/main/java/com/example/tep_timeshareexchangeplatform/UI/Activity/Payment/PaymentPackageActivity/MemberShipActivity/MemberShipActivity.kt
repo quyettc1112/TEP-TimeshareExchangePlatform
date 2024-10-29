@@ -51,7 +51,6 @@ class MemberShipActivity : BaseActivity() {
             onBackPressed()
             finish()
         }
-
         binding.imgNext.setOnClickListener {
             startActivity(Intent(this, RentalPostingActivity::class.java))
         }
@@ -62,7 +61,7 @@ class MemberShipActivity : BaseActivity() {
     private fun observeData() {
 
         // Check Call Create Customer
-        memberShipViewModel.customerResponse.observe(this) {
+        memberShipViewModel.createCustomerResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
@@ -103,8 +102,8 @@ class MemberShipActivity : BaseActivity() {
             }
         }
 
-       /* // Check Call Is Customer Exist
-        memberShipViewModel.isCustomerExist.observe(this) {
+        // Check Call Is Customer Exist
+        memberShipViewModel.customerInfoResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
@@ -112,12 +111,14 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
+                    tokenManager.saveCustomerInfo(it.data!!)
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(
                         Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION,
                         memberShipViewModel.currentPackage.value!!.id
                     )
                     startActivity(intent)
+
                 }
 
                 Status.ERROR -> {
@@ -147,7 +148,7 @@ class MemberShipActivity : BaseActivity() {
                     }
                 }
             }
-        }*/
+        }
     }
 
     private fun initAdapter() {
@@ -185,7 +186,7 @@ class MemberShipActivity : BaseActivity() {
         binding.ctrRequestButton.setOnClickListener {
             val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken()!!)
             if (tokenManager.getAccessToken() != null && user != null) {
-               // memberShipViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!, user.userId)
+                memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
             } else {
                 MotionToast.createColorToast(
                     this,
@@ -199,6 +200,8 @@ class MemberShipActivity : BaseActivity() {
             }
         }
     }
+
+
 
 
 }

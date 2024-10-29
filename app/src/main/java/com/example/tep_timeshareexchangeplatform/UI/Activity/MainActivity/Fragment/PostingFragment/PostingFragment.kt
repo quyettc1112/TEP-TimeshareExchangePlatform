@@ -15,6 +15,8 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.PostingFragment.Adapter.IntroSliderAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -29,13 +31,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     private lateinit var binding: FragmentPostingBinding
     private var introSliderAdapter = IntroSliderAdapter()
+    private lateinit var tokenManager: TokenManager
 
     private val viewModel: PostingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         introSliderAdapter.submitList(Constant.listIntroSlider)
-
+        tokenManager = TokenManager(requireContext())
     }
 
     override fun onCreateView(
@@ -44,50 +47,45 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     ): View {
         binding = FragmentPostingBinding.inflate(inflater, container, false)
         setIntroSlider()
-        //observeData()
+        observeData()
 
         return binding.root
     }
 
-   /* private fun observeData() {
-        // Check Call Is Customer Exist
-        viewModel.isCustomerExist.observe(requireActivity()) {
+    private fun observeData() {
+        viewModel.isCustomerExist.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.LOADING -> {
-                    (activity as MainActivity).showLoadingWaiting(true)
-                }
                 Status.SUCCESS -> {
                     (activity as MainActivity).hideLoadingWaiting()
-                    // User is Customer, Already Member, Active
-                    if (it.data!!.isMember && it.data.isActive ) {
-                        startActivity(Intent(requireContext(), RentalPostingActivity::class.java))
+                    if (it.data!!.isMember) {
+                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                        intentToRentalPostingActivity()
                     } else {
-                        startActivity(Intent(requireContext(), MemberShipActivity::class.java))
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                        intentToMemberShipActivity()
                     }
                 }
-
                 Status.ERROR -> {
-                    // 404 when User is not Customer, Intent to MemberShipActivity to Create Customer Info
                     (activity as MainActivity).hideLoadingWaiting()
-                    if (it.message.toString().contains("404")) {
-                        startActivity(Intent(requireContext(), MemberShipActivity::class.java))
-                    } else {
-                        Log.d("CheckError", it.message.toString() + " " + it.message.toString())
-                        MotionToast.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            it.message.toString(),
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
-                    }
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Error",
+                        it.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+
+                }
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(true)
                 }
             }
         }
 
-    }*/
+    }
 
     @SuppressLint("ResourceAsColor")
     private fun setIntroSlider() {
@@ -123,14 +121,21 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
         // Event Dialog
 
         // Rental click
-       /* binding.llLayoutRentTimeshare.setOnClickListener {
-            val tokenManager = TokenManager(requireContext())
-            val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
-            viewModel.callIsCustomerExist(
-                tokenManager.getAccessToken().toString(),
-                user?.userId!!
-            )
-        }*/
+        binding.llLayoutRentTimeshare.setOnClickListener {
+            if (tokenManager.getAccessToken() != null) {
+                callIsCustomerExist()
+            } else {
+                MotionToast.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Token is null",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+            }
+        }
 
         // Exchange Click
         binding.llLayoutExchangeTimeshare.setOnClickListener {
@@ -138,6 +143,18 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
         }
 
 
+    }
+
+    private fun intentToRentalPostingActivity() {
+        startActivity(Intent(requireContext(), RentalPostingActivity::class.java))
+    }
+
+    private fun intentToMemberShipActivity() {
+        startActivity(Intent(requireContext(), MemberShipActivity::class.java))
+    }
+
+    private fun callIsCustomerExist() {
+        viewModel.callIsCustomerExist(tokenManager.getAccessToken().toString())
     }
 
     private fun convertDpToPx(dp: Int): Int {

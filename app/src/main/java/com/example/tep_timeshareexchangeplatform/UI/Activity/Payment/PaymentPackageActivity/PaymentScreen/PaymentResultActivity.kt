@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.PaymentResultViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBillingBinding
@@ -54,7 +55,14 @@ class PaymentResultActivity : BaseActivity() {
                 }
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    tokenManager.saveCustomerInfo(it.data!!)
+                    if (it.data!!.isMember) {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                        tokenManager.saveCustomerInfo(it.data)
+                    }
+                    else {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                        tokenManager.saveCustomerInfo(it.data)
+                    }
                     bindData()
                 }
                 Status.ERROR -> {
@@ -84,7 +92,7 @@ class PaymentResultActivity : BaseActivity() {
                     tvDate.text = memberShipResponse.walletTransactionDto.createdAt
                     tvTransactionId.text = memberShipResponse.walletTransactionDto.id
                     tvDescription.text = memberShipResponse.walletTransactionDto.description
-
+                    clickHandle(memberShipResponse.walletTransactionDto.id)
                 }
             }
 

@@ -27,11 +27,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class DepositActivity : BaseActivity() {
     private lateinit var binding: ActivityDepositBinding
     private val viewModel: DepositViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityDepositBinding.inflate(layoutInflater)
+        tokenManager = TokenManager(this)
+
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -41,9 +44,20 @@ class DepositActivity : BaseActivity() {
         setMoneyInputLogic()
         observeData()
         requestButtonClick()
+        checkValidToken()
+
 
 
     }
+
+    private fun checkValidToken() {
+        if(!tokenManager.isLoggedIn()) {
+            finish()
+        }
+        binding.tvWalletBalancel.text = tokenManager.getCustomerInfo()
+            ?.let { Constant.formatPrice(it.walletAvailableMoney) } + " đ"
+    }
+
 
     private fun observeData() {
         viewModel.responseVNPAYUrl.observe(this) {
@@ -91,7 +105,6 @@ class DepositActivity : BaseActivity() {
         }
 
     }
-
 
     private fun setMoneyInputLogic() {
         binding.edtMoney.addTextChangedListener(object : TextWatcher {
@@ -154,7 +167,6 @@ class DepositActivity : BaseActivity() {
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.DEPOSIT_WALLET)
         startActivity(intent)
     }
-
 
     private fun requestButtonClick() {
         binding.btnRequest.setOnClickListener {
