@@ -134,6 +134,8 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="partial_refund_long">Khách hàng sẽ được hoàn lại &lt;b&gt;50% số tiền&lt;/b&gt; nếu hủy trong vòng &lt;b&gt;60 ngày&lt;/b&gt; trước ngày check-in.</string>
     <string name="no_refund_long">Khách hàng sẽ &lt;b&gt;không nhận được hoàn tiền&lt;/b&gt; nếu hủy đặt chỗ.</string>
 
+    <!--// Valid year for timeshare Rental-->
+    <string name="valid_year_description">Các năm đã được đặt hoặc đang trao đổi sẽ không hiển thị. Chỉ những năm khả dụng cho thuê mới xuất hiện trong danh sách.</string>
 
 
     <string-array name="spinner_items">

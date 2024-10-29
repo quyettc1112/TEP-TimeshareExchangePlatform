@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.API.Service
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import retrofit2.Response
@@ -28,6 +29,12 @@ interface CustomerAPIService {
     ) : Response<CustomerInfoResponse>
 
 
+    // Check Valid Year Timeshare of Customer
+    @GET("customer/timeshare/valid-year/{timeshareId}")
+    suspend fun getValidYearTimeshare(
+        @Header ("Authorization") token: String,
+        @Path ("timeshareId") timeshareId: Int
+    ) : Response<ValidYearResponse>
 
 
     // Get My Posting List

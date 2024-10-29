@@ -141,8 +141,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -158,7 +156,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!--// Content Unit Type-->
+                    <!--// Content Check In Day-->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -175,18 +173,52 @@
                             android:background="@android:color/white"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="16dp"
+                            android:padding="14dp"
                             android:visibility="visible">
+
+                            <!--// Valid Year Selection-->
+                            <TextView
+                                android:id="@+id/tv_valid_year_selection"
+                                android:layout_gravity="left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Năm hoạt động cho thuê khả dụng"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/custom_spinner_year_valid"
+                                style="@style/CustomSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_height="60dp"
+                                android:spinnerMode="dialog"
+                                android:elevation="2dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_gravity="left"
+                                android:padding="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valid_year_description"
+                                android:fontFamily="@font/inter_light"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <!-- Date Selection Container -->
                             <LinearLayout
                                 android:id="@+id/llCheckInCheckOutComp"
+                                android:layout_marginTop="15dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_stroke_around"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:padding="8dp">
+                                android:padding="3dp">
 
                                 <!-- Check-In Section -->
                                 <LinearLayout
@@ -201,7 +233,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Ngày Check In"
+                                        android:text="Ngày Nhận Phòng"
                                         android:textColor="@android:color/black"
                                         android:textSize="14sp" />
 
@@ -211,8 +243,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="19-08-2024"
+                                        android:fontFamily="@font/inter_extrabold"
                                         android:textColor="@android:color/black"
-                                        android:textSize="18sp"
+                                        android:textSize="14sp"
                                         android:textStyle="bold" />
 
                                     <!-- Check-In Day -->
@@ -244,7 +277,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Ngày Check Out"
+                                        android:text="Ngày Trả Phòng"
                                         android:textColor="@android:color/black"
                                         android:textSize="14sp" />
 
@@ -254,8 +287,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="19-08-2024"
+                                        android:fontFamily="@font/inter_extrabold"
                                         android:textColor="@android:color/black"
-                                        android:textSize="18sp"
+                                        android:textSize="15sp"
                                         android:textStyle="bold" />
 
                                     <!-- Check-Out Day -->
@@ -346,7 +380,7 @@
                             android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:text="Ngày check in"
+                            android:text="Giá phòng và chính sách hủy phòng"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -386,9 +420,6 @@
                                 android:id="@+id/include_payment_method_3_4"
                                 layout="@layout/include_input_price3_4"
                                 android:visibility="visible" />
-
-
-
 
 
 

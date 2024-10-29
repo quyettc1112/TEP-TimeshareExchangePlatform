@@ -135,6 +135,9 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="partial_refund_long">Customers will receive a &lt;b&gt;50% refund&lt;/b&gt; if they cancel within &lt;b&gt;60 days&lt;/b&gt; before check-in.</string>
     <string name="no_refund_long">Customers will &lt;b&gt;not receive a refund&lt;/b&gt; if they cancel.</string>
 
+    <!--// Valid year for timeshare Rental-->
+    <string name="valid_year_description">Years that are already booked or listed for exchange will not be displayed. Only available years for rental will appear in the list.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

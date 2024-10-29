@@ -152,7 +152,10 @@ open class  BaseActivity : AppCompatActivity() {
         // Ánh xạ các view từ dialog
         val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
         btnConfirm.setOnClickListener {
-            onClickListener?.onClick(it) ?: dialog.dismiss()
+            // Nếu có onClickListener tùy chỉnh, thực thi nó
+            onClickListener?.onClick(it)
+            // Đóng dialog sau khi xử lý
+            dialog.dismiss()
         }
 
 

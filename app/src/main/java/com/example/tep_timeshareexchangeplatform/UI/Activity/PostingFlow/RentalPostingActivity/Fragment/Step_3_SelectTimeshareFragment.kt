@@ -32,10 +32,12 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     private var myTimeshareAdapter = MyTimeshareAdapter()
     private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
     private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdapter()
+        tokenManager = TokenManager(requireContext())
 
     }
 
@@ -138,8 +140,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     override fun onResume() {
         super.onResume()
-        val token = TokenManager(requireContext()).getAccessToken()
-        token?.let { rentalPostingViewModel.getMyTimeshareList(it) }
+        rentalPostingViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString())
     }
 
 

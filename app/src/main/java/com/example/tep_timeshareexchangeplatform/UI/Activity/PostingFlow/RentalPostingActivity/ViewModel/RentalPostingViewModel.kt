@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
@@ -13,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.Resort
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
@@ -25,7 +27,8 @@ import javax.inject.Inject
 class RentalPostingViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
     private val resortAPIRepository: ResortAPIRepository,
-    private val timeshareRepository: TimeshareRepository
+    private val timeshareRepository: TimeshareRepository,
+    private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -249,6 +252,40 @@ class RentalPostingViewModel @Inject constructor(
             }
         }
     }
+
+    // ----------------------------------------------------------//
+    // Call API get valid year timeshare of Customer
+    private val _validYearTimeshare = MutableLiveData<Resource<ValidYearResponse>>()
+    val validYearTimeshare: MutableLiveData<Resource<ValidYearResponse>> = _validYearTimeshare
+    fun getValidYearTimeshare(token: String, timeShareId: Int) {
+        viewModelScope.launch {
+            _validYearTimeshare.postValue(Resource.loading(null))
+            customerAPIRepository.getValidYearTimeshare(token, timeShareId).let {
+                _validYearTimeshare.postValue(it)
+            }
+        }
+    }
+
+    // ----------------------------------------------------------//
+    // Tracking PricePerNight
+    private val _pricePerNight = MutableLiveData<Long>()
+    val pricePerNight: MutableLiveData<Long>
+        get() = _pricePerNight
+
+    fun updatePricePerNight(pricePerNight: Long){
+        _pricePerNight.value = pricePerNight
+    }
+
+    // ----------------------------------------------------------//
+    // Tracking Number Of Nights
+    private val _numberOfNights = MutableLiveData<Int>()
+    val numberOfNights: MutableLiveData<Int>
+        get() = _numberOfNights
+    fun updateNumberOfNights(numberOfNights: Int){
+        _numberOfNights.value = numberOfNights
+    }
+
+
 
 
 

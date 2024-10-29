@@ -44,4 +44,24 @@ class Validator {
             null  // Return null if valid
         }
     }
+
+    fun validatePrice(price: String?): String? {
+        return if (price.isNullOrEmpty()) {
+            "Giá không được để trống"
+        } else {
+            try {
+                // Loại bỏ các ký tự không phải số, bao gồm cả ký tự "đ"
+                val cleanedPrice = price.replace("[^\\d.]".toRegex(), "")
+
+                val priceValue = cleanedPrice.toDouble()
+                when {
+                    priceValue <= 0 -> "Giá phải lớn hơn 0"
+                    priceValue > 10_000_000_000 -> "Giá không được vượt quá 10 tỷ"
+                    else -> null  // Return null if valid
+                }
+            } catch (e: NumberFormatException) {
+                "Giá không hợp lệ"
+            }
+        }
+    }
 }
