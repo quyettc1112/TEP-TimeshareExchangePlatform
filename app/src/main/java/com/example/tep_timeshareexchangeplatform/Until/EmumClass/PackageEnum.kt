@@ -44,11 +44,11 @@ enum class PackageEnum(val packageModel: PackageModel) {
     // Gói Dịch Vụ
     BASIC_SERVICE(
         PackageModel(
-            id = 3,
+            id = 1,
             name = "Gói Cơ Bản",
             price = 149000,
             description = "Unwind hỗ trợ quảng cáo và đưa người thuê đến với bạn.",
-            duration = 1,  // Thời gian sử dụng là 1 tháng
+            duration = 2,  // Thời gian sử dụng là 1 tháng
             type = "Service",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
@@ -59,11 +59,11 @@ enum class PackageEnum(val packageModel: PackageModel) {
 
     ADVANCED_SERVICE(
         PackageModel(
-            id = 4,
+            id = 2,
             name = "Gói Nâng Cao",
             price = 179000,
             description = "Unwind cung cấp hệ thống đặt chỗ trực tuyến.",
-            duration = 1,  // Thời gian sử dụng là 1 tháng
+            duration = 2,  // Thời gian sử dụng là 1 tháng
             type = "Service",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
@@ -77,11 +77,11 @@ enum class PackageEnum(val packageModel: PackageModel) {
 
     PREMIUM_SERVICE(
         PackageModel(
-            id = 5,
+            id = 3,
             name = "Gói Premium",
             price = 199000,
             description = "Unwind hỗ trợ quảng cáo và quản lý toàn bộ quá trình cho thuê.",
-            duration = 1,  // Thời gian sử dụng là 1 tháng
+            duration = 12,  // Thời gian sử dụng là 1 tháng
             type = "Service",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
@@ -97,11 +97,11 @@ enum class PackageEnum(val packageModel: PackageModel) {
 
     DELEGATED_SERVICE(
         PackageModel(
-            id = 6,
+            id = 4,
             name = "Gói Ủy Quyền",
             price = 599000,
             description = "Unwind hỗ trợ toàn bộ quá trình cho thuê và thanh toán.",
-            duration = 1,  // Thời gian sử dụng là 1 tháng
+            duration = 12,  // Thời gian sử dụng là 1 tháng
             type = "Service",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",

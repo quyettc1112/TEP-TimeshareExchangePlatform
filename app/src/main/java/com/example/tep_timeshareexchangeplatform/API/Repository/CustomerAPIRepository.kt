@@ -4,11 +4,14 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -89,6 +92,21 @@ class CustomerAPIRepository@Inject constructor(
     suspend fun getMyPostingDetail(token: String, postingId: Int): Resource<PostingDetailResponse> {
         return try {
             val response = customerAPIService.getMyPostingDetail("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Create posting
+    suspend fun createPosting(token: String, postingDTO: PostingTimeshareDTO): Resource<PostingTimeshareResponse> {
+        return try {
+            val response = customerAPIService.createPosting("Bearer $token", postingDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

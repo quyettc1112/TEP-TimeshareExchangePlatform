@@ -4,7 +4,7 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.WalletAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDepositResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDetailRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletListResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
@@ -52,9 +52,14 @@ class WalletAPIRepository @Inject constructor(
     }
 
     // Extend Membership By VN Pay
-    suspend fun extendMembershipVNPAY(token: String, uuid: String, membershipId: Int): Resource<MemberShipResponse> {
+    suspend fun extendMembershipVNPAY(
+        token: String,
+        uuid: String,
+        membershipId: Int
+    ): Resource<MemberShipResponse> {
         return try {
-            val response = walletAPIService.extendMembershipVNPAY("Bearer $token", uuid, membershipId)
+            val response =
+                walletAPIService.extendMembershipVNPAY("Bearer $token", uuid, membershipId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -67,7 +72,10 @@ class WalletAPIRepository @Inject constructor(
     }
 
     // Extend Membership By Wallet
-    suspend fun extendMembershipWallet(token: String, membershipId: Int): Resource<MemberShipResponse> {
+    suspend fun extendMembershipWallet(
+        token: String,
+        membershipId: Int
+    ): Resource<MemberShipResponse> {
         return try {
             val response = walletAPIService.extendMembershipWallet("Bearer $token", membershipId)
             if (response.isSuccessful) {
@@ -83,9 +91,29 @@ class WalletAPIRepository @Inject constructor(
 
 
     // Deposit Money By VN Pay
-    suspend fun depositMoneyVNPAY(token: String, uuid: String): Resource<WalletDepositResponse> {
+    suspend fun depositMoneyVNPAY(token: String, uuid: String): Resource<VNPAYPurchaseResponse> {
         return try {
             val response = walletAPIService.depositMoneyVNPAY("Bearer $token", uuid)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Purchase Package Posting By VN Pay
+    suspend fun purchasePackagePostingVNPAY(
+        token: String,
+        uuid: String,
+        rentalPackageId: Int
+    ): Resource<VNPAYPurchaseResponse> {
+        return try {
+            val response =
+                walletAPIService.purchasePackagePostingVNPAY("Bearer $token", uuid, rentalPackageId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

@@ -6,10 +6,9 @@ import com.example.tep_timeshareexchangeplatform.API.Service.TimeshareAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
-import retrofit2.Response
 import javax.inject.Inject
 
 class TimeshareRepository @Inject constructor(
@@ -23,7 +22,7 @@ class TimeshareRepository @Inject constructor(
     suspend fun postTimeshare(
         auth: String,
         timeshareDTO: TimeshareDTO
-    ): Resource<PostingTimeshareResponse> {
+    ): Resource<MyPostingTimeshareResponse> {
         return try {
             val response = timeshareAPIService.postTimeshare("Bearer $auth", timeshareDTO)
             if (response.isSuccessful) {

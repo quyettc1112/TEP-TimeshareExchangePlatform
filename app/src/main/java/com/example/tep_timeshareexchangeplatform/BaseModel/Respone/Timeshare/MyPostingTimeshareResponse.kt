@@ -27,7 +27,7 @@ import com.google.gson.annotations.SerializedName
   }
 }
 */
-data class PostingTimeshareResponse(
+data class MyPostingTimeshareResponse(
     @SerializedName("timeShareId") val timeShareId: Int,
     @SerializedName("status") val status: String,
     @SerializedName("startYear") val startYear: Int,

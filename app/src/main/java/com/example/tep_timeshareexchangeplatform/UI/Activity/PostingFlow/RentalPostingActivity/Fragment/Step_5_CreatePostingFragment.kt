@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.paging.LOGGER
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
@@ -54,7 +56,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
         observeViewModel()
         setEventChangeMyTimeshare()
-        requestButtonClick()
         bindDataSpinnerCancellationPolicy()
         setupTextWatchers()
         return binding.root
@@ -211,8 +212,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     val longDescription =
                         Html.fromHtml(selectedPolicy.getLongDescription(requireContext()))
                     binding.tvCancellationPolicyDescription.text = longDescription
-                    Toast.makeText(requireContext(), "Selected ID: $policyId", Toast.LENGTH_SHORT)
-                        .show()
+                    rentalPostingViewModel.updateCancelPolicy(policyId)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -251,6 +251,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
                     // Kiểm tra xem startDateString và endDateString có null hay không
                     bindDataCheckInCheckOut(startDateString, endDateString, selectedYear)
+
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -280,6 +282,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     set(Calendar.YEAR, selectedYear)
                 }
 
+
                 // Tính toán số đêm
                 val totalDays =
                     ((calendarEnd.timeInMillis - calendarStart.timeInMillis) / (1000 * 60 * 60 * 24)).toInt() + 1
@@ -293,6 +296,13 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 val newEndDateString = formatDateByLocale(calendarEnd.time, requireContext())
                 val endDayOfWeek =
                     SimpleDateFormat("EEEE", Locale.getDefault()).format(calendarEnd.time)
+
+                // Định dạng ngày theo kiểu "yyyy-MM-dd"
+                val dateFormatDTO = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val checkinDate = dateFormatDTO.format(calendarStart.time)
+                val checkoutDate = dateFormatDTO.format(calendarEnd.time)
+                rentalPostingViewModel.setCheckinDate(checkinDate)
+                rentalPostingViewModel.setCheckoutDate(checkoutDate)
 
                 // Cập nhật UI
                 binding.tvCheckInDate.text = newStartDateString
@@ -345,11 +355,16 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             PackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                rentalPostingViewModel.updatePricePerNight(0)
+                requestButtonClick()
+
             }
 
             PackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                rentalPostingViewModel.updatePricePerNight(0)
+                requestButtonClick()
             }
         }
     }

@@ -1,9 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDepositResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDetailRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletListResponse
 import retrofit2.Response
@@ -48,6 +46,13 @@ interface WalletAPIService {
     suspend fun depositMoneyVNPAY(
         @Header ("Authorization") token: String,
         @Query("uuid") uuid: String,
-    ) : Response<WalletDepositResponse>
+    ) : Response<VNPAYPurchaseResponse>
+
+    @POST("wallet/VNPAY/rental/posting")
+    suspend fun purchasePackagePostingVNPAY(
+        @Header ("Authorization") token: String,
+        @Query("uuid") uuid: String,
+        @Query("rentalPackageId") rentalPackageId : Int
+    ) : Response<VNPAYPurchaseResponse>
 
 }

@@ -71,7 +71,7 @@ class MemberShipActivity : BaseActivity() {
                     hideLoadingWaiting()
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(
-                        Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION,
+                        Constant.DEFAULT_PACKAGE_SELECTION,
                         memberShipViewModel.currentPackage.value!!.id
                     )
                     startActivity(intent)
@@ -114,7 +114,7 @@ class MemberShipActivity : BaseActivity() {
                     tokenManager.saveCustomerInfo(it.data!!)
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(
-                        Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION,
+                        Constant.DEFAULT_PACKAGE_SELECTION,
                         memberShipViewModel.currentPackage.value!!.id
                     )
                     startActivity(intent)

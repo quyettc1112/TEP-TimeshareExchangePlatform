@@ -4,21 +4,14 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Am
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FacilitieModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.LocationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTimeshareModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTransactionModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.RoomTypeModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.TimeshareModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
 import java.text.DecimalFormat
 
 class Constant {
@@ -50,7 +43,7 @@ class Constant {
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
-        const val DEFAULT_MEMBERSHIP_PACKAGE_SELECTION = "membershipPackageSelection"
+        const val DEFAULT_PACKAGE_SELECTION = "packageSelection"
 
         const val PAYMENT_URL = "paymentUrl"
 
@@ -60,7 +53,7 @@ class Constant {
 
         const val PAYMENT_SUCCESS_POSTING = "paymentSuccessPosting"
 
-        const val PAYMENT_SUCCESS_DEPOSIT = "paymentSuccessDeposit"
+        const val PAYMENT_SUCCESS_VNPAY = "paymentSuccessVNPAY"
 
         const val TRANSACTION_ID = "transactionId"
 
@@ -70,6 +63,8 @@ class Constant {
 
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
+
+        const val POSTING_TIMESHARE_DTO = "postingTimeshareDTO"
 
         const val LOGGED_OUT = "loggedOut"
         const val AVAILABLE_MONEY = "availableMoney"

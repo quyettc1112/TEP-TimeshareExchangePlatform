@@ -3,7 +3,7 @@ package com.example.tep_timeshareexchangeplatform.API.Service
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -18,7 +18,7 @@ interface TimeshareAPIService {
     suspend fun postTimeshare(
         @Header ("Authorization") token: String,
         @Body timeshareDTO: TimeshareDTO
-    ): Response<PostingTimeshareResponse>
+    ): Response<MyPostingTimeshareResponse>
 
 
     // Get My Timeshare List

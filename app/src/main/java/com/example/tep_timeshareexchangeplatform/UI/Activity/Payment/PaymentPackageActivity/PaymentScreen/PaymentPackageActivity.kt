@@ -42,7 +42,7 @@ class PaymentPackageActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityPaymentPackageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+        packageId = intent.getIntExtra(Constant.DEFAULT_PACKAGE_SELECTION, 0)
         checkTokenValid()
         observeData()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -156,7 +156,7 @@ class PaymentPackageActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
-        packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+        packageId = intent.getIntExtra(Constant.DEFAULT_PACKAGE_SELECTION, 0)
         if (packageId == 0) {
             finish()
             return
@@ -278,8 +278,8 @@ class PaymentPackageActivity : BaseActivity() {
     private fun intentToVNPAYActivity(url: String) {
         val intent = Intent(this, VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
-        intent.putExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, packageId)
-        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE)
+        intent.putExtra(Constant.DEFAULT_PACKAGE_SELECTION, packageId)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_MEMBER)
         paymentResultLauncher.launch(intent)
     }
 

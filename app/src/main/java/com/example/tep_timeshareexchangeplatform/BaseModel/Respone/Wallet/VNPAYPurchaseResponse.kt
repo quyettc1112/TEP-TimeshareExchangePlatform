@@ -17,7 +17,7 @@ import com.google.gson.annotations.SerializedName
   "fee": 0
 }
 */
-data class WalletDepositResponse(
+data class VNPAYPurchaseResponse(
     @SerializedName("id") val id: String,
     @SerializedName("walletId") val walletId: Int,
     @SerializedName("money") val money: Int,
@@ -54,12 +54,12 @@ data class WalletDepositResponse(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<WalletDepositResponse> {
-        override fun createFromParcel(parcel: Parcel): WalletDepositResponse {
-            return WalletDepositResponse(parcel)
+    companion object CREATOR : Parcelable.Creator<VNPAYPurchaseResponse> {
+        override fun createFromParcel(parcel: Parcel): VNPAYPurchaseResponse {
+            return VNPAYPurchaseResponse(parcel)
         }
 
-        override fun newArray(size: Int): Array<WalletDepositResponse?> {
+        override fun newArray(size: Int): Array<VNPAYPurchaseResponse?> {
             return arrayOfNulls(size)
         }
     }

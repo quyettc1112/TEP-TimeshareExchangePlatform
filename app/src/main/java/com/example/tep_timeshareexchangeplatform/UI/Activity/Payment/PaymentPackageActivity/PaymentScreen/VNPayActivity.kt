@@ -16,10 +16,12 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.VNPayViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -35,6 +37,7 @@ import org.json.JSONException
 class VNPayActivity : BaseActivity() {
     private lateinit var binding: ActivityVnpayBinding
     private val viewModel: VNPayViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +50,7 @@ class VNPayActivity : BaseActivity() {
             insets
         }
         observeData()
-
+        tokenManager = TokenManager(this)
         webViewLoadSetup()
     }
 
@@ -95,7 +98,7 @@ class VNPayActivity : BaseActivity() {
         }
 
         // Observe Deposit Wallet by VN Pay
-        viewModel.walletDepositResponse.observe(this) {
+        viewModel.depositByVNPAYResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
@@ -111,9 +114,77 @@ class VNPayActivity : BaseActivity() {
                                 val intent = intent
                                 setResult(RESULT_OK, intent)
                                 val intentToBilling = Intent(this@VNPayActivity, PaymentResultActivity::class.java)
-                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS_DEPOSIT, it.data)
+                                intentToBilling.putExtra(Constant.PAYMENT_SUCCESS_VNPAY, it.data)
                                 startActivity(intentToBilling)
                                 Log.d("WalletDepositResponseData", it.data.toString())
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
+
+        // Observe Purchase Package by VN Pay
+        viewModel.purchasePackageResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    val postingTimeshareDTO = intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
+                    if (postingTimeshareDTO != null) {
+                        viewModel.createPosting(tokenManager.getAccessToken().toString(),postingTimeshareDTO)
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
+
+        // Observe Create Posting
+        viewModel.postingTimeshareResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                // Intent to Billing Activity
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, MyPostingActivity::class.java)
+                                startActivity(intentToBilling)
+
                                 // Finish Activity
                                 finish()
                             }
@@ -145,28 +216,35 @@ class VNPayActivity : BaseActivity() {
         viewModel.depositMoney(token, uuid)
     }
 
+    private fun callAPIPurchasePackagePosting(uuid: String, packageId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.purchasePackage(token, uuid, packageId)
+    }
+
     private fun checkPaymentType(
         paymentType: PaymentType,
         walletTransactionId: String,
         packageId: Int
     ) {
         when (paymentType) {
-            PaymentType.PURCHASE_PACKAGE -> {
+            PaymentType.PURCHASE_PACKAGE_MEMBER -> {
                 callAPIExtendMembership(
                     walletTransactionId,
                     packageId
                 )
             }
-
             PaymentType.DEPOSIT_WALLET -> {
                 callAPIDepositWallet(walletTransactionId)
+            }
+            PaymentType.PURCHASE_PACKAGE_POSTING -> {
+                callAPIPurchasePackagePosting(walletTransactionId, packageId)
             }
         }
     }
 
     private fun webViewLoadSetup() {
         val urlIntent = intent.getStringExtra(Constant.PAYMENT_URL)
-        val packageId = intent.getIntExtra(Constant.DEFAULT_MEMBERSHIP_PACKAGE_SELECTION, 0)
+        val packageId = intent.getIntExtra(Constant.DEFAULT_PACKAGE_SELECTION, 0)
 
         // Set WebViewClient to prevent opening external browser
         binding.webView.webViewClient = WebViewClient()

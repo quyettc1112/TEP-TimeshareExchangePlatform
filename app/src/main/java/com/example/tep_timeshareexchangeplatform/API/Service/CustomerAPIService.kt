@@ -1,11 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -49,4 +51,12 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int
     ) : Response<PostingDetailResponse>
+
+
+    // Create Posting
+    @POST("customer/rental/posting")
+    suspend fun createPosting(
+        @Header ("Authorization") token: String,
+        @Body postingDTO: PostingTimeshareDTO
+    ) : Response<PostingTimeshareResponse>
 }

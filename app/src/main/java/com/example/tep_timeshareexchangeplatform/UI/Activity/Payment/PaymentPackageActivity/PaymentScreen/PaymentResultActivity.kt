@@ -2,7 +2,6 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPac
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -10,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletDepositResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -96,19 +95,19 @@ class PaymentResultActivity : BaseActivity() {
                 }
             }
 
-            intent.hasExtra(Constant.PAYMENT_SUCCESS_DEPOSIT) -> {
-                val walletDepositResponse = intent.getParcelableExtra<WalletDepositResponse>(Constant.PAYMENT_SUCCESS_DEPOSIT)
-                if (walletDepositResponse == null) {
+            intent.hasExtra(Constant.PAYMENT_SUCCESS_VNPAY) -> {
+                val VNPAYPurchaseResponse = intent.getParcelableExtra<VNPAYPurchaseResponse>(Constant.PAYMENT_SUCCESS_VNPAY)
+                if (VNPAYPurchaseResponse == null) {
                     return
                 }
 
                 // Áp dụng dữ liệu vào UI
                 binding.apply {
-                    tvPrice.text = "${formatPrice(walletDepositResponse.money)} VND"
-                    tvDate.text = walletDepositResponse.createdAt
-                    tvTransactionId.text = walletDepositResponse.id
-                    tvDescription.text = walletDepositResponse.description
-                    clickHandle(walletDepositResponse.id)
+                    tvPrice.text = "${formatPrice(VNPAYPurchaseResponse.money)} VND"
+                    tvDate.text = VNPAYPurchaseResponse.createdAt
+                    tvTransactionId.text = VNPAYPurchaseResponse.id
+                    tvDescription.text = VNPAYPurchaseResponse.description
+                    clickHandle(VNPAYPurchaseResponse.id)
                 }
             }
 

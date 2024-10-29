@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
@@ -15,10 +16,12 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,7 +31,8 @@ class RentalPostingViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
     private val resortAPIRepository: ResortAPIRepository,
     private val timeshareRepository: TimeshareRepository,
-    private val customerAPIRepository: CustomerAPIRepository
+    private val customerAPIRepository: CustomerAPIRepository,
+    private val paymentAPIRepository: PaymentAPIRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -191,8 +195,8 @@ class RentalPostingViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Tracking Timeshare DTO
-    private val _timeshareDTO = MutableLiveData<Resource<PostingTimeshareResponse>>()
-    val timeshareDTO: MutableLiveData<Resource<PostingTimeshareResponse>> = _timeshareDTO
+    private val _timeshareDTO = MutableLiveData<Resource<MyPostingTimeshareResponse>>()
+    val timeshareDTO: MutableLiveData<Resource<MyPostingTimeshareResponse>> = _timeshareDTO
 
     // Function to post Timeshare DTO
     fun postTimeshareDTO(token: String, timeshareDTO: TimeshareDTO) {
@@ -267,6 +271,7 @@ class RentalPostingViewModel @Inject constructor(
     }
 
     // ----------------------------------------------------------//
+    // CREATE POSTING
     // Tracking PricePerNight
     private val _pricePerNight = MutableLiveData<Long>()
     val pricePerNight: MutableLiveData<Long>
@@ -285,6 +290,61 @@ class RentalPostingViewModel @Inject constructor(
         _numberOfNights.value = numberOfNights
     }
 
+    // ----------------------------------------------------------//
+    // Tracking Start Date, End Date
+    // LiveData để lưu giá trị ngày check-in và check-out
+    private val _checkinDate = MutableLiveData<String>()
+    val checkinDate: LiveData<String> get() = _checkinDate
+
+    private val _checkoutDate = MutableLiveData<String>()
+    val checkoutDate: LiveData<String> get() = _checkoutDate
+
+    // Phương thức để cập nhật giá trị ngày check-in
+    fun setCheckinDate(date: String) {
+        _checkinDate.value = date
+    }
+
+    // Phương thức để cập nhật giá trị ngày check-out
+    fun setCheckoutDate(date: String) {
+        _checkoutDate.value = date
+    }
+
+    // ----------------------------------------------------------//
+    // Cancel Policy
+    private val _cancelPolicy = MutableLiveData<Int>()
+    val cancelPolicy: MutableLiveData<Int>
+        get() = _cancelPolicy
+    fun updateCancelPolicy(cancelPolicy: Int){
+        _cancelPolicy.value = cancelPolicy
+    }
+
+
+    // Payment Method
+    // Biến LiveData để theo dõi phương thức thanh toán
+    private val _selectedPaymentMethod = MutableLiveData<PaymentMethod>()
+    val selectedPaymentMethod: LiveData<PaymentMethod> get() = _selectedPaymentMethod
+
+    // Hàm để chọn phương thức thanh toán
+    fun selectPaymentMethod(method: PaymentMethod) {
+        _selectedPaymentMethod.value = method
+    }
+
+    // ----------------------------------------------------------//
+    // Call VNPAY API
+    private val _responseVNPAYUrl = MutableLiveData<Resource<PaymentResponse>>()
+    val responseVNPAYUrl: MutableLiveData<Resource<PaymentResponse>> = _responseVNPAYUrl
+
+    // call API to get response URL
+    fun getResponsePaymentUrl(amount: Int, orderType: String) {
+        viewModelScope.launch {
+            _responseVNPAYUrl.postValue(Resource.loading(null))
+            paymentAPIRepository.getPaymentUrl(amount, orderType).let {
+                _responseVNPAYUrl.postValue(it)
+            }
+        }
+    }
+
+    // Check PostingTimeshareDTO
 
 
 
@@ -308,6 +368,7 @@ class RentalPostingViewModel @Inject constructor(
         _currentStepInProgress.value = initStep
         _stepCreateTimeshare.value = 0
         isYesOrNo.value = false
+        _selectedPaymentMethod.value = PaymentMethod.VNPAY
     }
 
 
