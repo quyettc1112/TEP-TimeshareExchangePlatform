@@ -346,6 +346,7 @@
 
             <!--// Payment Method-->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/crl_price_per_night"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

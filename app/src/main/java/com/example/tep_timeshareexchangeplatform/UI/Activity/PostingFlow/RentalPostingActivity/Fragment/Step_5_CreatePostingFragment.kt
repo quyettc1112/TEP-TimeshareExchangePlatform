@@ -28,7 +28,6 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
-import com.example.tep_timeshareexchangeplatform.Until.Validator.Validator
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreatePostingBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -41,7 +40,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private lateinit var binding: FragmentCreatePostingBinding
     private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
-    private val validator = Validator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +48,13 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreatePostingBinding.inflate(inflater, container, false)
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
         observeViewModel()
         setEventChangeMyTimeshare()
-        setEventNext()
+        requestButtonClick()
         bindDataSpinnerCancellationPolicy()
         setupTextWatchers()
         return binding.root
@@ -68,8 +65,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         // Observe myTimeshareModelSelected
         rentalPostingViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareModel ->
             rentalPostingViewModel.getValidYearTimeshare(
-                tokenManager.getAccessToken().toString(),
-                myTimeshareModel.timeShareId
+                tokenManager.getAccessToken().toString(), myTimeshareModel.timeShareId
             )
             bindDataMyTimeshare(myTimeshareModel)
 
@@ -91,16 +87,14 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     (activity as RentalPostingActivity).hideLoadingWaiting()
                     resources.data?.let {
                         if (it.isEmpty()) {
-                            (activity as RentalPostingActivity).showInfoDialog(
-                                requireContext(),
+                            (activity as RentalPostingActivity).showInfoDialog(requireContext(),
                                 "Timeshare của bạn hiện không có năm hợp lệđể cho thuê, Xin vui lòng kiem tra lại",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
                                         rentalPostingViewModel.resetSteps()
                                         rentalPostingViewModel.updateStep(3)
                                     }
-                                }
-                            )
+                                })
                         } else {
                             bindDataSpinnerValidYear(it)
                         }
@@ -143,9 +137,24 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     // Function to set event next
-    private fun setEventNext() {
+    private fun requestButtonClick() {
         binding.btnNext.setOnClickListener {
-            rentalPostingViewModel.updateStep(6)
+            if (rentalPostingViewModel.pricePerNight.value == null) {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng nhập gia phong",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+                }
+            } else {
+                rentalPostingViewModel.updateStep(6)
+            }
         }
     }
 
@@ -164,8 +173,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 tvResortName.text = myTimeshareResponse.resortName
                 tvRoomType.text = myTimeshareResponse.roomName
                 tvCheckinDate.text =
-                    "${myTimeshareResponse.startDate} - ${myTimeshareResponse.endDate}"
-                /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                    "${myTimeshareResponse.startDate} - ${myTimeshareResponse.endDate}"/*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
             }
         }
     }
@@ -182,9 +190,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             }
 
             override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
+                position: Int, convertView: View?, parent: ViewGroup
             ): View {
                 val view = super.getDropDownView(position, convertView, parent)
                 val refundPolicy = getItem(position)
@@ -198,10 +204,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.customSpinnerViewDiretion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                    parent: AdapterView<*>, view: View?, position: Int, id: Long
                 ) {
                     val selectedPolicy = parent.getItemAtPosition(position) as RefundPolicy
                     val policyId = selectedPolicy.id
@@ -235,10 +238,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.customSpinnerYearValid.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                    parent: AdapterView<*>, view: View?, position: Int, id: Long
                 ) {
                     // Lấy năm được chọn từ Spinner
                     val selectedYear = parent.getItemAtPosition(position).toString().toInt()
@@ -260,9 +260,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun bindDataCheckInCheckOut(
-        startDateString: String?,
-        endDateString: String?,
-        selectedYear: Int
+        startDateString: String?, endDateString: String?, selectedYear: Int
     ) {
         if (startDateString != null && endDateString != null) {
             // Định dạng chuỗi ngày tháng từ dạng "dd-MM-yyyy"
@@ -334,11 +332,14 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             PackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
+                requestButtonClick()
+
             }
 
             PackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
+                requestButtonClick()
             }
 
             PackageEnum.PREMIUM_SERVICE.packageModel -> {
@@ -365,8 +366,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 // Loại bỏ TextWatcher tạm thời để tránh loop
                 binding.includePaymentMethod12.etRoomPrice.removeTextChangedListener(this)
 
-                val input = s.toString()
-                    .replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
+                val input =
+                    s.toString().replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
 
                 if (input.isNotEmpty()) {
                     // Kiểm tra và loại bỏ số 0 đầu tiên nếu có
