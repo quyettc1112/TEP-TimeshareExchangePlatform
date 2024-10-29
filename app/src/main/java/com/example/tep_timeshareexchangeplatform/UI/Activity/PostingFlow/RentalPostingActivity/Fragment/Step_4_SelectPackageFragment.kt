@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Adapter.PackagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectPackageBinding
 
 class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_package) {
@@ -68,9 +70,7 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
 
                     }
                     override fun positiveAction() {
-                        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
-                        rentalPostingViewModel.updatePackageStep4(packagePostingAdapter.differ.currentList[binding.vpPackagePosting.currentItem])
-                        rentalPostingViewModel.updateStep(5)
+                        savePackageSelected()
                     }
                 }
             )
@@ -78,7 +78,33 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
 
     }
 
+    private fun savePackageSelected() {
+        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
+        val packagePosition = binding.vpPackagePosting.currentItem
+        when (packagePosition) {
+            0 -> {
+                rentalPostingViewModel.updatePackageStep4(PackageEnum.BASIC_SERVICE.packageModel)
+            }
 
+            1 -> {
+                rentalPostingViewModel.updatePackageStep4(PackageEnum.ADVANCED_SERVICE.packageModel)
+            }
+
+            2 -> {
+                rentalPostingViewModel.updatePackageStep4(PackageEnum.PREMIUM_SERVICE.packageModel)
+            }
+
+            3 -> {
+                rentalPostingViewModel.updatePackageStep4(PackageEnum.DELEGATED_SERVICE.packageModel)
+            }
+
+            else -> {
+                // Do Nothing
+            }
+        }
+        rentalPostingViewModel.updateStep(5)
+        PackageEnum.PREMIUM_SERVICE.packageModel
+    }
 
 
 }

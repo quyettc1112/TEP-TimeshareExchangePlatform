@@ -124,6 +124,17 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="vnp_transaction_password_exceeded">Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch.</string>
     <string name="vnp_other_errors">Các lỗi khác (lỗi còn lại, không có trong danh sách mã lỗi đã liệt kê)</string>
 
+    <!--// Cancellation Policy-->
+    <string name="full_refund">Hoàn 100% nếu hủy trước 60 ngày</string>
+    <string name="partial_refund">Hoàn 50% nếu hủy trước 60 ngày</string>
+    <string name="no_refund">Không hoàn tiền nếu hủy</string>
+
+    <!-- Long descriptions with bold text -->
+    <string name="full_refund_long">Khách hàng sẽ được hoàn lại &lt;b&gt;100% số tiền&lt;/b&gt; nếu hủy đặt chỗ ít nhất &lt;b&gt;60 ngày&lt;/b&gt; trước ngày check-in.</string>
+    <string name="partial_refund_long">Khách hàng sẽ được hoàn lại &lt;b&gt;50% số tiền&lt;/b&gt; nếu hủy trong vòng &lt;b&gt;60 ngày&lt;/b&gt; trước ngày check-in.</string>
+    <string name="no_refund_long">Khách hàng sẽ &lt;b&gt;không nhận được hoàn tiền&lt;/b&gt; nếu hủy đặt chỗ.</string>
+
+
 
     <string-array name="spinner_items">
         <item>Option 1</item>

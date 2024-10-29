@@ -23,91 +23,69 @@
         android:id="@+id/tvRoomPriceSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gói đăng ký của bạn được hỗ trợ trợ giá"
+        android:text="Gói đăng ký của bạn được hỗ trợ định giá"
         android:textSize="12sp"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@+id/tvRoomPrice"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Radio Button: Enter your own price -->
-    <RadioButton
-        android:id="@+id/rbEnterPrice"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:text="Nhập giá phòng của bạn"
-        android:fontFamily="@font/inter_bold"
-        app:layout_constraintTop_toBottomOf="@+id/tvRoomPriceSubtitle"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="5dp" />
-
-    <!-- Input for Room Price -->
-    <EditText
-        android:id="@+id/etRoomPrice"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="Nhập giá"
-        android:layout_marginEnd="10dp"
-        android:inputType="numberDecimal"
-        android:padding="12dp"
-        android:background="@android:drawable/editbox_background"
-        app:layout_constraintTop_toTopOf="@+id/rbEnterPrice"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
-
-    <!-- Radio Button: Need price support -->
-    <RadioButton
-        android:id="@+id/rbNeedSupport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cần hỗ trợ trợ giá"
-        android:textSize="12dp"
-        android:fontFamily="@font/inter_bold"
-        app:layout_constraintTop_toBottomOf="@+id/rbEnterPrice"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="5dp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSuggestPrice"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim_valuation" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:text="*"
         android:textColor="@android:color/holo_red_light"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rbNeedSupport"
-        app:layout_constraintStart_toEndOf="@+id/rbNeedSupport"
-        app:layout_constraintTop_toTopOf="@+id/rbNeedSupport" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvRoomPrice"
+        app:layout_constraintStart_toEndOf="@+id/tvRoomPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvRoomPrice" />
 
 
-    <!-- Suggestion Button -->
+
+
+
+
+      <!-- Suggestion Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSuggestPrice"
         android:layout_width="70dp"
         android:layout_height="30dp"
-        android:layout_marginStart="10dp"
         android:backgroundTint="@color/blue_see_more"
         android:padding="8dp"
         android:text="Đề Xuất"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rbNeedSupport"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toTopOf="@+id/rbNeedSupport"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRoomPriceSubtitle"
+        app:layout_constraintStart_toEndOf="@+id/tvRoomPriceSubtitle"
+        app:layout_constraintTop_toTopOf="@+id/tvRoomPriceSubtitle"
         app:layout_constraintWidth_percent="0.25" />
 
-    <!-- Sub-text for Need Support option -->
+     <!-- Sub-text for Need Support option -->
     <TextView
         android:id="@+id/tvSupportInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_width="0dp"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="wrap_content"
         android:text="Đội ngũ nhân viên sẽ đề xuất giá phòng hợp lý cho bạn"
-        android:textSize="12sp"
         android:textColor="@android:color/holo_red_light"
-        app:layout_constraintTop_toBottomOf="@+id/rbNeedSupport"
+        android:textSize="14sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp" />
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -124,6 +124,17 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="vnp_transaction_password_exceeded">Transaction failed: Incorrect transaction password entered too many times. Please try again.</string>
     <string name="vnp_other_errors">Other errors (remaining errors not listed in the error code list)</string>
 
+    <!--// Cancellation Policy-->
+    <string name="full_refund">100% refund if canceled 60 days prior</string>
+    <string name="partial_refund">50% refund if canceled 60 days prior</string>
+    <string name="no_refund">No refund if canceled</string>
+
+    <!-- Long descriptions with bold text -->
+    <!-- Long descriptions with bold text -->
+    <string name="full_refund_long">Customers will receive a &lt;b&gt;100% refund&lt;/b&gt; if they cancel at least &lt;b&gt;60 days&lt;/b&gt; before check-in.</string>
+    <string name="partial_refund_long">Customers will receive a &lt;b&gt;50% refund&lt;/b&gt; if they cancel within &lt;b&gt;60 days&lt;/b&gt; before check-in.</string>
+    <string name="no_refund_long">Customers will &lt;b&gt;not receive a refund&lt;/b&gt; if they cancel.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

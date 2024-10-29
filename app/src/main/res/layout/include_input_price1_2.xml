@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Label for Room Price -->
+    <TextView
+        android:id="@+id/tvRoomPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giá phòng"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Sub-label for Room Price -->
+    <TextView
+        android:id="@+id/tvRoomPriceSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhập giá phòng cho gói đăng ký của bạn"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/tvRoomPrice"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    <!-- Input for Room Price -->
+    <EditText
+        android:id="@+id/etRoomPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:hint="Nhập giá"
+        android:maxLines="1"
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRoomPriceSubtitle" />
+
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRoomPrice"
+        app:layout_constraintStart_toEndOf="@+id/tvRoomPrice"
+        app:layout_constraintTop_toTopOf="@+id/tvRoomPrice" />
+
+    <LinearLayout
+        android:id="@+id/ll_payment_method_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@+id/etRoomPrice">
+
+
+        <!-- Input for Room Price -->
+        <EditText
+            android:id="@+id/etRoomPrice_perNight"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/background_stroke_around"
+            android:backgroundTint="@color/primary_background_F9"
+            android:enabled="false"
+            android:hint="Giá tiền cho tổng số đêm"
+            android:inputType="numberDecimal"
+            android:padding="12dp" />
+
+    </LinearLayout>
+
+
+    <!--  &lt;!&ndash; Suggestion Button &ndash;&gt;
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btnSuggestPrice"
+          android:layout_width="70dp"
+          android:layout_height="30dp"
+          android:layout_marginStart="10dp"
+          android:backgroundTint="@color/blue_see_more"
+          android:padding="8dp"
+          android:text="Đề Xuất"
+          android:textAllCaps="false"
+          android:textColor="@android:color/white"
+          android:textSize="10sp"
+          app:layout_constraintBottom_toBottomOf="@+id/rbNeedSupport"
+          app:layout_constraintStart_toEndOf="@+id/textView18"
+          app:layout_constraintWidth_percent="0.25" />-->
+
+   <!-- &lt;!&ndash; Sub-text for Need Support option &ndash;&gt;
+    <TextView
+        android:id="@+id/tvSupportInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Đội ngũ nhân viên sẽ đề xuất giá phòng hợp lý cho bạn"
+        android:textSize="12sp"
+        android:textColor="@android:color/holo_red_light"
+
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
