@@ -2,20 +2,13 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPos
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
@@ -62,6 +55,7 @@ class MyPostingDetailActivity : BaseActivity() {
         binding.customToolbar.onStartIconClick = {
             finish()
         }
+        binding.shimmerViewContainer.startShimmer()
 
     }
 
@@ -90,6 +84,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     bindData(it.data!!)
+                    binding.shimmerViewContainer.hideShimmer()
                 }
 
                 Status.ERROR -> {
@@ -141,8 +136,14 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Checkin Date, Check out Date
         binding.apply {
-            tvCheckInDate.text =  Constant.formatDateByLocale(myPostingDetailResponse.checkinDate, this@MyPostingDetailActivity)
-            tvCheckOutDate.text =  Constant.formatDateByLocale(myPostingDetailResponse.checkoutDate, this@MyPostingDetailActivity)
+            tvCheckInDate.text = Constant.formatDateByLocale(
+                myPostingDetailResponse.checkinDate,
+                this@MyPostingDetailActivity
+            )
+            tvCheckOutDate.text = Constant.formatDateByLocale(
+                myPostingDetailResponse.checkoutDate,
+                this@MyPostingDetailActivity
+            )
             tvNights.text = "${myPostingDetailResponse.nights} đêm"
         }
 
@@ -197,51 +198,31 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // UI DTB
         binding.includeDetailBilling.apply {
+
+            llPostingBy.visibility = View.GONE
             tvResortNameDtb.text =
                 myPostingDetailResponse.resortName + " | " + myPostingDetailResponse.unitType.title
-            tvCheckInDate.text = myPostingDetailResponse.checkinDate
-            tvCheckOutDate.text = myPostingDetailResponse.checkoutDate
+            tvCheckInDate.text = Constant.formatDateByLocale(
+                myPostingDetailResponse.checkinDate,
+                this@MyPostingDetailActivity
+            )
+            tvCheckOutDate.text = Constant.formatDateByLocale(
+                myPostingDetailResponse.checkoutDate,
+                this@MyPostingDetailActivity
+            )
             tvNumberNight.text = "${myPostingDetailResponse.nights} đêm"
-            tvRoomPricePerNight.text = "${myPostingDetailResponse.pricePerNights} đ"
-            tvEstimatedTotalPrice.text = "${myPostingDetailResponse.totalPrice} đ"
+            tvRoomPricePerNight.text = "${formatPrice(myPostingDetailResponse.pricePerNights)} đ"
+            tvEstimatedTotalPrice.text = "${formatPrice(myPostingDetailResponse.pricePerNights)} đ"
             tvLocation.text = myPostingDetailResponse.address
+
         }
 
+        binding.includeDetailBilling.root.visibility = View.VISIBLE
 
         // Set Amenities
         facilityAdapter.submitList(listOf())
 
-        binding.apply {
-            // Thiết lập văn bản trạng thái
-            tvStatus.text = when (myPostingDetailResponse.status) {
-                "PendingApproval" -> "Đang chờ duyệt"
-                "Processing" -> "Đang xử lý"
-                "PendingPricing" -> "Đã từ chối"
-                "AwaitingConfirmation" -> "Hết hạn"
-                "Closed" -> "Đã hủy"
-                "Completed" -> "Hoàn thành"
-                "Expired" -> "Hoàn thành"
-                else -> "Không xác định"
-            }
 
-            // Thiết lập màu nền và màu chữ dựa trên trạng thái
-            val (backgroundColor, textColor) = when (myPostingDetailResponse.status) {
-                "PendingApproval" -> Pair(R.color.pendingApprovalBackground, R.color.pendingApprovalText)
-                "Processing" -> Pair(R.color.processingBackground, R.color.processingText)
-                "PendingPricing" -> Pair(R.color.pendingPricingBackground, R.color.pendingPricingText)
-                "AwaitingConfirmation" -> Pair(R.color.awaitingConfirmationBackground, R.color.awaitingConfirmationText)
-                "Closed" -> Pair(R.color.closedBackground, R.color.closedText)
-                "Completed" -> Pair(R.color.completedBackground, R.color.completedText)
-                "Expired" -> Pair(R.color.expiredBackground, R.color.expiredText)
-                else -> Pair(R.color.unknownBackground, R.color.unknownText)
-            }
-
-            // Áp dụng màu nền cho `ctr_request_button`
-            ctrRequestButton.backgroundTintList = ContextCompat.getColorStateList(this@MyPostingDetailActivity, backgroundColor)
-
-            // Áp dụng màu chữ cho `tvStatus`
-            tvStatus.setTextColor(ContextCompat.getColor(this@MyPostingDetailActivity, textColor))
-        }
 
         when (PostStatus.fromApiStatus(myPostingDetailResponse.status)) {
             PostStatus.PENDING_APPROVAL -> {
@@ -309,13 +290,15 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
         }
-        binding.tvStatus.text = PostStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
+        binding.tvStatus.text =
+            PostStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
 
 
     }
 
-    private fun bindPackageData(packageName : String) {
+    private fun bindPackageData(packageName: String) {
         val packageEnum = PackageEnum.getPackageByName(packageName)
+
 
         when (packageEnum) {
 
@@ -332,12 +315,14 @@ class MyPostingDetailActivity : BaseActivity() {
                     tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
                 }
             }
+
             PackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
                     tvPackageName.text = packageEnum.name
                     tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
                 }
             }
+
             PackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
                     tvPackageName.text = packageEnum.name
@@ -346,17 +331,17 @@ class MyPostingDetailActivity : BaseActivity() {
             }
 
         }
-
-
-
+        binding.includePackagePosting.root.visibility = View.VISIBLE
 
 
     }
 
     private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
         binding.apply {
-            ctrRequestButton.backgroundTintList = context.getColorStateList(backgroundColorRes)
+            llStatusContainer.visibility = View.VISIBLE
+            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
             tvStatus.setTextColor(context.getColor(textColorRes))
+            cardStatus.setStrokeColor(context.getColor(textColorRes))
         }
     }
 

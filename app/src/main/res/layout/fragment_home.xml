@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,38 +26,41 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="2000dp"
         android:layout_marginTop="2dp"
         android:fillViewport="true"
+        android:minWidth="2000dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <!--    // Seach Component-->
+            <!--    // Seach Component-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:orientation="vertical"
                 android:padding="25dp">
 
                 <LinearLayout
                     android:id="@+id/ll_location"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:background="@drawable/background_stroke_around"
-                    android:weightSum="10"
-                    android:minHeight="55dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_stroke_around"
+                    android:minHeight="55dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_weight="1.75">
+                        android:layout_weight="1.75"
+                        android:gravity="center">
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -68,50 +70,54 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
+                        android:layout_weight="8.25"
                         android:gravity="left"
-                        android:weightSum="10"
+                        android:orientation="vertical"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:layout_weight="8.25">
+                        android:weightSum="10">
+
                         <TextView
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
-                            android:text="@string/search_location"
                             android:fontFamily="@font/inter_bold"
+                            android:gravity="center|left"
+                            android:text="@string/search_location"
                             android:textColor="@color/black"
                             android:textSize="14dp" />
 
                         <TextView
                             android:id="@+id/tv_location"
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="center|left"
                             android:maxLines="1"
                             android:text="Thành Phố Hồ Chí Minh, Việt Nam"
-                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/black"
-                            android:textSize="12dp"/>
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_date"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:background="@drawable/background_stroke_around"
-                    android:weightSum="10"
                     android:layout_height="55dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_stroke_around"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_weight="1.75">
+                        android:layout_weight="1.75"
+                        android:gravity="center">
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -121,49 +127,53 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
+                        android:layout_weight="8.25"
                         android:gravity="left"
-                        android:weightSum="10"
+                        android:orientation="vertical"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:layout_weight="8.25">
+                        android:weightSum="10">
+
                         <TextView
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
-                            android:text="@string/search_date"
                             android:fontFamily="@font/inter_bold"
+                            android:gravity="center|left"
+                            android:text="@string/search_date"
                             android:textColor="@color/black"
                             android:textSize="14dp" />
 
                         <TextView
                             android:id="@+id/tv_date"
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
-                            android:text="01/09/2024 - 02/09/2024"
                             android:fontFamily="@font/inter_medium"
+                            android:gravity="center|left"
+                            android:text="01/09/2024 - 02/09/2024"
                             android:textColor="@color/black"
-                            android:textSize="12dp"/>
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_tourist"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:background="@drawable/background_stroke_around"
-                    android:weightSum="10"
                     android:layout_height="55dp"
-                    android:layout_marginBottom="30dp">
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/background_stroke_around"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_weight="1.75">
+                        android:layout_weight="1.75"
+                        android:gravity="center">
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -173,60 +183,63 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
+                        android:layout_weight="8.25"
                         android:gravity="left"
-                        android:weightSum="10"
+                        android:orientation="vertical"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:layout_weight="8.25">
+                        android:weightSum="10">
+
                         <TextView
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
-                            android:text="@string/search_tourie"
                             android:fontFamily="@font/inter_bold"
+                            android:gravity="center|left"
+                            android:text="@string/search_tourie"
                             android:textColor="@color/black"
                             android:textSize="14dp" />
 
                         <TextView
                             android:id="@+id/tv_tourist"
-                            android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="5"
-                            android:text="5 khách, 2 phòng"
                             android:fontFamily="@font/inter_medium"
+                            android:gravity="center|left"
+                            android:text="5 khách, 2 phòng"
                             android:textColor="@color/black"
-                            android:textSize="12dp"/>
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_search"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/background_btn_search"
+                    android:fontFamily="@font/inter_bold"
                     android:text="@string/search_search"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/inter_bold"
                     android:textSize="16dp" />
 
             </LinearLayout>
 
-      <!--      // Suggest Component-->
+            <!--      // Suggest Component-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:padding="20dp"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:background="@color/white">
+                android:padding="20dp">
                 <!-- // Suggest Title-->
-                  <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
@@ -241,28 +254,30 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/inter_light"
                         android:text="@string/suggest_description"
                         android:textColor="@color/black"
                         android:textSize="14dp"
-                        android:layout_marginTop="5dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center|top"
+                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
                         <TextView
                             android:id="@+id/tv_sugest_see_more"
-                            android:textColor="@color/blue_see_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13dp"
-                            android:text="@string/suggest_seemore" />
+                            android:text="@string/suggest_seemore"
+                            android:textColor="@color/blue_see_more"
+                            android:textSize="13dp" />
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -270,21 +285,39 @@
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                 <!--   // Timeshare List Viewpager2 -->
-                  <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_marginTop="10dp"
-                      android:layout_height="wrap_content">
-                     <androidx.recyclerview.widget.RecyclerView
-                         android:id="@+id/rv_suggest_timeshare"
-                         android:orientation="horizontal"
-                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                         tools:listitem="@layout/item_timeshare_ver_1"
-                         android:layout_width="match_parent"
-                         android:layout_height="320dp">
 
-                     </androidx.recyclerview.widget.RecyclerView>
-                  </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_posting_loading"
+                        app:lottie_loop="true"
+                        android:visibility="gone"
+                        app:lottie_autoPlay="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:translationZ="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/rv_suggest_timeshare"
+                        app:lottie_rawRes="@raw/anim_loading_more" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_suggest_timeshare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="330dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_timeshare_ver_1" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </LinearLayout>
 
@@ -294,17 +327,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:orientation="vertical"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="vertical">
 
 
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="25dp">
+
                     <TextView
                         android:id="@+id/tv_rsht"
                         android:layout_width="wrap_content"
@@ -330,16 +364,17 @@
                 <!--// MB-->
                 <!--// List Resort & Hotel-->
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginStart="25dp"
-                        android:layout_marginEnd="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -349,20 +384,23 @@
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center|top"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/tv_sugest_see_more_mb"
-                                android:textColor="@color/blue_see_more"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13dp"
-                                android:text="@string/suggest_seemore" />
+                                android:text="@string/suggest_seemore"
+                                android:textColor="@color/blue_see_more"
+                                android:textSize="13dp" />
+
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
@@ -373,30 +411,30 @@
                     <!--// List Resort & Hotel-->
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vp_resort_hotel_mb"
-                        android:layout_gravity="center"
-                        tools:listitem="@layout/item_resort"
-                        android:paddingEnd="15dp"
-                        android:paddingStart="15dp"
-                        android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="310dp">
-                    </androidx.viewpager2.widget.ViewPager2>
+                        android:layout_height="310dp"
+                        android:layout_gravity="center"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:paddingBottom="5dp"
+                        tools:listitem="@layout/item_resort"></androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
 
                 <!--// MT-->
                 <!--// List Resort & Hotel-->
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginStart="25dp"
-                        android:layout_marginEnd="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -406,20 +444,23 @@
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center|top"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/tv_sugest_see_more_mt"
-                                android:textColor="@color/blue_see_more"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13dp"
-                                android:text="@string/suggest_seemore" />
+                                android:text="@string/suggest_seemore"
+                                android:textColor="@color/blue_see_more"
+                                android:textSize="13dp" />
+
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
@@ -430,31 +471,31 @@
                     <!--// List Resort & Hotel-->
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vp_resort_hotel_mt"
+                        android:layout_width="match_parent"
+                        android:layout_height="310dp"
                         android:layout_gravity="center"
-                        tools:listitem="@layout/item_resort"
-                        android:paddingEnd="15dp"
                         android:paddingStart="15dp"
                         android:paddingTop="5dp"
+                        android:paddingEnd="15dp"
                         android:paddingBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="310dp">
-                    </androidx.viewpager2.widget.ViewPager2>
+                        tools:listitem="@layout/item_resort"></androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
 
                 <!--// MN-->
                 <!--// List Resort & Hotel-->
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_marginStart="25dp"
-                        android:layout_marginEnd="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -464,20 +505,23 @@
                             android:textSize="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center|top"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/tv_sugest_see_more_mn"
-                                android:textColor="@color/blue_see_more"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13dp"
-                                android:text="@string/suggest_seemore" />
+                                android:text="@string/suggest_seemore"
+                                android:textColor="@color/blue_see_more"
+                                android:textSize="13dp" />
+
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
@@ -488,14 +532,13 @@
                     <!--// List Resort & Hotel-->
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vp_resort_hotel_mn"
-                        android:layout_gravity="center"
-                        tools:listitem="@layout/item_resort"
-                        android:paddingEnd="15dp"
-                        android:paddingStart="15dp"
-                        android:paddingBottom="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="310dp">
-                    </androidx.viewpager2.widget.ViewPager2>
+                        android:layout_height="310dp"
+                        android:layout_gravity="center"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:paddingBottom="5dp"
+                        tools:listitem="@layout/item_resort"></androidx.viewpager2.widget.ViewPager2>
                 </LinearLayout>
 
 
@@ -503,18 +546,19 @@
 
             <!--// Tourist Destination-->
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:background="@color/white"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:orientation="vertical">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="25dp">
+
                     <TextView
                         android:id="@+id/tv_destination"
                         android:layout_width="wrap_content"
@@ -539,17 +583,19 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center|top"
+                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
                         <TextView
                             android:id="@+id/tv_destination_see_more"
-                            android:textColor="@color/blue_see_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13dp"
-                            android:text="@string/suggest_seemore" />
+                            android:text="@string/suggest_seemore"
+                            android:textColor="@color/blue_see_more"
+                            android:textSize="13dp" />
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -557,18 +603,16 @@
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_tourist_destination"
-                        android:scrollbars="none"
-                        android:nestedScrollingEnabled="false"
-                        tools:listitem="@layout/item_tourist_destination"
-                        android:layout_marginBottom="20dp"
-                        android:paddingStart="25dp"
-                        android:paddingEnd="25dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="500dp" />
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_tourist_destination"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_marginBottom="20dp"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:scrollbars="none"
+                    tools:listitem="@layout/item_tourist_destination" />
 
 
             </LinearLayout>
@@ -576,19 +620,20 @@
 
             <!--// Blog-->
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:background="@color/white"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:layout_marginBottom="50dp"
-                android:layout_marginTop="2dp">
+                android:background="@color/white"
+                android:orientation="vertical">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="25dp">
+
                     <TextView
                         android:id="@+id/tv_blog"
                         android:layout_width="wrap_content"
@@ -613,17 +658,19 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center|top"
+                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
+
                         <TextView
                             android:id="@+id/tv_blog_see_more"
-                            android:textColor="@color/blue_see_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13dp"
-                            android:text="@string/suggest_seemore" />
+                            android:text="@string/suggest_seemore"
+                            android:textColor="@color/blue_see_more"
+                            android:textSize="13dp" />
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -632,26 +679,25 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
-
                     android:layout_width="match_parent"
-                    android:layout_height="310dp">
+
+                    android:layout_height="310dp"
+                    android:orientation="vertical">
                     <!-- // Suggest Title-->
 
                     <!--// List Blog-->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rc_blog"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
                         android:layout_gravity="center"
-                        android:orientation="horizontal"
-                        tools:listitem="@layout/item_blog"
                         android:layout_marginTop="5dp"
-                        android:paddingEnd="15dp"
+                        android:orientation="horizontal"
                         android:paddingStart="15dp"
                         android:paddingTop="5dp"
+                        android:paddingEnd="15dp"
                         android:paddingBottom="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="280dp">
-                    </androidx.recyclerview.widget.RecyclerView>
+                        tools:listitem="@layout/item_blog"></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
 
 

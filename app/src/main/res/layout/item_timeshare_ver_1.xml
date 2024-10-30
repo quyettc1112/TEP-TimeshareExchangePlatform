@@ -4,10 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginEnd="25dp"
     android:layout_width="170dp"
+    android:minHeight="330dp"
     android:backgroundTint="@color/white"
     android:background="@drawable/background_stroke_around"
-    android:layout_marginBottom="25dp"
-    android:layout_height="325dp">
+    android:layout_marginBottom="10dp"
+    android:layout_height="wrap_content">
 
     <!--// Image Timeshare-->
     <androidx.cardview.widget.CardView
@@ -43,8 +44,8 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:src="@drawable/baseline_location_pin_24" />
 
         <TextView
@@ -75,7 +76,7 @@
 
         <!-- // TimeShare name-->
         <TextView
-            android:id="@+id/tv_timeShreName"
+            android:id="@+id/tv_timeshareName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxHeight="40dp"
@@ -100,7 +101,7 @@
                 android:src="@drawable/ic_schedule"/>
 
             <TextView
-                android:id="@+id/tv_date"
+                android:id="@+id/tv_check_in_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -108,7 +109,31 @@
                 android:maxLines="1"
                 android:textStyle="bold"
                 android:text="26/08/2024 - 30/08/2024"
-                android:textSize="12dp" />
+                android:textSize="11dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_schedule"/>
+
+            <TextView
+                android:id="@+id/tv_check_out_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center|left"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:text="26/08/2024 - 30/08/2024"
+                android:textSize="11dp" />
         </LinearLayout>
 
         <!-- // Room-->
@@ -120,8 +145,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_marginStart="1dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
                 android:src="@drawable/ic_room_ts"/>
 
             <TextView
@@ -132,7 +158,7 @@
                 android:gravity="center|left"
                 android:maxLines="2"
                 android:text="Phòng Studio, 1 Giường, 4 Người"
-                android:textSize="12dp" />
+                android:textSize="11dp" />
         </LinearLayout>
 
 
@@ -141,6 +167,7 @@
     <!--// Price-->
     <LinearLayout
         android:id="@+id/linearLayout3"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -148,7 +175,8 @@
         android:gravity="center|left"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
 
         <TextView
             android:id="@+id/tv_price"
@@ -164,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
-            android:text=" | 4 đêm"
+            android:text=" | 1 đêm"
             android:textColor="@color/primary_stroke_around"
             android:textSize="10dp" />
 
@@ -173,7 +201,7 @@
     <!--//Verify-->
     <LinearLayout
         android:id="@+id/ll_verify"
-        android:layout_width="90dp"
+        android:layout_width="100dp"
         android:layout_height="25dp"
         android:gravity="center"
         android:background="@drawable/background_verify"
@@ -183,7 +211,7 @@
         <TextView
             android:gravity="center"
             android:text="@string/suggest_verify"
-            android:textSize="7dp"
+            android:textSize="8dp"
             android:textColor="@color/white"
             android:fontFamily="@font/inter_semibold"
             android:layout_width="wrap_content"

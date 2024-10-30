@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Repository.PostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel  @Inject constructor(
     private val authAPIRepository: AuthAPIRepository,
-    private val postingAPIRepository: PostingAPIRepository,
+    private val publicPostingAPIRepository: PublicPostingAPIRepository,
 ) : ViewModel()  {
 
     private val initStep: Int = 1
@@ -89,12 +90,12 @@ class MainViewModel  @Inject constructor(
     }
 
     // Call API Postings
-    private val _postingsResponse = MutableLiveData<Resource<PostingsResponse>>()
-    val postingsResponse: MutableLiveData<Resource<PostingsResponse>> get() = _postingsResponse
+    private val _postingsResponse = MutableLiveData<Resource<PublicPostingResponse>>()
+    val postingsResponse: MutableLiveData<Resource<PublicPostingResponse>> get() = _postingsResponse
     fun getPostings(pageNo: Int, pageSize: Int, resortName: String)  {
         viewModelScope.launch {
             _postingsResponse.postValue(Resource.loading(null))
-            postingAPIRepository.getPostings(pageNo, pageSize, resortName).let {
+            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
                 _postingsResponse.postValue(it)
             }
         }
@@ -113,6 +114,18 @@ class MainViewModel  @Inject constructor(
     val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
     fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
         _customerInfo.value = customerInfoResponse
+    }
+
+    // Call Public All Posting
+    private val _publicPostingsResponse = MutableLiveData<Resource<PublicPostingResponse>>()
+    val publicPostingsResponseHome: MutableLiveData<Resource<PublicPostingResponse>> get() = _publicPostingsResponse
+    fun getPublicPostingsHome(pageNo: Int, pageSize: Int, resortName: String) {
+        viewModelScope.launch {
+            _publicPostingsResponse.postValue(Resource.loading(null))
+            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
+                _publicPostingsResponse.postValue(it)
+            }
+        }
     }
 
 

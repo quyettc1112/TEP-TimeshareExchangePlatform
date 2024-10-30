@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting
 
 
 import com.google.gson.annotations.SerializedName

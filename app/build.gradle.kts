@@ -177,6 +177,8 @@ dependencies {
     // OpenStreetView
     implementation("org.osmdroid:osmdroid-android:6.1.12")
 
+    // Shimmer Loading Effect
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
 
 

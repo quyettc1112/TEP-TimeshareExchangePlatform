@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareListBinding
 
 class TimeshareListActivity : BaseActivity() {
     private lateinit var binding: ActivityTimeshareListBinding
-    private var timeshareAdapter = TimeshareAdapterRV()
+    private var timeshareAdapter = PublicPostingAdapterRV()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

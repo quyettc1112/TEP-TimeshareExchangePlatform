@@ -58,7 +58,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
     }
 
     private fun observeViewModel(){
-        topResortViewModel.postingsResponse.observe(viewLifecycleOwner) {
+        /*topResortViewModel.postingsResponse.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
@@ -72,7 +72,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
                     // Show error
                 }
             }
-        }
+        }*/
     }
 
     private fun setUpTabLayoutViewPager(){

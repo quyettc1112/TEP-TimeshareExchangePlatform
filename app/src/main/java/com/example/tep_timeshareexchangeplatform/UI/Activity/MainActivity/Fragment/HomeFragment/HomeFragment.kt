@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -29,7 +28,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -46,7 +45,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
-    private val timeshareAdapter = TimeshareAdapterRV()
+    private val timeshareAdapter = PublicPostingAdapterRV()
     private val resortAdapterMB = ResortAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter: GridAdapter
@@ -92,7 +91,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         setAutoScroll()
         observerSearchComponent()
         observerViewModel()
-
         return binding.root
     }
 
@@ -114,15 +112,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             binding.tvTourist.text = mainViewModel.getRoomCount()
         })
 
-        mainViewModel.postingsResponse.observe(viewLifecycleOwner) {
+        mainViewModel.publicPostingsResponseHome.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    (activity as MainActivity).hideLoadingWaiting()
+                    binding.lottiePostingLoading.visibility = View.GONE
                     timeshareAdapter.submitList(it.data?.content)
                 }
 
                 Status.ERROR -> {
-                    (activity as MainActivity).hideLoadingWaiting()
                     MotionToast.Companion.createToast(
                         requireActivity(),
                         "Error",
@@ -135,7 +132,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 }
 
                 Status.LOADING -> {
-                    (activity as MainActivity).showLoadingWaiting(false)
+                    binding.lottiePostingLoading.visibility = View.VISIBLE
                 }
             }
         }
@@ -332,7 +329,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
     }
-
 
     override fun onPause() {
         super.onPause()

@@ -15,7 +15,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
@@ -64,7 +65,6 @@ class PostingDetailActivity : BaseActivity() {
 
         getIntentValue()
 
-
         initAdapter()
 
         // Image
@@ -95,10 +95,13 @@ class PostingDetailActivity : BaseActivity() {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
+                    binding.shimmerViewContainer.startShimmer()
                 }
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.hideShimmer()
                     Log.d("CheckPostingDetailData", "observePostingDetail: ${it.data}")
                     bindDataPostingDetail(it.data!!)
                 }
@@ -120,11 +123,23 @@ class PostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataPostingDetail(postingDetail: PostingDetailResponse) {
+    private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
             setTitle("${postingDetail.unitType.title}")
-            setTitleDetail("${postingDetail.checkinDate} - ${postingDetail.checkoutDate}")
+            setTitleDetail(
+                "${
+                    Constant.formatDateByLocale(
+                        postingDetail.checkinDate,
+                        this@PostingDetailActivity
+                    )
+                } - ${
+                    Constant.formatDateByLocale(
+                        postingDetail.checkoutDate,
+                        this@PostingDetailActivity
+                    )
+                }"
+            )
         }
 
         // Resort Info
@@ -141,8 +156,14 @@ class PostingDetailActivity : BaseActivity() {
 
         // Checkin Date, Check out Date
         binding.apply {
-            tvCheckInDate.text = postingDetail.checkinDate
-            tvCheckOutDate.text = postingDetail.checkoutDate
+            tvCheckInDate.text = Constant.formatDateByLocale(
+                postingDetail.checkinDate,
+                this@PostingDetailActivity
+            )
+            tvCheckOutDate.text = Constant.formatDateByLocale(
+                postingDetail.checkoutDate,
+                this@PostingDetailActivity
+            )
             tvNight.text = "${postingDetail.nights} đêm"
         }
 
@@ -195,11 +216,16 @@ class PostingDetailActivity : BaseActivity() {
         // UI DTB
         binding.apply {
             tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
-            tvCheckInDateDtb.text = postingDetail.checkinDate
-            tvCheckOutDateDtb.text = postingDetail.checkoutDate
+            tvCheckInDateDtb.text =
+                Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
+            tvCheckOutDateDtb.text =
+                Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
-            tvRoomPricePerNight.text = "${postingDetail.pricePerNights} đ"
-            tvEstimatedTotalPrice.text = "${postingDetail.totalPrice} đ"
+            tvRoomPricePerNight.text = "${postingDetail.pricePerNights} đ / 1 đêm"
+            tvEstimatedTotalPrice.text =
+                "${postingDetail.totalPrice} đ / ${postingDetail.nights} đêm"
+            tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
+
         }
 
         // Data for Request
@@ -211,9 +237,6 @@ class PostingDetailActivity : BaseActivity() {
 
         // Set Amenities
         facilityAdapter.submitList(postingDetail.resortAmenities)
-
-
-
 
 
     }
@@ -235,7 +258,6 @@ class PostingDetailActivity : BaseActivity() {
 
         return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
     }
-
 
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())

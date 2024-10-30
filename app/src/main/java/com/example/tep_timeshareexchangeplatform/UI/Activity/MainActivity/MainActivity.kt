@@ -42,6 +42,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        callGetAPI()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -55,12 +56,12 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
         changeLangEvent()
         setUpBottomNav()
+        callGetAPI()
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
     }
-
 
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
@@ -150,6 +151,16 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             jwtPayloadModel?.let { mainViewModel.updateUser(it) }
         }
     }
+
+    private fun callGetAPI() {
+        // Call API Postings for Home
+        mainViewModel.getPublicPostingsHome(0, 10, "")
+
+
+
+
+    }
+
 
     override fun onResume() {
         super.onResume()

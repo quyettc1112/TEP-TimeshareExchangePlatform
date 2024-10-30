@@ -114,6 +114,7 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MainActivity.MainActivity"
+            android:launchMode="singleTop"
             android:exported="true" />
     </application>
 
