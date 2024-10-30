@@ -11,7 +11,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -42,7 +41,7 @@ class CustomerAPIRepository@Inject constructor(
     // Check if customer exist
     suspend fun getIsCustomerExist(token: String): Resource<CustomerInfoResponse> {
         return try {
-            val response = customerAPIService.getIsCustomerExist("Bearer $token")
+            val response = customerAPIService.getIsCustomerInit("Bearer $token")
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

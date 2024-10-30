@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPack
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.VNPayActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
@@ -175,7 +176,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
         }
 
-        // Observe Extend Membership By VNPAY
+        // Observe Purchase Package By VNPAY
         rentalPostingViewModel.responseVNPAYUrl.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
@@ -183,6 +184,85 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     response.data?.let {
                         (activity as RentalPostingActivity).hideLoading()
                         intentToVNPAYActivity(it.url.toString())
+                    }
+                }
+
+                Status.ERROR -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Thất Bại",
+                        response.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Observe Purchase Package By Wallet
+        rentalPostingViewModel.walletPurchaseResponse.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Thành Công",
+                        "Mua gói thành công",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                    rentalPostingViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+
+                }
+
+                Status.ERROR -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Thất Bại",
+                        response.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Observe Call Get New Available Balance
+        rentalPostingViewModel.newBalanceInfoResponse.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    response.data?.let {
+                        tokenManager.saveCustomerInfo(it)
+                        bindDataWalletInfo()
+
+                        (activity as RentalPostingActivity).showSuccessDialog(
+                            requireContext(),
+                            "Bạn đã mua gói thành công",
+                            object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    val intent = Intent(requireContext(), MyPostingActivity::class.java)
+                                    startActivity(intent)
+                                    requireActivity().finish()
+                                }
+                            }
+                        )
                     }
                 }
 
@@ -230,29 +310,28 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 )
                 return@setOnClickListener
             }
-
-
             // Get Payment Method
             val paymentMethod = rentalPostingViewModel.selectedPaymentMethod.value
 
             // Get Package Enum
-            val packageEnum = PackageEnum.getPackageByName(rentalPostingViewModel.packageStep4.value?.name.toString())
+            val packageEnum =
+                PackageEnum.getPackageByName(rentalPostingViewModel.packageStep4.value?.name.toString())
 
             // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
             when (paymentMethod) {
                 // Call API to check Wallet Balance, Intent to PaymentResultActivity
                 PaymentMethod.UNWIND -> {
-                  /*  paymentPackageViewModel.extendMembershipByWallet(
-                        token.getAccessToken().toString(), packageId
-                    )*/
+                    rentalPostingViewModel.purchasePackagePostingWallet(
+                        tokenManager.getAccessToken().toString(), packageEnum!!.id
+                    )
                 }
 
                 // Call API to get Payment URL, Intent to VNPayActivity
                 PaymentMethod.VNPAY -> {
-                     rentalPostingViewModel.getResponsePaymentUrl(
-                         packageEnum!!.price,
-                         packageEnum.name
-                     )
+                    rentalPostingViewModel.getResponsePaymentUrl(
+                        packageEnum!!.price,
+                        packageEnum.name
+                    )
                 }
 
                 else -> {
@@ -268,8 +347,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
-
-
 
     }
 
@@ -340,11 +417,19 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    private fun bindDataWalletInfo () {
+    private fun bindDataWalletInfo() {
         if (tokenManager.isLoggedIn()) {
             val availableMoney = tokenManager.getCustomerInfo()?.walletAvailableMoney
             binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} đ"
+            availableMoney?.let { money ->
+                rentalPostingViewModel.packageStep4.value?.price?.let { price ->
+                    if (money < price) {
+                        binding.cardUnwind.isEnabled = false
+                    }
+                }
+            }
         }
+
 
     }
 
@@ -395,10 +480,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun intentToVNPAYActivity(url: String) {
 
         val intent = Intent(requireContext(), VNPayActivity::class.java)
-        val packageEnum = PackageEnum.getPackageByName(rentalPostingViewModel.packageStep4.value?.name.toString())
+        val packageEnum =
+            PackageEnum.getPackageByName(rentalPostingViewModel.packageStep4.value?.name.toString())
 
         val postingTimeshareDTO = PostingTimeshareDTO(
-            description =  "String",
+            description = "String",
             nights = rentalPostingViewModel.numberOfNights.value!!.toInt(),
             pricePerNights = rentalPostingViewModel.pricePerNight.value!!.toInt(),
             timeshareId = rentalPostingViewModel.myTimeshareModelSelected.value?.timeShareId!!,
@@ -415,6 +501,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_POSTING)
         paymentResultLauncher.launch(intent)
     }
+
     private fun initActivityResultLauncher() {
         paymentResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->

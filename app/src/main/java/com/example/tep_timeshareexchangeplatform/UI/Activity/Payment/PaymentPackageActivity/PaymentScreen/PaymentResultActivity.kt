@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -108,6 +109,22 @@ class PaymentResultActivity : BaseActivity() {
                     tvTransactionId.text = VNPAYPurchaseResponse.id
                     tvDescription.text = VNPAYPurchaseResponse.description
                     clickHandle(VNPAYPurchaseResponse.id)
+                }
+            }
+
+            intent.hasExtra(Constant.PAYMENT_SUCCESS_POSTING) -> {
+                val walletPurchaseResponse = intent.getParcelableExtra<WalletPurchaseResponse>(Constant.PAYMENT_SUCCESS_POSTING)
+                if (walletPurchaseResponse == null) {
+                    return
+                }
+
+                // Áp dụng dữ liệu vào UI
+                binding.apply {
+                    tvPrice.text = "${formatPrice(walletPurchaseResponse.money)} VND"
+                    tvDate.text = walletPurchaseResponse.createdAt
+                    tvTransactionId.text = walletPurchaseResponse.id
+                    tvDescription.text = walletPurchaseResponse.description
+                    clickHandle(walletPurchaseResponse.id)
                 }
             }
 

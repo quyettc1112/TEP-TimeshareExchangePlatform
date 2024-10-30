@@ -9,18 +9,21 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIReposi
 import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +35,8 @@ class RentalPostingViewModel @Inject constructor(
     private val resortAPIRepository: ResortAPIRepository,
     private val timeshareRepository: TimeshareRepository,
     private val customerAPIRepository: CustomerAPIRepository,
-    private val paymentAPIRepository: PaymentAPIRepository
+    private val paymentAPIRepository: PaymentAPIRepository,
+    private val walletAPIRepository: WalletAPIRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -344,7 +348,32 @@ class RentalPostingViewModel @Inject constructor(
         }
     }
 
-    // Check PostingTimeshareDTO
+    // ----------------------------------------------------------//
+    // Call API Purchase Package by Wallet
+    private val _walletPurchaseResponse = MutableLiveData<Resource<WalletPurchaseResponse>>()
+    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> = _walletPurchaseResponse
+    fun purchasePackagePostingWallet(token: String, rentalPackageId: Int) {
+        viewModelScope.launch {
+            _walletPurchaseResponse.postValue(Resource.loading(null))
+            walletAPIRepository.purchasePackagePostingWallet(token, rentalPackageId).let {
+                _walletPurchaseResponse.postValue(it)
+            }
+        }
+    }
+
+    // ----------------------------------------------------------//
+    // Call API Get New Balance
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
+    val newBalanceInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> = _customerInfoResponse
+    fun getCustomerInfo(token: String) {
+        viewModelScope.launch {
+            _customerInfoResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getIsCustomerExist(token).let {
+                _customerInfoResponse.postValue(it)
+            }
+        }
+    }
+
 
 
 
