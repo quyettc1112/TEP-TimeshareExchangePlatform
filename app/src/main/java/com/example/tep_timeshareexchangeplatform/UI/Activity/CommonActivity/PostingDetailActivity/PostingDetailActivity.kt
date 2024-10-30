@@ -127,19 +127,8 @@ class PostingDetailActivity : BaseActivity() {
         // Custom Toolbar Data
         binding.customToolbar.apply {
             setTitle("${postingDetail.unitType.title}")
-            setTitleDetail(
-                "${
-                    Constant.formatDateByLocale(
-                        postingDetail.checkinDate,
-                        this@PostingDetailActivity
-                    )
-                } - ${
-                    Constant.formatDateByLocale(
-                        postingDetail.checkoutDate,
-                        this@PostingDetailActivity
-                    )
-                }"
-            )
+            setTitleDetail("${postingDetail.checkinDate} - ${postingDetail.checkoutDate}")
+
         }
 
         // Resort Info
@@ -221,16 +210,16 @@ class PostingDetailActivity : BaseActivity() {
             tvCheckOutDateDtb.text =
                 Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
-            tvRoomPricePerNight.text = "${postingDetail.pricePerNights} đ / 1 đêm"
+            tvRoomPricePerNight.text = "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${postingDetail.totalPrice} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
         }
 
         // Data for Request
         binding.apply {
-            tvPrice.text = "${postingDetail.totalPrice} đ"
+            tvPrice.text = "${Constant.formatPrice(postingDetail.totalPrice)} đ"
             tvDate.text = "${postingDetail.checkinDate} - ${postingDetail.checkoutDate}"
 
         }

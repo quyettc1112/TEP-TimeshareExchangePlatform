@@ -38,6 +38,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.white,
                         R.color.status_pending_approval_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 PostStatus.AWAITING_CONFIRMATION -> {
@@ -55,6 +56,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.white,
                         R.color.green_verify
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 PostStatus.COMPLETED -> {
@@ -63,6 +65,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.blue_header_section,
                         R.color.blue_full
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 PostStatus.REJECTED -> {
@@ -71,6 +74,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.white,
                         R.color.status_rejected_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 PostStatus.PENDING_PRICING -> {
@@ -79,6 +83,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_awaiting_confirmation_bg,
                         R.color.status_awaiting_confirmation_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 PostStatus.CLOSED -> {
@@ -87,6 +92,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_closed_bg,
                         R.color.status_closed_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
 
                 else -> {
@@ -96,6 +102,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_unknown_bg,
                         R.color.status_unknown_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
                 }
             }
             binding.tvStatus.text = PostStatus.fromApiStatus(item.status)?.getDescription(context)
