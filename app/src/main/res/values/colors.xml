@@ -152,7 +152,38 @@
     <color name="unknownText">#FFFFFFFF</color> <!-- Màu chữ trắng -->
 
 
+    <!--// Màu cho trạng thái -->
+    <color name="status_pending_approval_bg">#FFFFFF</color><!-- Màu nền vàng đậm -->
+    <color name="status_pending_approval_text">#f18701</color><!-- Màu chữ đen -->
 
+
+    <!-- Awaiting Confirmation -->
+    <color name="status_awaiting_confirmation_bg">#BBDEFB</color>
+    <color name="status_awaiting_confirmation_text">#1E88E5</color>
+
+    <!-- Processing -->
+    <color name="status_processing_bg">#FFE0B2</color>
+    <color name="status_processing_text">#F57C00</color>
+
+    <!-- Completed -->
+    <color name="status_completed_bg">#C8E6C9</color>
+    <color name="status_completed_text">#388E3C</color>
+
+    <!-- Rejected -->
+    <color name="status_rejected_bg">#FFCDD2</color>
+    <color name="status_rejected_text">#D32F2F</color>
+
+    <!-- Pending Pricing -->
+    <color name="status_pending_pricing_bg">#E0E0E0</color>
+    <color name="status_pending_pricing_text">#757575</color>
+
+    <!-- Closed -->
+    <color name="status_closed_bg">#F5F5F5</color>
+    <color name="status_closed_text">#616161</color>
+
+    <!-- Unknown Status -->
+    <color name="status_unknown_bg">#ECEFF1</color>
+    <color name="status_unknown_text">#9E9E9E</color>
 
 
 </resources>

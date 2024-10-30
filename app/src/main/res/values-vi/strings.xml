@@ -137,6 +137,14 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <!--// Valid year for timeshare Rental-->
     <string name="valid_year_description">Các năm đã được đặt hoặc đang trao đổi sẽ không hiển thị. Chỉ những năm khả dụng cho thuê mới xuất hiện trong danh sách.</string>
 
+    <!--// Posting Status-->
+    <string name="pending_approval">Đang chờ phê duyệt</string>
+    <string name="waiting_confirmation">Đang chờ xác nhận</string>
+    <string name="processing">Đang xử lý</string>
+    <string name="completed">Đã hoàn thành</string>
+    <string name="rejected">Bị từ chối</string>
+    <string name="pending_pricing">Đang chờ định giá</string>
+    <string name="closed">Đã đóng</string>
 
     <string-array name="spinner_items">
         <item>Option 1</item>

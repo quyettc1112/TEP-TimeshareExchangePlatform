@@ -10,6 +10,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIReposit
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
@@ -19,6 +20,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Pa
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
@@ -370,6 +372,21 @@ class RentalPostingViewModel @Inject constructor(
             _customerInfoResponse.postValue(Resource.loading(null))
             customerAPIRepository.getIsCustomerExist(token).let {
                 _customerInfoResponse.postValue(it)
+            }
+        }
+    }
+
+    // ----------------------------------------------------------//
+    // Call API Create Posting
+    private val _postingTimeshareResponse = MutableLiveData<Resource<PostingTimeshareResponse>>()
+    val postingTimeshareResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
+        _postingTimeshareResponse
+
+    fun createPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+        viewModelScope.launch {
+            _postingTimeshareResponse.postValue(Resource.loading(null))
+            customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
+                _postingTimeshareResponse.postValue(it)
             }
         }
     }

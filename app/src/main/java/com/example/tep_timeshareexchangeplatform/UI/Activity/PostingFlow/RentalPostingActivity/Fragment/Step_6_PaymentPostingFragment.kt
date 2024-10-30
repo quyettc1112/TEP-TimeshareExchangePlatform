@@ -221,6 +221,23 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                         null
                     )
                     rentalPostingViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+                    val packageEnum =
+                        PackageEnum.getPackageByName(rentalPostingViewModel.packageStep4.value?.name.toString())
+                    val postingTimeshareDTO = PostingTimeshareDTO(
+                        description = "String",
+                        nights = rentalPostingViewModel.numberOfNights.value!!.toInt(),
+                        pricePerNights = rentalPostingViewModel.pricePerNight.value!!.toInt(),
+                        timeshareId = rentalPostingViewModel.myTimeshareModelSelected.value?.timeShareId!!,
+                        cancellationTypeId = rentalPostingViewModel.cancelPolicy.value!!,
+                        checkinDate = rentalPostingViewModel.checkinDate.value!!,
+                        checkoutDate = rentalPostingViewModel.checkoutDate.value!!,
+                        rentalPackageId = packageEnum?.id!!
+                    )
+                    rentalPostingViewModel.createPosting(
+                        tokenManager.getAccessToken().toString(),
+                        postingTimeshareDTO
+                    )
+
 
                 }
 
@@ -248,22 +265,49 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as RentalPostingActivity).showSuccessDialog(
+                        requireContext(),
+                        "Bạn đã đăng bài thành công",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                val intent = Intent(requireContext(), MyPostingActivity::class.java)
+                                startActivity(intent)
+                                requireActivity().finish()
+                            }
+                        }
+                    )
                     response.data?.let {
                         tokenManager.saveCustomerInfo(it)
                         bindDataWalletInfo()
-
-                        (activity as RentalPostingActivity).showSuccessDialog(
-                            requireContext(),
-                            "Bạn đã mua gói thành công",
-                            object : View.OnClickListener {
-                                override fun onClick(v: View?) {
-                                    val intent = Intent(requireContext(), MyPostingActivity::class.java)
-                                    startActivity(intent)
-                                    requireActivity().finish()
-                                }
-                            }
-                        )
                     }
+                }
+
+                Status.ERROR -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Thất Bại",
+                        response.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Observe Create Posting
+        rentalPostingViewModel.postingTimeshareResponse.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    startActivity(Intent(requireContext(), MyPostingActivity::class.java))
+                    requireActivity().finish()
                 }
 
                 Status.ERROR -> {

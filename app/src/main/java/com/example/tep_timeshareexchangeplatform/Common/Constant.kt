@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.Common
 
+import android.content.Context
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.BlogModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
@@ -12,7 +13,11 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Re
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Constant {
 
@@ -70,13 +75,33 @@ class Constant {
         const val AVAILABLE_MONEY = "availableMoney"
 
 
-
         fun formatPrice(price: Int): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
 
+        fun formatDateByLocale(dateString: String, context: Context): String {
+            // Định dạng của chuỗi ngày nhập vào (dd-MM-yyyy)
+            val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
+            // Chuyển chuỗi ngày thành đối tượng Date
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Định dạng ngày tháng dựa trên ngôn ngữ đã lưu
+            val dateFormat = if (languageCode == "vi") {
+                // Định dạng cho Tiếng Việt (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+            } else {
+                // Định dạng cho Tiếng Anh hoặc ngôn ngữ khác (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.ENGLISH)
+            }
+
+            return dateFormat.format(date)
+        }
 
 
         val resortListMT = listOf(
@@ -193,7 +218,6 @@ class Constant {
         )
 
 
-
         val destiantionList = listOf(
             DestinationModel(
                 id = 1,
@@ -245,7 +269,6 @@ class Constant {
             BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
-
 
 
         val listImage = listOf(

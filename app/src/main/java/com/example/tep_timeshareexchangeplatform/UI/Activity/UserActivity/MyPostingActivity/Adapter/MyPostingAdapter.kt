@@ -1,58 +1,130 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.Common.Constant
+import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
 
-class MyPostingAdapter : BaseAdapter<PostingsResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
+class MyPostingAdapter(var context: MyPostingActivity) :
+    BaseAdapter<MyPostingResponse.MyPostingResponseItem, MyPostingAdapter.MyPostingViewHolder>() {
 
-    var onItemClick: ((PostingsResponse.Content) -> Unit)? = null
-    var onItemPricingClick: ((PostingsResponse.Content) -> Unit)? = null
-    inner class MyPostingViewHolder(binding : ItemMyPostingBinding)
-        : BaseItemViewHolderCF<PostingsResponse.Content, ItemMyPostingBinding> (binding) {
-        override fun bind(item: PostingsResponse.Content) {
+
+    var onItemClick: ((MyPostingResponse.MyPostingResponseItem) -> Unit)? = null
+    var onItemPricingClick: ((MyPostingResponse.MyPostingResponseItem) -> Unit)? = null
+
+    inner class MyPostingViewHolder(binding: ItemMyPostingBinding) :
+        BaseItemViewHolderCF<MyPostingResponse.MyPostingResponseItem, ItemMyPostingBinding>(binding) {
+        override fun bind(item: MyPostingResponse.MyPostingResponseItem) {
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
 
             // Show Status
-           /* if (item. == "Đã xác nhận") binding.llStatus.visibility = View.VISIBLE
-            else binding.llStatus.visibility = View.GONE*/
+            when (PostStatus.fromApiStatus(item.status)) {
+                PostStatus.PENDING_APPROVAL -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_pending_approval_text
+                    )
+                }
+
+                PostStatus.AWAITING_CONFIRMATION -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.status_awaiting_confirmation_bg,
+                        R.color.status_awaiting_confirmation_text
+                    )
+                }
+
+                PostStatus.PROCESSING -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.green_verify
+                    )
+                }
+
+                PostStatus.COMPLETED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.blue_header_section,
+                        R.color.blue_full
+                    )
+                }
+
+                PostStatus.REJECTED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_rejected_text
+                    )
+                }
+
+                PostStatus.PENDING_PRICING -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.status_awaiting_confirmation_bg,
+                        R.color.status_awaiting_confirmation_text
+                    )
+                }
+
+                PostStatus.CLOSED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.status_closed_bg,
+                        R.color.status_closed_text
+                    )
+                }
+
+                else -> {
+                    // Default or unknown status case
+                    applyStatusStyle(
+                        context,
+                        R.color.status_unknown_bg,
+                        R.color.status_unknown_text
+                    )
+                }
+            }
+            binding.tvStatus.text = PostStatus.fromApiStatus(item.status)?.getDescription(context)
 
             // Posting Info
-            binding.tvResortName.text = "${item.resortName} | ${item.roomName}"
-            binding.tvLocation.text = item.address
-            binding.tvDate.text = item.checkinDate + " - " + item.checkoutDate
-
-            // Price Info
-            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND | 1 đêm"
-
-            // Status
-            binding.tvStatus.text = item.status
-            // Package Info
-           /* binding.tvPackageName.text = item.packageName
-            binding.tvDuration.text = item.packageDuration*/
-
-
-            // Post Status
-            if (item.status == "AwaitingConfirmation") {
-                binding.btnAcceptPrice.visibility = View.VISIBLE
-            } else {
-                binding.btnAcceptPrice.visibility = View.GONE
+            binding.apply {
+                tvResortName.text = "${item.resortName}"
+                tvRoomName.text =
+                    "Loại Phòng: ${item.unitTypeDTO.title}, Tên Phòng: ${item.roomName}"
+                tvLocation.text = item.address
+                tvCheckInDate.text =
+                    Constant.formatDateByLocale(item.checkinDate, binding.root.context)
+                tvCheckOutDate.text =
+                    Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
             }
 
+            // Price
+            if (item.rentalPackageId == 1 || item.rentalPackageId == 2) {
+                binding.tvRoomPricePerNight.text = "${formatPrice(item.pricePerNights)}đ /đêm"
+            } else {
+                binding.tvRoomPricePerNight.text = "Đang Chờ Định Giá"
+            }
 
+            // Package Info
+            binding.apply {
+                val packageEnum = PackageEnum.getPackageByName(item.rentalPackageName)
+                tvPackageName.text = packageEnum?.name
+                tvExpiredDay.text = Constant.formatDateByLocale(item.expiredDate, binding.root.context)
 
-            // Hide Unused Info
-            binding.tvNumberOfNight.visibility = View.GONE
+            }
 
 
             // Event Click
@@ -70,24 +142,31 @@ class MyPostingAdapter : BaseAdapter<PostingsResponse.Content, MyPostingAdapter.
             return formatter.format(price)
         }
 
+        private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+            binding.apply {
+                llStatusContainer.backgroundTintList = context.getColorStateList(backgroundColorRes)
+                tvStatus.setTextColor(context.getColor(textColorRes))
+                cardStatus.setStrokeColor(context.getColorStateList(textColorRes))
+            }
+        }
+
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<PostingsResponse.Content> {
-        return object : DiffUtil.ItemCallback<PostingsResponse.Content>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<MyPostingResponse.MyPostingResponseItem> {
+        return object : DiffUtil.ItemCallback<MyPostingResponse.MyPostingResponseItem>() {
             override fun areItemsTheSame(
-                oldItem: PostingsResponse.Content,
-                newItem: PostingsResponse.Content
+                oldItem: MyPostingResponse.MyPostingResponseItem,
+                newItem: MyPostingResponse.MyPostingResponseItem
             ): Boolean {
                 return oldItem.rentalPostingId == newItem.rentalPostingId
             }
 
             override fun areContentsTheSame(
-                oldItem: PostingsResponse.Content,
-                newItem: PostingsResponse.Content
+                oldItem: MyPostingResponse.MyPostingResponseItem,
+                newItem: MyPostingResponse.MyPostingResponseItem
             ): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 

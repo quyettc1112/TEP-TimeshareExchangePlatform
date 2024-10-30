@@ -5,6 +5,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareD
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
@@ -43,14 +44,14 @@ interface CustomerAPIService {
     @GET("customer/rental/posting")
     suspend fun getMyPostingList(
         @Header ("Authorization") token: String
-    ) : Response<List<PostingsResponse.Content>>
+    ) : Response<MyPostingResponse>
 
     // Get My Posting Detail
     @GET("customer/rental/posting/{postingId}")
     suspend fun getMyPostingDetail(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int
-    ) : Response<PostingDetailResponse>
+    ) : Response<MyPostingResponse>
 
 
     // Create Posting

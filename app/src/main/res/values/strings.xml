@@ -138,6 +138,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <!--// Valid year for timeshare Rental-->
     <string name="valid_year_description">Years that are already booked or listed for exchange will not be displayed. Only available years for rental will appear in the list.</string>
 
+    <!--// Posting Status-->
+    <string name="pending_approval">Pending Approval</string>
+    <string name="waiting_confirmation">Awaiting Confirmation</string>
+    <string name="processing">Processing</string>
+    <string name="completed">Completed</string>
+    <string name="rejected">Rejected</string>
+    <string name="pending_pricing">Pending Pricing</string>
+    <string name="closed">Closed</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

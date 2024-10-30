@@ -23,7 +23,7 @@ class MyPostingDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _postingDetailResponse.postValue(Resource.loading(null))
             customerAPIRepository.getMyPostingDetail(token, postingId).let {
-                _postingDetailResponse.postValue(it)
+             /*   _postingDetailResponse.postValue(it)*/
             }
         }
     }

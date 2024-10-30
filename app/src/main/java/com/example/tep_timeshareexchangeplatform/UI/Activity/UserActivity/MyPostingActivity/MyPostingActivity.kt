@@ -29,12 +29,13 @@ class MyPostingActivity : BaseActivity() {
 
     private val viewModel: MyPostingViewModel by viewModels()
 
-    private var myPostingAdapter = MyPostingAdapter()
+    private lateinit var myPostingAdapter: MyPostingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMyPostingBinding.inflate(layoutInflater)
+        myPostingAdapter = MyPostingAdapter(this)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -44,7 +45,7 @@ class MyPostingActivity : BaseActivity() {
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getMyPostingList(token.getAccessToken().toString())
-        } else  {
+        } else {
             MotionToast.Companion.createColorToast(
                 this,
                 "Bạn chưa đăng nhập",
@@ -63,35 +64,33 @@ class MyPostingActivity : BaseActivity() {
     }
 
     private fun observeMyPostingList() {
-        viewModel.myPosting.observe(this) {
+        viewModel.myPostingList.observe(this) {
             when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    it.data?.let { list ->
-                        myPostingAdapter.submitList(list)
-                        Log.d("MyPostingActivityDasta", "observeMyPostingList: $list")
-                    }
+                    myPostingAdapter.submitList(it.data?.toList())
                 }
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        "Không thể lấy thông tin bài đăng",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-
-                Status.LOADING -> {
-                    showLoadingWaiting(true)
+                    it.message?.let { it1 ->
+                        MotionToast.Companion.createColorToast(
+                            this,
+                            "Lỗi",
+                            it1,
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            null
+                        )
+                    }
                 }
             }
         }
-
 
     }
 
@@ -102,8 +101,6 @@ class MyPostingActivity : BaseActivity() {
             intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.rentalPostingId)
             startActivity(intent)
         }
-
-
 
         myPostingAdapter.onItemPricingClick = {
             startActivity(Intent(this, PricingSupportActivity::class.java))
