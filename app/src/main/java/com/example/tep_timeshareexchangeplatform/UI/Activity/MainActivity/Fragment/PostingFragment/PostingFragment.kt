@@ -70,15 +70,9 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
 
                 Status.ERROR -> {
                     (activity as MainActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    if(it.message!!.contains("404")) {
+                        intentToMemberShipActivity()
+                    }
 
                 }
 

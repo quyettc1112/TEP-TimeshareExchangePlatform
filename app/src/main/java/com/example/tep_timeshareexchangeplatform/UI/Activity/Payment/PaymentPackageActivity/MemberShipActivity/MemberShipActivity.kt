@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalP
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -69,12 +70,6 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
-                    intent.putExtra(
-                        Constant.DEFAULT_PACKAGE_SELECTION,
-                        memberShipViewModel.currentPackage.value!!.id
-                    )
-                    startActivity(intent)
                     MotionToast.createColorToast(
                         this,
                         "Success",
@@ -84,6 +79,7 @@ class MemberShipActivity : BaseActivity() {
                         MotionToast.LONG_DURATION,
                         null
                     )
+                    memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
                 }
 
                 Status.ERROR -> {
@@ -112,6 +108,7 @@ class MemberShipActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     tokenManager.saveCustomerInfo(it.data!!)
+                    tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(
                         Constant.DEFAULT_PACKAGE_SELECTION,
