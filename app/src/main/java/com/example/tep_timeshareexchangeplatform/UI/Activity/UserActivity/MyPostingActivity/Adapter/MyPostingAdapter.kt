@@ -46,6 +46,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_awaiting_confirmation_bg,
                         R.color.status_awaiting_confirmation_text
                     )
+                    binding.btnAcceptPrice.visibility = View.VISIBLE
                 }
 
                 PostStatus.PROCESSING -> {
@@ -120,9 +121,20 @@ class MyPostingAdapter(var context: MyPostingActivity) :
 
             // Package Info
             binding.apply {
-                val packageEnum = PackageEnum.getPackageByName(item.rentalPackageName)
-                tvPackageName.text = packageEnum?.name
-                tvExpiredDay.text = Constant.formatDateByLocale(item.expiredDate, binding.root.context)
+                if (item.rentalPackageName != null) {
+                    val packageEnum = PackageEnum.getPackageByName(item.rentalPackageName)
+                    if (packageEnum != null) {
+                        tvPackageName.text = packageEnum?.name
+                        if (item.expiredDate != null) {
+                            tvExpiredDay.text = Constant.formatDateByLocale(
+                                item.expiredDate.toString() ?: "2024-12-31",
+                                binding.root.context
+                            )
+                        }
+
+                    }
+                }
+
 
             }
 

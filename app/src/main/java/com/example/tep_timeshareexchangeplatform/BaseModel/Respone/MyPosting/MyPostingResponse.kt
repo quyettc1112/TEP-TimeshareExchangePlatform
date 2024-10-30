@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName
 class MyPostingResponse : ArrayList<MyPostingResponse.MyPostingResponseItem>(){
     data class MyPostingResponseItem(
         @SerializedName("rentalPostingId") val rentalPostingId: Int,
-        @SerializedName("expiredDate") val expiredDate: String,
+        @SerializedName("expiredDate") val expiredDate: String?,
         @SerializedName("ownerId") val ownerId: Int,
         @SerializedName("ownerName") val ownerName: String,
         @SerializedName("timeShareId") val timeShareId: Int,
         @SerializedName("roomInfoId") val roomInfoId: Int,
         @SerializedName("roomName") val roomName: String,
         @SerializedName("resortId") val resortId: Int,
-        @SerializedName("resortName") val resortName: String,
+        @SerializedName("resortName") val resortName: String?,
         @SerializedName("address") val address: String,
         @SerializedName("isVerify") val isVerify: Boolean,
         @SerializedName("nights") val nights: Int,
