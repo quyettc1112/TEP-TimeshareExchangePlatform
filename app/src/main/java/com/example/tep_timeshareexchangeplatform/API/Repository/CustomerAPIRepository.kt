@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareD
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingsResponse
@@ -89,7 +90,7 @@ class CustomerAPIRepository@Inject constructor(
 
 
     // Get my posting detail
-    suspend fun getMyPostingDetail(token: String, postingId: Int): Resource<MyPostingResponse> {
+    suspend fun getMyPostingDetail(token: String, postingId: Int): Resource<MyPostingDetailResponse> {
         return try {
             val response = customerAPIService.getMyPostingDetail("Bearer $token", postingId)
             if (response.isSuccessful) {

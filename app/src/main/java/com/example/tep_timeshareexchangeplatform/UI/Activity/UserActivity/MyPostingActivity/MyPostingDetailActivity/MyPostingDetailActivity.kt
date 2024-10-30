@@ -1,20 +1,29 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Posting.PostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.VNPAYPurchaseResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -103,25 +112,27 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindData(postingDetailResponse: PostingDetailResponse) {
+    private fun bindData(myPostingDetailResponse: MyPostingDetailResponse) {
         // Hide Unessary View
+
+
         binding.includePackagePosting.apply {
             tvPackageDescription.visibility = View.GONE
         }
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetailResponse.unitType.title}")
-            setTitleDetail("${postingDetailResponse.checkinDate} - ${postingDetailResponse.checkoutDate}")
+            setTitle("${myPostingDetailResponse.unitType.title}")
+            setTitleDetail("${myPostingDetailResponse.checkinDate} - ${myPostingDetailResponse.checkoutDate}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text =
-                postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
-            tvLocation.text = postingDetailResponse.address
+                myPostingDetailResponse.resortName + " | " + myPostingDetailResponse.unitType.title
+            tvLocation.text = myPostingDetailResponse.address
 
-            if (postingDetailResponse.isVerify) {
+            if (myPostingDetailResponse.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
@@ -130,39 +141,42 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Checkin Date, Check out Date
         binding.apply {
-            tvCheckInDate.text = postingDetailResponse.checkinDate
-            tvCheckOutDate.text = postingDetailResponse.checkoutDate
-            tvNights.text = "${postingDetailResponse.nights} đêm"
+            tvCheckInDate.text =  Constant.formatDateByLocale(myPostingDetailResponse.checkinDate, this@MyPostingDetailActivity)
+            tvCheckOutDate.text =  Constant.formatDateByLocale(myPostingDetailResponse.checkoutDate, this@MyPostingDetailActivity)
+            tvNights.text = "${myPostingDetailResponse.nights} đêm"
         }
+
+        // BindDAta Package
+        bindPackageData(myPostingDetailResponse.rentalPackageName)
 
         // Set Unit Type Of Posting
         binding.apply {
             tvRoomName.text =
-                "Chi Tiết Phòng | ${postingDetailResponse.unitType.title} #${postingDetailResponse.roomName}"
+                "Chi Tiết Phòng | ${myPostingDetailResponse.unitType.title} #${myPostingDetailResponse.roomName}"
 
             // Bath
-            tvNumBath.text = postingDetailResponse.unitType.bathrooms.toString()
-            tvBed.text = postingDetailResponse.unitType.bedrooms.toString()
+            tvNumBath.text = myPostingDetailResponse.unitType.bathrooms.toString()
+            tvBed.text = myPostingDetailResponse.unitType.bedrooms.toString()
 
             // Beds
             val unitTypeMap = mapOf(
-                "bedsFull" to postingDetailResponse.unitType.bedsFull,
-                "bedsKing" to postingDetailResponse.unitType.bedsKing,
-                "bedsSofa" to postingDetailResponse.unitType.bedsSofa,
-                "bedsMurphy" to postingDetailResponse.unitType.bedsMurphy,
-                "bedsQueen" to postingDetailResponse.unitType.bedsQueen,
-                "bedsTwin" to postingDetailResponse.unitType.bedsTwin
+                "bedsFull" to myPostingDetailResponse.unitType.bedsFull,
+                "bedsKing" to myPostingDetailResponse.unitType.bedsKing,
+                "bedsSofa" to myPostingDetailResponse.unitType.bedsSofa,
+                "bedsMurphy" to myPostingDetailResponse.unitType.bedsMurphy,
+                "bedsQueen" to myPostingDetailResponse.unitType.bedsQueen,
+                "bedsTwin" to myPostingDetailResponse.unitType.bedsTwin
             )
-            tvNumBed.text = postingDetailResponse.unitType.bedrooms.toString()
+            tvNumBed.text = myPostingDetailResponse.unitType.bedrooms.toString()
             tvBed.text = displayBedsInfo(unitTypeMap)
 
             // Kitchen
-            tvKitchen.text = postingDetailResponse.unitType.kitchen
+            tvKitchen.text = myPostingDetailResponse.unitType.kitchen
             tvNumKitchen.text = 1.toString()
 
             // Max Guest
-            tvNumPerson.text = postingDetailResponse.unitType.sleeps.toString()
-            tvPerson.text = "${postingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
+            tvNumPerson.text = myPostingDetailResponse.unitType.sleeps.toString()
+            tvPerson.text = "${myPostingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
 
             // Room Policy
             // Do IT Later
@@ -171,43 +185,35 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Cancel Policy
         binding.apply {
-            if (postingDetailResponse.cancelType.toString() == "null") {
+            if (myPostingDetailResponse.cancelType.toString() == "null") {
                 tvCancelPolicy.text = "Không có"
                 includeDetailBilling.tvCancellationPolicy.text = "Không có"
             } else {
-                tvCancelPolicy.text = postingDetailResponse.cancelType.toString()
+                tvCancelPolicy.text = myPostingDetailResponse.cancelType.toString()
                 includeDetailBilling.tvCancellationPolicy.text =
-                    postingDetailResponse.cancelType.toString()
+                    myPostingDetailResponse.cancelType.toString()
             }
-
         }
 
         // UI DTB
         binding.includeDetailBilling.apply {
             tvResortNameDtb.text =
-                postingDetailResponse.resortName + " | " + postingDetailResponse.unitType.title
-            tvCheckInDate.text = postingDetailResponse.checkinDate
-            tvCheckOutDate.text = postingDetailResponse.checkoutDate
-            tvNumberNight.text = "${postingDetailResponse.nights} đêm"
-            tvRoomPricePerNight.text = "${postingDetailResponse.pricePerNights} đ"
-            tvEstimatedTotalPrice.text = "${postingDetailResponse.totalPrice} đ"
-            tvLocation.text = postingDetailResponse.address
+                myPostingDetailResponse.resortName + " | " + myPostingDetailResponse.unitType.title
+            tvCheckInDate.text = myPostingDetailResponse.checkinDate
+            tvCheckOutDate.text = myPostingDetailResponse.checkoutDate
+            tvNumberNight.text = "${myPostingDetailResponse.nights} đêm"
+            tvRoomPricePerNight.text = "${myPostingDetailResponse.pricePerNights} đ"
+            tvEstimatedTotalPrice.text = "${myPostingDetailResponse.totalPrice} đ"
+            tvLocation.text = myPostingDetailResponse.address
         }
 
-        // Data for Request
-        binding.apply {
-            tvPrice.text = "${postingDetailResponse.totalPrice} đ"
-            tvDate.text =
-                "${postingDetailResponse.checkinDate} - ${postingDetailResponse.checkoutDate}"
-
-        }
 
         // Set Amenities
-        facilityAdapter.submitList(postingDetailResponse.resortAmenities)
+        facilityAdapter.submitList(listOf())
 
         binding.apply {
             // Thiết lập văn bản trạng thái
-            tvStatus.text = when (postingDetailResponse.status) {
+            tvStatus.text = when (myPostingDetailResponse.status) {
                 "PendingApproval" -> "Đang chờ duyệt"
                 "Processing" -> "Đang xử lý"
                 "PendingPricing" -> "Đã từ chối"
@@ -219,7 +225,7 @@ class MyPostingDetailActivity : BaseActivity() {
             }
 
             // Thiết lập màu nền và màu chữ dựa trên trạng thái
-            val (backgroundColor, textColor) = when (postingDetailResponse.status) {
+            val (backgroundColor, textColor) = when (myPostingDetailResponse.status) {
                 "PendingApproval" -> Pair(R.color.pendingApprovalBackground, R.color.pendingApprovalText)
                 "Processing" -> Pair(R.color.processingBackground, R.color.processingText)
                 "PendingPricing" -> Pair(R.color.pendingPricingBackground, R.color.pendingPricingText)
@@ -237,8 +243,121 @@ class MyPostingDetailActivity : BaseActivity() {
             tvStatus.setTextColor(ContextCompat.getColor(this@MyPostingDetailActivity, textColor))
         }
 
+        when (PostStatus.fromApiStatus(myPostingDetailResponse.status)) {
+            PostStatus.PENDING_APPROVAL -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_pending_approval_text
+                )
+            }
+
+            PostStatus.AWAITING_CONFIRMATION -> {
+                applyStatusStyle(
+                    this,
+                    R.color.status_awaiting_confirmation_bg,
+                    R.color.status_awaiting_confirmation_text
+                )
+            }
+
+            PostStatus.PROCESSING -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.green_verify
+                )
+            }
+
+            PostStatus.COMPLETED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.blue_header_section,
+                    R.color.blue_full
+                )
+            }
+
+            PostStatus.REJECTED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_rejected_text
+                )
+            }
+
+            PostStatus.PENDING_PRICING -> {
+                applyStatusStyle(
+                    this,
+                    R.color.status_awaiting_confirmation_bg,
+                    R.color.status_awaiting_confirmation_text
+                )
+            }
+
+            PostStatus.CLOSED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.status_closed_bg,
+                    R.color.status_closed_text
+                )
+            }
+
+            else -> {
+                // Default or unknown status case
+                applyStatusStyle(
+                    this,
+                    R.color.status_unknown_bg,
+                    R.color.status_unknown_text
+                )
+            }
+        }
+        binding.tvStatus.text = PostStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
 
 
+    }
+
+    private fun bindPackageData(packageName : String) {
+        val packageEnum = PackageEnum.getPackageByName(packageName)
+
+        when (packageEnum) {
+
+            PackageEnum.BASIC_SERVICE.packageModel -> {
+                binding.includePackagePosting.apply {
+                    tvPackageName.text = packageEnum.name
+                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                }
+            }
+
+            PackageEnum.ADVANCED_SERVICE.packageModel -> {
+                binding.includePackagePosting.apply {
+                    tvPackageName.text = packageEnum.name
+                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                }
+            }
+            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                binding.includePackagePosting.apply {
+                    tvPackageName.text = packageEnum.name
+                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                }
+            }
+            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                binding.includePackagePosting.apply {
+                    tvPackageName.text = packageEnum.name
+                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                }
+            }
+
+        }
+
+
+
+
+
+    }
+
+    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+        binding.apply {
+            ctrRequestButton.backgroundTintList = context.getColorStateList(backgroundColorRes)
+            tvStatus.setTextColor(context.getColor(textColorRes))
+        }
     }
 
     private fun initAdapter() {

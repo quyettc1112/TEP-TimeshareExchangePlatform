@@ -216,7 +216,7 @@
                     android:text="Tìm hiểu thêm"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayout10"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout10" />
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -764,58 +764,6 @@
             android:paddingEnd="20dp"
             android:background="@drawable/background_stroke_around"
             android:backgroundTint="@color/primary_background_F9">
-            <!--// See All-->
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/ll_see_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_see_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:textColor="@color/blue_see_more"
-                    android:text="Thu nhỏ" />
-
-                <ImageView
-                    android:id="@+id/im_expanded"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_expend_open" />
-
-            </LinearLayout>
-
-            <!--// Price-->
-            <TextView
-                android:id="@+id/tv_price"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_bold"
-                android:text="325.000 đ / 1 đêm "
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!--// Date -->
-            <TextView
-                android:id="@+id/tv_date"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_bold"
-                android:text="19 tháng 8, 2024 - 23 tháng 8, 2024"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
             <!--// Button Request-->
             <androidx.constraintlayout.widget.ConstraintLayout
