@@ -99,6 +99,7 @@ class SplashActivity : BaseActivity() {
             splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString())
 
         } else {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
             handlerLooper()
         }
     }

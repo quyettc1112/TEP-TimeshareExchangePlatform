@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!--// Image-->
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
@@ -33,9 +32,6 @@
         </androidx.cardview.widget.CardView>
 
         <!--// Resort Info-->
-
-
-        <!--// Resort Price-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
@@ -45,38 +41,38 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2">
-            <!--// Resort Name-->
-
 
             <!--// Resort Info-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
-                android:layout_marginEnd="100dp"
+                android:paddingEnd="5dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <!-- // Location-->
                 <TextView
                     android:id="@+id/tv_resortName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
                     android:maxLines="2"
-                    android:text="Flamingo Đại Lải sdfsdfsdfsdffsdf"
+                    android:paddingStart="5dp"
+                    android:text="Flamingo Đại Lải sdfsdvsdv sddfbdfbdfbd "
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- // Location-->
                 <LinearLayout
                     android:id="@+id/linearLayout20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:paddingStart="5dp"
                     android:minHeight="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -86,154 +82,129 @@
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/ic_location"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
                         android:gravity="center|left"
                         android:maxLines="2"
-                        android:text="Đại Lải, Phúc Yên, Việt Nam"
+                        android:text="Đại Lải, Phúc Yên, Việt Namdfbdfbdfbdfbdfbdfbdfbdfb"
                         android:textSize="12dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:minHeight="20dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout20">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_room_ts" />
-
-                    <TextView
-                        android:id="@+id/tv_room"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:gravity="center|left"
-                        android:maxLines="1"
-                        android:text="123 Timeshare cho thuê có sẵn"
-                        android:textSize="12dp" />
-                </LinearLayout>
-                <!-- // Room-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center|left"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_extrabold"
-                android:gravity="center|left"
-                android:text="1500.000 - 1,300.000 VND "
-                android:textColor="@color/blue_full"
-                android:textSize="14dp" />
-
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/tv_numberOfNight"
+            <!-- // Ratign-->
+            <LinearLayout
+                android:id="@+id/linearLayout24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="center|left"
-                android:text=" / 4 đêm"
-                android:textColor="@color/primary_stroke_around"
-                android:textSize="10dp" />
-
-        </LinearLayout>
-
-
-
-
-        <!-- // Ratign-->
-        <LinearLayout
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:strokeColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|right"
-                android:orientation="vertical">
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+                app:strokeColor="@color/white">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:background="@drawable/background_stroke_around"
-                    android:backgroundTint="#F23161"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/background_stroke_around"
+                        android:backgroundTint="#F23161"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_semibold"
+                            android:gravity="center"
+                            android:text="4.5"
+                            android:textColor="@color/white"
+                            android:textSize="12dp" />
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="5dp"
+                            android:src="@drawable/baseline_star_24" />
+                    </LinearLayout>
+
 
                     <TextView
+                        android:id="@+id/tv_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/inter_semibold"
-                        android:gravity="center"
-                        android:text="4.5"
-                        android:textColor="@color/white"
-                        android:textSize="12dp" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
                         android:layout_marginStart="5dp"
-                        android:src="@drawable/baseline_star_24" />
+                        android:gravity="center"
+                        android:text="Rất tốt (254)"
+                        android:textSize="12dp" />
                 </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/tv_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:text="Rất tốt (254)"
-                    android:textSize="12dp" />
             </LinearLayout>
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--  // Price-->
+        <LinearLayout
+            android:id="@+id/materialCardView3"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/background_rating"
+            android:gravity="center"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/appCompatButton"
+            app:strokeColor="@color/white">
+
+            <!--// Price-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatButton"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/appCompatButton">
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:text="1500.000 - 1,300.000 VND"
+                    android:textColor="#007EF2"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <!--// Book Now Button-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButton"
             android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_stroke_around"
             android:backgroundTint="@color/blue_btn_search"
@@ -246,9 +217,7 @@
 
         </androidx.appcompat.widget.AppCompatButton>
 
-
         <!--// Favorite Button-->
-
         <LinearLayout
             android:id="@+id/ll_favorite"
             android:visibility="gone"
@@ -268,16 +237,6 @@
                 android:layout_margin="5dp"
                 android:src="@drawable/baseline_favorite_24" />
         </LinearLayout>
-
-
-
-
-
-
-
-
-
-
 
 
 

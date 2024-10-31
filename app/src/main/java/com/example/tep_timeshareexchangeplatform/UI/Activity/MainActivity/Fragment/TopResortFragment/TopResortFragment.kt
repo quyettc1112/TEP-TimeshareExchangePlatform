@@ -12,10 +12,12 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.TimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
@@ -23,13 +25,14 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
+class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
 
     private lateinit var binding: FragmentTopResortBinding
     private lateinit var FragmentAdapter: FragmentAdapter
     private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
-    private val topResortViewModel: TopResortViewModel by viewModels()
-
+    private lateinit var resortAdapter: ResortAdapterRV
+    private val mainViewModel: MainViewModel by viewModels()
+    private val dialog = TopDialogFragment()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,32 +53,24 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        observeViewModel()
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
         setUpTabLayoutViewPager()
         setEventSearchComponent()
+        observeData()
         return binding.root
     }
 
-    private fun observeViewModel(){
-        /*topResortViewModel.postingsResponse.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.LOADING -> {
-                    (activity as MainActivity).showLoadingWaiting(true)
-                }
+    private fun observeData() {
+        // Observe data from ViewModel Location
+        mainViewModel.location.observe(viewLifecycleOwner) {
+            dialog._binding.tvLocation.text = it
+        }
 
-                Status.SUCCESS -> {
-
-                }
-
-                Status.ERROR -> {
-                    // Show error
-                }
-            }
-        }*/
+        //
     }
 
-    private fun setUpTabLayoutViewPager(){
+
+    private fun setUpTabLayoutViewPager() {
         val listFragment: ArrayList<Fragment> = ArrayList()
         listFragment.add(ResortFragment())
         listFragment.add(TimeshareFragment())
@@ -84,7 +79,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
         binding.tblTopResort.let {
             // Add 2 tab
             it.addTab(it.newTab().setText("Top Resort"))
-            it.addTab(it.newTab().setText("Timeshare"))
+            it.addTab(it.newTab().setText("Bài Đăng"))
 
             // Set Text Color
             it.setTabTextColors(
@@ -93,16 +88,18 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
             )
 
             // Set Tab Layout Onclick Event
-            it.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     if (tab != null) {
                         binding.vpResortTimeshare.currentItem = tab!!.position
                         bottomNavVisibilityListener!!.showBottomNav()
                     }
                 }
+
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     // Not thing to do
                 }
+
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     // Not thing to do
                 }
@@ -116,7 +113,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
             it.adapter = FragmentAdapter
             it.isUserInputEnabled = false
             it.offscreenPageLimit = 2
-            it.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     binding.tblTopResort.selectTab(binding.tblTopResort.getTabAt(position))
                 }
@@ -124,14 +121,15 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort)  {
         }
 
     }
-    private fun setEventSearchComponent(){
+
+    private fun setEventSearchComponent() {
         binding.crSearchComponent.setOnClickListener {
-            val dialog = TopDialogFragment()
             dialog.show(requireActivity().supportFragmentManager, "TopDialogFragment")
+            dialog._binding.btnSearch.setOnClickListener {
+                val location = mainViewModel.location.value
+                mainViewModel.getResortONTopResort(0, 20, location!!)
+            }
         }
-
-
-
     }
 
 }

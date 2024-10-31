@@ -137,6 +137,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
 
+        mainViewModel.location.observe(viewLifecycleOwner, Observer { location ->
+            binding.tvLocation.text = location
+        })
+
 
     }
 
@@ -287,18 +291,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 val constraintsBuilder = CalendarConstraints.Builder()
                     .setValidator(object : CalendarConstraints.DateValidator {
                         override fun isValid(date: Long): Boolean {
-                            // Định dạng ngày để kiểm tra các ngày không hợp lệ
-                            val calendar = Calendar.getInstance().apply { timeInMillis = date }
-                            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-                            val month = calendar.get(Calendar.MONTH)
-                            val year = calendar.get(Calendar.YEAR)
+
 
                             return true
                         }
 
                         override fun describeContents(): Int = 0
                         override fun writeToParcel(dest: Parcel, flags: Int) {
-                            TODO("Not yet implemented")
                         }
 
                     })
@@ -356,7 +355,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     val selectedLocation =
                         data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
                     selectedLocation?.let {
-                        binding.tvLocation.text = selectedLocation
+                        mainViewModel.updateLocation(selectedLocation)
                     }
                 }
             }

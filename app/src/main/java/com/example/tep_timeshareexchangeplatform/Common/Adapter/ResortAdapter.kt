@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
@@ -32,14 +33,10 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
                 onFavoriteClick?.let { it1 -> it1(item) }
             }
             // Not yet implemented
-           /* binding.tvRating.text = item.rating.toString()
-            binding.tvRatingCount.text = item.ratingCount*/
-            /*Glide.with(binding.imResortImage.context)
-                .load(item.resortImage)
-                .into(binding.imResortImage)*/
+            Glide.with(binding.imResortImage.context)
+                .load(item.logo)
+                .into(binding.imResortImage)
 
-            // Hide Unnecessary Views
-            binding.tvNumberOfNight.visibility = View.GONE
         }
 
         fun formatPrice(price: Int): String {

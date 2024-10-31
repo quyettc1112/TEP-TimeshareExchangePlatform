@@ -23,7 +23,7 @@ import java.util.Locale
 
 class TopDialogFragment : DialogFragment() {
 
-    private lateinit var _binding: DialogSearchComponentBinding
+    lateinit var _binding: DialogSearchComponentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
