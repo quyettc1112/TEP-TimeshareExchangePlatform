@@ -18,11 +18,8 @@ class ResortAdapterRV: BaseAdapter<ResortModel, ResortAdapterRV.ResortViewHolder
         override fun bind(item: ResortModel) {
             binding.tvResortName.text = item.resortName
             binding.tvRating.text = item.rating.toString()
-            binding.tvRatingCount.text = item.ratingCount
             binding.tvLocation.text = item.location
-            binding.tvRoom.text = item.roomDetails
             binding.tvPrice.text = item.price
-            binding.tvNumberOfNight.text = item.numberOfNights
             Glide.with(binding.imResortImage.context)
                 .load(item.resortImage)
                 .into(binding.imResortImage)
