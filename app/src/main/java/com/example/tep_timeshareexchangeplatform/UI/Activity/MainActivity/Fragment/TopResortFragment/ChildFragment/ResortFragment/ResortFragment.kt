@@ -2,23 +2,18 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,7 +69,7 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
     private fun observeResortList() {
 
         // Observe the Resort Response from the API
-        mainViewModel.resortResponseOnTopResort.observe(viewLifecycleOwner) { response ->
+        mainViewModel.resort_TopResort.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
                     binding.animLoadingMore.visibility = View.VISIBLE

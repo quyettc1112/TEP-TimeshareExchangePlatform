@@ -33,7 +33,6 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
     private var publicPostingAdapterRV = PublicPostingAdapterRV()
     private val viewModel: MainViewModel by activityViewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         publicPostingAdapterRV.submitList(listOf())
@@ -70,31 +69,30 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
 
-                if (lastCompletelyVisibleItem == totalItemCount - 1) {
-                    /*viewModel.incrementCurrentPostingsPage()
-                    Toast.makeText(
-                        requireActivity(),
-                        "Loading more, Page ${viewModel.currentPostingsPage.value}, ${publicPostingAdapterRV.differ.currentList.size}",
-                        Toast.LENGTH_SHORT
-                    ).show()*/
+                val totalElementOfAPI = viewModel.posting_TopResort.value?.data?.totalElements ?: 0
+                val currentListSizeOfAdapter = publicPostingAdapterRV.differ.currentList.size
+
+
+                if (lastCompletelyVisibleItem == totalItemCount - 1 && currentListSizeOfAdapter < totalElementOfAPI) {
+                    viewModel.incrementCurrentPostingsPage()
                 }
             }
         })
     }
 
     private fun observeViewModel() {
-       /* viewModel.homePublicPosting.observe(viewLifecycleOwner) {
+        viewModel.posting_TopResort.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    (activity as MainActivity).hideLoadingWaiting()
+                    binding.animLoadingMore.visibility = View.GONE
                     if (!it.data?.content.isNullOrEmpty()) {
-                       *//* viewModel.loadMorePostings(it.data?.content ?: emptyList())
-                        publicPostingAdapterRV.submitList(viewModel.getCurrentPostingList())*//*
+                        viewModel.loadMorePostings(it.data?.content ?: emptyList())
+                        publicPostingAdapterRV.submitList(viewModel.getCurrentPostingList())
                     }
                 }
 
                 Status.ERROR -> {
-                    (activity as MainActivity).hideLoadingWaiting()
+                    binding.animLoadingMore.visibility = View.VISIBLE
                     MotionToast.Companion.createToast(
                         requireActivity(),
                         "Error",
@@ -107,17 +105,14 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                 }
 
                 Status.LOADING -> {
-                    (activity as MainActivity).showLoadingWaiting(false)
+                    binding.animLoadingMore.visibility = View.VISIBLE
                 }
             }
         }
-*/
-       /* viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
-            viewModel.getPublicPostingsHome(it, PAGE_SIZE, "")
-            Toast.makeText(requireActivity(), "Call Loading, Page $it", Toast.LENGTH_SHORT).show()
-        }*/
-
-
+        viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
+            // Call API After Scroll to End
+            viewModel.getPostingOnTopResort(it, PAGE_SIZE, "")
+        }
     }
 
     override fun onResume() {

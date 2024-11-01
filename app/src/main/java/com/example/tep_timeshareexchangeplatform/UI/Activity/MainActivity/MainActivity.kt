@@ -66,6 +66,25 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onNewIntent(intent)
     }
 
+    /**
+     * Call API
+     */
+    private fun callGetAPI() {
+
+        // Call API Resort for Top Resort
+        mainViewModel.getResortONTopResort(0, PAGE_SIZE, "")
+
+        // Call API Public Posting for Top Resort
+        mainViewModel.getPostingOnTopResort(0, PAGE_SIZE, "")
+
+
+    }
+
+
+    /**
+     * Check User State Log
+     * Handler User State Log, Change UI when user is logged in or not
+     */
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
         val customerInfo = tokenManager.getCustomerInfo()
@@ -76,33 +95,40 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
                     mainViewModel.setCustomerInfo(customerInfo)
                 }
             }
+
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                 if (customerInfo != null) {
                     mainViewModel.setCustomerInfo(customerInfo)
                 }
             }
+
             UserLogState.LOGGED_IN_AS_USER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_USER)
             }
+
             UserLogState.LOGGED_OUT -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             }
         }
     }
 
-    private fun changeLangEvent() {
-        val preferenceHelper = PreferenceHelper(this)
-        val savedLanguage = preferenceHelper.getLanguage()
-        val locale = savedLanguage?.let { Locale(it) }
-        if (locale != null) {
-            Locale.setDefault(locale)
+    // Check User is logged in or not
+    private fun checkUserLoggedIn() {
+        val tokenManager = TokenManager(this)
+        if (tokenManager.isLoggedIn()) {
+            // Decode JWT token to JWTPayloadModel
+            val jwtPayloadModel =
+                JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
+            // Save tokens to shared preferences
+            jwtPayloadModel?.let { mainViewModel.updateUser(it) }
         }
-        val config = Configuration()
-        config.setLocale(locale)
-        this.resources.updateConfiguration(config, this.resources.displayMetrics)
     }
 
+
+    /**
+     * Handle Bottom Navigation Logic
+     */
     private fun setUpBottomNav() {
         val listFragment: ArrayList<Fragment> = ArrayList()
         listFragment.add(HomeFragment())
@@ -131,6 +157,22 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         }
     }
 
+
+    /**
+     * Common Event Function
+     */
+    private fun changeLangEvent() {
+        val preferenceHelper = PreferenceHelper(this)
+        val savedLanguage = preferenceHelper.getLanguage()
+        val locale = savedLanguage?.let { Locale(it) }
+        if (locale != null) {
+            Locale.setDefault(locale)
+        }
+        val config = Configuration()
+        config.setLocale(locale)
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
+    }
+
     override fun hideBottomNav() {
         binding.cardView.animate().translationY(binding.cardView.height.toFloat()).duration = 30
     }
@@ -140,31 +182,9 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     }
 
 
-    // Check User is logged in or not
-    private fun checkUserLoggedIn() {
-        val tokenManager = TokenManager(this)
-        if (tokenManager.isLoggedIn()) {
-            // Decode JWT token to JWTPayloadModel
-            val jwtPayloadModel =
-                JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
-            // Save tokens to shared preferences
-            jwtPayloadModel?.let { mainViewModel.updateUser(it) }
-        }
-    }
-
-    private fun callGetAPI() {
-
-
-        // Call API Resort for Top Resort
-        mainViewModel.getResortONTopResort(0, PAGE_SIZE, "")
-
-
-
-
-
-    }
-
-
+    /**
+     * LIFE CYCLE
+     */
     override fun onResume() {
         super.onResume()
         checkUserLoggedIn()

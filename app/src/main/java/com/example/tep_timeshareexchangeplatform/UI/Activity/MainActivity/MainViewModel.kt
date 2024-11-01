@@ -112,10 +112,6 @@ class MainViewModel @Inject constructor(
 
 
 
-
-
-
-
     /**
      * Tracking User Login State
      *
@@ -131,8 +127,8 @@ class MainViewModel @Inject constructor(
      */
     // Call API ALL Postings In Top Resort Fragment
     private val _posting_TopResort = MutableLiveData<Resource<PublicPostingResponse>>()
-    val topResort_Posting: MutableLiveData<Resource<PublicPostingResponse>> get() = _posting_TopResort
-    fun getPostingsTopResort(pageNo: Int, pageSize: Int, resortName: String) {
+    val posting_TopResort: MutableLiveData<Resource<PublicPostingResponse>> get() = _posting_TopResort
+    fun getPostingOnTopResort(pageNo: Int, pageSize: Int, resortName: String) {
         viewModelScope.launch {
             _posting_TopResort.postValue(Resource.loading(null))
             publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
@@ -141,9 +137,6 @@ class MainViewModel @Inject constructor(
         }
     }
     private val _currentPostingList = MutableLiveData<List<PublicPostingResponse.Content>>()
-    fun setCurrentPostingList(list: List<PublicPostingResponse.Content>) {
-        _currentPostingList.value = list
-    }
     fun loadMorePostings(list: List<PublicPostingResponse.Content>) {
         val currentList = _currentPostingList.value ?: emptyList()
         val updatedList = currentList + list
@@ -166,13 +159,13 @@ class MainViewModel @Inject constructor(
 
 
     // Call API ALL Resort In Top Resort Fragment
-    private val _resortResponseTopResort = MutableLiveData<Resource<ResortModelResponse>>()
-    val resortResponseOnTopResort: MutableLiveData<Resource<ResortModelResponse>> get() = _resortResponseTopResort
+    private val _resort_TopResort = MutableLiveData<Resource<ResortModelResponse>>()
+    val resort_TopResort: MutableLiveData<Resource<ResortModelResponse>> get() = _resort_TopResort
     fun getResortONTopResort(pageNo: Int, pageSize: Int, resortName: String) {
         viewModelScope.launch {
-            _resortResponseTopResort.postValue(Resource.loading(null))
+            _resort_TopResort.postValue(Resource.loading(null))
             publicResortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
-                _resortResponseTopResort.postValue(it)
+                _resort_TopResort.postValue(it)
             }
         }
     }
