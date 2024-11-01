@@ -28,7 +28,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.TimeshareFragment.PublicPostingAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -38,27 +38,25 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
-    private val timeshareAdapter = PublicPostingAdapterRV()
+    private val publicsPostingAdapter = PublicPostingAdapterRV()
     private val resortAdapterMB = ResortAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter: GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var dateResultLauncher: ActivityResultLauncher<Intent>
     private val homeViewModel: HomeViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        homeViewModel.getResortList(0, 5, "")
+        callAPIGetData()
         gridAdapter = GridAdapter(Constant.destiantionList) { destinationModel ->
             // Xử lý sự kiện khi item được click
             Toast.makeText(
@@ -67,11 +65,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        /* timeshareAdapter.submitList(Constant.timeshareList)*/
+
+        publicsPostingAdapter.submitList(listOf())
         resortAdapterMB.submitList(listOf())
         blogAdapter.submitList(Constant.blogList)
-        // Khởi tạo AutoScrollViewPagerHelper
-
 
         // Khởi tạo ActivityResultLauncher
         initActivityResultLauncher()
@@ -79,22 +76,26 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        initAdapter()
-        setItemResortClickListener()
-        setSearchComponentClickEvent()
+        showUIAdapter()
+        onItemCLickHandler()
+        onSearchComponentClickHandler()
         setAutoScroll()
         observerSearchComponent()
         observerViewModel()
         return binding.root
     }
 
-    // Observer ViewModel
+    /**
+     * Observer ViewModel
+     *
+     * Observer Search Component
+     * Observer ViewModel
+     */
     private fun observerSearchComponent() {
         // Quan sát các giá trị từ ViewModel
         mainViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
@@ -112,30 +113,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             binding.tvTourist.text = mainViewModel.getRoomCount()
         })
 
-        mainViewModel.publicPostingsResponseHome.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    binding.lottiePostingLoading.visibility = View.GONE
-                    timeshareAdapter.submitList(it.data?.content)
-                }
-
-                Status.ERROR -> {
-                    MotionToast.Companion.createToast(
-                        requireActivity(),
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-
-                Status.LOADING -> {
-                    binding.lottiePostingLoading.visibility = View.VISIBLE
-                }
-            }
-        }
 
         mainViewModel.location.observe(viewLifecycleOwner, Observer { location ->
             binding.tvLocation.text = location
@@ -143,7 +120,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
 
     }
-
     private fun observerViewModel() {
         homeViewModel.resortList.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
@@ -172,13 +148,55 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 }
             }
         })
+
+        homeViewModel.home_PostingList.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.lottiePostingLoading.visibility = View.GONE
+                    publicsPostingAdapter.submitList(it.data?.content)
+                }
+
+                Status.ERROR -> {
+                    MotionToast.Companion.createToast(
+                        requireActivity(),
+                        "Error",
+                        it.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    binding.lottiePostingLoading.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
-    private fun initAdapter() {
+
+    /**
+     * CALL API
+     */
+    private fun callAPIGetData() {
+        homeViewModel.getResortList(0, 10, "")
+        homeViewModel.getPublicPostingsHome(0, 10, "")
+    }
+
+
+
+    /**
+     * BIND DATA
+     *
+     * Show UI Adapter
+     * Bind Data of Adapter to UI
+     */
+    private fun showUIAdapter() {
         // List Timesahre Recomend
         binding.rvSuggestTimeshare.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvSuggestTimeshare.adapter = timeshareAdapter
+        binding.rvSuggestTimeshare.adapter = publicsPostingAdapter
 
         // List Blog
         binding.rcBlog.layoutManager =
@@ -243,7 +261,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     }
 
-    private fun setItemResortClickListener() {
+
+    /**
+     * EVENT CLICK HANDLER
+     *
+     * Resort Item Click, Blog Item Click, Posting Item Click
+     * Search Component Click
+     */
+    private fun onItemCLickHandler() {
         resortAdapterMB.let {
             it.onItemClick = {
                 val intent = Intent(requireContext(), ResortDetailActivity::class.java)
@@ -255,7 +280,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
         }
-        timeshareAdapter.let {
+        publicsPostingAdapter.let {
             it.onItemClick = {
                 val intent = Intent(requireContext(), PostingDetailActivity::class.java)
                 intent.putExtra(Constant.DEFAULT_POSTING_ID, it.rentalPostingId)
@@ -266,17 +291,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
     }
-
-    private fun setAutoScroll() {
-        // Auto Scroll
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
-        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
-    }
-
-
-    // Hanlde click event
-    private fun setSearchComponentClickEvent() {
+    private fun onSearchComponentClickHandler() {
         binding.let {
             // Location Click Event
             it.llLocation.setOnClickListener {
@@ -323,12 +338,42 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
 
                     binding.tvDate.text = "$startDateString - $endDateString"
+                    mainViewModel.updateDateRange("$startDateString - $endDateString")
 
                 }
             }
         }
     }
 
+
+    /**
+     * AUTO SCROLL
+     * Activity Result Launcher
+     */
+    private fun setAutoScroll() {
+        // Auto Scroll
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMb)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
+        autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
+    }
+    private fun initActivityResultLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation =
+                        data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
+                    selectedLocation?.let {
+                        mainViewModel.updateLocation(selectedLocation)
+                    }
+                }
+            }
+    }
+
+
+    /**
+     * LIFE CYCLE
+     */
     override fun onPause() {
         super.onPause()
         autoScrollHelper.pauseAutoScroll()
@@ -345,35 +390,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         autoScrollHelper.clearAutoScroll(binding.vpResortHotelMt)  // Xóa thiết lập khi Fragment bị hủy
         autoScrollHelper.clearAutoScroll(binding.vpResortHotelMn)  // Xóa thiết lập khi Fragment bị hủy
         //autoScrollHelper.clearAutoScroll(binding.anotherViewPager)
-    }
-
-    private fun initActivityResultLauncher() {
-        locationResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    val selectedLocation =
-                        data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
-                    selectedLocation?.let {
-                        mainViewModel.updateLocation(selectedLocation)
-                    }
-                }
-            }
-        dateResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    val selectedDate = data?.getStringExtra(Constant.DEFAULT_SELECTION_DATE_KEY)
-                    selectedDate?.let {
-                        binding.tvDate.text = selectedDate
-                    }
-                }
-            }
-    }
-
-    private fun convertDpToPx(dp: Int): Int {
-        val density = requireContext().resources.displayMetrics.density
-        return (dp * density).toInt()
     }
 
 }

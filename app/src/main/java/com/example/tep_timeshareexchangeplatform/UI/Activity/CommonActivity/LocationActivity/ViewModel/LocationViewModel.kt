@@ -3,7 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Loc
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel@Inject constructor(
-    private val resortAPIRepository: ResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository
 ) : ViewModel() {
 
     // Init MutableLiveData for resort list
@@ -27,7 +27,7 @@ class LocationViewModel@Inject constructor(
     fun getResortList(pageNo: Int, pageSize: Int, resortName: String?) {
         viewModelScope.launch {
             _resortList.postValue(Resource.loading(null))
-            resortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
+            publicResortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
                 _resortList.postValue(it)
             }
         }

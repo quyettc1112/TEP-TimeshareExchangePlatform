@@ -38,6 +38,10 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
+    companion object {
+        const val PAGE_SIZE = 8
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -53,10 +57,9 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
         // Check User is logged in or not, member or customer
         checkUserStateLog()
-
         changeLangEvent()
         setUpBottomNav()
-        callGetAPI()
+
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -73,18 +76,15 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
                     mainViewModel.setCustomerInfo(customerInfo)
                 }
             }
-
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                 if (customerInfo != null) {
                     mainViewModel.setCustomerInfo(customerInfo)
                 }
             }
-
             UserLogState.LOGGED_IN_AS_USER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_USER)
             }
-
             UserLogState.LOGGED_OUT -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             }
@@ -153,8 +153,11 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     }
 
     private fun callGetAPI() {
-        // Call API Postings for Home
-        mainViewModel.getPublicPostingsHome(0, 10, "")
+
+
+        // Call API Resort for Top Resort
+        mainViewModel.getResortONTopResort(0, PAGE_SIZE, "")
+
 
 
 

@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -15,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
@@ -27,8 +30,7 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
     private var resortAdapter = ResortAdapterRV()
 
     private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
-
-    private val viewModel: ResortViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
 
     override fun onAttach(context: Context) {
@@ -42,8 +44,7 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        resortAdapter.submitList(Constant.resortListMT)
-
+        initAdapter()
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Scroll to the top of the RecyclerView
@@ -59,6 +60,7 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentResortBinding.inflate(inflater, container, false)
+        observeResortList()
         setResortListAdapter()
         setResortClickListener()
 
@@ -67,33 +69,39 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
     private fun initAdapter() {
         resortAdapter.submitList(listOf())
-
-
-
-
     }
 
     private fun observeResortList() {
-        viewModel.resortList.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
 
+        // Observe the Resort Response from the API
+        mainViewModel.resortResponseOnTopResort.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    binding.animLoadingMore.visibility = View.VISIBLE
+                    response.data?.let { resortAdapter.submitList(it.content) }
                 }
                 Status.ERROR -> {
-                    // Handle error
+                    binding.animLoadingMore.visibility = View.GONE
                 }
                 Status.LOADING -> {
-                    // Show loading
+                    binding.animLoadingMore.visibility = View.VISIBLE
                 }
             }
         }
+
+        // Observe the Resort Response from the API
+
+
+
+
+
     }
 
     private fun setResortListAdapter() {
         binding.rcTopResort.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = resortAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            /*addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING && bottomNavVisibilityListener != null) {
@@ -107,7 +115,6 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
                         }
                     }
                 }
-
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0 && bottomNavVisibilityListener != null) {
@@ -118,13 +125,13 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
                         bottomNavVisibilityListener!!.showBottomNav()
                     }
                 }
-            })
+            })*/
         }
     }
+
     private fun setResortClickListener() {
         resortAdapter.onItemClick = {
             startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
         }
-
     }
 }

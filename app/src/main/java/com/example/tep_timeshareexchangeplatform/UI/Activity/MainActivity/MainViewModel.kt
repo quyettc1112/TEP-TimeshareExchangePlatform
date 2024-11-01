@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
@@ -22,43 +21,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authAPIRepository: AuthAPIRepository,
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
-    private val resortAPIRepository: ResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository
 ) : ViewModel() {
 
-    private val initStep: Int = 1
-
-
-    // ----------------------------------------------------------//
-    // Tracking Progress Step
-    private val _step = MutableLiveData<Int>()
-    val step: MutableLiveData<Int>
-        get() = _step
-
-    fun updateStep(step: Int) {
-        if (step >= _currentStepInProgress.value!!) {
-            updateCurrentStepInProgress(step)
-        }
-        _step.value = step
-    }
-
-    // Tracking Current Step In Progress
-    private val _currentStepInProgress = MutableLiveData<Int>()
-    val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
-    fun updateCurrentStepInProgress(step: Int) {
-        _currentStepInProgress.value = step
-    }
-
-    // Function to check if a step can be navigated to
-    fun canNavigateToStep(step: Int): Boolean {
-        return _currentStepInProgress.value?.let { step <= it } ?: false
-    }
-
-    // Function to reset the current step
-    fun resetSteps() {
-        _currentStepInProgress.value = 1
-    }
-
-
+    /**
+     * Tracking Location
+     *
+     * This function is responsible for tracking the location of the user selected.
+     */
     private val _location = MutableLiveData<String>()
     val location: LiveData<String> = _location
     fun updateLocation(location: String) {
@@ -66,9 +36,49 @@ class MainViewModel @Inject constructor(
     }
 
 
+
+
+    /**
+     * Tracking User Login State
+     *
+     * This function is responsible for tracking the user's login state.
+     */
     private val _userJWTPayload = MutableLiveData<UserJWTPayloadModel>()
     val userJWTPayload: LiveData<UserJWTPayloadModel> = _userJWTPayload
+    // Tracking User Login State
+    private val _userLogState = MutableLiveData<UserLogState>()
+    val userLogState: LiveData<UserLogState> = _userLogState
+    fun setUserLogState(state: UserLogState) {
+        _userLogState.value = state
+    }
+    // Tracking Customer Info
+    private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
+    val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
+    fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
+        _customerInfo.value = customerInfoResponse
+    }
 
+
+
+
+    /**
+     * Tracking Date Range
+     *
+     * This function is responsible for tracking the dateRange of User selected.
+     */
+    private val _dateRange = MutableLiveData<String>()
+    val dateRange: LiveData<String> = _dateRange
+    fun updateDateRange(dateRange: String) {
+        _dateRange.value = dateRange
+    }
+
+
+
+    /**
+     * Tracking Room Count, Adult Count, Children Count
+     *
+     * This function is responsible for tracking the roomCount, adultCount, childrenCount of User selected.
+     */
     private val _roomCount = MutableLiveData(1)
     val roomCount: LiveData<Int> = _roomCount
 
@@ -91,7 +101,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getRoomCount(): String {
-        return "${_adultCount.value} Người lớn, ${_childrenCount.value} Trẻ em, ${_roomCount.value} Phòng"
+        return "${_adultCount.value} Người lớn, ${_roomCount.value} Phòng"
     }
 
     fun updateUser(userJWTPayloadModel: UserJWTPayloadModel) {
@@ -100,56 +110,60 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Call API Postings
-    private val _postingsResponse = MutableLiveData<Resource<PublicPostingResponse>>()
-    val postingsResponse: MutableLiveData<Resource<PublicPostingResponse>> get() = _postingsResponse
-    fun getPostings(pageNo: Int, pageSize: Int, resortName: String) {
-        viewModelScope.launch {
-            _postingsResponse.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
-                _postingsResponse.postValue(it)
-            }
-        }
-    }
 
 
-    // Tracking User Login State
-    private val _userLogState = MutableLiveData<UserLogState>()
-    val userLogState: LiveData<UserLogState> = _userLogState
-    fun setUserLogState(state: UserLogState) {
-        _userLogState.value = state
-    }
 
-    // Tracking Customer Info
-    private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
-    val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
-    fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
-        _customerInfo.value = customerInfoResponse
-    }
 
-    // Call Public All Posting
-    private val _publicPostingsResponse = MutableLiveData<Resource<PublicPostingResponse>>()
-    val publicPostingsResponseHome: MutableLiveData<Resource<PublicPostingResponse>> get() = _publicPostingsResponse
-    fun getPublicPostingsHome(pageNo: Int, pageSize: Int, resortName: String) {
-        viewModelScope.launch {
-            _publicPostingsResponse.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
-                _publicPostingsResponse.postValue(it)
-            }
-        }
-    }
 
+
+    /**
+     * Tracking User Login State
+     *
+     * This function is responsible for Public Posting API For Top Resort.
+     * Get Paging Public Posting
+     * @param pageNo
+     * @param pageSize
+     * @param resortName
+     * @return
+     *
+     * Check Add Loading More
+     * Current Page Tracking
+     */
     // Call API ALL Postings In Top Resort Fragment
-    private val _postingsResponseTopResort = MutableLiveData<Resource<PublicPostingResponse>>()
-    val postingsResponseTopResort: MutableLiveData<Resource<PublicPostingResponse>> get() = _postingsResponseTopResort
+    private val _posting_TopResort = MutableLiveData<Resource<PublicPostingResponse>>()
+    val topResort_Posting: MutableLiveData<Resource<PublicPostingResponse>> get() = _posting_TopResort
     fun getPostingsTopResort(pageNo: Int, pageSize: Int, resortName: String) {
         viewModelScope.launch {
-            _postingsResponseTopResort.postValue(Resource.loading(null))
+            _posting_TopResort.postValue(Resource.loading(null))
             publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
-                _postingsResponseTopResort.postValue(it)
+                _posting_TopResort.postValue(it)
             }
         }
     }
+    private val _currentPostingList = MutableLiveData<List<PublicPostingResponse.Content>>()
+    fun setCurrentPostingList(list: List<PublicPostingResponse.Content>) {
+        _currentPostingList.value = list
+    }
+    fun loadMorePostings(list: List<PublicPostingResponse.Content>) {
+        val currentList = _currentPostingList.value ?: emptyList()
+        val updatedList = currentList + list
+        _currentPostingList.value = updatedList
+    }
+    fun getCurrentPostingList(): List<PublicPostingResponse.Content>? {
+        return _currentPostingList.value
+    }
+
+    private val _currentPostingsPage = MutableLiveData<Int>()
+    var currentPostingsPage: LiveData<Int> = _currentPostingsPage
+    fun getCurrentPostingsPage(): Int {
+        return _currentPostingsPage.value ?: 0
+    }
+    fun incrementCurrentPostingsPage() {
+        val currentValue = _currentPostingsPage.value ?: 0
+        _currentPostingsPage.value = currentValue + 1
+    }
+
+
 
     // Call API ALL Resort In Top Resort Fragment
     private val _resortResponseTopResort = MutableLiveData<Resource<ResortModelResponse>>()
@@ -157,10 +171,14 @@ class MainViewModel @Inject constructor(
     fun getResortONTopResort(pageNo: Int, pageSize: Int, resortName: String) {
         viewModelScope.launch {
             _resortResponseTopResort.postValue(Resource.loading(null))
-            resortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
+            publicResortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
                 _resortResponseTopResort.postValue(it)
             }
         }
+    }
+
+    init {
+
     }
 
 

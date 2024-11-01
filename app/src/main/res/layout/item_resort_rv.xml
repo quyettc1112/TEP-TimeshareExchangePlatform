@@ -3,11 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="5dp"
+    android:minHeight="270dp"
+    android:layout_marginBottom="25dp"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,7 +64,7 @@
                     android:fontFamily="@font/inter_bold"
                     android:maxLines="2"
                     android:paddingStart="5dp"
-                    android:text="Flamingo Đại Lải sdfsdvsdv sddfbdfbdfbd "
+                    android:text="Flamingo Đại Lải s"
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +94,7 @@
                         android:paddingStart="5dp"
                         android:gravity="center|left"
                         android:maxLines="2"
-                        android:text="Đại Lải, Phúc Yên, Việt Namdfbdfbdfbdfbdfbdfbdfbdfb"
+                        android:text="Đại Lải, Phúc Yên, Việt Nam"
                         android:textSize="12dp" />
                 </LinearLayout>
 
@@ -141,7 +144,6 @@
                             android:layout_marginStart="5dp"
                             android:src="@drawable/baseline_star_24" />
                     </LinearLayout>
-
 
                     <TextView
                         android:id="@+id/tv_rating"
@@ -213,7 +215,8 @@
             android:textColor="@color/white"
             android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         </androidx.appcompat.widget.AppCompatButton>
 

@@ -9,7 +9,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.Unit
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
 
-class ResortAPIRepository @Inject constructor(
+class PublicResortAPIRepository @Inject constructor(
     private val apiServiceFactory: ApiServiceFactory
 ) {
     private val resortAPIService: ResortAPIService by lazy {

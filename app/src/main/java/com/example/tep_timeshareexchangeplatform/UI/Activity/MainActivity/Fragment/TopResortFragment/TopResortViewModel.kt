@@ -1,20 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingsResponse
-import com.example.tep_timeshareexchangeplatform.Until.Resource
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TopResortViewModel @Inject constructor(
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
-    private val resortAPIRepository: ResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository
 ) : ViewModel() {
 
     /*// Call API Postings

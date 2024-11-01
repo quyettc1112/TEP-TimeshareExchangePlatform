@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:padding="25dp">
+                android:padding="20dp">
 
                 <LinearLayout
                     android:id="@+id/ll_location"
@@ -163,7 +164,7 @@
                     android:id="@+id/ll_tourist"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/background_stroke_around"
                     android:orientation="horizontal"
                     android:weightSum="10">
@@ -234,7 +235,9 @@
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -251,16 +254,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_light"
-                        android:text="@string/suggest_description"
-                        android:textColor="@color/black"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"

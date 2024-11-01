@@ -7,22 +7,22 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRvBinding
+import java.text.DecimalFormat
 
-class ResortAdapterRV: BaseAdapter<ResortModel, ResortAdapterRV.ResortViewHolder>() {
+class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.ResortViewHolder>() {
 
-    var onItemClick: ((ResortModel) -> Unit)? = null
-    var onFavoriteClick: ((ResortModel) -> Unit)? = null
+    var onItemClick: ((ResortModelResponse.Content) -> Unit)? = null
+    var onFavoriteClick: ((ResortModelResponse.Content) -> Unit)? = null
 
-    inner class ResortViewHolder(binding: ItemResortRvBinding): BaseItemViewHolderCF<ResortModel, ItemResortRvBinding>(binding) {
-        override fun bind(item: ResortModel) {
+    inner class ResortViewHolder(binding: ItemResortRvBinding): BaseItemViewHolderCF<ResortModelResponse.Content, ItemResortRvBinding>(binding) {
+        override fun bind(item: ResortModelResponse.Content) {
             binding.tvResortName.text = item.resortName
-            binding.tvRating.text = item.rating.toString()
-            binding.tvLocation.text = item.location
-            binding.tvPrice.text = item.price
-            Glide.with(binding.imResortImage.context)
-                .load(item.resortImage)
-                .into(binding.imResortImage)
+            binding.tvLocation.text = item.address
+
+
+            binding.tvPrice.text = "${formatPrice(item.minPrice)} - ${formatPrice(item.maxPrice)} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
@@ -31,16 +31,27 @@ class ResortAdapterRV: BaseAdapter<ResortModel, ResortAdapterRV.ResortViewHolder
             binding.llFavorite.setOnClickListener {
                 onFavoriteClick?.let { it1 -> it1(item) }
             }
+            // Not yet implemented
+            Glide.with(binding.imResortImage.context)
+                .load(item.logo)
+                .into(binding.imResortImage)
+        }
+
+
+        fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
         }
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<ResortModel> {
-        return object : DiffUtil.ItemCallback<ResortModel>() {
-            override fun areItemsTheSame(oldItem: ResortModel, newItem: ResortModel): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<ResortModelResponse.Content> {
+        return object : DiffUtil.ItemCallback<ResortModelResponse.Content>() {
+            override fun areItemsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: ResortModel, newItem: ResortModel): Boolean {
+
+            override fun areContentsTheSame(oldItem: ResortModelResponse.Content, newItem: ResortModelResponse.Content): Boolean {
                 return oldItem == newItem
             }
         }

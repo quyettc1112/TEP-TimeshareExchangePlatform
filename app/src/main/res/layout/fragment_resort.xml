@@ -9,14 +9,32 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_topResort"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="70dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_resort_rv">
-
-
     </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rc_topResort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/anim_loading_more"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rc_topResort"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_loading_more" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

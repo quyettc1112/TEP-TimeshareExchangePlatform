@@ -3,7 +3,9 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val resortAPIRepository: ResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository,
+    private val publicPostingAPIRepository: PublicPostingAPIRepository
 ) : ViewModel() {
 
     // Init MutableLiveData for resort list
@@ -23,8 +26,25 @@ class HomeViewModel @Inject constructor(
     fun getResortList(pageNo: Int, pageSize: Int, resortName: String?) {
         viewModelScope.launch {
             _resortList.postValue(Resource.loading(null))
-            resortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
+            publicResortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
                 _resortList.postValue(it)
+            }
+        }
+    }
+
+    /**
+     * Tracking Call API Public Posting in Home Fragment
+     *
+     * This function is responsible for Public Posting API For Home.
+     */
+    // Call Public All Posting FOR HOME Fragment
+    private val _home_postingList = MutableLiveData<Resource<PublicPostingResponse>>()
+    val home_PostingList: MutableLiveData<Resource<PublicPostingResponse>> get() = _home_postingList
+    fun getPublicPostingsHome(pageNo: Int, pageSize: Int, resortName: String) {
+        viewModelScope.launch {
+            _home_postingList.postValue(Resource.loading(null))
+            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
+                _home_postingList.postValue(it)
             }
         }
     }

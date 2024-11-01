@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
-import com.example.tep_timeshareexchangeplatform.API.Repository.ResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
@@ -34,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RentalPostingViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
-    private val resortAPIRepository: ResortAPIRepository,
+    private val publicResortAPIRepository: PublicResortAPIRepository,
     private val timeshareRepository: TimeshareRepository,
     private val customerAPIRepository: CustomerAPIRepository,
     private val paymentAPIRepository: PaymentAPIRepository,
@@ -175,7 +175,7 @@ class RentalPostingViewModel @Inject constructor(
     fun getUnitTypeDetail(token: String, unitTypeID: Int) {
         viewModelScope.launch {
             _unitTypeDetail.postValue(Resource.loading(null))
-            resortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {
+            publicResortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {
                 _unitTypeDetail.postValue(it)
             }
         }
@@ -192,7 +192,7 @@ class RentalPostingViewModel @Inject constructor(
     fun getUnitTypeListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
             _unitTypeList.postValue(Resource.loading(null))
-            resortAPIRepository.getUnitTypeListByResortId(token, resortID).let {
+            publicResortAPIRepository.getUnitTypeListByResortId(token, resortID).let {
                 _unitTypeList.postValue(it)
             }
         }

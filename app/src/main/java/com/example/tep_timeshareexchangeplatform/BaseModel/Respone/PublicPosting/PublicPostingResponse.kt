@@ -117,7 +117,7 @@ import com.google.gson.annotations.SerializedName
 }
 */
 data class PublicPostingResponse(
-    @SerializedName("content") val content: List<Content>,
+    @SerializedName("content") var content: List<Content>,
     @SerializedName("pageable") val pageable: Pageable,
     @SerializedName("totalPages") val totalPages: Int,
     @SerializedName("totalElements") val totalElements: Int,

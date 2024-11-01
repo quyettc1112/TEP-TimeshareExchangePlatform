@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,10 +10,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.DialogSearchComponentBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -24,6 +30,8 @@ import java.util.Locale
 class TopDialogFragment : DialogFragment() {
 
     lateinit var _binding: DialogSearchComponentBinding
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,8 @@ class TopDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DialogSearchComponentBinding.inflate(inflater, container, false)
+        initActivityResultLauncher()
+        observeData()
         return _binding.root
     }
 
@@ -51,11 +61,29 @@ class TopDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState) // Apply the logic from your Fragment here
         setupClickListeners()
     }
+
+    private fun observeData() {
+        mainViewModel.location.observe(viewLifecycleOwner) { location ->
+            _binding.tvLocation.text = location
+        }
+        mainViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
+            _binding.tvDate.text = dateRange
+        }
+
+        // Observe data from ViewModel Resort
+        mainViewModel.roomCount.observe(viewLifecycleOwner) {
+            _binding.tvTourist.text = mainViewModel.getRoomCount()
+        }
+
+
+
+    }
+
     private fun setupClickListeners() {
         // Location Click Event
         _binding.llLocation.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
-           // locationResultLauncher.launch(intent)
+            locationResultLauncher.launch(intent)
         }
 
         _binding.llTourist.setOnClickListener {
@@ -67,18 +95,7 @@ class TopDialogFragment : DialogFragment() {
             val constraintsBuilder = CalendarConstraints.Builder()
                 .setValidator(object : CalendarConstraints.DateValidator {
                     override fun isValid(date: Long): Boolean {
-                        // Định dạng ngày để kiểm tra các ngày không hợp lệ
-                        val calendar = Calendar.getInstance().apply { timeInMillis = date }
-                        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-                        val month = calendar.get(Calendar.MONTH)
-                        val year = calendar.get(Calendar.YEAR)
-
-                        // Ví dụ: Chỉ cho phép chọn ngày từ 5/9/2024 đến 25/9/2024
-                        return if (year == 2024 && month == Calendar.SEPTEMBER) {
-                            dayOfMonth in 5..25
-                        } else {
-                            false // Không hợp lệ cho các ngày ngoài phạm vi trên
-                        }
+                      return true
                     }
                     override fun describeContents(): Int = 0
                     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -105,11 +122,31 @@ class TopDialogFragment : DialogFragment() {
                 val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
 
                 _binding.tvDate.text = "$startDateString - $endDateString"
+                mainViewModel.updateDateRange("$startDateString - $endDateString")
             }
+        }
+    }
+    companion object {
+        fun newInstance(): TopDialogFragment {
+            return TopDialogFragment()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    private fun initActivityResultLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation =
+                        data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
+                    selectedLocation?.let {
+                        mainViewModel.updateLocation(selectedLocation)
+                    }
+                }
+            }
     }
 }
