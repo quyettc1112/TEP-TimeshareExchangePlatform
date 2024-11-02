@@ -22,6 +22,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.Payment.DepositActivity.DepositActivity"
             android:exported="true" />
         <activity
@@ -102,8 +105,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -114,7 +117,6 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MainActivity.MainActivity"
-            android:launchMode="singleTop"
             android:exported="true" />
     </application>
 
