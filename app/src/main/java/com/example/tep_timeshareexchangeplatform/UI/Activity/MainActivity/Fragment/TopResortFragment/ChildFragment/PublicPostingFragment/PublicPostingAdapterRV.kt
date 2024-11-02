@@ -62,4 +62,8 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
         return TimeshareAdapterRVViewHolder(binding)
     }
 
+    fun clearData() {
+        submitList(listOf())
+    }
+
 }

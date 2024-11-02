@@ -155,6 +155,15 @@ class MainViewModel @Inject constructor(
         val currentValue = _currentPostingsPage.value ?: 0
         _currentPostingsPage.value = currentValue + 1
     }
+    val _isNewPostinglist = MutableLiveData<Boolean>()
+    fun updateIsPostingNewList(isNew: Boolean) {
+        _isNewPostinglist.value = isNew
+    }
+    fun resetCurrentPostingPage() {
+        updateIsPostingNewList(true)
+        _currentPostingsPage.value = 0
+        _currentPostingList.value = emptyList()
+    }
 
 
 
@@ -169,7 +178,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-    private val _currentResortList = MutableLiveData<List<ResortModelResponse.Content>>()
+    val _currentResortList = MutableLiveData<List<ResortModelResponse.Content>>()
+
     fun loadMoreResorts(list: List<ResortModelResponse.Content>) {
         val currentList = _currentResortList.value ?: emptyList()
         val updatedList = currentList + list
@@ -180,14 +190,25 @@ class MainViewModel @Inject constructor(
     }
 
     private val _currentResortPage = MutableLiveData<Int>()
-    var currentResortPage: LiveData<Int> = _currentPostingsPage
+    var currentResortPage: LiveData<Int> = _currentResortPage
     fun getCurrentResortPage(): Int {
         return _currentResortPage.value ?: 0
     }
     fun incrementCurrentResortPage() {
-        val currentValue = _currentPostingsPage.value ?: 0
-        _currentPostingsPage.value = currentValue + 1
+        val currentValue = _currentResortPage.value ?: 0
+        _currentResortPage.value = currentValue + 1
     }
+
+    val _isNewResortlist = MutableLiveData<Boolean>()
+    fun updateIsResortNewList(isNew: Boolean) {
+        _isNewResortlist.value = isNew
+    }
+    fun resetCurrentResortPage() {
+        updateIsResortNewList(true)
+        _currentResortPage.value = 0
+        _currentResortList.value = emptyList()
+    }
+
 
     init {
 

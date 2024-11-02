@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -30,8 +29,8 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
     }
 
     private lateinit var binding: FragmentTimeshareBinding
-    private var publicPostingAdapterRV = PublicPostingAdapterRV()
-    private val viewModel: MainViewModel by activityViewModels()
+    var publicPostingAdapterRV = PublicPostingAdapterRV()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,25 +68,26 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
 
-                val totalElementOfAPI = viewModel.posting_TopResort.value?.data?.totalElements ?: 0
+                val totalElementOfAPI =
+                    mainViewModel.posting_TopResort.value?.data?.totalElements ?: 0
                 val currentListSizeOfAdapter = publicPostingAdapterRV.differ.currentList.size
 
 
                 if (lastCompletelyVisibleItem == totalItemCount - 1 && currentListSizeOfAdapter < totalElementOfAPI) {
-                    viewModel.incrementCurrentPostingsPage()
+                    mainViewModel.incrementCurrentPostingsPage()
                 }
             }
         })
     }
 
     private fun observeViewModel() {
-        viewModel.posting_TopResort.observe(viewLifecycleOwner) {
+        mainViewModel.posting_TopResort.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.animLoadingMore.visibility = View.GONE
                     if (!it.data?.content.isNullOrEmpty()) {
-                        viewModel.loadMorePostings(it.data?.content ?: emptyList())
-                        publicPostingAdapterRV.submitList(viewModel.getCurrentPostingList())
+                        mainViewModel.loadMorePostings(it.data?.content ?: emptyList())
+                        publicPostingAdapterRV.submitList(mainViewModel.getCurrentPostingList())
                     }
                 }
 
@@ -109,10 +109,20 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                 }
             }
         }
-        viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
-            // Call API After Scroll to End
-            viewModel.getPostingOnTopResort(it, MainActivity.PAGE_SIZE_POSTING, "")
+        mainViewModel.currentPostingsPage.observe(viewLifecycleOwner) {
+            if (mainViewModel._isNewPostinglist.value == true && it == 0) {
+                publicPostingAdapterRV.clearData()
+                publicPostingAdapterRV.submitList(listOf())
+                mainViewModel.updateIsPostingNewList(false)
+                binding.rcPosting.smoothScrollToPosition(0)
+                mainViewModel.getPostingOnTopResort(0, PAGE_SIZE, "")
+
+            } else {
+                mainViewModel.getPostingOnTopResort(it, PAGE_SIZE, "")
+            }
         }
+
+
     }
 
     override fun onResume() {

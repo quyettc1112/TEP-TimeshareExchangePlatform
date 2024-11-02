@@ -62,4 +62,7 @@ class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.
         val binding = ItemResortRvBinding.inflate(inflater, parent, false)
         return ResortViewHolder(binding)
     }
+    fun clearData() {
+        submitList(listOf())
+    }
 }

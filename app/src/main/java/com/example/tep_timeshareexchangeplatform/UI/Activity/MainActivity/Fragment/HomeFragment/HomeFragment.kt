@@ -29,7 +29,10 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_POSTING
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_RESORT
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -120,6 +123,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
 
     }
+
     private fun observerViewModel() {
         homeViewModel.resortList.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
@@ -183,7 +187,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         homeViewModel.getResortList(0, 10, "")
         homeViewModel.getPublicPostingsHome(0, 10, "")
     }
-
 
 
     /**
@@ -291,6 +294,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
     }
+
     private fun onSearchComponentClickHandler() {
         binding.let {
             // Location Click Event
@@ -342,6 +346,19 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
                 }
             }
+
+            it.btnSearch.setOnClickListener {
+                Toast.makeText(requireContext(), "Search", Toast.LENGTH_SHORT).show()
+
+                mainViewModel.apply {
+                    resetCurrentResortPage()
+                    resetCurrentPostingPage()
+                }
+
+                (activity as MainActivity).apply {
+                    binding.vp2Main.currentItem = 1
+                }
+            }
         }
     }
 
@@ -356,6 +373,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMt)
         autoScrollHelper.setupAutoScroll(binding.vpResortHotelMn)
     }
+
     private fun initActivityResultLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

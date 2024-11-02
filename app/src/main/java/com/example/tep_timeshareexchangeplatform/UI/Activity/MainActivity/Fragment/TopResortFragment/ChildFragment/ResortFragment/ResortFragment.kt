@@ -9,17 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentResortBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +45,10 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdapter()
+        scrollToTop()
+    }
+
+    private fun scrollToTop() {
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -77,39 +77,6 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
         resortAdapter.submitList(listOf())
     }
 
-    private fun observeResortList() {
-
-        // Observe the Resort Response from the API
-        mainViewModel.resort_TopResort.observe(viewLifecycleOwner) { response ->
-            when (response.status) {
-                Status.SUCCESS -> {
-                    binding.animLoadingMore.visibility = View.GONE
-                    response.data?.let {
-                        mainViewModel.loadMoreResorts(it.content ?: emptyList())
-                        resortAdapter.submitList(mainViewModel.getCurrentResortList())
-                        Toast.makeText(context, "Current List Size: ${mainViewModel.getCurrentResortList()?.size}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                Status.ERROR -> {
-                    binding.animLoadingMore.visibility = View.GONE
-                }
-
-                Status.LOADING -> {
-                    binding.animLoadingMore.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        mainViewModel.currentResortPage.observe(viewLifecycleOwner) {
-            mainViewModel.getResortONTopResort(it, PAGE_SIZE, "")
-        }
-
-        // Observe the Resort Response from the API
-
-
-    }
-
     private fun setResortListAdapter() {
         binding.rcTopResort.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -135,6 +102,53 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
             }
         })
     }
+
+    private fun observeResortList() {
+
+        // Observe the Resort Response from the API
+        mainViewModel.resort_TopResort.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    binding.animLoadingMore.visibility = View.GONE
+                    response.data?.let {
+                        mainViewModel.loadMoreResorts(it.content ?: emptyList())
+                        resortAdapter.submitList(mainViewModel.getCurrentResortList())
+                        Toast.makeText(
+                            context,
+                            "Current List Size: ${mainViewModel.getCurrentResortList()?.size}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                Status.ERROR -> {
+                    binding.animLoadingMore.visibility = View.GONE
+                }
+
+                Status.LOADING -> {
+                    binding.animLoadingMore.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        mainViewModel.currentResortPage.observe(viewLifecycleOwner) {
+            if (mainViewModel._isNewResortlist.value == true && it == 0) {
+                resortAdapter.clearData()
+                resortAdapter.submitList(listOf())
+                mainViewModel.updateIsResortNewList(false)
+                binding.rcTopResort.smoothScrollToPosition(0)
+                mainViewModel.getResortONTopResort(0, PAGE_SIZE, "")
+
+            } else {
+                mainViewModel.getResortONTopResort(it, PAGE_SIZE, "")
+            }
+        }
+
+
+
+
+    }
+
 
     private fun setResortClickListener() {
         resortAdapter.onItemClick = {
