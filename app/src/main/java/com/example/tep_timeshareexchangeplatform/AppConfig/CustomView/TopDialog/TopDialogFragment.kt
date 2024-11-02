@@ -29,9 +29,11 @@ import java.util.Locale
 
 class TopDialogFragment : DialogFragment() {
 
-    lateinit var _binding: DialogSearchComponentBinding
+    private var _binding: DialogSearchComponentBinding? = null
+    private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
+    private var searchClickListener: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,7 @@ class TopDialogFragment : DialogFragment() {
         _binding = DialogSearchComponentBinding.inflate(inflater, container, false)
         initActivityResultLauncher()
         observeData()
-        return _binding.root
+        return binding.root
     }
 
     override fun onStart() {
@@ -58,61 +60,50 @@ class TopDialogFragment : DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState) // Apply the logic from your Fragment here
+        super.onViewCreated(view, savedInstanceState)
         setupClickListeners()
     }
 
     private fun observeData() {
         mainViewModel.location.observe(viewLifecycleOwner) { location ->
-            _binding.tvLocation.text = location
+            binding.tvLocation.text = location
         }
         mainViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
-            _binding.tvDate.text = dateRange
+            binding.tvDate.text = dateRange
         }
 
-        // Observe data from ViewModel Resort
         mainViewModel.roomCount.observe(viewLifecycleOwner) {
-            _binding.tvTourist.text = mainViewModel.getRoomCount()
+            binding.tvTourist.text = mainViewModel.getRoomCount()
         }
-
-
-
     }
 
     private fun setupClickListeners() {
-        // Location Click Event
-        _binding.llLocation.setOnClickListener {
+        binding.llLocation.setOnClickListener {
             val intent = Intent(requireContext(), LocationActivity::class.java)
             locationResultLauncher.launch(intent)
         }
 
-        _binding.llTourist.setOnClickListener {
+        binding.llTourist.setOnClickListener {
             val roomSelectionDialog = RoomSelectionDialog.newInstance()
             roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
         }
 
-        _binding.llDate.setOnClickListener {
+        binding.llDate.setOnClickListener {
             val constraintsBuilder = CalendarConstraints.Builder()
                 .setValidator(object : CalendarConstraints.DateValidator {
                     override fun isValid(date: Long): Boolean {
-                      return true
+                        return true
                     }
                     override fun describeContents(): Int = 0
-                    override fun writeToParcel(dest: Parcel, flags: Int) {
-                        // You can implement this if needed or leave it unimplemented
-                    }
-
+                    override fun writeToParcel(dest: Parcel, flags: Int) {}
                 })
 
-            // Tạo DateRangePicker với CalendarConstraints
             val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText(getString(R.string.date_range_picker))
                 .setCalendarConstraints(constraintsBuilder.build())
                 .build()
 
-            // Hiển thị DateRangePicker khi nhấn nút
             dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
-            // Lắng nghe sự kiện khi người dùng chọn ngày
             dateRangePicker.addOnPositiveButtonClickListener { selection ->
                 val startDate = selection?.first
                 val endDate = selection?.second
@@ -121,11 +112,24 @@ class TopDialogFragment : DialogFragment() {
                 val startDateString = startDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
                 val endDateString = endDate?.let { dateFormat.format(Date(it)) } ?: "N/A"
 
-                _binding.tvDate.text = "$startDateString - $endDateString"
+                binding.tvDate.text = "$startDateString - $endDateString"
                 mainViewModel.updateDateRange("$startDateString - $endDateString")
             }
         }
+
+        binding.btnSearch.setOnClickListener {
+            searchClickListener?.invoke() // Gọi listener nếu đã được thiết lập
+            dismiss()
+        }
     }
+
+
+
+    // Hàm này cho phép Fragment/Activity cha thiết lập hành vi cho nút btnSearch
+    fun setOnSearchClickListener(listener: () -> Unit) {
+        searchClickListener = listener
+    }
+
     companion object {
         fun newInstance(): TopDialogFragment {
             return TopDialogFragment()
@@ -134,6 +138,7 @@ class TopDialogFragment : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
     }
 
     private fun initActivityResultLauncher() {
@@ -141,12 +146,13 @@ class TopDialogFragment : DialogFragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedLocation =
-                        data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
+                    val selectedLocation = data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
                     selectedLocation?.let {
                         mainViewModel.updateLocation(selectedLocation)
                     }
                 }
             }
     }
+
+
 }

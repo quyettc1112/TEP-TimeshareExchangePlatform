@@ -133,6 +133,14 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         binding.crSearchComponent.setOnClickListener {
             val roomSelectionDialog = TopDialogFragment.newInstance()
             roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
+
+            roomSelectionDialog.setOnSearchClickListener {
+                mainViewModel.apply {
+                    resetCurrentResortPage()
+                    resetCurrentPostingPage()
+                }
+            }
+
         }
     }
 

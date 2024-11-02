@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.DEFAULT_RESORT_ID
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
@@ -152,7 +153,9 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
 
     private fun setResortClickListener() {
         resortAdapter.onItemClick = {
-            startActivity(Intent(requireContext(), ResortDetailActivity::class.java))
+            val intent = Intent(requireContext(), ResortDetailActivity::class.java)
+            intent.putExtra(DEFAULT_RESORT_ID, it.id)
+            startActivity(intent)
         }
     }
 }

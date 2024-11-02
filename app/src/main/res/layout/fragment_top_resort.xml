@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_background"
+    android:background="@color/white"
     android:orientation="vertical"
     app:layoutDescription="@xml/fragment_top_resort_scene3"
     tools:context=".UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment">
