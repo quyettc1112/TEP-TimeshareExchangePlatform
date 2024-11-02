@@ -39,7 +39,8 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private lateinit var tokenManager: TokenManager
 
     companion object {
-        const val PAGE_SIZE = 8
+        const val PAGE_SIZE_POSTING = 8
+        const val PAGE_SIZE_RESORT = 15
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,10 +73,10 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private fun callGetAPI() {
 
         // Call API Resort for Top Resort
-        mainViewModel.getResortONTopResort(0, PAGE_SIZE, "")
+        mainViewModel.getResortONTopResort(0, PAGE_SIZE_RESORT, "")
 
         // Call API Public Posting for Top Resort
-        mainViewModel.getPostingOnTopResort(0, PAGE_SIZE, "")
+        mainViewModel.getPostingOnTopResort(0, PAGE_SIZE_POSTING, "")
 
 
     }

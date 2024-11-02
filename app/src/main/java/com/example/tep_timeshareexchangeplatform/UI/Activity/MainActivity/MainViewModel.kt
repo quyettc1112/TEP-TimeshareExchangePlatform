@@ -113,7 +113,7 @@ class MainViewModel @Inject constructor(
 
 
     /**
-     * Tracking User Login State
+     * Call API To GET Public Posting and Resort
      *
      * This function is responsible for Public Posting API For Top Resort.
      * Get Paging Public Posting
@@ -168,6 +168,25 @@ class MainViewModel @Inject constructor(
                 _resort_TopResort.postValue(it)
             }
         }
+    }
+    private val _currentResortList = MutableLiveData<List<ResortModelResponse.Content>>()
+    fun loadMoreResorts(list: List<ResortModelResponse.Content>) {
+        val currentList = _currentResortList.value ?: emptyList()
+        val updatedList = currentList + list
+        _currentResortList.value = updatedList
+    }
+    fun getCurrentResortList(): List<ResortModelResponse.Content>? {
+        return _currentResortList.value
+    }
+
+    private val _currentResortPage = MutableLiveData<Int>()
+    var currentResortPage: LiveData<Int> = _currentPostingsPage
+    fun getCurrentResortPage(): Int {
+        return _currentResortPage.value ?: 0
+    }
+    fun incrementCurrentResortPage() {
+        val currentValue = _currentPostingsPage.value ?: 0
+        _currentPostingsPage.value = currentValue + 1
     }
 
     init {

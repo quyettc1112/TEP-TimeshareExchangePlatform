@@ -111,7 +111,7 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
         }
         viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
             // Call API After Scroll to End
-            viewModel.getPostingOnTopResort(it, PAGE_SIZE, "")
+            viewModel.getPostingOnTopResort(it, MainActivity.PAGE_SIZE_POSTING, "")
         }
     }
 

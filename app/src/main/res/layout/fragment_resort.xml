@@ -14,15 +14,16 @@
         android:orientation="vertical"
         android:paddingBottom="70dp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_resort_rv">
-    </androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/item_resort_rv"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
+        android:layout_marginBottom="55dp"
         app:layout_constraintBottom_toBottomOf="@+id/rc_topResort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/anim_loading_more"
             android:layout_width="match_parent"
