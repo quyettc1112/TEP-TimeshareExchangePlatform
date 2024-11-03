@@ -15,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthAc
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
@@ -200,6 +201,16 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     Intent(
                         requireContext(),
                         MyTimeshareActivity::class.java
+                    )
+                )
+            }
+
+            // My Profile
+            llMyProfileInfo.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyInfoActivity::class.java
                     )
                 )
             }

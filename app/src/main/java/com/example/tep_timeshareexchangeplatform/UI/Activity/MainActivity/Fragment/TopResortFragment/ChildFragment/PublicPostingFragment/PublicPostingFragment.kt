@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
@@ -48,10 +50,6 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
 
         binding.rcPosting.adapter = publicPostingAdapterRV
 
-        publicPostingAdapterRV.onItemClick = {
-            val intent = Intent(requireActivity(), TimeshareListActivity::class.java)
-            startActivity(intent)
-        }
 
         observeViewModel()
         return binding.root
@@ -78,6 +76,12 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                 }
             }
         })
+
+        publicPostingAdapterRV.onItemClick = {
+            val intent = Intent(requireActivity(), PostingDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_POSTING_ID, it.rentalPostingId)
+            startActivity(intent)
+        }
     }
 
     private fun observeViewModel() {

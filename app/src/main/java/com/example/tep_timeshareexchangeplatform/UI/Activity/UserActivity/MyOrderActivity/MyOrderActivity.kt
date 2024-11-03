@@ -31,6 +31,12 @@ class MyOrderActivity : BaseActivity() {
         initAdapter()
         setOrderList()
 
+
+        binding.customToolbar.onStartIconClick = {
+            onBackPressed()
+        }
+
+
     }
 
     private fun initAdapter() {
@@ -43,7 +49,6 @@ class MyOrderActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }

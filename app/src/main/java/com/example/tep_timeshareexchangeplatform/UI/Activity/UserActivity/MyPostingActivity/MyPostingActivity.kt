@@ -61,6 +61,10 @@ class MyPostingActivity : BaseActivity() {
         bindDataMyPostingList()
         observeMyPostingList()
 
+        binding.customToolbar.onStartIconClick = {
+            onBackPressed()
+        }
+
     }
 
     private fun observeMyPostingList() {
