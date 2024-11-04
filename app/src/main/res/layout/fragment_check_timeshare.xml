@@ -98,9 +98,9 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="100dp"
                 android:background="@drawable/ripple_effect_white"
-                android:backgroundTint="#B0BEC5"
+                android:backgroundTint="@color/blue_btn_search"
                 android:fontFamily="@font/inter_bold"
-                android:text="Xem thêm...."
+                android:text="Tiếp tục"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20dp" />

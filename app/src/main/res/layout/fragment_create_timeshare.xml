@@ -8,7 +8,7 @@
     tools:context=".UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView3"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/primary_background_F9"
@@ -730,7 +730,7 @@
         android:backgroundTint="@color/blue_btn_search"
         android:text="Gửi yêu cầu tạo Timeshare"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

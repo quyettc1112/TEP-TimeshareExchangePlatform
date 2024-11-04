@@ -188,6 +188,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         rentalPostingViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
             if (rentalPostingViewModel.getNumberOfNights() > 0) {
                 // Update Step 4
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
+                }
                 rentalPostingViewModel.updateTaskProgress(4)
                 rentalPostingViewModel.updateTaskProgress(5)
             } else binding.crlContentAmenities.visibility = View.GONE
@@ -287,6 +290,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             1 -> {
                 binding.crlRoomDistribution.visibility = View.VISIBLE
                 binding.includeUnitTypeYes.root.visibility = View.GONE
+                binding.includeUnitTypeNo.root.visibility = View.GONE
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
                 binding.crlContentImage.visibility = View.GONE
@@ -323,6 +327,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
             rentalPostingViewModel.updateTaskProgress(2)
             rentalPostingViewModel.updateIsYesOrNo(true)
+
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
+            }
         }
 
         binding.btnNoRoomDistribution.setOnClickListener {
@@ -331,6 +339,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
             rentalPostingViewModel.updateTaskProgress(2)
             rentalPostingViewModel.updateIsYesOrNo(false)
+
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.root.top)
+            }
         }
 
     }

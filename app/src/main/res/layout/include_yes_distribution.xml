@@ -76,16 +76,16 @@
 
 
             <!-- Dropdown for Bed Selection -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView11"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Số toà nhà/Số đơn vị \n(nếu đã được phân bổ)"
@@ -99,7 +99,8 @@
                 <Spinner
                     android:id="@+id/sp_unit_type"
                     style="@style/CustomSpinner"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:spinnerMode="dropdown"
@@ -107,7 +108,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/support_simple_spinner_dropdown_item" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <!--// List of Bed Type-->
             <androidx.recyclerview.widget.RecyclerView
