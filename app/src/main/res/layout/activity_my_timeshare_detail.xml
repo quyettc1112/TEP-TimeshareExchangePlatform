@@ -323,6 +323,7 @@
                             android:textColor="#9E9E9E"/>
 
                         <TextView
+                            android:id="@+id/tv_nights"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4 đêm"

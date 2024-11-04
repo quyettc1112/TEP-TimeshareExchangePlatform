@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBinding
 
 class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse, MyTimeshareAdapter.MyTimeshareViewHolder>() {
@@ -16,13 +17,11 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse, MyTimeshareAdapter.My
         BaseItemViewHolderCF<MyTimeshareResponse, ItemMyTimeshareBinding>(binding) {
         override fun bind(item: MyTimeshareResponse) {
             // Hide Unessary View
-            binding.tvPrice.visibility = ViewGroup.GONE
-            binding.tvNumberOfNight.visibility = ViewGroup.GONE
-            binding.tvPrice.visibility = ViewGroup.GONE
 
             binding.tvResortName.text = item.resortName
-            binding.tvRoomType.text = item.roomName
-            binding.tvCheckinDate.text = "${item.startDate} - ${item.endDate}"
+            binding.tvRoomType.text = "Tên Phòng: " + item.roomName
+            binding.tvCheckinDate.text = Constant.formatDateByLocale(item.startDate, binding.root.context)
+            binding.tvCheckOutDate.text =Constant.formatDateByLocale(item.endDate, binding.root.context)
            /* Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)*/
 
             binding.btnSelect.setOnClickListener {

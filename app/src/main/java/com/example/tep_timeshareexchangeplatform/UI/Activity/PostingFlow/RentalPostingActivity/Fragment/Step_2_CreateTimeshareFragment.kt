@@ -373,6 +373,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             ?.map { "Phòng: ${it.roomInfoName}, Code: ${it.roomInfoCode}" ?: "Unknown Room" }
             ?: emptyList()
 
+
+
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -389,6 +391,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 ) {
                     // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
                     val selectedRoom = roomList?.get(position)
+
+                    binding.includeUnitTypeYes.tvRoomName.text = selectedRoom!!.roomInfoName
+                    binding.includeUnitTypeYes.tvRoomCode.text = selectedRoom!!.roomInfoCode
 
                     // Lấy thông tin id của RoomModel tương ứng
                     val unitTypeID = selectedRoom?.unitTypeId

@@ -25,4 +25,16 @@ enum class RefundPolicy(val id: Int) {
             NO_REFUND -> context.getString(R.string.no_refund_long)
         }
     }
+
+    companion object {
+        // Map JSON names to short description from strings.xml
+        fun getShortDescriptionFromName(context: Context, name: String): String {
+            return when (name) {
+                "Flexible" -> context.getString(R.string.full_refund)
+                "Moderate" -> context.getString(R.string.partial_refund)
+                "Strict" -> context.getString(R.string.no_refund)
+                else -> throw IllegalArgumentException("Unknown refund policy name: $name")
+            }
+        }
+    }
 }

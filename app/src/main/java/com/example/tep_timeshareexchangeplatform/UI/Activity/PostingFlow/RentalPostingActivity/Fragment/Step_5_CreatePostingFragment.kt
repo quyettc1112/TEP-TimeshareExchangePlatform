@@ -89,7 +89,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     resources.data?.let {
                         if (it.isEmpty()) {
                             (activity as RentalPostingActivity).showInfoDialog(requireContext(),
-                                "Timeshare của bạn hiện không có năm hợp lệđể cho thuê, Xin vui lòng kiem tra lại",
+                                "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiem tra lại",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
                                         rentalPostingViewModel.resetSteps()
@@ -163,13 +163,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse) {
         if (myTimeshareResponse == null) {
             binding.includeMyTimeshare.root.visibility = View.GONE
-            binding.ivAddMyTimeshare.visibility = View.VISIBLE
         } else {
             binding.includeMyTimeshare.root.visibility = View.VISIBLE
-            binding.ivAddMyTimeshare.visibility = View.GONE
-
-            binding.includeMyTimeshare.tvNumberOfNight.visibility = View.GONE
-            binding.includeMyTimeshare.tvPrice.visibility = View.GONE
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
                 tvRoomType.text = myTimeshareResponse.roomName

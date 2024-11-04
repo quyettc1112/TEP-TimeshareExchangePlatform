@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Post
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -190,9 +191,12 @@ class MyPostingDetailActivity : BaseActivity() {
                 tvCancelPolicy.text = "Không có"
                 includeDetailBilling.tvCancellationPolicy.text = "Không có"
             } else {
-                tvCancelPolicy.text = myPostingDetailResponse.cancelType.toString()
-                includeDetailBilling.tvCancellationPolicy.text =
+                val refundPolicy = RefundPolicy.getShortDescriptionFromName(
+                    this@MyPostingDetailActivity,
                     myPostingDetailResponse.cancelType.toString()
+                )
+                tvCancelPolicy.text = refundPolicy
+                includeDetailBilling.tvCancellationPolicy.text = refundPolicy
             }
         }
 

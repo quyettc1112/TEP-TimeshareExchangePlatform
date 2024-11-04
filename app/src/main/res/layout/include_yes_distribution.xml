@@ -90,10 +90,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Số toà nhà/Số đơn vị \n(nếu đã được phân bổ)"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textSize="16sp" />
 
 
                 <Spinner
@@ -104,10 +101,78 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:spinnerMode="dropdown"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+
+                <LinearLayout
+                    android:background="@drawable/background_stroke_around"
+                    android:padding="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!--// Tên Phòng-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingStart="10dp"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Tên Phòng: "
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_room_name"
+                            android:layout_weight="7"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                    <!--// Code Phòng-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingStart="10dp"
+                        android:layout_height="30dp"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Code Phòng: "
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_weight="7"
+                            android:id="@+id/tv_room_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <!--// List of Bed Type-->

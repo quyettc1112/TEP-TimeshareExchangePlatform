@@ -6,8 +6,8 @@
     android:orientation="vertical"
     android:layout_margin="20dp"
     android:backgroundTint="@color/white"
-    android:padding="24dp"
-    android:background="@drawable/background_stroke_around"
+    android:padding="20dp"
+    android:background="@drawable/ripple_effect_white"
     android:gravity="center">
 
     <!-- Success Icon -->
@@ -17,7 +17,7 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/anim_info"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"/>
+        android:layout_height="100dp"/>
 
     <!-- Success Title -->
     <TextView
@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Yêu cầu của bạn đã được gửi thành công. Vui lòng đợi người kiểm duyệt liên lạc. Hãy kiểm tra thường xuyên email để cập nhật về yêu cầu của bạn."
         android:textSize="14sp"
+        android:fontFamily="@font/inter_semibold"
         android:textColor="@android:color/darker_gray"
         android:textAlignment="center"
         android:layout_marginBottom="16dp" />

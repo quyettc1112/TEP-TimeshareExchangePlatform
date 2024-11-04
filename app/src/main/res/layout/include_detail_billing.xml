@@ -210,7 +210,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.6"
                         android:text="Chính sách hủy"
                         android:textColor="#000000"
                         android:textSize="14sp" />
@@ -219,7 +219,7 @@
                         android:id="@+id/tv_cancellation_policy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.4"
                         android:gravity="end"
                         android:textColor="#000000"
                         android:textSize="14sp"

@@ -26,6 +26,8 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
@@ -118,14 +120,21 @@ class MyTimeshareDetailActivity : BaseActivity() {
             tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
 
             // Check In Date, Check Out Date
-            tvCheckIn.text = myTimeshareDetailResponse.startDate.toString()
-            tvCheckOut.text = myTimeshareDetailResponse.endDate.toString()
+            tvCheckIn.text = Constant.formatDateByLocale(myTimeshareDetailResponse.startDate, binding.root.context)
+            tvCheckOut.text = Constant.formatDateByLocale(myTimeshareDetailResponse.endDate, binding.root.context)
+            val checkInDate = LocalDate.parse(myTimeshareDetailResponse.startDate)
+            val checkOutDate = LocalDate.parse(myTimeshareDetailResponse.endDate)
+            val nights = ChronoUnit.DAYS.between(checkInDate, checkOutDate).toInt()
+
+            tvNights.text = "$nights đêm"
 
             // Unit Type Detail
             tvRoomName.text ="Chi tiết phòng | ${myTimeshareDetailResponse.roomName.toString()}"
             tvNumBathroom.text = myTimeshareDetailResponse.unitType.bathrooms.toString()
             tvNumBed.text = myTimeshareDetailResponse.unitType.bedrooms.toString()
             tvNumPerson.text = myTimeshareDetailResponse.unitType.sleeps.toString()
+
+            
         }
         
         

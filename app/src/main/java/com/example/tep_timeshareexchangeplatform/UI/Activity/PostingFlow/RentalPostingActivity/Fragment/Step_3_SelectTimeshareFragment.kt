@@ -117,7 +117,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     }
                     override fun positiveAction() {
                         rentalPostingViewModel.updateMyTimeshareModel(it)
-                        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
                         rentalPostingViewModel.updateStep(4)
                     }
                 }

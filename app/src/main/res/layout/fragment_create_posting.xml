@@ -87,7 +87,7 @@
                         android:paddingTop="15dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:layout_height="300dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:visibility="visible"
@@ -95,13 +95,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
 
-                        <ImageView
-                            android:id="@+id/iv_add_my_timeshare"
-                            android:visibility="visible"
-                            android:layout_gravity="center"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_material_add"/>
 
 
                         <include

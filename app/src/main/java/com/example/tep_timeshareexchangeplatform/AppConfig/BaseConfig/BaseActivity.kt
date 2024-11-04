@@ -114,10 +114,13 @@ open class  BaseActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.dialog_failed, null)
 
+
         // Tạo dialog với layout tuỳ chỉnh
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .create()
+
+        dialog.setCancelable(false)
 
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
         textSuccess.text = message
@@ -145,6 +148,7 @@ open class  BaseActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .create()
+        dialog.setCancelable(false)
 
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
         textSuccess.text = message

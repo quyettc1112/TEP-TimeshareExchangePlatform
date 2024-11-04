@@ -103,7 +103,6 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
             }
         }
         rentalPostingViewModel.updateStep(5)
-        PackageEnum.PREMIUM_SERVICE.packageModel
     }
 
 

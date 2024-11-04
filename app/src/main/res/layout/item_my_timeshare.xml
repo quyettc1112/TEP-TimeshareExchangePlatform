@@ -6,8 +6,9 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="20dp"
+    android:minHeight="260dp"
     android:layout_width="match_parent"
-    android:layout_height="270dp">
+    android:layout_height="wrap_content">
     <!--// Image-->
 
     <androidx.cardview.widget.CardView
@@ -46,8 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/inter_bold"
-            android:maxLines="1"
-            android:text="Flamingo Đại Lải"
+            android:maxLines="2"
+            android:text="Flamingo Đại Lải "
             android:textColor="@color/black"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,14 +73,17 @@
                 android:gravity="center|left"
                 android:minHeight="20dp"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_room_ts" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:gravity="center|left"
+                    android:text="Tên Phòng: "
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/tv_room_type"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -89,22 +93,78 @@
                     android:textSize="12dp" />
             </LinearLayout>
 
-            <!-- // Room-->
+            <!-- // Check In Day-->
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:minHeight="20dp"
+                android:weightSum="10"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_schedule" />
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_check_in" />
+
+                <TextView
+                    android:layout_weight="2.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="Nhận Phòng: "
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/tv_checkin_date"
-                    android:layout_width="match_parent"
+                    android:layout_weight="6.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="18/09/2024 - 20/09/2024"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <!-- // Check Out Day-->
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:minHeight="20dp"
+                android:weightSum="10"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_check_out" />
+
+                <TextView
+                    android:layout_weight="2.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="Trả Phòng: "
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_check_out_date"
+                    android:layout_weight="6.5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
                     android:layout_marginStart="5dp"
@@ -120,39 +180,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--// Resort Price-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:gravity="center|left"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_extrabold"
-            android:gravity="center|left"
-            android:text="1,300.000 VND"
-            android:textColor="@color/blue_full"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tv_numberOfNight"
-            android:visibility="gone"
-            android:maxLines="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:gravity="center|left"
-            android:text="| 2 đêm"
-            android:textColor="@color/primary_stroke_around"
-            android:textSize="12dp" />
-
-    </LinearLayout>
 
 
 
@@ -162,7 +190,7 @@
         android:layout_width="100dp"
         android:layout_height="35dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/ripple_effect_white"
         android:backgroundTint="@color/blue_btn_search"
         android:fontFamily="@font/inter_semibold"
@@ -170,7 +198,8 @@
         android:textColor="@color/white"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
     </androidx.appcompat.widget.AppCompatButton>
 
