@@ -48,6 +48,10 @@ class MyPostingViewModel @Inject constructor(
         return _currentPostingList
     }
 
+    fun clearCurrentPostingList() {
+        _currentPostingList.clear()
+    }
+
 
     // Check Current Package Selection
 

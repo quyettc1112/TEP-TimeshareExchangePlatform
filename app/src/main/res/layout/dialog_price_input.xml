@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/ripple_effect_white"
+    android:backgroundTint="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <!-- Nhập mức giá bạn mong muốn -->
@@ -21,33 +24,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center|left"
         android:orientation="horizontal">
 
-        <!-- Phần chứa chữ VNĐ với nền xanh -->
-        <TextView
-            android:id="@+id/tv_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VNĐ"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:backgroundTint="@android:color/holo_blue_light"
-            android:textColor="@android:color/white"
-            android:background="@android:drawable/editbox_dropdown_dark_frame"/>
 
-        <!-- Trường nhập giá -->
-        <EditText
-            android:id="@+id/et_price_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Nhập giá"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textSize="16sp"
-            android:background="@android:drawable/edit_text"
-            android:layout_marginStart="8dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/money_Container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="50dp"
+            android:focusable="true"
+            android:hint="Nhập mức giá"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxStrokeColor="@color/blue_btn_search"
+            app:hintTextColor="@color/blue_btn_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_price_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:textSize="16sp"
+                android:background="@drawable/background_stroke_around" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
     </LinearLayout>
 
     <!-- Nút Chấp Nhận Mức Giá -->

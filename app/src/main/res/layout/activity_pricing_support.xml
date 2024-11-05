@@ -133,16 +133,18 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout17">
 
                         <ImageView
-                            android:layout_width="0dp"
+                            android:layout_width="15dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.3"
                             android:src="@drawable/ic_check_in" />
 
                         <TextView
                             android:id="@+id/tv_check_in_date"
+                            android:layout_weight="1.5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start"
+                            android:layout_marginStart="10dp"
                             android:text="Thứ 7, 19 tháng 8, 2024"
                             android:textColor="#000000"
                             android:textSize="14sp"
@@ -162,16 +164,18 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout16">
 
                         <ImageView
-                            android:layout_width="0dp"
+                            android:layout_width="15dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.3"
                             android:src="@drawable/ic_check_out" />
 
                         <TextView
                             android:id="@+id/tv_check_out_date"
+                            android:layout_weight="1.5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start"
+                            android:layout_marginStart="10dp"
                             android:text="Thứ 7, 19 tháng 8, 2024"
                             android:textColor="#000000"
                             android:textSize="14sp"

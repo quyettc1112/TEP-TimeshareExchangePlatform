@@ -1,11 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,6 +38,8 @@ class MyPostingActivity : BaseActivity() {
     private val viewModel: MyPostingViewModel by viewModels()
 
     private lateinit var myPostingAdapter: MyPostingAdapter
+    private lateinit var acceptPriceLauncher: ActivityResultLauncher<Intent>
+
 
     companion object {
         const val POSTING_PAGE_SIZE = 10
@@ -53,7 +59,7 @@ class MyPostingActivity : BaseActivity() {
         }
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
-           observeMyPostingList()
+            observeMyPostingList()
         } else {
             MotionToast.Companion.createColorToast(
                 this,
@@ -65,7 +71,7 @@ class MyPostingActivity : BaseActivity() {
                 null
             )
         }
-
+        initActivityLauncher()
         innitAdapter()
         bindDataMyPostingList()
 
@@ -142,10 +148,16 @@ class MyPostingActivity : BaseActivity() {
             intent.putExtra(Constant.DEFAULT_MY_POSTING_ROOM_NAME, it.roomName)
 
             // Check In Date
-            intent.putExtra(Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE, Constant.formatDateByLocale(it.checkinDate, this))
+            intent.putExtra(
+                Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE,
+                Constant.formatDateByLocale(it.checkinDate, this)
+            )
 
             // Check Out Date
-            intent.putExtra(Constant.DEFAULT_MY_POSTING_CHECK_OUT_DATE, Constant.formatDateByLocale(it.checkoutDate, this))
+            intent.putExtra(
+                Constant.DEFAULT_MY_POSTING_CHECK_OUT_DATE,
+                Constant.formatDateByLocale(it.checkoutDate, this)
+            )
 
             val packageEnum = PackageEnum.getPackageByName(it.rentalPackageName)
             when (packageEnum) {
@@ -157,8 +169,7 @@ class MyPostingActivity : BaseActivity() {
                     intent.putExtra(Constant.priceValuation, it.priceValuation)
                 }
             }
-
-            startActivity(intent)
+            acceptPriceLauncher.launch(intent)
         }
     }
 
@@ -186,6 +197,18 @@ class MyPostingActivity : BaseActivity() {
             }
         })
     }
+
+    private fun initActivityLauncher() {
+        acceptPriceLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    viewModel.clearCurrentPostingList()
+                    myPostingAdapter.submitList(listOf())
+                    viewModel.currentPostingPage.value = 0
+                }
+            }
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

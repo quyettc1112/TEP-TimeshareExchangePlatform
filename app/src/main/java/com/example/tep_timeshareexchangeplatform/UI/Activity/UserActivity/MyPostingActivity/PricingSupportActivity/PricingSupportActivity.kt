@@ -1,9 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +50,7 @@ class PricingSupportActivity : BaseActivity() {
 
 
         binding.btnChangePrice.setOnClickListener {
-            showChangePriceSupport()
+            handleChangePriceSupport()
         }
 
         binding.btnAcceptPrice.setOnClickListener {
@@ -77,6 +81,8 @@ class PricingSupportActivity : BaseActivity() {
                         "Thay Đổi Mức Giá Thành Công",
                         object : View.OnClickListener {
                             override fun onClick(v: android.view.View?) {
+                                val intent = Intent()
+                                setResult(Activity.RESULT_OK, intent)
                                 finish()
                             }
                         }
@@ -150,23 +156,126 @@ class PricingSupportActivity : BaseActivity() {
         )
     }
 
-    private fun showChangePriceSupport() {
+    private fun handleChangePriceSupport() {
+        val packageEnum = PackageEnum.getPackageByName(postingData.packageSelection)
+
+        when (packageEnum) {
+            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                showChangePriceDialog()
+            }
+
+            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                // Call To Reject
+                if (tokenManager.isLoggedIn()) {
+                    viewModel.acceptPricingSupport(
+                        tokenManager.getAccessToken().toString(),
+                        postingData.rentalPostingId.toInt(),
+                        postingData.priceValuation.toFloat(),
+                        false
+                    )
+                } else {
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Error",
+                        "Vui lòng đăng nhập để thực hiện chức năng này",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        }
+
+
+    }
+
+    private fun showChangePriceDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_price_input, null)
         val binding = DialogPriceInputBinding.bind(dialogView)
+
+        binding.etPriceInput.setText(Constant.formatPrice(postingData.staffRefinementPrice) + " đ")
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .create()
-
-
-        binding.btnAcceptPrice.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.show()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        setMoneyInputLogic(binding)
+        binding.btnAcceptPrice.setOnClickListener {
+            val priceString = binding.etPriceInput.text.toString().replace(" đ", "").replace(".", "").replace(",", "")
+            if (priceString.isNotEmpty() && binding.moneyContainer.helperText.isNullOrEmpty()) {
+                viewModel.acceptPricingSupport(
+                    tokenManager.getAccessToken().toString(),
+                    postingData.rentalPostingId.toInt(),
+                    priceString.toFloat(),
+                    null
+                )
+                dialog.dismiss()
+            } else {
+                MotionToast.createColorToast(
+                    this,
+                    "Error",
+                    "Vui lòng nhập giá",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+            }
+        }
+        dialog.show()
+    }
+
+    private fun setMoneyInputLogic(binding: DialogPriceInputBinding) {
+        binding.etPriceInput.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(editable: Editable?) {
+                binding.etPriceInput.removeTextChangedListener(this)
+
+                val input = editable.toString()
+                    .replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
+
+                if (input.isNotEmpty()) {
+                    // Loại bỏ số 0 đầu tiên nếu có
+                    var cleanedInput = input
+                    if (cleanedInput.startsWith("0")) {
+                        cleanedInput = cleanedInput.substring(1)
+                    }
+
+                    // Kiểm tra số tiền tối thiểu 10.000
+                    val numericValue = cleanedInput.toLongOrNull() ?: 0
+                    if (numericValue < 10000) {
+                        // Hiển thị helper text nếu số tiền nhỏ hơn 10.000
+                        binding.moneyContainer.helperText = "Số tiền tối thiểu là 10.000"
+                    } else {
+                        // Ẩn helper text khi số tiền đạt yêu cầu
+                        binding.moneyContainer.helperText = null
+                    }
+
+                    // Định dạng số tiền và thêm ký tự "đ" ở cuối
+                    val formatted = formatCurrency(cleanedInput) + " đ"
+                    current = formatted
+                    binding.etPriceInput.setText(formatted)
+                    binding.etPriceInput.setSelection(formatted.length - 2)
+                }
+
+                binding.etPriceInput.addTextChangedListener(this)
+            }
+
+            // Hàm format để chèn dấu chấm vào các số (ví dụ: 100000 -> 100.000)
+            private fun formatCurrency(input: String): String {
+                return input.reversed().chunked(3).joinToString(".").reversed()
+            }
+        })
 
     }
 
@@ -188,8 +297,6 @@ class PricingSupportActivity : BaseActivity() {
             tvCheckInDate.text = postingData.checkInDate
             tvCheckOutDate.text = postingData.checkOutDate
             tvNumberNight.text = postingData.nights.toString()
-
-
 
             if (packageEnum == PackageEnum.PREMIUM_SERVICE.packageModel) {
                 tvRoomPricePerNight.text =
@@ -224,6 +331,7 @@ class PricingSupportActivity : BaseActivity() {
                         )
                     }
                 }
+                dialog.dismiss()
             } else {
                 MotionToast.Companion.createColorToast(
                     this,
