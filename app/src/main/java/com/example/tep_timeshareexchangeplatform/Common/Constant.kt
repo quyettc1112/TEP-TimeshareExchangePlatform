@@ -66,6 +66,15 @@ class Constant {
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
 
+        const val DEFAULT_MY_POSTING_RESORT_NAME = "myPostingResortName"
+        const val DEFAULT_MY_POSTING_ROOM_NAME = "myPostingRoomName"
+        const val DEFAULT_MY_POSTING_CHECK_IN_DATE = "myPostingCheckInDate"
+        const val DEFAULT_MY_POSTING_CHECK_OUT_DATE = "myPostingCheckOutDate"
+        const val staffRefinementPrice = "staffRefinementPrice"
+        const val priceValuation = "priceValuation"
+        const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"
+
+
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
 

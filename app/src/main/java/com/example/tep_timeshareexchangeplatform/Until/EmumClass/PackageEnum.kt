@@ -78,7 +78,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
     PREMIUM_SERVICE(
         PackageModel(
             id = 3,
-            name = "Gói Premium",
+            name = "Gói Premium - Hỗ Trợ Định Giá",
             price = 199000,
             description = "Unwind hỗ trợ quảng cáo và quản lý toàn bộ quá trình cho thuê.",
             duration = 12,  // Thời gian sử dụng là 1 tháng

@@ -7,6 +7,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
@@ -106,6 +107,21 @@ class CustomerAPIRepository@Inject constructor(
     suspend fun createPosting(token: String, postingDTO: PostingTimeshareDTO): Resource<PostingTimeshareResponse> {
         return try {
             val response = customerAPIService.createPosting("Bearer $token", postingDTO)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Price support Response
+    suspend fun acceptPriceSupport(token: String, postingId: Int, newPrice: Float, isAccepted: Boolean): Resource<PricingSupportResponse> {
+        return try {
+            val response = customerAPIService.acceptPriceSupport("Bearer $token", postingId, newPrice, isAccepted)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

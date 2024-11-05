@@ -18,6 +18,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter.MyPostingAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity.PricingSupportActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -124,7 +125,40 @@ class MyPostingActivity : BaseActivity() {
         }
 
         myPostingAdapter.onItemPricingClick = {
-            startActivity(Intent(this, PricingSupportActivity::class.java))
+            val intent = Intent(this, PricingSupportActivity::class.java)
+            // Id
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.rentalPostingId)
+
+            // Package Name
+            intent.putExtra(Constant.DEFAULT_PACKAGE_SELECTION, it.rentalPackageName)
+
+            // Night
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_NIGHT, it.nights)
+
+            // Name
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_RESORT_NAME, it.resortName)
+
+            // Room Name
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_ROOM_NAME, it.roomName)
+
+            // Check In Date
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE, Constant.formatDateByLocale(it.checkinDate, this))
+
+            // Check Out Date
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_CHECK_OUT_DATE, Constant.formatDateByLocale(it.checkoutDate, this))
+
+            val packageEnum = PackageEnum.getPackageByName(it.rentalPackageName)
+            when (packageEnum) {
+                PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                    intent.putExtra(Constant.staffRefinementPrice, it.staffRefinementPrice)
+                }
+
+                PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                    intent.putExtra(Constant.priceValuation, it.priceValuation)
+                }
+            }
+
+            startActivity(intent)
         }
     }
 
@@ -157,4 +191,6 @@ class MyPostingActivity : BaseActivity() {
         super.onBackPressed()
         finish()
     }
+
+
 }

@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
@@ -62,4 +63,15 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Body postingDTO: PostingTimeshareDTO
     ) : Response<PostingTimeshareResponse>
+
+
+    // Accept Price Support
+    @POST("customer/rental/posting/confirmation/{postingId}")
+    suspend fun acceptPriceSupport(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Query ("newPrice") newPrice: Float,
+        @Query ("isAccepted") isAccepted: Boolean?
+    ) : Response<PricingSupportResponse>
+
 }

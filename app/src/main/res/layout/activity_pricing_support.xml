@@ -32,23 +32,28 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView6"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="5dp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="10dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:padding="5dp"
+                android:gravity="center|left"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <!-- // Image-->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/materialCardView"
+                    android:layout_weight="0.1"
                     android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="140dp"
+                    android:layout_margin="5dp"
                     app:cardCornerRadius="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,97 +69,119 @@
                         android:src="@drawable/im_matiral_timeshare" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <!--// Room Info-->
                 <LinearLayout
-                    android:id="@+id/linearLayout17"
+                    android:layout_weight="1.9"
                     android:layout_width="0dp"
-                    android:layout_height="65dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/materialCardView"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <!--// Resort name-->
-                    <TextView
-                        android:id="@+id/tv_resortName"
+
+                    <!--// Room Info-->
+                    <LinearLayout
+                        android:id="@+id/linearLayout17"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:maxLines="1"
-                        android:text="Flamingo Đại Lải "
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_roomName"
+                        <!--// Resort name-->
+                        <TextView
+                            android:id="@+id/tv_resortName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semibold"
+                            android:maxLines="2"
+                            android:text="Flamingo Đại Lải asdasdasdaasdasd "
+                            android:textColor="@color/black"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_roomName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="top"
+                            android:maxLines="2"
+                            android:text="Phòng King 3 giường ngủ, 1 Phòng bếp, 1 Phòng khách"
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+
+                    </LinearLayout>
+
+                    <!-- Check-in Date -->
+                    <LinearLayout
+                        android:id="@+id/linearLayout16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:gravity="top"
-                        android:maxLines="2"
-                        android:text="Phòng King 3 giường ngủ, 1 Phòng bếp, 1 Phòng khách"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp"
+                        android:paddingTop="4dp"
+                        android:weightSum="2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout17">
 
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_check_in" />
+
+                        <TextView
+                            android:id="@+id/tv_check_in_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="Thứ 7, 19 tháng 8, 2024"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Check-Out Date -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp"
+                        android:paddingTop="4dp"
+                        android:weightSum="2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout16">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_check_out" />
+
+                        <TextView
+                            android:id="@+id/tv_check_out_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="Thứ 7, 19 tháng 8, 2024"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <!--// Staff Info-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout17">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/circleImageView"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_user_default_avt"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <!--// Staff Name-->
-                    <TextView
-                        android:id="@+id/tv_staff_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="Nhân Viên: Nguyễn Văn A"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                        app:layout_constraintTop_toTopOf="@+id/circleImageView" />
-
-                    <!--// Staff Phone-->
-                    <TextView
-                        android:id="@+id/tv_staff_phone"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="SĐT: 0987654321"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_staff_name" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -202,11 +229,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:textColor="@color/blue_btn_search"
+                    android:fontFamily="@font/inter_bold"
                     android:background="@drawable/background_stroke_around"
                     android:hint="Nhập giá"
                     android:inputType="number"
                     android:padding="10dp"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <!-- Ghi chú -->
@@ -227,7 +256,7 @@
                 android:background="@android:drawable/edit_text"
                 android:gravity="top"
                 android:enabled="false"
-                android:hint="Nhập ghi chú"
+                android:hint="Ghi chú về mức giá đề xuất dành cho bạn"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textSize="14sp" />

@@ -49,6 +49,10 @@ class MyPostingViewModel @Inject constructor(
     }
 
 
+    // Check Current Package Selection
+
+
+
 
     init {
         _currentPostingPage.value = 0
