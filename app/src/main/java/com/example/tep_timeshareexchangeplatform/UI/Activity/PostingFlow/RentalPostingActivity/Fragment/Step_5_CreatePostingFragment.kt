@@ -18,7 +18,7 @@ import androidx.paging.LOGGER
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
@@ -160,7 +160,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     // Function to bind data
-    private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse) {
+    private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse.Content) {
         if (myTimeshareResponse == null) {
             binding.includeMyTimeshare.root.visibility = View.GONE
         } else {

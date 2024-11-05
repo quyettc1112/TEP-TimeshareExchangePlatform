@@ -22,9 +22,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -130,11 +130,11 @@ class RentalPostingViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Tracking MyTimeshareModel Selected
-    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse>()
-    val myTimeshareModelSelected: MutableLiveData<MyTimeshareResponse>
+    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse.Content>()
+    val myTimeshareModelSelected: MutableLiveData<MyTimeshareResponse.Content>
         get() = _myTimeshareResponse
     // Funtion to update myTimeshareModel
-    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareResponse){
+    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareResponse.Content){
         _myTimeshareResponse.value = myTimeshareModel
     }
 
@@ -239,8 +239,8 @@ class RentalPostingViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Call API get my timeshare list
-    private val _myTimeshareList = MutableLiveData<Resource<List<MyTimeshareResponse>>>()
-    val myTimeshareList: MutableLiveData<Resource<List<MyTimeshareResponse>>> = _myTimeshareList
+    private val _myTimeshareList = MutableLiveData<Resource<MyTimeshareResponse>>()
+    val myTimeshareList: MutableLiveData<Resource<MyTimeshareResponse>> = _myTimeshareList
     fun getMyTimeshareList(token: String) {
         viewModelScope.launch {
             _myTimeshareList.postValue(Resource.loading(null))

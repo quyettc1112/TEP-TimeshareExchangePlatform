@@ -69,7 +69,7 @@ class MyTimeshareActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     resources.data?.let {
-                        myTimeshareAdapter.submitList(it)
+                        myTimeshareAdapter.submitList(it.content)
                     }
                 }
 

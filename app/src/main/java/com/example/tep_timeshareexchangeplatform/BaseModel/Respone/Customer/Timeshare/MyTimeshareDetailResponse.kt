@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare
+package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare
 
 
 import android.os.Parcel

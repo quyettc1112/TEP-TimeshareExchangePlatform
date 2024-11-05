@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
@@ -69,7 +69,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                 Status.SUCCESS -> {
                     (activity as RentalPostingActivity).hideLoadingWaiting()
                     resources.data?.let {
-                        myTimeshareAdapter.submitList(it)
+                        myTimeshareAdapter.submitList(it.content)
                     }
                 }
                 Status.ERROR -> {
@@ -127,7 +127,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         selectMyTimeshareResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-                val selectedMyTimeshare: MyTimeshareResponse? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
+                val selectedMyTimeshare: MyTimeshareResponse.Content? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
                 if (selectedMyTimeshare != null) {
                     rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
                     Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()

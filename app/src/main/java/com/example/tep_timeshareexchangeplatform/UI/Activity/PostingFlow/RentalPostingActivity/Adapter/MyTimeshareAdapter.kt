@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBinding
 
-class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse, MyTimeshareAdapter.MyTimeshareViewHolder>() {
+class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse.Content, MyTimeshareAdapter.MyTimeshareViewHolder>() {
 
-    var onItemClick: ((MyTimeshareResponse) -> Unit)? = null
+    var onItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
 
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
-        BaseItemViewHolderCF<MyTimeshareResponse, ItemMyTimeshareBinding>(binding) {
-        override fun bind(item: MyTimeshareResponse) {
+        BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareBinding>(binding) {
+        override fun bind(item: MyTimeshareResponse.Content) {
             // Hide Unessary View
 
             binding.tvResortName.text = item.resortName
@@ -30,18 +30,18 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse, MyTimeshareAdapter.My
         }
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MyTimeshareResponse> {
-        return object : DiffUtil.ItemCallback<MyTimeshareResponse>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<MyTimeshareResponse.Content> {
+        return object : DiffUtil.ItemCallback<MyTimeshareResponse.Content>() {
             override fun areItemsTheSame(
-                oldItem: MyTimeshareResponse,
-                newItem: MyTimeshareResponse
+                oldItem: MyTimeshareResponse.Content,
+                newItem: MyTimeshareResponse.Content
             ): Boolean {
                 return oldItem.timeShareId == newItem.timeShareId
             }
 
             override fun areContentsTheSame(
-                oldItem: MyTimeshareResponse,
-                newItem: MyTimeshareResponse
+                oldItem: MyTimeshareResponse.Content,
+                newItem: MyTimeshareResponse.Content
             ): Boolean {
                 return oldItem == newItem
             }

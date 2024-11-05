@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
@@ -183,7 +183,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
                     override fun positiveAction() {
                         val timeshareDetail = myTimeshareDetailViewModel.myTimeshareDetail.value?.data
                         val myTimeshareResponse = timeshareDetail?.let { it1 ->
-                            MyTimeshareResponse(
+                            MyTimeshareResponse.Content(
                                 timeShareId = it1.timeShareId,
                                 resortName = timeshareDetail.resortName,
                                 roomName = timeshareDetail.roomName,
@@ -202,7 +202,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
     }
 
 
-    private fun intentValueToPostingFlow(myTimeshareResponse: MyTimeshareResponse) {
+    private fun intentValueToPostingFlow(myTimeshareResponse: MyTimeshareResponse.Content) {
         val intent = Intent()
         intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, myTimeshareResponse)
         setResult(RESULT_OK, intent)

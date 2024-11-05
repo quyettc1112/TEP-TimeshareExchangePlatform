@@ -4,9 +4,9 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.TimeshareAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class TimeshareRepository @Inject constructor(
     }
 
     // Get My Timeshare List
-    suspend fun getMyTimeshareList(auth: String): Resource<List<MyTimeshareResponse>> {
+    suspend fun getMyTimeshareList(auth: String): Resource<MyTimeshareResponse> {
         return try {
             val response = timeshareAPIService.getMyTimeshareList("Bearer $auth")
             if (response.isSuccessful) {

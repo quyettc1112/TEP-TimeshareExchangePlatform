@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,10 +30,10 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
     // ----------------------------------------------------------//
     // Map Timeshare Detail to MyTimeshareResponse
-    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse>()
-    val myTimeshareResponse: MutableLiveData<MyTimeshareResponse> = _myTimeshareResponse
+    private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse.Content>()
+    val myTimeshareResponse: MutableLiveData<MyTimeshareResponse.Content> = _myTimeshareResponse
     fun mapTimeshareDetailToMyTimeshareResponse(timeshareDetail: MyTimeshareDetailResponse) {
-        val myTimeshareResponse = MyTimeshareResponse(
+        val myTimeshareResponse = MyTimeshareResponse.Content(
             timeShareId = timeshareDetail.timeShareId,
             resortName = timeshareDetail.resortName,
             roomName = timeshareDetail.roomName,
