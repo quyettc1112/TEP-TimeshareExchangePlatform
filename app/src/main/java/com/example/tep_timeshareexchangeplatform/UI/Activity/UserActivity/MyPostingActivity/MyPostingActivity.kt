@@ -3,12 +3,15 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPos
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -31,6 +34,11 @@ class MyPostingActivity : BaseActivity() {
 
     private lateinit var myPostingAdapter: MyPostingAdapter
 
+    companion object {
+        const val POSTING_PAGE_SIZE = 10
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,7 +52,7 @@ class MyPostingActivity : BaseActivity() {
         }
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
-            viewModel.getMyPostingList(token.getAccessToken().toString())
+           observeMyPostingList()
         } else {
             MotionToast.Companion.createColorToast(
                 this,
@@ -59,7 +67,6 @@ class MyPostingActivity : BaseActivity() {
 
         innitAdapter()
         bindDataMyPostingList()
-        observeMyPostingList()
 
         binding.customToolbar.onStartIconClick = {
             onBackPressed()
@@ -71,16 +78,17 @@ class MyPostingActivity : BaseActivity() {
         viewModel.myPostingList.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
-                    showLoadingWaiting(true)
+                    binding.animLoadingMore.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
-                    hideLoadingWaiting()
-                    myPostingAdapter.submitList(it.data?.toList())
+                    binding.animLoadingMore.visibility = View.GONE
+                    viewModel.loadMorePostingList(it.data?.content ?: listOf())
+                    myPostingAdapter.submitList(viewModel.getCurrentPostingList())
                 }
 
                 Status.ERROR -> {
-                    hideLoadingWaiting()
+                    binding.animLoadingMore.visibility = View.VISIBLE
                     it.message?.let { it1 ->
                         MotionToast.Companion.createColorToast(
                             this,
@@ -94,6 +102,15 @@ class MyPostingActivity : BaseActivity() {
                     }
                 }
             }
+        }
+
+        viewModel.currentPostingPage.observe(this) {
+            Toast.makeText(this, "Page: $it", Toast.LENGTH_SHORT).show()
+            viewModel.getMyPostingList(
+                TokenManager(this).getAccessToken().toString(),
+                it,
+                POSTING_PAGE_SIZE
+            )
         }
 
     }
@@ -118,6 +135,22 @@ class MyPostingActivity : BaseActivity() {
             layoutManager =
                 LinearLayoutManager(this@MyPostingActivity, LinearLayoutManager.VERTICAL, false)
         }
+
+        // Scroll Listener
+        binding.rvMyPosting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastCompletelyVisibleItem =
+                    layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                val totalPages = viewModel.myPostingList.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 3) && viewModel.currentPostingPage.value!! < totalPages - 1) {
+                    viewModel.incrementCurrentPostingsPage()
+                    Toast.makeText(this@MyPostingActivity, "Load More", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     override fun onBackPressed() {

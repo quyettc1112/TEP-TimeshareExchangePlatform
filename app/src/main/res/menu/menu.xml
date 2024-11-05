@@ -3,14 +3,20 @@
 
     <item
         android:id="@+id/home"
-        android:title="@string/bottom_title_home"
         android:icon="@drawable/baseline_home_24"
+        android:title="@string/bottom_title_home"
 
         />
     <item
         android:id="@+id/topResort"
-        android:title="@string/bottom_title_topResort"
         android:icon="@drawable/ic_top_resort"
+        android:title="@string/bottom_title_topResort" />
+
+    <item
+        android:id="@+id/exchange"
+        android:icon="@drawable/ic_booking"
+        android:title="@string/bottom_title_booking"
+
         />
     <item
         android:id="@+id/posting"
@@ -18,14 +24,6 @@
         android:title="@string/bottom_title_posting">
 
     </item>
-
-
-    <item
-        android:id="@+id/exchange"
-        android:icon="@drawable/ic_exchange"
-        android:title="@string/bottom_title_exchange"
-
-        />
     <item
         android:id="@+id/account"
         android:icon="@drawable/ic_account"

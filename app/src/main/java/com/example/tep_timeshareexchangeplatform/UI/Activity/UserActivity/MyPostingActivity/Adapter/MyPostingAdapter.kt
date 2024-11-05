@@ -12,27 +12,27 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
 
 class MyPostingAdapter(var context: MyPostingActivity) :
-    BaseAdapter<MyPostingResponse.MyPostingResponseItem, MyPostingAdapter.MyPostingViewHolder>() {
+    BaseAdapter<MyPostingResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
 
 
-    var onItemClick: ((MyPostingResponse.MyPostingResponseItem) -> Unit)? = null
-    var onItemPricingClick: ((MyPostingResponse.MyPostingResponseItem) -> Unit)? = null
+    var onItemClick: ((MyPostingResponse.Content) -> Unit)? = null
+    var onItemPricingClick: ((MyPostingResponse.Content) -> Unit)? = null
 
     inner class MyPostingViewHolder(binding: ItemMyPostingBinding) :
-        BaseItemViewHolderCF<MyPostingResponse.MyPostingResponseItem, ItemMyPostingBinding>(binding) {
-        override fun bind(item: MyPostingResponse.MyPostingResponseItem) {
+        BaseItemViewHolderCF<MyPostingResponse.Content, ItemMyPostingBinding>(binding) {
+        override fun bind(item: MyPostingResponse.Content) {
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
 
             // Show Status
-            when (PostStatus.fromApiStatus(item.status)) {
-                PostStatus.PENDING_APPROVAL -> {
+            when (MyPostingStatus.fromApiStatus(item.status)) {
+                MyPostingStatus.PENDING_APPROVAL -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
@@ -41,7 +41,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
-                PostStatus.AWAITING_CONFIRMATION -> {
+                MyPostingStatus.AWAITING_CONFIRMATION -> {
                     applyStatusStyle(
                         context,
                         R.color.status_awaiting_confirmation_bg,
@@ -50,7 +50,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.VISIBLE
                 }
 
-                PostStatus.PROCESSING -> {
+                MyPostingStatus.PROCESSING -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
@@ -59,7 +59,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
-                PostStatus.COMPLETED -> {
+                MyPostingStatus.COMPLETED -> {
                     applyStatusStyle(
                         context,
                         R.color.blue_header_section,
@@ -68,7 +68,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
-                PostStatus.REJECTED -> {
+                MyPostingStatus.REJECTED -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
@@ -77,7 +77,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
-                PostStatus.PENDING_PRICING -> {
+                MyPostingStatus.PENDING_PRICING -> {
                     applyStatusStyle(
                         context,
                         R.color.status_awaiting_confirmation_bg,
@@ -86,12 +86,20 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
-                PostStatus.CLOSED -> {
+                MyPostingStatus.CLOSED -> {
                     applyStatusStyle(
                         context,
                         R.color.status_closed_bg,
                         R.color.status_closed_text
                     )
+                    binding.btnAcceptPrice.visibility = View.GONE
+                }
+
+                MyPostingStatus.REJECT_PRICE -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_rejected_text)
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
 
@@ -105,7 +113,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     binding.btnAcceptPrice.visibility = View.GONE
                 }
             }
-            binding.tvStatus.text = PostStatus.fromApiStatus(item.status)?.getDescription(context)
+            binding.tvStatus.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
 
             // Posting Info
             binding.apply {
@@ -123,7 +131,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             if (item.rentalPackageId == 1 || item.rentalPackageId == 2) {
                 binding.tvRoomPricePerNight.text = "${formatPrice(item.pricePerNights)}đ /đêm"
             } else {
-                binding.tvRoomPricePerNight.text = "Đang Chờ Định Giá"
+                binding.tvRoomPricePerNight.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
             }
 
             // Package Info
@@ -171,18 +179,18 @@ class MyPostingAdapter(var context: MyPostingActivity) :
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MyPostingResponse.MyPostingResponseItem> {
-        return object : DiffUtil.ItemCallback<MyPostingResponse.MyPostingResponseItem>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<MyPostingResponse.Content> {
+        return object : DiffUtil.ItemCallback<MyPostingResponse.Content>() {
             override fun areItemsTheSame(
-                oldItem: MyPostingResponse.MyPostingResponseItem,
-                newItem: MyPostingResponse.MyPostingResponseItem
+                oldItem: MyPostingResponse.Content,
+                newItem: MyPostingResponse.Content
             ): Boolean {
                 return oldItem.rentalPostingId == newItem.rentalPostingId
             }
 
             override fun areContentsTheSame(
-                oldItem: MyPostingResponse.MyPostingResponseItem,
-                newItem: MyPostingResponse.MyPostingResponseItem
+                oldItem: MyPostingResponse.Content,
+                newItem: MyPostingResponse.Content
             ): Boolean {
                 return oldItem == newItem
             }

@@ -14,6 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CustomerAPIService {
 
@@ -42,7 +43,9 @@ interface CustomerAPIService {
     // Get My Posting List
     @GET("customer/rental/posting")
     suspend fun getMyPostingList(
-        @Header ("Authorization") token: String
+        @Header ("Authorization") token: String,
+        @Query ("page") page: Int,
+        @Query ("size") size: Int
     ) : Response<MyPostingResponse>
 
     // Get My Posting Detail

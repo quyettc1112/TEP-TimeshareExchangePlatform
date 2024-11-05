@@ -16,7 +16,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Reso
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PostStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -228,8 +228,8 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
 
-        when (PostStatus.fromApiStatus(myPostingDetailResponse.status)) {
-            PostStatus.PENDING_APPROVAL -> {
+        when (MyPostingStatus.fromApiStatus(myPostingDetailResponse.status)) {
+            MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
                     this,
                     R.color.white,
@@ -237,7 +237,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.AWAITING_CONFIRMATION -> {
+            MyPostingStatus.AWAITING_CONFIRMATION -> {
                 applyStatusStyle(
                     this,
                     R.color.status_awaiting_confirmation_bg,
@@ -245,7 +245,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.PROCESSING -> {
+            MyPostingStatus.PROCESSING -> {
                 applyStatusStyle(
                     this,
                     R.color.white,
@@ -253,7 +253,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.COMPLETED -> {
+            MyPostingStatus.COMPLETED -> {
                 applyStatusStyle(
                     this,
                     R.color.blue_header_section,
@@ -261,7 +261,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.REJECTED -> {
+            MyPostingStatus.REJECTED -> {
                 applyStatusStyle(
                     this,
                     R.color.white,
@@ -269,7 +269,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.PENDING_PRICING -> {
+            MyPostingStatus.PENDING_PRICING -> {
                 applyStatusStyle(
                     this,
                     R.color.status_awaiting_confirmation_bg,
@@ -277,7 +277,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 )
             }
 
-            PostStatus.CLOSED -> {
+            MyPostingStatus.CLOSED -> {
                 applyStatusStyle(
                     this,
                     R.color.status_closed_bg,
@@ -295,7 +295,7 @@ class MyPostingDetailActivity : BaseActivity() {
             }
         }
         binding.tvStatus.text =
-            PostStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
+            MyPostingStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
 
 
     }

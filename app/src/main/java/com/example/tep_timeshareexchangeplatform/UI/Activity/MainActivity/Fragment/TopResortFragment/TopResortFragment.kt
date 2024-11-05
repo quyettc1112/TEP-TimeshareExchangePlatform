@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ExchangePostingFragment.ExchangePostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
@@ -81,12 +82,13 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         val listFragment: ArrayList<Fragment> = ArrayList()
         listFragment.add(ResortFragment())
         listFragment.add(PublicPostingFragment())
-
+        listFragment.add(ExchangePostingFragment())
         // Set up TabLayout
         binding.tblTopResort.let {
             // Add 2 tab
             it.addTab(it.newTab().setText("Top Resort"))
             it.addTab(it.newTab().setText("Bài Đăng"))
+            it.addTab(it.newTab().setText("Trao Đổi"))
 
             // Set Text Color
             it.setTabTextColors(

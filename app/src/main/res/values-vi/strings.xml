@@ -58,7 +58,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="bottom_title_home">Home</string>
     <string name="bottom_title_topResort">Top Resort</string>
     <string name="bottom_title_posting">Đăng Bài</string>
-    <string name="bottom_title_exchange">Trao Đổi</string>
+    <string name="bottom_title_booking">Đặt Chỗ</string>
     <string name="bottom_title_account">Tài Khoản</string>
 
     // Home Fragment - Search Component
@@ -139,10 +139,11 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
 
     <!--// Posting Status-->
     <string name="pending_approval">Đang chờ phê duyệt</string>
-    <string name="waiting_confirmation">Đang chờ xác nhận</string>
+    <string name="waiting_confirmation">Đang chờ xác nhận giá</string>
     <string name="processing">Đang xử lý</string>
     <string name="completed">Đã hoàn thành</string>
     <string name="rejected">Bị từ chối</string>
+    <string name="reject_price">Từ chối chấp nhận giá</string>
     <string name="pending_pricing">Đang chờ định giá</string>
     <string name="closed">Đã đóng</string>
 

@@ -21,13 +21,38 @@ class MyPostingViewModel @Inject constructor(
     private val _myPostingList = MutableLiveData<Resource<MyPostingResponse>>()
     val myPostingList: MutableLiveData<Resource<MyPostingResponse>>
         get() = _myPostingList
-    fun getMyPostingList(token: String) {
+    fun getMyPostingList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _myPostingList.postValue(Resource.loading(null))
-            customerAPIRepository.getMyPostingList(token).let {
+            customerAPIRepository.getMyPostingList(token, page, size).let {
                 _myPostingList.postValue(it)
             }
         }
+    }
+
+
+    // Check Current Posting Page
+    private var _currentPostingPage = MutableLiveData<Int>()
+    val currentPostingPage: MutableLiveData<Int>
+        get() = _currentPostingPage
+    fun incrementCurrentPostingsPage() {
+        val currentValue = _currentPostingPage.value ?: 0
+        _currentPostingPage.value = currentValue + 1
+    }
+
+    private val _currentPostingList = mutableListOf<MyPostingResponse.Content>()
+    fun loadMorePostingList(list: List<MyPostingResponse.Content>) {
+        _currentPostingList.addAll(list)
+    }
+    fun getCurrentPostingList(): List<MyPostingResponse.Content> {
+        return _currentPostingList
+    }
+
+
+
+    init {
+        _currentPostingPage.value = 0
+
     }
 
 }

@@ -72,9 +72,9 @@ class CustomerAPIRepository@Inject constructor(
 
 
     // Get my posting list
-    suspend fun getMyPostingList(token: String): Resource<MyPostingResponse> {
+    suspend fun getMyPostingList(token: String, page: Int, size: Int): Resource<MyPostingResponse> {
         return try {
-            val response = customerAPIService.getMyPostingList("Bearer $token")
+            val response = customerAPIService.getMyPostingList("Bearer $token", page, size)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
