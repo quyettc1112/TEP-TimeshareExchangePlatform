@@ -37,9 +37,9 @@ class TimeshareRepository @Inject constructor(
     }
 
     // Get My Timeshare List
-    suspend fun getMyTimeshareList(auth: String): Resource<MyTimeshareResponse> {
+    suspend fun getMyTimeshareList(auth: String, page: Int, size: Int): Resource<MyTimeshareResponse> {
         return try {
-            val response = timeshareAPIService.getMyTimeshareList("Bearer $auth")
+            val response = timeshareAPIService.getMyTimeshareList("Bearer $auth", page, size)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

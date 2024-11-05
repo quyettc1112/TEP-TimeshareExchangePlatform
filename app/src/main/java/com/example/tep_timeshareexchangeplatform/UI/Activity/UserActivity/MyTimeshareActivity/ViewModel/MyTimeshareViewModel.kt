@@ -17,10 +17,10 @@ class MyTimeshareViewModel @Inject constructor(
     // Call API get my timeshare list
     private val _myTimeshareList = MutableLiveData<Resource<MyTimeshareResponse>>()
     val myTimeshareList: MutableLiveData<Resource<MyTimeshareResponse>> = _myTimeshareList
-    fun getMyTimeshareList(token: String) {
+    fun getMyTimeshareList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _myTimeshareList.postValue(Resource.loading(null))
-            timeshareRepository.getMyTimeshareList(token).let {
+            timeshareRepository.getMyTimeshareList(token, page, size).let {
                 _myTimeshareList.postValue(it)
             }
         }

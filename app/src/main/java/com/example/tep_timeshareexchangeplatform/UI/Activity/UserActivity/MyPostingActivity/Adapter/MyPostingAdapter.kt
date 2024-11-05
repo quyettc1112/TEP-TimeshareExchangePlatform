@@ -128,11 +128,13 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
 
             // Price
-            if (item.rentalPackageId == 1 || item.rentalPackageId == 2) {
+            if (item.pricePerNights != null && item.pricePerNights != 0) {
                 binding.tvRoomPricePerNight.text = "${formatPrice(item.pricePerNights)}đ /đêm"
             } else {
                 binding.tvRoomPricePerNight.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
             }
+
+
 
             // Package Info
             binding.apply {

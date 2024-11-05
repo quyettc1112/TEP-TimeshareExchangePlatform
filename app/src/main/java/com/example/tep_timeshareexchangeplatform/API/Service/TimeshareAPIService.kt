@@ -10,6 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TimeshareAPIService {
 
@@ -24,7 +25,9 @@ interface TimeshareAPIService {
     // Get My Timeshare List
     @GET("customer/timeshares")
     suspend fun getMyTimeshareList(
-        @Header ("Authorization") token: String
+        @Header ("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): Response<MyTimeshareResponse>
 
     // Get My Timeshare Detail

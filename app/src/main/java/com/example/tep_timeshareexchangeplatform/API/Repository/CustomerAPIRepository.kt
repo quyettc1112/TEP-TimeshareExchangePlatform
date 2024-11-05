@@ -119,7 +119,7 @@ class CustomerAPIRepository@Inject constructor(
     }
 
     // Price support Response
-    suspend fun acceptPriceSupport(token: String, postingId: Int, newPrice: Float, isAccepted: Boolean): Resource<PricingSupportResponse> {
+    suspend fun acceptPriceSupport(token: String, postingId: Int, newPrice: Float, isAccepted: Boolean?): Resource<PricingSupportResponse> {
         return try {
             val response = customerAPIService.acceptPriceSupport("Bearer $token", postingId, newPrice, isAccepted)
             if (response.isSuccessful) {

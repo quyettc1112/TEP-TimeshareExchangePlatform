@@ -179,7 +179,7 @@ class MyPostingActivity : BaseActivity() {
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
                 val totalPages = viewModel.myPostingList.value?.data?.totalPages ?: 0
-                if (lastCompletelyVisibleItem == (totalItemCount - 3) && viewModel.currentPostingPage.value!! < totalPages - 1) {
+                if (lastCompletelyVisibleItem == (totalItemCount - 1) && viewModel.currentPostingPage.value!! < totalPages - 1) {
                     viewModel.incrementCurrentPostingsPage()
                     Toast.makeText(this@MyPostingActivity, "Load More", Toast.LENGTH_SHORT).show()
                 }

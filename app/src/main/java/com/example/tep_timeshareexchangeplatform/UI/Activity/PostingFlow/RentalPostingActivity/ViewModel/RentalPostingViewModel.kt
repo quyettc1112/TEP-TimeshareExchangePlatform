@@ -25,12 +25,14 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoom
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class RentalPostingViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
@@ -49,13 +51,13 @@ class RentalPostingViewModel @Inject constructor(
     private val _step = MutableLiveData<Int>()
     val step: MutableLiveData<Int>
         get() = _step
-    fun updateStep(step: Int){
-        if (step >= _currentStepInProgress.value!!){
+
+    fun updateStep(step: Int) {
+        if (step >= _currentStepInProgress.value!!) {
             updateCurrentStepInProgress(step)
         }
         _step.value = step
     }
-
 
 
     // ----------------------------------------------------------//
@@ -63,6 +65,7 @@ class RentalPostingViewModel @Inject constructor(
     private val _stepCreateTimeshare = MutableLiveData<Int>()
     val stepCreateTimeshare: MutableLiveData<Int>
         get() = _stepCreateTimeshare
+
     // Update the current step progress
     fun updateTaskProgress(currentTask: Int) {
         if (currentTask in 0..5) { // Assuming 5 tasks
@@ -71,23 +74,23 @@ class RentalPostingViewModel @Inject constructor(
     }
 
 
-
     // ----------------------------------------------------------//
     // Tracking Current Step In Progress
     private val _currentStepInProgress = MutableLiveData<Int>()
     val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
-    fun updateCurrentStepInProgress(step: Int){
+    fun updateCurrentStepInProgress(step: Int) {
         _currentStepInProgress.value = step
     }
+
     // Function to check if a step can be navigated to
     fun canNavigateToStep(step: Int): Boolean {
         return _currentStepInProgress.value?.let { step <= it } ?: false
     }
+
     // Function to reset the current step
     fun resetSteps() {
         _currentStepInProgress.value = 1
     }
-
 
 
     // ----------------------------------------------------------//
@@ -95,13 +98,16 @@ class RentalPostingViewModel @Inject constructor(
     // LiveData to hold the pair of start and end dates
     private val _dateRange = MutableLiveData<Pair<Long?, Long?>>()
     val dateRange: LiveData<Pair<Long?, Long?>> get() = _dateRange
+
     // Function to save the start and end dates
     fun setDateRange(startDate: Long?, endDate: Long?) {
         _dateRange.value = Pair(startDate, endDate)
     }
+
     fun resetDateRange() {
         _dateRange.value = Pair(null, null)
     }
+
     fun getNumberOfNights(): Int {
         val range = _dateRange.value
         return if (range != null) {
@@ -117,13 +123,13 @@ class RentalPostingViewModel @Inject constructor(
     }
 
 
-
     // ----------------------------------------------------------//
     // Tracking Location Selected
     private val _resortModelResponse = MutableLiveData<ResortModelResponse.Content>()
     val resortModelResponse: MutableLiveData<ResortModelResponse.Content>
         get() = _resortModelResponse
-    fun updateResortModel(resortModelResponse: ResortModelResponse.Content){
+
+    fun updateResortModel(resortModelResponse: ResortModelResponse.Content) {
         _resortModelResponse.value = resortModelResponse
     }
 
@@ -133,8 +139,9 @@ class RentalPostingViewModel @Inject constructor(
     private val _myTimeshareResponse = MutableLiveData<MyTimeshareResponse.Content>()
     val myTimeshareModelSelected: MutableLiveData<MyTimeshareResponse.Content>
         get() = _myTimeshareResponse
+
     // Funtion to update myTimeshareModel
-    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareResponse.Content){
+    fun updateMyTimeshareModel(myTimeshareModel: MyTimeshareResponse.Content) {
         _myTimeshareResponse.value = myTimeshareModel
     }
 
@@ -144,11 +151,11 @@ class RentalPostingViewModel @Inject constructor(
     private val _packageStep4 = MutableLiveData<PackageModel>()
     val packageStep4: MutableLiveData<PackageModel>
         get() = _packageStep4
+
     // Funtion to update packageStep4
-    fun updatePackageStep4(packageModel: PackageModel){
+    fun updatePackageStep4(packageModel: PackageModel) {
         _packageStep4.value = packageModel
     }
-
 
 
     // ----------------------------------------------------------//
@@ -156,6 +163,7 @@ class RentalPostingViewModel @Inject constructor(
     // Init MutableLiveData for resort list
     private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
     val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
+
     // Function to get resort list
     fun getRoomListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
@@ -182,12 +190,12 @@ class RentalPostingViewModel @Inject constructor(
     }
 
 
-
     // ----------------------------------------------------------//
     // Call List Unit Type of Resort API Selected
     // Init MutableLiveData for List Unit Type
     private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>>()
     val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>> = _unitTypeList
+
     // Function to get unit type list
     fun getUnitTypeListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
@@ -219,7 +227,8 @@ class RentalPostingViewModel @Inject constructor(
     private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel>()
     val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel>
         get() = _unitTypeSelectionOptionNo
-    fun updateUnitTypeSelectionOptionNo(unitTypeModel: UnitTypeModel){
+
+    fun updateUnitTypeSelectionOptionNo(unitTypeModel: UnitTypeModel) {
         _unitTypeSelectionOptionNo.value = unitTypeModel
     }
 
@@ -241,14 +250,35 @@ class RentalPostingViewModel @Inject constructor(
     // Call API get my timeshare list
     private val _myTimeshareList = MutableLiveData<Resource<MyTimeshareResponse>>()
     val myTimeshareList: MutableLiveData<Resource<MyTimeshareResponse>> = _myTimeshareList
-    fun getMyTimeshareList(token: String) {
+    fun getMyTimeshareList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _myTimeshareList.postValue(Resource.loading(null))
-            timeshareRepository.getMyTimeshareList(token).let {
+            timeshareRepository.getMyTimeshareList(token, page, size).let {
                 _myTimeshareList.postValue(it)
             }
         }
     }
+
+    // Check Current Posting Page
+    private var _currentMyTimesharePage = MutableLiveData<Int>()
+    val currentMyTimesharePage: MutableLiveData<Int>
+        get() = _currentMyTimesharePage
+
+    fun incrementCurrentMyTimesharePage() {
+        val currentValue = _currentMyTimesharePage.value ?: 0
+        _currentMyTimesharePage.value = currentValue + 1
+    }
+
+
+    private val _currentMyTimeshareList = mutableListOf<MyTimeshareResponse.Content>()
+    fun loadMoreTimeshareList(list: List<MyTimeshareResponse.Content>) {
+        _currentMyTimeshareList.addAll(list)
+    }
+
+    fun getCurrentMyTimeshareList(): List<MyTimeshareResponse.Content> {
+        return _currentMyTimeshareList
+    }
+
 
     // ----------------------------------------------------------//
     // Call API get my timeshare Detail
@@ -283,7 +313,7 @@ class RentalPostingViewModel @Inject constructor(
     val pricePerNight: MutableLiveData<Long>
         get() = _pricePerNight
 
-    fun updatePricePerNight(pricePerNight: Long){
+    fun updatePricePerNight(pricePerNight: Long) {
         _pricePerNight.value = pricePerNight
     }
 
@@ -292,7 +322,8 @@ class RentalPostingViewModel @Inject constructor(
     private val _numberOfNights = MutableLiveData<Int>()
     val numberOfNights: MutableLiveData<Int>
         get() = _numberOfNights
-    fun updateNumberOfNights(numberOfNights: Int){
+
+    fun updateNumberOfNights(numberOfNights: Int) {
         _numberOfNights.value = numberOfNights
     }
 
@@ -320,7 +351,8 @@ class RentalPostingViewModel @Inject constructor(
     private val _cancelPolicy = MutableLiveData<Int>()
     val cancelPolicy: MutableLiveData<Int>
         get() = _cancelPolicy
-    fun updateCancelPolicy(cancelPolicy: Int){
+
+    fun updateCancelPolicy(cancelPolicy: Int) {
         _cancelPolicy.value = cancelPolicy
     }
 
@@ -353,7 +385,9 @@ class RentalPostingViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call API Purchase Package by Wallet
     private val _walletPurchaseResponse = MutableLiveData<Resource<WalletPurchaseResponse>>()
-    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> = _walletPurchaseResponse
+    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> =
+        _walletPurchaseResponse
+
     fun purchasePackagePostingWallet(token: String, rentalPackageId: Int) {
         viewModelScope.launch {
             _walletPurchaseResponse.postValue(Resource.loading(null))
@@ -366,7 +400,9 @@ class RentalPostingViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call API Get New Balance
     private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val newBalanceInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> = _customerInfoResponse
+    val newBalanceInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> =
+        _customerInfoResponse
+
     fun getCustomerInfo(token: String) {
         viewModelScope.launch {
             _customerInfoResponse.postValue(Resource.loading(null))
@@ -392,20 +428,14 @@ class RentalPostingViewModel @Inject constructor(
     }
 
 
-
-
-
-
-
     // Tracking Yes or No for Step 2
     private val isYesOrNo = MutableLiveData<Boolean>()
     val isYesOrNoSelected: MutableLiveData<Boolean>
         get() = isYesOrNo
-    fun updateIsYesOrNo(isYesOrNo: Boolean){
+
+    fun updateIsYesOrNo(isYesOrNo: Boolean) {
         this.isYesOrNo.value = isYesOrNo
     }
-
-
 
 
     // Init
@@ -415,10 +445,9 @@ class RentalPostingViewModel @Inject constructor(
         _stepCreateTimeshare.value = 0
         isYesOrNo.value = false
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
+
+        _currentMyTimesharePage.value = 0
     }
-
-
-
 
 
 }

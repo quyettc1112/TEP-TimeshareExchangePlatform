@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
@@ -34,6 +35,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
 
+    companion object {
+        const val PAGE_SIZE = 10
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdapter()
@@ -47,16 +52,32 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
     ): View? {
         binding = FragmentSelectTimeshareBinding.inflate(layoutInflater, container, false)
         // Set adapter for recyclerview
-        binding.recyclerView.let {
-            it.adapter = myTimeshareAdapter
-            it.layoutManager = LinearLayoutManager(requireContext())
-        }
-
-
+        setMyTimeshareList()
         observeData()
         initActivityResultLauncher()
         setEventItemClick()
         return binding.root
+    }
+
+    private fun setMyTimeshareList() {
+        binding.recyclerView.let {
+            it.adapter = myTimeshareAdapter
+            it.layoutManager = LinearLayoutManager(requireContext())
+        }
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastCompletelyVisibleItem =
+                    layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                val totalPages = rentalPostingViewModel.myTimeshareList.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 3) && rentalPostingViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
+                    rentalPostingViewModel.incrementCurrentMyTimesharePage()
+                    Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     private fun observeData() {
@@ -66,10 +87,12 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                 Status.LOADING -> {
                     (activity as RentalPostingActivity).showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     (activity as RentalPostingActivity).hideLoadingWaiting()
                     resources.data?.let {
-                        myTimeshareAdapter.submitList(it.content)
+                        rentalPostingViewModel.loadMoreTimeshareList(it.content)
+                        myTimeshareAdapter.submitList(rentalPostingViewModel.getCurrentMyTimeshareList())
                     }
                 }
                 Status.ERROR -> {
@@ -87,6 +110,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
             }
         }
 
+        rentalPostingViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
+            rentalPostingViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+        }
+
     }
 
     private fun initAdapter() {
@@ -94,8 +121,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     }
 
-
-    private fun setEventItemClick(){
+    private fun setEventItemClick() {
         // Item click
         myTimeshareAdapter.setItemOnclickListener {
             val intent = Intent(requireContext(), MyTimeshareDetailActivity::class.java)
@@ -115,6 +141,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     override fun negativeAction() {
 
                     }
+
                     override fun positiveAction() {
                         rentalPostingViewModel.updateMyTimeshareModel(it)
                         rentalPostingViewModel.updateStep(4)
@@ -123,23 +150,26 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
             )
         }
     }
-    private fun initActivityResultLauncher(){
-        selectMyTimeshareResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val selectedMyTimeshare: MyTimeshareResponse.Content? = data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
-                if (selectedMyTimeshare != null) {
-                    rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
-                    Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
-                    rentalPostingViewModel.updateStep(4)
+
+    private fun initActivityResultLauncher() {
+        selectMyTimeshareResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedMyTimeshare: MyTimeshareResponse.Content? =
+                        data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
+                    if (selectedMyTimeshare != null) {
+                        rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
+                        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
+                        rentalPostingViewModel.updateStep(4)
+                    }
                 }
             }
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        rentalPostingViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString())
+        rentalPostingViewModel.currentMyTimesharePage.value = 0
     }
 
 

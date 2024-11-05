@@ -120,6 +120,6 @@ class MyTimeshareActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString())
+        myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), 0 , 10)
     }
 }
