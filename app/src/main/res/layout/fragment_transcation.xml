@@ -16,13 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_transaction" />
+
     <LinearLayout
         android:id="@+id/ll_loading"
-        android:background="@color/primary_background_F9"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include android:id="@+id/include_loading" layout="@layout/my_progress_dialog_layout" />
+        android:layout_height="100dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/include_loading"
+            layout="@layout/my_progress_dialog_layout" />
     </LinearLayout>
 
 

@@ -146,4 +146,9 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
 }

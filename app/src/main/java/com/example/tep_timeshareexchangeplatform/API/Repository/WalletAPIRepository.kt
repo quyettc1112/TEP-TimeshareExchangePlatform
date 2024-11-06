@@ -38,10 +38,12 @@ class WalletAPIRepository @Inject constructor(
 
     // Get Wallet Transaction
     suspend fun getWalletTransaction(
-        auth: String
+        auth: String,
+        page: Int,
+        size: Int
     ): Resource<WalletListResponse> {
         return try {
-            val response = walletAPIService.getWalletTransaction("Bearer $auth")
+            val response = walletAPIService.getWalletTransaction("Bearer $auth", page, size)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyTransactionModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Adapter.MyTransactionAdapter
@@ -45,7 +46,6 @@ class PlaceholderFragment : Fragment() {
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
         }
-        viewModel.getWalletList(TokenManager(requireContext()).getAccessToken().toString())
 
     }
 
@@ -59,6 +59,22 @@ class PlaceholderFragment : Fragment() {
             adapter = myTransactionAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        // Scroll Listener
+        _binding!!.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastCompletelyVisibleItem =
+                    layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                val totalPages = viewModel.walletListResponse.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 1) && viewModel.currentWalletPage.value!! < totalPages - 1) {
+                    viewModel.incrementCurrentWalletsPage()
+                    Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
         observeData()
         myTransactionAdapter.onItemClick = {
             val intent = Intent(requireContext(), MyTransactionDetailActivity::class.java)
@@ -84,14 +100,15 @@ class PlaceholderFragment : Fragment() {
                         }
 
                         // Filter the data based on transaction type
-                        val listTransaction = response.transactions.filter { transaction ->
+                        val listTransaction = response.content.filter { transaction ->
                             when (transactionType) {
                                 TransactionType.ALL -> true
                                 TransactionType.TRANSFER -> transaction.money <= 0
                                 TransactionType.WITHDRAW -> transaction.money > 0
                             }
                         }
-                        myTransactionAdapter.submitList(listTransaction)
+                        viewModel.loadMoreWalletList(listTransaction)
+                        myTransactionAdapter.submitList(viewModel.getCurrentWalletList())
                     }
                 }
 
@@ -124,6 +141,10 @@ class PlaceholderFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.currentWalletPage.observe(viewLifecycleOwner) {
+            viewModel.getWalletList(TokenManager(requireContext()).getAccessToken().toString(), it, PAGE_SIZE)
+        }
     }
 
 
@@ -146,6 +167,8 @@ class PlaceholderFragment : Fragment() {
                 }
             }
         }
+
+        const val PAGE_SIZE = 20
     }
 
     override fun onDestroyView() {

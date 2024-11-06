@@ -33,12 +33,36 @@ class MyTransactionViewModel @Inject constructor(
     // Call Get List of Transaction API
     private val _walletListResponse = MutableLiveData<Resource<WalletListResponse>>()
     val walletListResponse: MutableLiveData<Resource<WalletListResponse>> = _walletListResponse
-    fun getWalletList(token: String) {
+    fun getWalletList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _walletListResponse.postValue(Resource.loading(null))
-            walletAPIRepository.getWalletTransaction(token).let {
+            walletAPIRepository.getWalletTransaction(token,page, size).let {
                 _walletListResponse.postValue(it)
             }
         }
+    }
+    // Check Current Wallet Page
+    private var _currentWalletPage = MutableLiveData<Int>()
+    val currentWalletPage: MutableLiveData<Int>
+        get() = _currentWalletPage
+    fun incrementCurrentWalletsPage() {
+        val currentValue = _currentWalletPage.value ?: 0
+        _currentWalletPage.value = currentValue + 1
+    }
+
+    private val _currentWalletList = mutableListOf<WalletListResponse.Content>()
+    fun loadMoreWalletList(list: List<WalletListResponse.Content>) {
+        _currentWalletList.addAll(list)
+    }
+    fun getCurrentWalletList(): List<WalletListResponse.Content> {
+        return _currentWalletList
+    }
+
+    fun clearCurrentWalletList() {
+        _currentWalletList.clear()
+    }
+
+    init {
+        _currentWalletPage.value = 0
     }
 }

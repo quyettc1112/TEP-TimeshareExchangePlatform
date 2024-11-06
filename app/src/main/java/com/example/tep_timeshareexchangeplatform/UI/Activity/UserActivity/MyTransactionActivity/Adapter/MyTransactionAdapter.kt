@@ -12,13 +12,13 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemTransactionBind
 import java.text.DecimalFormat
 
 class MyTransactionAdapter :
-    BaseAdapter<WalletListResponse.Transaction, MyTransactionAdapter.MyTransactionViewHolder>() {
+    BaseAdapter<WalletListResponse.Content, MyTransactionAdapter.MyTransactionViewHolder>() {
 
-    var onItemClick: ((WalletListResponse.Transaction) -> Unit)? = null
+    var onItemClick: ((WalletListResponse.Content) -> Unit)? = null
 
     inner class MyTransactionViewHolder(binding: ItemTransactionBinding) :
-        BaseItemViewHolderCF<WalletListResponse.Transaction, ItemTransactionBinding>(binding) {
-        override fun bind(item: WalletListResponse.Transaction) {
+        BaseItemViewHolderCF<WalletListResponse.Content, ItemTransactionBinding>(binding) {
+        override fun bind(item: WalletListResponse.Content) {
             // Check Transaction Type
             if (item.money <= 0) {
                 binding.ivTypeTransIcon.setImageResource(R.drawable.ic_logo_only)
@@ -59,17 +59,17 @@ class MyTransactionAdapter :
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<WalletListResponse.Transaction> {
-        return object : DiffUtil.ItemCallback<WalletListResponse.Transaction>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<WalletListResponse.Content> {
+        return object : DiffUtil.ItemCallback<WalletListResponse.Content>() {
             override fun areItemsTheSame(
-                oldItem: WalletListResponse.Transaction,
-                newItem: WalletListResponse.Transaction
+                oldItem: WalletListResponse.Content,
+                newItem: WalletListResponse.Content
             ): Boolean {
                 return oldItem.id == newItem.id
             }
             override fun areContentsTheSame(
-                oldItem: WalletListResponse.Transaction,
-                newItem: WalletListResponse.Transaction
+                oldItem: WalletListResponse.Content,
+                newItem: WalletListResponse.Content
             ): Boolean {
                 return oldItem == newItem
             }

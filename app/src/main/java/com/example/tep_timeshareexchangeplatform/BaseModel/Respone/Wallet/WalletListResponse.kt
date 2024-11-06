@@ -5,137 +5,177 @@ import com.google.gson.annotations.SerializedName
 
 /**
 {
-  "id": 7,
-  "ownerId": 31,
-  "availableMoney": 0,
-  "createdAt": "21-10-2024 18:42:56",
-  "updatedAt": "21-10-2024 18:42:56",
-  "isActive": true,
-  "type": "CUSTOMER_WALLET",
-  "transactions": [
+  "content": [
     {
-      "id": "183e4f8c-ddf4-4d3e-9c0e-8175f130534d",
+      "id": "18a85ae5-a60e-4da4-a882-a0d22c9518b8",
+      "walletId": 7,
+      "money": -4500,
+      "transactionType": "RENTALBOOKING",
+      "description": "Thanh toán đặt chỗ timeshare cho thuê ",
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 23:05:55",
+      "fee": 0
+    },
+    {
+      "id": "292df358-8608-4b60-a091-70ddd6e091a2",
+      "walletId": 7,
+      "money": -7044000,
+      "transactionType": "RENTALBOOKING",
+      "description": "Thanh toán đặt chỗ timeshare cho thuê ",
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 23:04:48",
+      "fee": 0
+    },
+    {
+      "id": "fba9cf59-1e55-405d-8028-c9ebc4d5ea09",
+      "walletId": 7,
+      "money": -2250000,
+      "transactionType": "RENTALBOOKING",
+      "description": "Thanh toán đặt chỗ timeshare cho thuê ",
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 23:03:50",
+      "fee": 0
+    },
+    {
+      "id": "05d4a9e1-89ac-45b8-a4ca-da56707e1904",
+      "walletId": 7,
+      "money": -5520000,
+      "transactionType": "RENTALBOOKING",
+      "description": "Thanh toán đặt chỗ timeshare cho thuê ",
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 22:59:35",
+      "fee": 0
+    },
+    {
+      "id": "61ad10d6-937b-40be-b8fe-d7339b5f6dc8",
+      "walletId": 7,
       "money": -239000,
+      "transactionType": "MEMBERSHIP",
       "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 19:09:28"
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 15:57:08",
+      "fee": 0
     },
     {
-      "id": "202459bc-aec6-4b45-be06-3a8179ac1563",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 18:43:51"
+      "id": "e48d9073-327c-4b73-b82e-724d27ebf1e7",
+      "walletId": 7,
+      "money": 579000,
+      "transactionType": "RENTALPOSTING",
+      "description": "Giao dịch hoàn tiền từ chối chuyển nhượng quyền sở hữu timeshare gói 4",
+      "paymentMethod": "WALLET",
+      "createdAt": "06-11-2024 10:18:55",
+      "fee": 0
     },
     {
-      "id": "27791ed3-3036-420d-a8f6-e6f091247109",
+      "id": "195cc748-2fc2-41b8-ae5a-13fa15842a29",
+      "walletId": 7,
+      "money": -599000,
+      "transactionType": "RENTALPOSTING",
+      "description": "Thanh toán đăng bài Gói Ủy Quyền",
+      "paymentMethod": "WALLET",
+      "createdAt": "05-11-2024 18:44:43",
+      "fee": 0
+    },
+    {
+      "id": "3411bccd-754a-48f9-89d9-577041c5c2fd",
+      "walletId": 7,
       "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 19:30:22"
+      "transactionType": "RENTALPOSTING",
+      "description": "Thanh toán đăng bài Gói Premium",
+      "paymentMethod": "WALLET",
+      "createdAt": "05-11-2024 18:44:07",
+      "fee": 0
     },
     {
-      "id": "3a06c96c-d632-4b38-a4e1-6f71f54a1f83",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:24:32"
+      "id": "fe40101b-03af-4237-badf-06b23462309c",
+      "walletId": 7,
+      "money": -149000,
+      "transactionType": "RENTALPOSTING",
+      "description": "Thanh toán đăng bài Gói Cơ Bản",
+      "paymentMethod": "WALLET",
+      "createdAt": "04-11-2024 06:57:35",
+      "fee": 0
     },
     {
-      "id": "40eeba60-b62a-4874-905d-071f69c356db",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 19:34:30"
-    },
-    {
-      "id": "4653e771-203e-42d7-9085-b0656c0b3108",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:28:41"
-    },
-    {
-      "id": "76e1973d-ad9d-428b-8b55-baa18086df72",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 19:14:18"
-    },
-    {
-      "id": "777a97bc-b0ea-4ca3-b189-75ff7b367840",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:38:49"
-    },
-    {
-      "id": "7ddabdd2-8466-4776-9e04-fa2d241c4b08",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "21-10-2024 19:28:02"
-    },
-    {
-      "id": "8b65abc4-f446-4536-b4a2-1ffea5045c13",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:18:45"
-    },
-    {
-      "id": "b1218cfb-8320-4468-8d00-5124b5390bbd",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:20:48"
-    },
-    {
-      "id": "b6ba90f7-1711-4bcb-a555-f3e20d2f659b",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:52:06"
-    },
-    {
-      "id": "cda051d2-d26f-4650-a9f5-d4a86bd75791",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:14:44"
-    },
-    {
-      "id": "dad58098-74e5-467a-a2b3-710673a2757a",
-      "money": -239000,
-      "description": "Thanh toán membership 12 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:31:06"
-    },
-    {
-      "id": "de1a0207-2233-4a32-ac29-b9fe242b6815",
-      "money": -119000,
-      "description": "Thanh toán membership 6 tháng",
-      "paymentMethod": "VNPAY",
-      "createdAt": "22-10-2024 04:29:48"
+      "id": "3cd2a623-df16-42c5-bf9b-203872bd3b9a",
+      "walletId": 7,
+      "money": -599000,
+      "transactionType": "RENTALPOSTING",
+      "description": "Thanh toán đăng bài Gói Ủy Quyền",
+      "paymentMethod": "WALLET",
+      "createdAt": "04-11-2024 06:37:59",
+      "fee": 0
     }
-  ]
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 10,
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalPages": 11,
+  "totalElements": 103,
+  "last": false,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "empty": false,
+    "sorted": true,
+    "unsorted": false
+  },
+  "numberOfElements": 10,
+  "first": true,
+  "empty": false
 }
 */
 data class WalletListResponse(
-    @SerializedName("id") val id: Int,
-    @SerializedName("ownerId") val ownerId: Int,
-    @SerializedName("availableMoney") val availableMoney: Int,
-    @SerializedName("createdAt") val createdAt: String,
-    @SerializedName("updatedAt") val updatedAt: String,
-    @SerializedName("isActive") val isActive: Boolean,
-    @SerializedName("type") val type: String,
-    @SerializedName("transactions") val transactions: List<Transaction>
+    @SerializedName("content") val content: List<Content>,
+    @SerializedName("pageable") val pageable: Pageable,
+    @SerializedName("totalPages") val totalPages: Int,
+    @SerializedName("totalElements") val totalElements: Int,
+    @SerializedName("last") val last: Boolean,
+    @SerializedName("size") val size: Int,
+    @SerializedName("number") val number: Int,
+    @SerializedName("sort") val sort: Sort,
+    @SerializedName("numberOfElements") val numberOfElements: Int,
+    @SerializedName("first") val first: Boolean,
+    @SerializedName("empty") val empty: Boolean
 ) {
-    data class Transaction(
+    data class Content(
         @SerializedName("id") val id: String,
+        @SerializedName("walletId") val walletId: Int,
         @SerializedName("money") val money: Int,
+        @SerializedName("transactionType") val transactionType: String,
         @SerializedName("description") val description: String,
         @SerializedName("paymentMethod") val paymentMethod: String,
-        @SerializedName("createdAt") val createdAt: String
+        @SerializedName("createdAt") val createdAt: String,
+        @SerializedName("fee") val fee: Int
+    )
+
+    data class Pageable(
+        @SerializedName("pageNumber") val pageNumber: Int,
+        @SerializedName("pageSize") val pageSize: Int,
+        @SerializedName("sort") val sort: Sort,
+        @SerializedName("offset") val offset: Int,
+        @SerializedName("paged") val paged: Boolean,
+        @SerializedName("unpaged") val unpaged: Boolean
+    ) {
+        data class Sort(
+            @SerializedName("empty") val empty: Boolean,
+            @SerializedName("sorted") val sorted: Boolean,
+            @SerializedName("unsorted") val unsorted: Boolean
+        )
+    }
+
+    data class Sort(
+        @SerializedName("empty") val empty: Boolean,
+        @SerializedName("sorted") val sorted: Boolean,
+        @SerializedName("unsorted") val unsorted: Boolean
     )
 }

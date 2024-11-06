@@ -24,7 +24,9 @@ interface WalletAPIService {
     // Get List Transaction
     @GET("wallet/customer/wallet-transaction")
     suspend fun getWalletTransaction(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): Response<WalletListResponse>
 
     /**
