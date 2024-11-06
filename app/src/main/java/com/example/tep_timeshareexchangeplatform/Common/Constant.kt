@@ -75,7 +75,7 @@ class Constant {
         const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"
 
         const val DEFAULT_MY_BOOKING_SELECTED_ID = "myBookingSelectedId"
-
+        const val GENERAL_ID_PAYMENT = "generalIdPayment"
 
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"

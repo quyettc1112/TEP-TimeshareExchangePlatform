@@ -94,6 +94,11 @@ open class  BaseActivity : AppCompatActivity() {
             .create()
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
         dialog.setCancelable(false)
         val textSuccess = dialogView.findViewById<TextView>(R.id.tvSuccessMessage)
         textSuccess.text = message

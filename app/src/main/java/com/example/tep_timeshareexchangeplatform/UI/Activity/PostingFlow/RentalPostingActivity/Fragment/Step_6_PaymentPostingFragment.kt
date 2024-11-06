@@ -21,8 +21,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Time
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter.BenefitAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentResultActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.VNPayActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.VNPayActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
@@ -540,7 +539,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         Log.d("CheckDTO", postingTimeshareDTO.toString())
 
         intent.putExtra(Constant.PAYMENT_URL, url)
-        intent.putExtra(Constant.DEFAULT_PACKAGE_SELECTION, packageEnum.id)
+        intent.putExtra(Constant.GENERAL_ID_PAYMENT, packageEnum.id)
         intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_POSTING)
         paymentResultLauncher.launch(intent)

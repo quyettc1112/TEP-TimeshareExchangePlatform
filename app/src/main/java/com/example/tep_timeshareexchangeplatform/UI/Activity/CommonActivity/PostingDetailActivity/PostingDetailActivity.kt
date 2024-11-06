@@ -425,10 +425,14 @@ class PostingDetailActivity : BaseActivity() {
                         val userLogState = tokenManager.getUserLogState()
                         when (userLogState) {
                             UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
-                                startActivity(Intent(this, PaymentRentalActivity::class.java))
+                                val intent = Intent(this, PaymentRentalActivity::class.java)
+                                intent.putExtra(Constant.DEFAULT_POSTING_ID, postingDetail.rentalPostingId)
+                                startActivity(intent)
                             }
                             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
-                                startActivity(Intent(this, PaymentRentalActivity::class.java))
+                                val intent = Intent(this, PaymentRentalActivity::class.java)
+                                intent.putExtra(Constant.DEFAULT_POSTING_ID, postingDetail.rentalPostingId)
+                                startActivity(intent)
                             }
                             UserLogState.LOGGED_IN_AS_USER -> {
                                 val dialogFragment = MemberInfoDialog.newInstance()

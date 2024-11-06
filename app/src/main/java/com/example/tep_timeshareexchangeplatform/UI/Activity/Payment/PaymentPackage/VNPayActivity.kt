@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen
+package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage
 
 import android.content.Intent
 import android.net.Uri
@@ -20,7 +20,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareD
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.VNPayViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel.VNPayViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
@@ -204,22 +204,40 @@ class VNPayActivity : BaseActivity() {
                 }
             }
         }
+
+        // Observe Booking Rental
+        viewModel.bookingResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val intent = intent
+                    setResult(RESULT_OK, intent)
+                    // Finish Activity
+                    finish()
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+
+
+        }
+
     }
 
-    private fun callAPIExtendMembership(uuid: String, membershipId: Int) {
-        val token = TokenManager(this).getAccessToken().toString()
-        viewModel.extendMembership(token, uuid, membershipId)
-    }
 
-    private fun callAPIDepositWallet(uuid: String) {
-        val token = TokenManager(this).getAccessToken().toString()
-        viewModel.depositMoney(token, uuid)
-    }
-
-    private fun callAPIPurchasePackagePosting(uuid: String, packageId: Int) {
-        val token = TokenManager(this).getAccessToken().toString()
-        viewModel.purchasePackage(token, uuid, packageId)
-    }
 
     private fun checkPaymentType(
         paymentType: PaymentType,
@@ -227,24 +245,30 @@ class VNPayActivity : BaseActivity() {
         packageId: Int
     ) {
         when (paymentType) {
+            PaymentType.RENTAL_PAYMENT -> {
+                callAPIBookingRentalTransaction(
+                    walletTransactionId,
+                    packageId
+                )
+            }
             PaymentType.PURCHASE_PACKAGE_MEMBER -> {
-                callAPIExtendMembership(
+                callAPIExtendMembershipTransaction(
                     walletTransactionId,
                     packageId
                 )
             }
             PaymentType.DEPOSIT_WALLET -> {
-                callAPIDepositWallet(walletTransactionId)
+                callAPIDepositWalletTransaction(walletTransactionId)
             }
             PaymentType.PURCHASE_PACKAGE_POSTING -> {
-                callAPIPurchasePackagePosting(walletTransactionId, packageId)
+                callAPIPurchasePackagePostingTransaction(walletTransactionId, packageId)
             }
         }
     }
 
     private fun webViewLoadSetup() {
         val urlIntent = intent.getStringExtra(Constant.PAYMENT_URL)
-        val packageId = intent.getIntExtra(Constant.DEFAULT_PACKAGE_SELECTION, 0)
+        val packageId = intent.getIntExtra(Constant.GENERAL_ID_PAYMENT, 0)
 
         // Set WebViewClient to prevent opening external browser
         binding.webView.webViewClient = WebViewClient()
@@ -386,6 +410,26 @@ class VNPayActivity : BaseActivity() {
                     finish()
                 }
             })
+    }
+
+    private fun callAPIBookingRentalTransaction(uuid: String, postingId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.bookingRentalTransaction(token, uuid, postingId)
+    }
+
+    private fun callAPIExtendMembershipTransaction(uuid: String, membershipId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.extendMembership(token, uuid, membershipId)
+    }
+
+    private fun callAPIDepositWalletTransaction(uuid: String) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.depositMoney(token, uuid)
+    }
+
+    private fun callAPIPurchasePackagePostingTransaction(uuid: String, packageId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.purchasePackage(token, uuid, packageId)
     }
 
 }

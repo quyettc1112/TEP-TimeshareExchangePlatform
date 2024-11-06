@@ -11,7 +11,7 @@ import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
 
-class PublicPostingAPIRepository @Inject constructor(
+class  PublicPostingAPIRepository @Inject constructor(
     private val apiServiceFactory: ApiServiceFactory
 ) {
 

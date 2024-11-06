@@ -186,6 +186,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onResume()
         checkUserLoggedIn()
         checkUserStateLog()
+        mainViewModel.resetCurrentMyBookingPage()
     }
 
 

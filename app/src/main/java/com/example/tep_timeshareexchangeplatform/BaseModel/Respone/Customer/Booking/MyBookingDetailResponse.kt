@@ -151,7 +151,7 @@ data class MyBookingDetailResponse(
 
         data class CancellationType(
             @SerializedName("id") val id: Int,
-            @SerializedName("name") val name: String,
+            @SerializedName("name") val name: String?,
             @SerializedName("refundRate") val refundRate: Int,
             @SerializedName("durationBefore") val durationBefore: Int,
             @SerializedName("description") val description: String,

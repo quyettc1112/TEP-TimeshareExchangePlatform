@@ -124,12 +124,12 @@ class BookingDetailActivity : BaseActivity() {
 
             // Cancel Policy
             binding_detail_billing.apply {
-                if (data.rentalPosting.cancellationType.name == "null") {
+                if (data.rentalPosting.cancellationType == null) {
                     tvCancellationPolicy.text = "Không có"
                 } else {
                     val refundPolicy = RefundPolicy.getShortDescriptionFromName(
                         this@BookingDetailActivity,
-                        data.rentalPosting.cancellationType.name
+                        data.rentalPosting.cancellationType.name.toString()
                     )
                     tvCancellationPolicy.text = refundPolicy
                 }

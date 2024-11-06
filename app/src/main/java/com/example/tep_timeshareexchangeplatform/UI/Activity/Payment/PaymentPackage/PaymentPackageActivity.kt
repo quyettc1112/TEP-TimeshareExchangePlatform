@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen
+package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel.PaymentPackageViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel.PaymentPackageViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
@@ -278,7 +278,7 @@ class PaymentPackageActivity : BaseActivity() {
     private fun intentToVNPAYActivity(url: String) {
         val intent = Intent(this, VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
-        intent.putExtra(Constant.DEFAULT_PACKAGE_SELECTION, packageId)
+        intent.putExtra(Constant.GENERAL_ID_PAYMENT, packageId)
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_MEMBER)
         paymentResultLauncher.launch(intent)
     }

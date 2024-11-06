@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.ViewModel
+package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -73,6 +73,21 @@ class VNPayViewModel @Inject constructor(
             }
         }
     }
+
+    // Call API Create Booking Transaction
+    private val _bookingResponse = MutableLiveData<Resource<VNPAYPurchaseResponse>>()
+    val bookingResponse: MutableLiveData<Resource<VNPAYPurchaseResponse>> = _bookingResponse
+    fun bookingRentalTransaction(token: String, uuid: String, rentalId: Int) {
+        viewModelScope.launch {
+            _bookingResponse.postValue(Resource.loading(null))
+            walletAPIRepository.bookingRentalVNPAY(token, uuid, rentalId).let {
+                _bookingResponse.postValue(it)
+            }
+        }
+    }
+
+    // Call APi Create Booking
+
 
 
 }

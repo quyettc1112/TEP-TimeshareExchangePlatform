@@ -43,15 +43,15 @@
             android:name=".UI.Activity.CommonActivity.MapViewActivity.MapViewActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.VNPayActivity"
+            android:name=".UI.Activity.Payment.PaymentPackage.VNPayActivity"
             android:enableOnBackInvokedCallback="true"
             android:exported="true"
             tools:targetApi="tiramisu" />
         <activity
-            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentResultActivity"
+            android:name=".UI.Activity.Payment.PaymentPackage.PaymentResultActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity"
+            android:name=".UI.Activity.Payment.PaymentPackage.PaymentPackageActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyTransactionActivity.MyTransactionDetailActivity"
