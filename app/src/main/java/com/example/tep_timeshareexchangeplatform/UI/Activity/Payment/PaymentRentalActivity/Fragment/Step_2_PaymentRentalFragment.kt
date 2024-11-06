@@ -173,7 +173,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
                         "Thành Công",
-                        "Đặt phòng thành công",
+                        "Thanh Toán thành công",
                         MotionToastStyle.SUCCESS,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
@@ -259,7 +259,6 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             setTitle("${postingDetail.unitType.title}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
-
 
         // Cancel Policy
         binding.apply {

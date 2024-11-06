@@ -33,7 +33,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     private lateinit var tokenManager: TokenManager
 
     companion object {
-        const val PAGE_SIZE = 4
+        const val PAGE_SIZE = 10
     }
 
 

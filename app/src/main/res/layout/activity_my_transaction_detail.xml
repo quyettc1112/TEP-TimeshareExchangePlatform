@@ -489,6 +489,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView26">
                         <!--// Fullname-->
                         <TextView
+                            android:id="@+id/textView33"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3.5"
@@ -503,15 +504,16 @@
                         <!-- // Status-->
                         <TextView
                             android:id="@+id/tv_description"
+                            android:layout_marginStart="50dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="6.5"
                             android:fontFamily="@font/inter_medium"
                             android:textColor="@color/black"
                             android:textSize="14dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView33"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

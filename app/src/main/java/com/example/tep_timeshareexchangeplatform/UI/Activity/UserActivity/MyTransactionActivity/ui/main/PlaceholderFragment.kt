@@ -168,7 +168,7 @@ class PlaceholderFragment : Fragment() {
             }
         }
 
-        const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 40
     }
 
     override fun onDestroyView() {

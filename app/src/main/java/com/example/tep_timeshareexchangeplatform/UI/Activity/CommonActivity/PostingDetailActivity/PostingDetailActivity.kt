@@ -343,6 +343,18 @@ class PostingDetailActivity : BaseActivity() {
             }
         }
 
+        val customerInfo = tokenManager.getCustomerInfo()
+        if (postingDetail.ownerId == customerInfo?.id) {
+            binding.apply {
+                tvPrice.visibility = View.GONE
+                tvDate.visibility = View.GONE
+                tvNotion.visibility = View.GONE
+                tvMemberRequest.visibility = View.GONE
+                tvRequest.text = "Bài Đăng Của Bạn - Không Thể Đặt Phòng"
+                ctrRequestButton.isEnabled = false
+            }
+        }
+
 
 
     }
