@@ -163,4 +163,22 @@ class WalletAPIRepository @Inject constructor(
             Resource.error("Network Error: ${e.message}", null)
         }
     }
+
+    // Booking Rental By Wallet
+    suspend fun bookingRentalWallet(
+        token: String,
+        postingId: Int
+    ): Resource<WalletPurchaseResponse> {
+        return try {
+            val response = walletAPIService.bookingRentalWallet("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

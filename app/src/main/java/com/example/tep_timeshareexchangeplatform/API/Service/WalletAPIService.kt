@@ -50,7 +50,7 @@ interface WalletAPIService {
      * Deposit Money By VN Pay
      */
     // Deposit Money By VN Pay
-    @POST("wallet/VNPAY/deposit-wallet")
+    @POST("wallet/vnpay/deposit-wallet")
     suspend fun depositMoneyVNPAY(
         @Header ("Authorization") token: String,
         @Query("uuid") uuid: String,
@@ -61,7 +61,7 @@ interface WalletAPIService {
      * Purchase Package Posting
      */
     // Purchase Package Posting By VN Pay
-    @POST("wallet/VNPAY/rental/posting")
+    @POST("wallet/vnpay/rental/posting")
     suspend fun purchasePackagePostingVNPAY(
         @Header ("Authorization") token: String,
         @Query("uuid") uuid: String,
@@ -69,7 +69,7 @@ interface WalletAPIService {
     ) : Response<VNPAYPurchaseResponse>
 
     // Purchase Package Posting By Wallet
-    @POST("wallet/WALLET/rental/posting")
+    @POST("wallet/wallet/rental/posting")
     suspend fun purchasePackagePostingWallet(
         @Header ("Authorization") token: String,
         @Query("rentalPackageId") rentalPackageId : Int
@@ -86,6 +86,14 @@ interface WalletAPIService {
         @Query("uuid") uuid: String,
         @Query("postingId") postingId : Int
     ) : Response<VNPAYPurchaseResponse>
+
+
+    // Booking Rental By Wallet
+    @POST("wallet/wallet/rental/booking")
+    suspend fun bookingRentalWallet(
+        @Header ("Authorization") token: String,
+        @Query("postingId") postingId : Int
+    ) : Response<WalletPurchaseResponse>
 
 
 

@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.VNPayActivity
@@ -27,6 +28,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRent
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -53,6 +55,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
     ): View? {
         binding = FragmentStep2PaymentRentalBinding.inflate(inflater, container, false)
         setToolBarEvent()
+        checkTokenValid()
         observeData()
         onPaymentMethodSelected()
         requestButtonClick()
@@ -140,6 +143,33 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.SUCCESS -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
+                    viewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+                }
+
+                Status.ERROR -> {
+                    (activity as PaymentRentalActivity).hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Thất Bại",
+                        "${it.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        }
+
+        // Call API Booking By Wallet
+        viewModel.walletPurchaseResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+                    (activity as PaymentRentalActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as PaymentRentalActivity).hideLoadingWaiting()
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
                         "Thành Công",
@@ -149,16 +179,8 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                         MotionToast.LONG_DURATION,
                         null
                     )
-                    (activity as PaymentRentalActivity).showSuccessDialog(
-                        requireContext(),
-                        "Chúc mừng bạn đã đặt phòng thành công. Vui lòng kiểm tra thông tin đặt phòng trong mục lịch sử đặt phòng",
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                (activity as PaymentRentalActivity).finish()
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
-                            }
-                        }
-                    )
+                    callAPICreateBooking()
+
 
                 }
 
@@ -176,6 +198,58 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 }
             }
         }
+
+        viewModel.customerInfoResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.LOADING -> {
+                    (activity as PaymentRentalActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as PaymentRentalActivity).hideLoadingWaiting()
+                    if (it.data!!.isMember) {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                        tokenManager.saveCustomerInfo(it.data)
+                    } else {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                        tokenManager.saveCustomerInfo(it.data)
+                    }
+
+                    (activity as PaymentRentalActivity).showSuccessDialog(
+                        requireContext(),
+                        "Chúc mừng bạn đã đặt phòng thành công. Vui lòng kiểm tra thông tin đặt phòng trong mục lịch sử đặt phòng",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                (activity as PaymentRentalActivity).finish()
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                            }
+                        }
+                    )
+                }
+
+                Status.ERROR -> {
+                    (activity as PaymentRentalActivity).hideLoadingWaiting()
+                }
+            }
+        }
+
+    }
+
+    private fun checkTokenValid() {
+        if (!tokenManager.isLoggedIn()) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Thất Bại",
+                "Vui lòng đăng nhập để thực hiện chức năng này",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            requireActivity().finish()
+        }
+        val customerInfo = tokenManager.getCustomerInfo()
+        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} đ"
 
     }
 
@@ -234,11 +308,6 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             )
 
             if (isFormValid && binding.cbAgreeTerms.isChecked) {
-                val guestDTO = GuestDTO(
-                    binding.etFullName.text.toString(),
-                    binding.etPhoneNumber.text.toString(),
-                    binding.etEmail.text.toString(),
-                )
                 paymentMethodProcess()
             } else {
                 // Show error message or keep focus on the invalid field
@@ -254,7 +323,10 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
     private fun intentToVNPAYActivity(url: String) {
         val intent = Intent(requireContext(), VNPayActivity::class.java)
         intent.putExtra(Constant.PAYMENT_URL, url)
-        intent.putExtra(Constant.GENERAL_ID_PAYMENT, viewModel.postingDetail.value?.data!!.rentalPostingId)
+        intent.putExtra(
+            Constant.GENERAL_ID_PAYMENT,
+            viewModel.postingDetail.value?.data!!.rentalPostingId
+        )
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.RENTAL_PAYMENT)
         paymentResultLauncher.launch(intent)
     }
@@ -269,7 +341,10 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             }
 
             PaymentMethod.UNWIND -> {
-                // Handle UNWIND payment
+                viewModel.bookingByWallet(
+                    tokenManager.getAccessToken().toString(),
+                    viewModel.postingDetail.value?.data!!.rentalPostingId
+                )
             }
 
             else -> {

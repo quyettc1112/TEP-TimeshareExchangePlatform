@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class PaymentRentalViewModel @Inject constructor(
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
     private val paymentAPIRepository: PaymentAPIRepository,
-    private val customerAPIRepository: CustomerAPIRepository
+    private val customerAPIRepository: CustomerAPIRepository,
+    private val walletAPIRepository: WalletAPIRepository
 ): ViewModel() {
 
     // Call get Posting Detail API
@@ -56,6 +60,30 @@ class PaymentRentalViewModel @Inject constructor(
             _myBookingResponse.postValue(Resource.loading(null))
             customerAPIRepository.createBookingRequest(token, postingId, guestDTO).let {
                 _myBookingResponse.postValue(it)
+            }
+        }
+    }
+
+    // Call API Booking By Wallet
+    private val _walletPurchaseResponse = MutableLiveData<Resource<WalletPurchaseResponse>>()
+    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> = _walletPurchaseResponse
+    fun bookingByWallet(token: String, postingId: Int) {
+        viewModelScope.launch {
+            _walletPurchaseResponse.postValue(Resource.loading(null))
+            walletAPIRepository.bookingRentalWallet(token, postingId).let {
+                _walletPurchaseResponse.postValue(it)
+            }
+        }
+    }
+
+    // Call Get New Available Balance
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
+    val customerInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    fun getCustomerInfo(token: String) {
+        viewModelScope.launch {
+            _customerInfoResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getIsCustomerExist(token).let {
+                _customerInfoResponse.postValue(it)
             }
         }
     }

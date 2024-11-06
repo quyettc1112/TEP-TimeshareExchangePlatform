@@ -182,4 +182,5 @@ class CustomerAPIRepository@Inject constructor(
             Resource.error("Network Error: ${e.message}", null)
         }
     }
+
 }
