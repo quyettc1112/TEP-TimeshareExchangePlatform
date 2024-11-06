@@ -10,6 +10,7 @@
     tools:context=".UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -45,6 +46,7 @@
 
                     <!--// Room Reservation Code-->
                     <TextView
+                        android:id="@+id/tv_room_reservation_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_bold"
@@ -126,10 +128,9 @@
                                     android:fontFamily="@font/inter_bold"
                                     android:text=""
                                     android:textColor="@color/black"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <!-- Check-in Day -->
-
                                 <TextView
                                     android:id="@+id/tv_checkin_dayOfWeek"
                                     android:layout_width="wrap_content"
@@ -201,7 +202,7 @@
                                     android:fontFamily="@font/inter_bold"
                                     android:text=""
                                     android:textColor="@color/black"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <!-- Check-in Day -->
 

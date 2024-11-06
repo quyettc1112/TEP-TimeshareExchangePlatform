@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -36,6 +38,10 @@ class BookingDetailActivity : BaseActivity() {
         }
         token = TokenManager(this)
         getIntentData()
+
+        binding.toolbar.onStartIconClick = {
+            onBackPressed()
+        }
     }
 
     private fun getIntentData() {
@@ -58,6 +64,7 @@ class BookingDetailActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     binding.shimmerViewContainer.hideShimmer()
+                    bindData(resources.data!!)
                     Log.d("Check Data Booking Detail", resources.data.toString())
                 }
 
@@ -78,7 +85,70 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
+    // Bind Data Section
+    private fun bindData(data: MyBookingDetailResponse) {
+        // Bind Data Room Reservation
+        binding.apply {
+            tvRoomReservationCode.text = "Mã đặt phòng: ${data.id}"
+
+            // Check in Date
+            tvCheckinDate.text = Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
+            tvCheckinDayOfWeek.text = Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
+
+            // Check Out date
+            tvCheckoutDate.text = Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
+            tvCheckoutDayOfWeek.text = Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
+        }
+
+        // Bind Data Guest Information
+        binding.apply {
+            etFullName.setText(data.primaryGuestName)
+            etPhoneNumber.setText(data.primaryGuestPhone)
+            etEmail.setText(data.primaryGuestEmail)
+        }
+
+        // Bind Data Detail Billing
+        val binding_detail_billing = binding.includeDetailBilling
+        binding_detail_billing.apply {
+            // Hide Unnecessary View
+            llPostingBy.visibility = View.GONE
+            // Show Necessary View
+            llFeePrice.visibility = View.VISIBLE
+
+            // Bind Data
+            tvResortNameDtb.text = data.rentalPosting.roomInfo.unitType.resortResortName + " - " + data.rentalPosting.roomInfo.unitType.title
+            tvLocation.text = data.rentalPosting.roomInfo.unitType.resortAddress
+            tvNumberNight.text = data.totalNights.toString()
+            tvCheckInDate.text = Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
+            tvCheckOutDate.text = Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
+
+            // Cancel Policy
+            binding_detail_billing.apply {
+                if (data.rentalPosting.cancellationType.name == "null") {
+                    tvCancellationPolicy.text = "Không có"
+                } else {
+                    val refundPolicy = RefundPolicy.getShortDescriptionFromName(
+                        this@BookingDetailActivity,
+                        data.rentalPosting.cancellationType.name
+                    )
+                    tvCancellationPolicy.text = refundPolicy
+                }
+            }
+
+            tvRoomPricePerNight.text = Constant.formatPrice(data.pricePerNights)
+            tvEstimatedTotalPrice.text = Constant.formatPrice(data.totalPrice)
+            tvFeePrice.text = Constant.formatPrice(data.serviceFee)
+
+
+        }
+
+
+
+    }
+
+
     override fun onBackPressed() {
         super.onBackPressed()
+        finish()
     }
 }
