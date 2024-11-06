@@ -155,6 +155,9 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="canceled">Đã Hủy</string>
     <string name="refund">Hoàn Tiền</string>
     <string name="payment_completed">Đã Thanh Toán</string>
+    <string name="rental">Thuê Phòng</string>
+    <string name="exchange">Trao Đổi</string>
+
 
     <string-array name="spinner_items">
         <item>Option 1</item>

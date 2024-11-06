@@ -60,7 +60,6 @@
                 android:layout_marginTop="2dp"
                 android:elevation="3dp"
                 android:padding="5dp"
-                android:translationZ="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -86,6 +85,35 @@
                     android:fontFamily="@font/inter_bold"
                     android:text="Đã xác nhận"
                     android:textColor="@color/red_light"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <!--// Type Booking-->
+            <LinearLayout
+                android:id="@+id/ll_type_booking_container"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/white"
+                android:elevation="3dp"
+                android:padding="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+
+                <TextView
+                    android:id="@+id/tv_booking_tupe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Thuê Phòng"
+                    android:textColor="@color/blue_btn_search"
                     android:textSize="12dp" />
             </LinearLayout>
             
@@ -292,7 +320,6 @@
                             android:src="@drawable/ic_check_out"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"/>
-
 
                     </LinearLayout>
 

@@ -72,13 +72,17 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         viewModel.myBooking.observe(viewLifecycleOwner) { resources ->
             when (resources.status) {
                 Status.SUCCESS -> {
-                    resources.data?.let {
-                        binding.llLoadingContainer.visibility = View.GONE
+                    if (resources.data?.content.isNullOrEmpty()) {
+                        binding.llListContianer.visibility = View.GONE
+                        binding.llLoadingContainer.visibility = View.VISIBLE
+                        binding.tvDescription.text = "Bạn chưa có đơn đặt phòng nào"
+                    } else {
                         binding.llListContianer.visibility = View.VISIBLE
-                        binding.animationViewLoadingMore.visibility = View.GONE
-                        viewModel.loadMoreBookingList(it.content)
+                        binding.llLoadingContainer.visibility = View.GONE
+                        resources.data?.content?.let { viewModel.loadMoreBookingList(it) }
                         myOrderAdapter.submitList(viewModel.getCurrentMyBookingList())
                     }
+                    binding.animationViewLoadingMore.visibility = View.GONE
                 }
 
                 Status.ERROR -> {
@@ -132,6 +136,11 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     override fun onResume() {
         super.onResume()
-    }
+        if (!tokenManager.isLoggedIn()) {
+            binding.llListContianer.visibility = View.GONE
+            binding.llLoadingContainer.visibility = View.VISIBLE
+            binding.tvDescription.text = "Bạn cần đăng nhập để xem thông tin đặt phòng"
+        }
 
+    }
 }

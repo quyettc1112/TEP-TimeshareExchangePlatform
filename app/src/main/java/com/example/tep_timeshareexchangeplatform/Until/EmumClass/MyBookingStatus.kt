@@ -10,7 +10,9 @@ enum class MyBookingStatus(val apiStatus: String, val statusResId: Int) {
     NO_SHOW("NoShow", R.string.no_show),
     CANCELED("Canceled", R.string.canceled),
     REFUND("Refund", R.string.refund),
-    PAYMENT_COMPLETED("PaymentCompleted", R.string.payment_completed);
+    PAYMENT_COMPLETED("PaymentCompleted", R.string.payment_completed),
+    RENTAL("rental", R.string.rental),
+    EXCHANGE("exchange", R.string.exchange);
 
     companion object {
         fun fromApiStatus(apiStatus: String): MyBookingStatus? {

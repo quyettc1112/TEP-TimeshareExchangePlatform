@@ -37,6 +37,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
             binding.imTyepPayment.setImageResource(R.drawable.ic_vnpay)
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
+            binding.tvBookingTupe.text = MyBookingStatus.fromApiStatus(item.source)?.getDescription(binding.root.context)
 
 
             when (MyBookingStatus.fromApiStatus(item.status)) {
