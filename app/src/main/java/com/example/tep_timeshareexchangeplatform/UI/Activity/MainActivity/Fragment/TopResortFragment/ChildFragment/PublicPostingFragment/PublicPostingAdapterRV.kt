@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
@@ -27,6 +28,13 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+
+            if (item.isVerify) {
+                binding.llVerify.visibility = View.VISIBLE
+            } else {
+                binding.llVerify.visibility = View.GONE
+            }
+
 
             binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND"
 

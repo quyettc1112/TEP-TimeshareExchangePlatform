@@ -20,7 +20,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Pa
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.Adapter.BenefitAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter.BenefitAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentResultActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.VNPayActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity

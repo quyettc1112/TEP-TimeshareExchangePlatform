@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
@@ -90,6 +91,15 @@ interface CustomerAPIService {
     suspend fun getMyBookingDetail(
         @Header ("Authorization") token: String,
         @Path ("bookingId") bookingId: Int
+    ) : Response<MyBookingDetailResponse>
+
+
+    // Create Booking Request
+    @POST("customer/rental/booking/{postingId}")
+    suspend fun createBookingRequest(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body guestDTO: GuestDTO
     ) : Response<MyBookingDetailResponse>
 
 }

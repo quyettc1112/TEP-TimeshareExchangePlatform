@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -108,7 +109,22 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         }
 
         viewModel.currentMyBookingPage.observe(viewLifecycleOwner) {
-            viewModel.getMyBooking(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+            val userStage = tokenManager.getUserLogState()
+            when (userStage) {
+                UserLogState.LOGGED_IN_AS_CUSTOMER -> {
+                    viewModel.getMyBooking(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+                }
+                UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                    viewModel.getMyBooking(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+                }
+                else -> {
+                    binding.llListContianer.visibility = View.GONE
+                    binding.llLoadingContainer.visibility = View.VISIBLE
+                    binding.tvDescription.text = "Bạn cần cung cấp thông tin cá nhân để khám phá thêm"
+                }
+
+            }
+
         }
     }
 

@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
@@ -15,18 +16,27 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareDetailBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -40,17 +50,9 @@ class PostingDetailActivity : BaseActivity() {
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
-
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
-
     private val postingDetailViewModel: PostingDetailViewModel by viewModels()
-
-    private var isExpanded = true
-    private var expandedHeight = 140.dp // Initial height in dp
-    private var collapsedHeight = 100.dp // Collapsed height in dp
-
-    val Int.dp: Int
-        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,7 @@ class PostingDetailActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        tokenManager = TokenManager(this)
         getIntentValue()
 
         initAdapter()
@@ -121,13 +123,80 @@ class PostingDetailActivity : BaseActivity() {
             }
         }
 
+        // Call check User Is Member
+        postingDetailViewModel.isCustomerExist.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    if (it.data!!.isMember) {
+                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+                        val intent = Intent(this@PostingDetailActivity, OwnerInfoActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+                        intentToMemberShipActivity()
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    if(it.message!!.contains("404")) {
+                        intentToMemberShipActivity()
+                    }
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Call Create Customer
+        postingDetailViewModel.createCustomerResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    MotionToast.createColorToast(
+                        this,
+                        "Success",
+                        "Create Customer Success",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                    postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
+                }
+
+                Status.ERROR -> {
+                    Log.d("CheckErrorCreate", it.message.toString() + " " + it.message.toString())
+                    MotionToast.createColorToast(
+                        this,
+                        "Error",
+                        it.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                    hideLoadingWaiting()
+                }
+            }
+        }
+
+
     }
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
             setTitle("${postingDetail.unitType.title}")
-            setTitleDetail("${postingDetail.checkinDate} - ${postingDetail.checkoutDate}")
+            setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
 
         }
 
@@ -145,15 +214,20 @@ class PostingDetailActivity : BaseActivity() {
 
         // Checkin Date, Check out Date
         binding.apply {
-            tvCheckInDate.text = Constant.formatDateByLocale(
+            tvCheckinDate.text = Constant.getFormattedDate(
                 postingDetail.checkinDate,
                 this@PostingDetailActivity
             )
-            tvCheckOutDate.text = Constant.formatDateByLocale(
+            tvCheckinDayOfWeek.text =
+                Constant.getDayOfWeek(postingDetail.checkinDate, this@PostingDetailActivity)
+
+
+            tvCheckoutDate.text = Constant.getFormattedDate(
                 postingDetail.checkoutDate,
                 this@PostingDetailActivity
             )
-            tvNight.text = "${postingDetail.nights} đêm"
+            tvCheckoutDayOfWeek.text =
+                Constant.getDayOfWeek(postingDetail.checkoutDate, this@PostingDetailActivity)
         }
 
         // Set Unit Type Of Posting
@@ -196,10 +270,13 @@ class PostingDetailActivity : BaseActivity() {
                 tvCancelPolicy.text = "Không có"
                 tvCancelPolicyDtb.text = "Không có"
             } else {
-                tvCancelPolicy.text = postingDetail.cancelType.toString()
-                tvCancelPolicyDtb.text = postingDetail.cancelType.toString()
+                val refundPolicy = RefundPolicy.getShortDescriptionFromName(
+                    this@PostingDetailActivity,
+                    postingDetail.cancelType.toString()
+                )
+                tvCancelPolicy.text = refundPolicy
+                tvCancelPolicyDtb.text = refundPolicy
             }
-
         }
 
         // UI DTB
@@ -208,9 +285,10 @@ class PostingDetailActivity : BaseActivity() {
             tvCheckInDateDtb.text =
                 Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
             tvCheckOutDateDtb.text =
-                Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
+                Constant.formatDateByLocale(postingDetail.checkoutDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
-            tvRoomPricePerNight.text = "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+            tvRoomPricePerNight.text =
+                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
@@ -219,13 +297,52 @@ class PostingDetailActivity : BaseActivity() {
 
         // Data for Request
         binding.apply {
-            tvPrice.text = "${Constant.formatPrice(postingDetail.totalPrice)} đ"
-            tvDate.text = "${postingDetail.checkinDate} - ${postingDetail.checkoutDate}"
+            tvPrice.text =
+                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+            tvDate.text = Constant.getFormattedDate(
+                postingDetail.checkinDate,
+                this@PostingDetailActivity
+            ) + " đến " + Constant.getFormattedDate(
+                postingDetail.checkoutDate,
+                this@PostingDetailActivity
+            )
 
         }
 
         // Set Amenities
         facilityAdapter.submitList(postingDetail.resortAmenities)
+
+        // Package Info
+        binding.apply {
+            if (postingDetail.rentalPackageName != null) {
+                val packageEnum = PackageEnum.getPackageByName(postingDetail.rentalPackageName)
+                when (packageEnum) {
+                    PackageEnum.BASIC_SERVICE.packageModel -> {
+                        tvNotion.visibility = View.VISIBLE
+                        tvMemberRequest.visibility = View.VISIBLE
+                        ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.redPrimary)
+                    }
+                    PackageEnum.ADVANCED_SERVICE.packageModel -> {
+                        tvNotion.visibility = View.GONE
+                        tvMemberRequest.visibility = View.GONE
+                        ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
+
+                    }
+                    PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                        tvNotion.visibility = View.GONE
+                        tvMemberRequest.visibility = View.GONE
+                        ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
+                    }
+                    PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                        tvNotion.visibility = View.GONE
+                        tvMemberRequest.visibility = View.GONE
+                        ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
+                    }
+
+                }
+            }
+        }
+
 
 
     }
@@ -296,82 +413,60 @@ class PostingDetailActivity : BaseActivity() {
     }
 
     private fun setRequestButtonAction() {
-        binding.llSeeAll.setOnClickListener {
-            if (isExpanded) {
-                collapseCardView(
-                    binding.cvRequestContaner,
-                    binding.tvPrice,
-                    binding.tvDate,
-                    binding.tvNotion
-                )
-                binding.apply {
-                    tvSeeAll.text = "Mở rộng"
-                    imExpanded.setImageResource(R.drawable.ic_expend)
-                }
-            } else {
-                expandCardView(
-                    binding.cvRequestContaner,
-                    binding.tvPrice,
-                    binding.tvDate,
-                    binding.tvNotion
-                )
-                binding.apply {
-                    tvSeeAll.text = "Thu nhỏ"
-                    imExpanded.setImageResource(R.drawable.ic_expend_open)
-                }
-            }
-            isExpanded = !isExpanded
-        }
-
         binding.ctrRequestButton.setOnClickListener {
-            startActivity(Intent(this, PaymentRentalActivity::class.java))
-        }
-    }
+            val postingDetail = postingDetailViewModel.postingDetail.value!!.data
+            if (postingDetail!!.rentalPackageName != null) {
+                val packageEnum = PackageEnum.getPackageByName(postingDetail.rentalPackageName)
+                when (packageEnum) {
+                    PackageEnum.BASIC_SERVICE.packageModel -> {
+                        postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
+                    }
+                    else -> {
+                        val userLogState = tokenManager.getUserLogState()
+                        when (userLogState) {
+                            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                                startActivity(Intent(this, PaymentRentalActivity::class.java))
+                            }
+                            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
+                                startActivity(Intent(this, PaymentRentalActivity::class.java))
+                            }
+                            UserLogState.LOGGED_IN_AS_USER -> {
+                                val dialogFragment = MemberInfoDialog.newInstance()
+                                dialogFragment.show(supportFragmentManager, dialogFragment.tag)
+                                dialogFragment.setOnClickRequestButton(object :
+                                    MemberInfoDialog.OnClickRequestButton {
+                                    override fun onClickRequestButton(customerDTO: CustomerDTO) {
+                                        // Call API Create Customer
+                                        postingDetailViewModel.callCreateCustomer(tokenManager.getAccessToken()
+                                            .toString(), customerDTO)
+                                    }
+                                })
+                               // startActivity(Intent(this, MainActivity::class.java))
+                            }
+                            UserLogState.LOGGED_OUT -> {
+                                finish()
+                                MotionToast.Companion.createColorToast(
+                                    this,
+                                    "Thất Bại",
+                                    "Vui lòng đăng nhập để thực hiện chức năng này",
+                                    MotionToastStyle.ERROR,
+                                    MotionToast.GRAVITY_BOTTOM,
+                                    MotionToast.LONG_DURATION,
+                                    null
+                                )
+                            }
+                        }
 
-    private fun collapseCardView(cardView: CardView, vararg viewsToHide: View) {
-        val animator = ValueAnimator.ofInt(expandedHeight, collapsedHeight)
-        animator.addUpdateListener {
-            val value = it.animatedValue as Int
-            val layoutParams = cardView.layoutParams
-            layoutParams.height = value
-            cardView.layoutParams = layoutParams
-        }
-
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-                viewsToHide.forEach { it.visibility = View.GONE }
+                    }
+                }
             }
-        })
-
-        animator.duration = 300
-        animator.start()
-    }
-
-    private fun expandCardView(cardView: CardView, vararg viewsToShow: View) {
-        val animator = ValueAnimator.ofInt(collapsedHeight, expandedHeight)
-        animator.addUpdateListener {
-            val value = it.animatedValue as Int
-            val layoutParams = cardView.layoutParams
-            layoutParams.height = value
-            cardView.layoutParams = layoutParams
         }
+    }
 
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                super.onAnimationStart(animation)
-                viewsToShow.forEach { it.visibility = View.VISIBLE }
-            }
-        })
-
-        animator.duration = 300
-        animator.start()
+    private fun intentToMemberShipActivity() {
+        startActivity(Intent(this, MemberShipActivity::class.java))
     }
 
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 
 }

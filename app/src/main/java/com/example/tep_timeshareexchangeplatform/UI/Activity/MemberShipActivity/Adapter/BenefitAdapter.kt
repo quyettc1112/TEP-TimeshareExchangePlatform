@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

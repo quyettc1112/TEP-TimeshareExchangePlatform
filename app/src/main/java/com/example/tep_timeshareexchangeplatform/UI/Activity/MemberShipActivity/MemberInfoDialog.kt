@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity
 
 import android.app.DatePickerDialog
 import android.app.Dialog

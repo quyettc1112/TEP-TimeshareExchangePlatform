@@ -12,7 +12,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.MemberShipActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity

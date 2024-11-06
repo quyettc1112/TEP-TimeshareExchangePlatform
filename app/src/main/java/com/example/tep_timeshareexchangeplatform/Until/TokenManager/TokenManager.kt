@@ -85,6 +85,7 @@ class TokenManager(private val context: Context) {
 
     fun clearAllToken() {
         clearTokens()
+        clearUserLogState()
         clearCustomerInfo()
         clearCustomerInfo()
     }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.Adapter.BenefitAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter.BenefitAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ItemPackagePostingBinding
 import java.text.DecimalFormat
 

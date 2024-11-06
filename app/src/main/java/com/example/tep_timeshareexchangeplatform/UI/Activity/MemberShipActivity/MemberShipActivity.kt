@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.MemberShipActivity.Adapter.MemberShipAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackageActivity.PaymentScreen.PaymentPackageActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
@@ -115,6 +115,7 @@ class MemberShipActivity : BaseActivity() {
                         memberShipViewModel.currentPackage.value!!.id
                     )
                     startActivity(intent)
+                    finish()
 
                 }
 

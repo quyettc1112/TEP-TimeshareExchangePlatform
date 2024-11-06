@@ -148,7 +148,6 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                                 binding.root.context
                             )
                         }
-
                     }
                 }
 
