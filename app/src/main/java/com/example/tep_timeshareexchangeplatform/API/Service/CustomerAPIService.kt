@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
@@ -73,5 +74,13 @@ interface CustomerAPIService {
         @Query ("newPrice") newPrice: Float,
         @Query ("isAccepted") isAccepted: Boolean?
     ) : Response<PricingSupportResponse>
+
+    // Get Customer  Booking
+    @GET("customer/booking")
+    suspend fun getCustomerBooking(
+        @Header ("Authorization") token: String,
+        @Query ("page") page: Int,
+        @Query ("size") size: Int
+    ) : Response<MyBookingResponse>
 
 }

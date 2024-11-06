@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 
 import androidx.lifecycle.ViewModel
 
+
 class BookingViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

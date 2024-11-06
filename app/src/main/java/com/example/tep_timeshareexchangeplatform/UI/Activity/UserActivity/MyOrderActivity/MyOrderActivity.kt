@@ -40,7 +40,7 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        myOrderAdapter.submitList(Constant.myOrderList)
+        myOrderAdapter.submitList(listOf())
     }
 
     private fun setOrderList() {

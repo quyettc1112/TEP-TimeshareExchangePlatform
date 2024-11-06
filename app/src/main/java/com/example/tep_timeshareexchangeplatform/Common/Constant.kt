@@ -112,119 +112,45 @@ class Constant {
             return dateFormat.format(date)
         }
 
+        fun getDayOfWeek(dateString: String, context: Context): String {
+            // Input date format
+            val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
 
-        val resortListMT = listOf(
-            ResortModel(
-                id = 6,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Nha Trang Resort",
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                location = "Khánh Hòa, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "550.000 - 1.300.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 7,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Phú Quốc Resort",
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                location = "Kiên Giang, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "750.000 - 2.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 8,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Đà Nẵng Resort",
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                location = "Đà Nẵng, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "1.000.000 - 3.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 9,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Hạ Long Resort",
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                location = "Quảng Ninh, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "650.000 - 2.500.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 10,
-                resortImage = R.drawable.im_material_mt,
-                resortName = "Đại Lải Resort",
-                rating = 4.2f,
-                ratingCount = "180 đánh giá",
-                location = "Vĩnh Phúc, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = " 700.000 - 1.800.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 11,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Nha Trang Resort",
-                rating = 4.5f,
-                ratingCount = "254 đánh giá",
-                location = "Khánh Hòa, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "550.000 - 1.300.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 12,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Phú Quốc Resort",
-                rating = 4.0f,
-                ratingCount = "150 đánh giá",
-                location = "Kiên Giang, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "750.000 - 2.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 13,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Đà Nẵng Resort",
-                rating = 4.7f,
-                ratingCount = "300 đánh giá",
-                location = "Đà Nẵng, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "1.000.000 - 3.000.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 14,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Hạ Long Resort",
-                rating = 4.3f,
-                ratingCount = "200 đánh giá",
-                location = "Quảng Ninh, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = "650.000 - 2.500.000 VND",
-                numberOfNights = "| 1 đêm"
-            ),
-            ResortModel(
-                id = 15,
-                resortImage = R.drawable.im_material_mn,
-                resortName = "Đại Lải Resort",
-                rating = 4.2f,
-                ratingCount = "180 đánh giá",
-                location = "Vĩnh Phúc, Việt Nam",
-                roomDetails = "123 Timeshare cho thuê có sẵn",
-                price = " 700.000 - 1.800.000 VND",
-                numberOfNights = "| 1 đêm"
-            )
-        )
+            // Get saved language preference
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Format for day of the week
+            val dayFormat = if (languageCode == "vi") {
+                SimpleDateFormat("EEEE", Locale.forLanguageTag("vi"))
+            } else {
+                SimpleDateFormat("EEEE", Locale.ENGLISH)
+            }
+
+            return dayFormat.format(date)
+        }
+
+        fun getFormattedDate(dateString: String, context: Context): String {
+            // Input date format
+            val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Get saved language preference
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Format date based on saved language
+            val dateFormat = if (languageCode == "vi") {
+                SimpleDateFormat("dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+            } else {
+                SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH)
+            }
+
+            return dateFormat.format(date)
+        }
+
+
 
 
         val destiantionList = listOf(
@@ -594,56 +520,6 @@ class Constant {
             ),
         )
 
-        val listMyPosting = listOf(
-            MyPostingModel(
-                id = 1,
-                name = "Flamingo Đại Lải",
-                roomName = "Phòng Studio King, 1 Giường, 4 Người",
-                location = "Thành Phố Hồ Chí Minh, Việt Nam",
-                stayDates = "18/08/2024 - 23/08/2024",
-                priceRange = "1.000.000 - 3.000.000 VND",
-                packageName = "Gói Cơ Bản - 1 ",
-                packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = false,
-                isPriceDemand = false
-            ),
-            MyPostingModel(
-                id = 2,
-                name = "Vinpearl Nha Trang",
-                roomName = "Biệt thự 3 phòng ngủ, hướng biển",
-                location = "Thành Phố Hồ Chí Minh, Việt Nam",
-                stayDates = "10/10/2024 - 15/10/2024",
-                priceRange = "1.000.000 - 3.000.000 VND",
-                packageName = "Gói Nâng Cao - 2 ",
-                packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true,
-                isPriceDemand = false
-            ),
-            MyPostingModel(
-                id = 3,
-                name = "InterContinental Phú Quốc",
-                roomName = "Phòng Suite với ban công và hướng biển",
-                location = "Thành Phố Hồ Chí Minh, Việt Nam",
-                stayDates = "01/11/2024 - 05/11/2024",
-                priceRange = "Đang Chờ Định Giá",
-                packageName = "Gói Premium - 3 ",
-                packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true,
-                isPriceDemand = true
-            ),
-            MyPostingModel(
-                id = 4,
-                name = "InterContinental Phú Quốc",
-                roomName = "Phòng Suite với ban công và hướng biển",
-                location = "Thành Phố Hồ Chí Minh, Việt Nam",
-                stayDates = "01/11/2024 - 05/11/2024",
-                priceRange = "1.000.000 - 3.000.000 VND",
-                packageName = "Gói Ủy Quyền - 4",
-                packageDuration = "11/09/2024 - 11/03/2025",
-                isVerify = true,
-                isPriceDemand = false
-            )
-        )
 
     }
 }

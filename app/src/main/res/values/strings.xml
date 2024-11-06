@@ -148,6 +148,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="pending_pricing">Pending Pricing</string>
     <string name="closed">Closed</string>
 
+    <!--// My Booking Status-->
+    <string name="booked">Booked</string>
+    <string name="checkin">Check-in</string>
+    <string name="checkout">Checkout</string>
+    <string name="no_show">No Show</string>
+    <string name="canceled">Canceled</string>
+    <string name="refund">Refund</string>
+    <string name="payment_completed">Payment Completed</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

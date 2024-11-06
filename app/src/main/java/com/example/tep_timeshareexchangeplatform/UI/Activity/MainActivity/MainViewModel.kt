@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authAPIRepository: AuthAPIRepository,
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
-    private val publicResortAPIRepository: PublicResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository,
+    private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
 
     /**
@@ -36,8 +40,6 @@ class MainViewModel @Inject constructor(
     }
 
 
-
-
     /**
      * Tracking User Login State
      *
@@ -45,20 +47,20 @@ class MainViewModel @Inject constructor(
      */
     private val _userJWTPayload = MutableLiveData<UserJWTPayloadModel>()
     val userJWTPayload: LiveData<UserJWTPayloadModel> = _userJWTPayload
+
     // Tracking User Login State
     private val _userLogState = MutableLiveData<UserLogState>()
     val userLogState: LiveData<UserLogState> = _userLogState
     fun setUserLogState(state: UserLogState) {
         _userLogState.value = state
     }
+
     // Tracking Customer Info
     private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
     val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
     fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
         _customerInfo.value = customerInfoResponse
     }
-
-
 
 
     /**
@@ -71,7 +73,6 @@ class MainViewModel @Inject constructor(
     fun updateDateRange(dateRange: String) {
         _dateRange.value = dateRange
     }
-
 
 
     /**
@@ -111,7 +112,6 @@ class MainViewModel @Inject constructor(
     }
 
 
-
     /**
      * Call API To GET Public Posting and Resort
      *
@@ -136,12 +136,14 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
     private val _currentPostingList = MutableLiveData<List<PublicPostingResponse.Content>>()
     fun loadMorePostings(list: List<PublicPostingResponse.Content>) {
         val currentList = _currentPostingList.value ?: emptyList()
         val updatedList = currentList + list
         _currentPostingList.value = updatedList
     }
+
     fun getCurrentPostingList(): List<PublicPostingResponse.Content>? {
         return _currentPostingList.value
     }
@@ -151,20 +153,22 @@ class MainViewModel @Inject constructor(
     fun getCurrentPostingsPage(): Int {
         return _currentPostingsPage.value ?: 0
     }
+
     fun incrementCurrentPostingsPage() {
         val currentValue = _currentPostingsPage.value ?: 0
         _currentPostingsPage.value = currentValue + 1
     }
+
     val _isNewPostinglist = MutableLiveData<Boolean>()
     fun updateIsPostingNewList(isNew: Boolean) {
         _isNewPostinglist.value = isNew
     }
+
     fun resetCurrentPostingPage() {
         updateIsPostingNewList(true)
         _currentPostingsPage.value = 0
         _currentPostingList.value = emptyList()
     }
-
 
 
     // Call API ALL Resort In Top Resort Fragment
@@ -178,6 +182,7 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
     val _currentResortList = MutableLiveData<List<ResortModelResponse.Content>>()
 
     fun loadMoreResorts(list: List<ResortModelResponse.Content>) {
@@ -185,6 +190,7 @@ class MainViewModel @Inject constructor(
         val updatedList = currentList + list
         _currentResortList.value = updatedList
     }
+
     fun getCurrentResortList(): List<ResortModelResponse.Content>? {
         return _currentResortList.value
     }
@@ -194,6 +200,7 @@ class MainViewModel @Inject constructor(
     fun getCurrentResortPage(): Int {
         return _currentResortPage.value ?: 0
     }
+
     fun incrementCurrentResortPage() {
         val currentValue = _currentResortPage.value ?: 0
         _currentResortPage.value = currentValue + 1
@@ -203,11 +210,60 @@ class MainViewModel @Inject constructor(
     fun updateIsResortNewList(isNew: Boolean) {
         _isNewResortlist.value = isNew
     }
+
     fun resetCurrentResortPage() {
         updateIsResortNewList(true)
         _currentResortPage.value = 0
         _currentResortList.value = emptyList()
     }
+
+
+    /**
+     * Call API To GET My Booking
+     *
+     * This function GET My Booking
+     * Get Paging Public Posting
+     * @param pageNo
+     * @param pageSize
+     *
+     * Check Add Loading More
+     * Current Page Tracking
+     */
+    private val _myBooking = MutableLiveData<Resource<MyBookingResponse>>()
+    val myBooking: MutableLiveData<Resource<MyBookingResponse>> get() = _myBooking
+    fun getMyBooking(token: String, pageNo: Int, pageSize: Int) {
+        viewModelScope.launch {
+            _myBooking.postValue(Resource.loading(null))
+            customerAPIRepository.getCustomerBooking(token, pageNo, pageSize).let {
+                _myBooking.postValue(it)
+            }
+        }
+    }
+
+    // Check Current Posting Page
+    private var _currentMyBookingPage = MutableLiveData<Int>()
+    val currentMyBookingPage: MutableLiveData<Int>
+        get() = _currentMyBookingPage
+    fun incrementCurrentMyBookingPage() {
+        val currentValue = _currentMyBookingPage.value ?: 0
+        _currentMyBookingPage.value = currentValue + 1
+    }
+
+    private val _currentMyBookingList = mutableListOf<MyBookingResponse.Content>()
+    fun loadMoreBookingList(list: List<MyBookingResponse.Content>) {
+        _currentMyBookingList.addAll(list)
+    }
+    fun getCurrentMyBookingList(): List<MyBookingResponse.Content> {
+        return _currentMyBookingList
+    }
+
+    fun resetCurrentMyBookingPage() {
+        _currentMyBookingList.clear()
+        _currentMyBookingPage.value = 0
+    }
+
+
+
 
 
     init {

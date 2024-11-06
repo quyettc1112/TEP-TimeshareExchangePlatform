@@ -147,6 +147,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="pending_pricing">Đang chờ định giá</string>
     <string name="closed">Đã đóng</string>
 
+    <!--// My Booking Status-->
+    <string name="booked">Đã Đặt Phòng</string>
+    <string name="checkin">Nhận Phòng</string>
+    <string name="checkout">Trả Phòng</string>
+    <string name="no_show">Không Có Mặt</string>
+    <string name="canceled">Đã Hủy</string>
+    <string name="refund">Hoàn Tiền</string>
+    <string name="payment_completed">Đã Thanh Toán</string>
+
     <string-array name="spinner_items">
         <item>Option 1</item>
         <item>Option 2</item>
