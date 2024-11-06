@@ -74,6 +74,8 @@ class Constant {
         const val priceValuation = "priceValuation"
         const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"
 
+        const val DEFAULT_MY_BOOKING_SELECTED_ID = "myBookingSelectedId"
+
 
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
@@ -235,84 +237,6 @@ class Constant {
             "https://i.pinimg.com/736x/a3/df/db/a3dfdbb0283cac6b594c676d00696779.jpg"
 
 
-        )
-
-        val myOrderList = listOf(
-            MyOrderModel(
-                orderId = "12412441",
-                status = "Đã xác nhận",
-                timeshareName = "Flamingo Đại Lải | Studio King",
-                checkInDate = "19-08-2024",
-                checkInDay = "Thứ 2",
-                checkOutDate = "23-08-2024",
-                checkOutDay = "Thứ 6",
-                timeshareType = "Phòng Studio King, 1 Giường, 4 Người",
-                price = "1,000,000 VND",
-                dateOfOrder = "20/09/2024",
-                timeOfOrder = "19:10",
-                paymentTypeIcon = R.drawable.ic_master_card,  // Replace with your actual drawable resource ID
-                timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
-            ),
-            MyOrderModel(
-                orderId = "98457392",
-                status = "Đang chờ xử lý",
-                timeshareName = "Vinpearl Nha Trang | Beachfront Villa",
-                checkInDate = "10-10-2024",
-                checkInDay = "Thứ 5",
-                checkOutDate = "15-10-2024",
-                checkOutDay = "Thứ 3",
-                timeshareType = "Biệt thự 3 phòng ngủ, hướng biển",
-                price = "8,500,000 VND",
-                dateOfOrder = "05/10/2024",
-                timeOfOrder = "15:30",
-                paymentTypeIcon = R.drawable.ic_visa, // Replace with your actual drawable resource ID
-                timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
-            ),
-            MyOrderModel(
-                orderId = "58234987",
-                status = "Đã hủy",
-                timeshareName = "InterContinental Phú Quốc | Ocean View Suite",
-                checkInDate = "01-11-2024",
-                checkInDay = "Thứ 6",
-                checkOutDate = "05-11-2024",
-                checkOutDay = "Thứ 2",
-                timeshareType = "Phòng Suite với ban công và hướng biển",
-                price = "12,000,000 VND",
-                dateOfOrder = "25/10/2024",
-                timeOfOrder = "14:00",
-                paymentTypeIcon = R.drawable.ic_paypal, // Replace with your actual drawable resource ID
-                timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
-            ),
-            MyOrderModel(
-                orderId = "76342890",
-                status = "Đang chờ xác nhận",
-                timeshareName = "Sun World Ba Na Hills | Mountain Retreat",
-                checkInDate = "15-12-2024",
-                checkInDay = "Chủ Nhật",
-                checkOutDate = "20-12-2024",
-                checkOutDay = "Thứ 6",
-                timeshareType = "Nhà nghỉ trên đỉnh núi, 2 phòng ngủ",
-                price = "7,200,000 VND",
-                dateOfOrder = "10/12/2024",
-                timeOfOrder = "10:20",
-                paymentTypeIcon = R.drawable.ic_visa, // Replace with your actual drawable resource ID
-                timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
-            ),
-            MyOrderModel(
-                orderId = "45612378",
-                status = "Đã thanh toán",
-                timeshareName = "Sheraton Đà Nẵng | Presidential Suite",
-                checkInDate = "20-12-2024",
-                checkInDay = "Thứ 7",
-                checkOutDate = "25-12-2024",
-                checkOutDay = "Thứ 5",
-                timeshareType = "Phòng Tổng thống, hướng biển với hồ bơi riêng",
-                price = "25,000,000 VND",
-                dateOfOrder = "18/12/2024",
-                timeOfOrder = "09:00",
-                paymentTypeIcon = R.drawable.ic_momo, // Replace with your actual drawable resource ID
-                timeshareImage = R.drawable.im_matiral_timeshare // Replace with your actual drawable resource ID
-            )
         )
 
         val listMemberShip = listOf(

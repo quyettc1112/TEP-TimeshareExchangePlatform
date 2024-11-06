@@ -19,6 +19,8 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemMyOrderBinding
 
 class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyOrderViewHolder>() {
 
+    var onItemClick: ((MyBookingResponse.Content) -> Unit)? = null
+
     inner class MyOrderViewHolder(binding: ItemMyOrderBinding) :
         BaseItemViewHolderCF<MyBookingResponse.Content, ItemMyOrderBinding>(binding) {
         override fun bind(item: MyBookingResponse.Content) {
@@ -100,6 +102,10 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                 }
             }
             binding.tvStatus.text = MyBookingStatus.fromApiStatus(item.status)?.getDescription(binding.root.context)
+
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
         }
 
         private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {

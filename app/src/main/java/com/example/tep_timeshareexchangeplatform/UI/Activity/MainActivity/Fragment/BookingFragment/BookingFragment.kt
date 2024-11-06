@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -112,6 +114,12 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     private fun initAdapter() {
         myOrderAdapter.submitList(listOf())
+        myOrderAdapter.onItemClick = {
+            val intent = Intent(requireContext(), BookingDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_MY_BOOKING_SELECTED_ID, it.bookingId)
+            startActivity(intent)
+        }
+
     }
 
     private fun setOrderList() {
@@ -131,6 +139,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                 }
             }
         })
+
 
     }
 
