@@ -35,8 +35,8 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private lateinit var tokenManager: TokenManager
 
     companion object {
-        const val PAGE_SIZE_POSTING = 8
-        const val PAGE_SIZE_RESORT = 15
+        const val PAGE_SIZE_POSTING = 16
+        const val PAGE_SIZE_RESORT = 16
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

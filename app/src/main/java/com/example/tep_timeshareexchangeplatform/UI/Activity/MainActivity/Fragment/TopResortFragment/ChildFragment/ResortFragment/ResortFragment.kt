@@ -31,7 +31,7 @@ class ResortFragment : BaseFragment(R.layout.fragment_resort) {
     private val mainViewModel: MainViewModel by activityViewModels()
 
     companion object {
-        const val PAGE_SIZE = 15
+        const val PAGE_SIZE = 16
     }
 
     override fun onAttach(context: Context) {

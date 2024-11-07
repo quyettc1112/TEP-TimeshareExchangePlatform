@@ -27,7 +27,7 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
 
     companion object {
         fun newInstance() = PublicPostingFragment()
-        const val PAGE_SIZE = 8
+        const val PAGE_SIZE = 16
     }
 
     private lateinit var binding: FragmentTimeshareBinding
