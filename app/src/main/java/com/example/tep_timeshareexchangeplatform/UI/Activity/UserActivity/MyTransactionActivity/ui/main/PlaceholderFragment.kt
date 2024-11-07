@@ -107,6 +107,7 @@ class PlaceholderFragment : Fragment() {
                                 TransactionType.WITHDRAW -> transaction.money > 0
                             }
                         }
+                        Toast.makeText(requireContext(), "Load", Toast.LENGTH_SHORT).show()
                         viewModel.loadMoreWalletList(listTransaction)
                         myTransactionAdapter.submitList(viewModel.getCurrentWalletList())
                     }

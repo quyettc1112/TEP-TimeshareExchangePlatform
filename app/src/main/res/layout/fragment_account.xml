@@ -165,7 +165,6 @@
                                     android:layout_marginEnd="10dp"
                                     android:fontFamily="@font/inter_bold"
                                     android:maxLines="1"
-                                    android:text="500.000 đ"
                                     android:textColor="@color/black"
                                     android:textSize="16dp"
                                     app:layout_constraintBottom_toBottomOf="@+id/cardView7"
