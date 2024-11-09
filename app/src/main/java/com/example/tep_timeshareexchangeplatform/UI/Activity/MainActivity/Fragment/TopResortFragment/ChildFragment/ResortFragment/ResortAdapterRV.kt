@@ -22,7 +22,7 @@ class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.
             binding.tvLocation.text = item.address
 
 
-            binding.tvPrice.text = "${formatPrice(item.minPrice)} - ${formatPrice(item.maxPrice)} VND"
+            binding.btnPrice.text = "Chỉ Từ ${formatPrice(item.minPrice)} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }

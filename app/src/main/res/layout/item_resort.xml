@@ -90,6 +90,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="5dp"
                         android:gravity="center|left"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="2"
                         android:text="Đại Lải, Phúc Yên, Việt Namdfbdfbdfbdfbdfbdfbdfbdfb"
                         android:textSize="12dp" />
@@ -164,36 +165,35 @@
             android:id="@+id/materialCardView3"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_rating"
             android:gravity="center"
             app:cardCornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/appCompatButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/appCompatButton"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_price"
+            app:layout_constraintEnd_toStartOf="@+id/btn_price"
+            app:layout_constraintTop_toTopOf="@+id/btn_price"
             app:strokeColor="@color/white">
 
             <!--// Price-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
                 android:gravity="center|left"
                 android:orientation="horizontal"
+                android:paddingStart="15dp"
+
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatButton"
                 app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/appCompatButton">
+
                 <TextView
-                    android:id="@+id/tv_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_bold"
                     android:gravity="center|left"
-                    android:text="1500.000 - 1,300.000 VND"
+                    android:text="@string/book_now"
                     android:textColor="#007EF2"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -201,17 +201,17 @@
 
         <!--// Book Now Button-->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton"
-            android:layout_width="120dp"
+            android:id="@+id/btn_price"
+            android:layout_width="wrap_content"
+            android:minWidth="150dp"
             android:layout_height="35dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_stroke_around"
             android:backgroundTint="@color/blue_btn_search"
             android:fontFamily="@font/inter_semibold"
-            android:text="@string/book_now"
             android:textColor="@color/white"
-            android:textSize="10dp"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 

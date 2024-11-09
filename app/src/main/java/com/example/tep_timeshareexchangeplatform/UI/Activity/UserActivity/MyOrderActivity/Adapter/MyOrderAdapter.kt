@@ -46,22 +46,22 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                 MyBookingStatus.BOOKED -> {
                     applyStatusStyle(
                         binding.root.context,
-                        R.color.white,
-                        R.color.green_verify
+                        R.color.primaryColor,
+                        R.color.white
                     )
                 }
                 MyBookingStatus.CHECK_IN -> {
                     applyStatusStyle(
                         binding.root.context,
-                        R.color.white,
-                        R.color.status_awaiting_confirmation_text
+                        R.color.blue_btn_search,
+                        R.color.white
                     )
                 }
                 MyBookingStatus.CHECKOUT -> {
                     applyStatusStyle(
                         binding.root.context,
-                        R.color.white,
-                        R.color.green_verify
+                        R.color.green_verify,
+                        R.color.white
                     )
                 }
                 MyBookingStatus.NO_SHOW -> {
@@ -110,9 +110,17 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
 
         private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
             binding.apply {
+                // Nền
                 llStatusContainer.backgroundTintList = context.getColorStateList(backgroundColorRes)
+
+                // TExt
                 tvStatus.setTextColor(context.getColor(textColorRes))
-                cardStatus.setStrokeColor(context.getColorStateList(textColorRes))
+
+                // Stroke
+                cardStatus.setStrokeColor(context.getColorStateList(R.color.white))
+
+                // Background
+                cardStatus.backgroundTintList = (context.getColorStateList(backgroundColorRes))
             }
         }
     }
