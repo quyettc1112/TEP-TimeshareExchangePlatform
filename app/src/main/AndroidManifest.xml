@@ -22,6 +22,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.UserActivity.Test.TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
             android:exported="false" />
         <activity
@@ -84,9 +87,6 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity"
-            android:exported="true" />
-        <activity
-            android:name=".UI.Activity.Payment.PaymentRentalActivity.PaymentRentalConfirmActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity"

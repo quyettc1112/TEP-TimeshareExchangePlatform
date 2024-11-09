@@ -15,16 +15,16 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
+import com.example.tep_timeshareexchangeplatform.databinding.ItemMyBookingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyOrderBinding
 
 class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyOrderViewHolder>() {
 
     var onItemClick: ((MyBookingResponse.Content) -> Unit)? = null
 
-    inner class MyOrderViewHolder(binding: ItemMyOrderBinding) :
-        BaseItemViewHolderCF<MyBookingResponse.Content, ItemMyOrderBinding>(binding) {
+    inner class MyOrderViewHolder(binding: ItemMyBookingBinding) :
+        BaseItemViewHolderCF<MyBookingResponse.Content, ItemMyBookingBinding>(binding) {
         override fun bind(item: MyBookingResponse.Content) {
-            binding.tvOrderCode.text = "Mã Đặt Phòng: ${item.bookingId}"
             binding.tvTimeshareName.text = "${item.resortName} | ${item.unitTypeTitle}"
             binding.tvCheckinDate.text =
                 Constant.getFormattedDate(item.checkinDate, binding.root.context)
@@ -35,12 +35,12 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
             binding.tvCheckoutDayOfWeek.text =
                 Constant.getDayOfWeek(item.checkoutDate, binding.root.context)
             binding.tvTimeshareType.text = item.unitTypeTitle
-            binding.tvPrice.text = "Tiền ở đây"
-            binding.imTyepPayment.setImageResource(R.drawable.ic_vnpay)
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
             binding.tvBookingTupe.text = MyBookingStatus.fromApiStatus(item.source)?.getDescription(binding.root.context)
 
+            /*${binding.root.context.getString(R.string.guests)}*/
+            binding.tvGuestInfo.text = "Khách: ${item.primaryGuestName}"
 
             when (MyBookingStatus.fromApiStatus(item.status)) {
                 MyBookingStatus.BOOKED -> {
@@ -137,7 +137,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyOrderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMyOrderBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemMyBookingBinding.inflate(layoutInflater, parent, false)
         return MyOrderViewHolder(binding)
     }
 }

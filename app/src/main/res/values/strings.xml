@@ -186,6 +186,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="tab_text_1" translatable="false">Tất Cả</string>
     <string name="tab_text_2" translatable="false">Thanh Toán</string>
     <string name="tab_text_3" translatable="false">Nhận Tiền</string>
+    <string name="large_text" translatable="false">Settings</string>
 
 
 </resources>

@@ -46,8 +46,10 @@
     <style name="FullScreen" parent="Theme.AppCompat.Dialog">
         <item name="android:windowIsFloating">false</item>  <!-- Make sure it is not floating -->
         <item name="android:windowIsTranslucent">false</item> <!-- Not translucent -->
-        <item name="android:windowBackground">@android:color/transparent</item> <!-- Transparent background -->
-        <item name="android:windowSoftInputMode">stateAlwaysHidden</item> <!-- Hide soft keyboard -->
+        <item name="android:windowBackground">@android:color/transparent
+        </item> <!-- Transparent background -->
+        <item name="android:windowSoftInputMode">stateAlwaysHidden
+        </item> <!-- Hide soft keyboard -->
     </style>
 
 

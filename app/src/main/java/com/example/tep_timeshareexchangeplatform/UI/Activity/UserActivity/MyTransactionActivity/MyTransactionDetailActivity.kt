@@ -89,6 +89,7 @@ class MyTransactionDetailActivity : BaseActivity() {
             tvPaymentMethod.text = walletDetailResponse.paymentMethod
             tvTotalFee.text = "${ formatPrice(walletDetailResponse.fee)} VND"
             tvDescription.text = walletDetailResponse.description.toString()
+            tvServiceName.text = walletDetailResponse.transactionType.toString()
         }
         binding.customToolbar.setTitleDetail(walletDetailResponse.createdAt)
     }

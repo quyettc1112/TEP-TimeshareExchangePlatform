@@ -43,6 +43,8 @@ class MyTransactionAdapter :
             // Set Payment Method
             binding.tvTransactionType.text ="Phương Thức: " + item.paymentMethod
 
+
+
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
