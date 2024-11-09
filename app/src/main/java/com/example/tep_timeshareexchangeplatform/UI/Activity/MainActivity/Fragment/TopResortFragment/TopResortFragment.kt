@@ -2,11 +2,15 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragm
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
@@ -18,6 +22,9 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBott
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,24 +33,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
 
     private lateinit var binding: FragmentTopResortBinding
-    private lateinit var FragmentAdapter: FragmentAdapter
-    private var bottomNavVisibilityListener: OnBottomNavVisibilityListener? = null
-    private lateinit var resortAdapter: ResortAdapterRV
-    private val mainViewModel: MainViewModel by activityViewModels()
-    private val dialog = TopDialogFragment()
+    private val resortAdapter = ResortAdapterRV()
+    private val topResortViewModel: TopResortViewModel by activityViewModels()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnBottomNavVisibilityListener) {
-            bottomNavVisibilityListener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnBottomNavVisibilityListener")
-        }
+
+    companion object {
+        const val PAGE_SIZE = 15
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        resortAdapter.submitList(emptyList())
 
     }
 
@@ -52,99 +52,71 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
-        setUpTabLayoutViewPager()
-        setEventSearchComponent()
+        setUpTopResortList()
         observeData()
         return binding.root
     }
 
     private fun observeData() {
-        // Observe data from ViewModel Location
-        mainViewModel.location.observe(viewLifecycleOwner) {
-            binding.tvSearchLocation.text = it
-        }
-
-        // Observe data from ViewModel DateRange
-        mainViewModel.dateRange.observe(viewLifecycleOwner) {
-            binding.tvDate.text = it
-        }
-
-        // Observe data from ViewModel Resort
-        mainViewModel.roomCount.observe(viewLifecycleOwner) {
-            binding.tvRoom.text = mainViewModel.getRoomCount()
-        }
-
-
-    }
-
-
-    private fun setUpTabLayoutViewPager() {
-        val listFragment: ArrayList<Fragment> = ArrayList()
-        listFragment.add(ResortFragment())
-        listFragment.add(PublicPostingFragment())
-        listFragment.add(ExchangePostingFragment())
-        // Set up TabLayout
-        binding.tblTopResort.let {
-            // Add 2 tab
-            it.addTab(it.newTab().setText("Top Resort"))
-            it.addTab(it.newTab().setText("Bài Đăng"))
-            it.addTab(it.newTab().setText("Trao Đổi"))
-
-            // Set Text Color
-            it.setTabTextColors(
-                resources.getColor(R.color.black),
-                resources.getColor(R.color.white)
-            )
-
-            // Set Tab Layout Onclick Event
-            it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tab != null) {
-                        binding.vpResortTimeshare.currentItem = tab!!.position
-                        bottomNavVisibilityListener!!.showBottomNav()
-                    }
+        topResortViewModel.resortList.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.animationView.visibility = View.GONE
+                    topResortViewModel.loadMoreResortList(it.data?.content ?: emptyList())
+                    resortAdapter.submitList(topResortViewModel.getCurrentResortList())
                 }
 
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    // Not thing to do
+                Status.ERROR -> {
+                    binding.animationView.visibility = View.GONE
+                    MotionToast.createToast(
+                        requireActivity(),
+                        "Error",
+                        it.message ?: "Error",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
                 }
 
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                    // Not thing to do
-                }
-            })
-
-        }
-
-        // Set up ViewPager
-        FragmentAdapter = FragmentAdapter(requireActivity(), listFragment)
-        binding.vpResortTimeshare.let {
-            it.adapter = FragmentAdapter
-            it.isUserInputEnabled = false
-            it.offscreenPageLimit = 2
-            it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    binding.tblTopResort.selectTab(binding.tblTopResort.getTabAt(position))
-                }
-            })
-        }
-
-    }
-
-    private fun setEventSearchComponent() {
-        binding.crSearchComponent.setOnClickListener {
-            val roomSelectionDialog = TopDialogFragment.newInstance()
-            roomSelectionDialog.show(parentFragmentManager, "RoomSelectionDialog")
-
-            roomSelectionDialog.setOnSearchClickListener {
-                mainViewModel.apply {
-                    resetCurrentResortPage()
-                    resetCurrentPostingPage()
+                Status.LOADING -> {
+                    binding.animationView.visibility = View.VISIBLE
                 }
             }
-
         }
+
+        // Auto Call First Page Resort List When Fragment is Created
+        topResortViewModel.currentResortPage.observe(viewLifecycleOwner) {
+            topResortViewModel.getResortList(it, PAGE_SIZE, "")
+        }
+
+
     }
+
+    private fun setUpTopResortList() {
+        binding.rvTopResort.apply {
+            adapter = resortAdapter
+        }
+
+        binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            val view = binding.nestedScrollView.getChildAt(binding.nestedScrollView.childCount - 1)
+            val diff = (view.bottom - (binding.nestedScrollView.height + scrollY))
+
+            if (diff == 0) { // Kiểm tra cuộn đến cuối cùng
+                val layoutManager = binding.rvTopResort.layoutManager as LinearLayoutManager
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                val totalPages = topResortViewModel.resortList.value?.data?.totalPages ?: 0
+                if (lastVisibleItem == totalItemCount - 1 &&
+                    topResortViewModel.currentResortPage.value!! < totalPages - 1) {
+                    topResortViewModel.incrementCurrentResortsPage()
+                }
+            }
+        }
+
+
+    }
+
 
     override fun onResume() {
         super.onResume()
