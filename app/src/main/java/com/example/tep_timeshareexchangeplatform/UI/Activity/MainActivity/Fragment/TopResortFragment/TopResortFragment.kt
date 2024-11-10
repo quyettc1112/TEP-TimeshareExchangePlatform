@@ -29,7 +29,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBi
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
 
     private lateinit var binding: FragmentTopResortBinding
