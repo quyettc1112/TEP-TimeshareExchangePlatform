@@ -76,9 +76,7 @@
         <activity
             android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
-        <activity
-            android:name=".UI.Activity.PostingFlow.ExchangePostingActivity.ExchangePostingActivity"
-            android:exported="true" />
+
         <activity
             android:name=".UI.Activity.PostingFlow.PostingFlowActivity"
             android:exported="true" />
