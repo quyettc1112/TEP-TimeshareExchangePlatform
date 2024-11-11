@@ -22,8 +22,8 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.UserActivity.Test.TestActivity"
-            android:exported="false" />
+            android:name=".Sample.SampleActivity"
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
             android:exported="false" />
@@ -80,7 +80,7 @@
             android:name=".UI.Activity.PostingFlow.ExchangePostingActivity.ExchangePostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PostingFlow.RentalPostingActivity"
+            android:name=".UI.Activity.PostingFlow.PostingFlowActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MemberShipActivity.MemberShipActivity"

@@ -35,8 +35,9 @@ class UnitTypeAdapterPosting(private val showFullInfo: Boolean): BaseAdapter<Uni
         override fun bind(item: UnitTypeModel) {
             binding.apply {
                 // Name of the room
-                tvRoomName.text = item.title
-                // Image
+                tvRoomName.text = "Loại phòng: ${item.title}"
+
+
                 Glide.with(itemView)
                     .load(R.drawable.im_matiral_timeshare)
                     .into(imRoomTypeImage)

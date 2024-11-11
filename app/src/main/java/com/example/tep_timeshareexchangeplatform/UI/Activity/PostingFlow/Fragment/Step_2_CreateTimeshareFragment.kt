@@ -31,8 +31,8 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Loca
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdaper
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.ImageUploadAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -55,7 +55,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var amenitiesEntertamentAdapter = AmenitiesAdaper()
     private var imageUploadAdapter = ImageUploadAdapter()
     private var policyAmentitiesAdapter = AmenitiesAdaper()
-    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,38 +75,63 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         getImageFromGallery()
         sendRequestCreateTimeshare()
         setEventChangeDate()
-        nextStepHandle()
+        routeRoomDistribution()
         setEventSaveAmenities()
         return binding.root
     }
-
     private fun observeViewModel() {
         // Tracking Data of Step Create Timeshare
-        rentalPostingViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
+        postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
             showStepEventHandle(currentTask)
         }
 
-        // Bind Data of Location Model
-        rentalPostingViewModel.resortModelResponse.observe(viewLifecycleOwner) { resortModel ->
-            bindDataResortLocation(resortModel)
+        // API Value - Resort Model Selected
+        postingFlowViewModel.resortModelResponse.observe(viewLifecycleOwner) { resortModel ->
+            bindDataResort(resortModel)
             if (resortModel != null) {
                 // Show Progress Step 1
-                rentalPostingViewModel.updateTaskProgress(1)
-                rentalPostingViewModel.resetDateRange()
+                postingFlowViewModel.updateTaskProgress(1)
+                postingFlowViewModel.resetDateRange()
 
                 // Call API to get Room List
                 val token = TokenManager(requireContext()).getAccessToken()
                 if (token != null) {
-                    rentalPostingViewModel.getRoomListByResortId(token, resortModel.id)
-                    rentalPostingViewModel.getUnitTypeListByResortId(token, resortModel.id)
+                    postingFlowViewModel.getRoomListByResortId(token, resortModel.id)
+                    postingFlowViewModel.getUnitTypeListByResortId(token, resortModel.id)
                 } else {
                     Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        // Tracking Data of Room List
-        rentalPostingViewModel.roomList.observe(viewLifecycleOwner) { roomList ->
+        // API Value - Unit Type List By Resort Id
+        postingFlowViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
+            when (listUnitType.status) {
+                Status.LOADING -> {
+                    binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
+                }
+
+                Status.SUCCESS -> {
+                    binding.includeUnitTypeYes.llProcessbar.visibility = View.GONE
+                    bindDataUnitTypeNoOption(listUnitType.data!!)
+                }
+
+                Status.ERROR -> {
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "${listUnitType.status}",
+                        "${listUnitType.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+                    );
+                }
+            }
+        }
+
+        // API Value - Room List By Resort Id
+        postingFlowViewModel.roomList.observe(viewLifecycleOwner) { roomList ->
             when (roomList.status) {
                 Status.LOADING -> {
                 }
@@ -129,8 +154,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
 
-        // Tracking Data of Unit Type
-        rentalPostingViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
+        // API Value - Unit Type Detail By UnitTypeId
+        postingFlowViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
             when (unitType.status) {
                 Status.LOADING -> {
                     binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
@@ -156,52 +181,28 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
 
-        // Tracking Data List Unit Type
-        rentalPostingViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
-            when (listUnitType.status) {
-                Status.LOADING -> {
-                    binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
-                }
 
-                Status.SUCCESS -> {
-                    binding.includeUnitTypeYes.llProcessbar.visibility = View.GONE
-                    bindDataUnitTypeNoOption(listUnitType.data!!)
-                }
-
-                Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${listUnitType.status}",
-                        "${listUnitType.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
-                }
-            }
-        }
 
         // Tracking Date Range
-        rentalPostingViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
-            if (rentalPostingViewModel.getNumberOfNights() > 0) {
+        postingFlowViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
+            if (postingFlowViewModel.getNumberOfNights() > 0) {
                 // Update Step 4
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
                 }
-                rentalPostingViewModel.updateTaskProgress(4)
+                postingFlowViewModel.updateTaskProgress(4)
             } else binding.crlContentAmenities.visibility = View.GONE
         }
 
-        // Tracking Data of Post Timeshare
-        rentalPostingViewModel.timeshareDTO.observe(viewLifecycleOwner) { timeshareDTO ->
+        // Create Timeshare
+        postingFlowViewModel.timeshareDTO.observe(viewLifecycleOwner) { timeshareDTO ->
             when (timeshareDTO.status) {
                 Status.LOADING -> {
-                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
                         "${timeshareDTO.status}",
@@ -211,14 +212,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
                     );
-                    rentalPostingViewModel.updateStep(3)
+                    postingFlowViewModel.updateTaskProgress(1)
+                    postingFlowViewModel.updateStep(3)
                 }
 
                 Status.ERROR -> {
-                    (activity as RentalPostingActivity).showFailedDialog(
+                    (activity as PostingFlowActivity).showFailedDialog(
                         requireContext(),
                         "${timeshareDTO.message}",
-                        object: View.OnClickListener{
+                        object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 binding.scrollView.post {
                                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
@@ -227,27 +229,31 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                         }
                     )
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                 }
             }
         }
 
-        // Tracking Create Timeshare Progress
-        rentalPostingViewModel.roomModel.observe(viewLifecycleOwner) { roomModel ->
+        // Create Room
+        postingFlowViewModel.roomModel.observe(viewLifecycleOwner) { roomModel ->
             when (roomModel.status) {
                 Status.LOADING -> {
-                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                     val token = TokenManager(requireContext()).getAccessToken()
                     val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
                     val startDateFormatted =
-                        rentalPostingViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
+                        postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
                             ?: ""
                     val endDateFormatted =
-                        rentalPostingViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
+                        postingFlowViewModel.dateRange.value?.second?.let {
+                            dateFormatter.format(
+                                it
+                            )
+                        }
                             ?: ""
                     val timeshareDTO = TimeshareDTO(
                         status = "Available",
@@ -258,18 +264,18 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         roomInfoId = roomModel.data!!.roomId
                     )
                     if (token != null) {
-                        rentalPostingViewModel.postTimeshareDTO(token, timeshareDTO)
+                        postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
                     } else {
                         Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 Status.ERROR -> {
-                    (activity as RentalPostingActivity).showErrorDialog(
+                    (activity as PostingFlowActivity).showErrorDialog(
                         "${roomModel.message}",
                         "Back"
                     )
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                 }
             }
         }
@@ -289,78 +295,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     }
 
-    // Function to update the visibility of tasks based on progress
-    private fun showStepEventHandle(currentTask: Int) {
-        when (currentTask) {
-            1 -> {
-                binding.crlRoomDistribution.visibility = View.VISIBLE
-                binding.includeUnitTypeYes.root.visibility = View.GONE
-                binding.includeUnitTypeNo.root.visibility = View.GONE
-                binding.crlDayCheckIn.visibility = View.GONE
-                binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
-                binding.btnNext.visibility = View.GONE
-
-            }
-
-            2 -> {
-                binding.crlDayCheckIn.visibility = View.GONE
-                binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
-                binding.btnNext.visibility = View.GONE
-            }
-
-            3 -> {
-                binding.crlDayCheckIn.visibility = View.VISIBLE
-            }
-
-            4 -> {
-                binding.crlContentAmenities.visibility = View.VISIBLE
-                val checkYN: Boolean = rentalPostingViewModel.isYesOrNoSelected.value!!
-                if (checkYN) {
-                    binding.btnSaveAmenities.visibility = View.VISIBLE
-                }else binding.btnSaveAmenities.visibility = View.GONE
-            }
-
-            5 -> {
-                binding.crlContentImage.visibility = View.VISIBLE
-                binding.btnNext.visibility = View.VISIBLE
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-                }
-            }
-        }
-    }
-
-    private fun nextStepHandle() {
-        binding.btnYesRoomDistribution.setOnClickListener {
-            binding.includeUnitTypeYes.root.visibility = View.VISIBLE
-            binding.includeUnitTypeNo.root.visibility = View.GONE
-
-            rentalPostingViewModel.updateTaskProgress(2)
-            rentalPostingViewModel.updateIsYesOrNo(true)
-
-            binding.scrollView.post {
-                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
-            }
-        }
-
-        binding.btnNoRoomDistribution.setOnClickListener {
-            binding.includeUnitTypeYes.root.visibility = View.GONE
-            binding.includeUnitTypeNo.root.visibility = View.VISIBLE
-
-            rentalPostingViewModel.updateTaskProgress(2)
-            rentalPostingViewModel.updateIsYesOrNo(false)
-
-            binding.scrollView.post {
-                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.root.top)
-            }
-        }
-
-    }
-
-    // Binding Data of Resort Location
-    private fun bindDataResortLocation(resortModelResponse: ResortModelResponse.Content) {
+    // 1. Binding Data of Resort
+    private fun bindDataResort(resortModelResponse: ResortModelResponse.Content) {
         if (resortModelResponse != null) {
             binding.let {
                 it.tvResortName.text = resortModelResponse.resortName
@@ -378,73 +314,40 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
     }
 
-    private fun bindDataSpinner(roomList: List<RoomModel>?) {
-        val spinnerBinding = binding.includeUnitTypeYes
+    // 2. Binding Data of Room Distribution, Yes or No
+    private fun routeRoomDistribution() {
+        // Yes
+        binding.btnYesRoomDistribution.setOnClickListener {
+            binding.includeUnitTypeYes.root.visibility = View.VISIBLE
+            binding.includeUnitTypeNo.root.visibility = View.GONE
 
-        // Thêm mục mặc định vào danh sách
-        val roomDisplayList: List<String> = listOf("Chọn Mã Phòng") +
-                (roomList?.map { "Mã Phòng: ${it.roomInfoCode}" } ?: emptyList())
+            postingFlowViewModel.updateTaskProgress(2)
+            postingFlowViewModel.updateIsYesOrNo(true)
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
-        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
-        spinnerBinding.spUnitType.adapter = adapter
-
-        // Xử lý sự kiện khi chọn một item trong Spinner
-        spinnerBinding.spUnitType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position == 0) {
-                        // Nếu người dùng chọn "Chọn Mã Phòng", không làm gì
-                        binding.includeUnitTypeYes.includeItemUnitType.root.visibility = View.GONE
-                        binding.includeUnitTypeYes.tvRoomName.text = ""
-                        binding.includeUnitTypeYes.tvRoomCode.text = ""
-                        rentalPostingViewModel.updateTaskProgress(2)
-                        return
-                    }
-
-                    binding.scrollView.post {
-                        binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
-                    }
-                    rentalPostingViewModel.updateTaskProgress(3)
-                    rentalPostingViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
-
-                    // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
-                    val selectedRoom = roomList?.get(position - 1)
-
-                    binding.includeUnitTypeYes.tvRoomName.text = selectedRoom?.roomInfoName ?: "Unknown Name"
-                    binding.includeUnitTypeYes.tvRoomCode.text = selectedRoom?.roomInfoCode ?: "Unknown Code"
-
-                    // Lấy thông tin id của RoomModel tương ứng
-                    val unitTypeID = selectedRoom?.unitTypeId
-
-                    // Call API to get Unit Type Detail
-                    val token = TokenManager(requireContext()).getAccessToken()
-                    if (token != null && unitTypeID != null) {
-                        rentalPostingViewModel.getUnitTypeDetail(token, unitTypeID)
-                    } else {
-                        MotionToast.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            "Token is null",
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                        )
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Không có gì được chọn
-                }
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
             }
-    }
+        }
 
+        // No
+        binding.btnNoRoomDistribution.setOnClickListener {
+            binding.includeUnitTypeYes.root.visibility = View.GONE
+            binding.includeUnitTypeNo.root.visibility = View.VISIBLE
+
+            postingFlowViewModel.updateTaskProgress(2)
+            postingFlowViewModel.updateIsYesOrNo(false)
+
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.root.top)
+            }
+        }
+
+    }
+    private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
+        val unitTypeDetail = CustomDialog(requireContext())
+        unitTypeDetail.show()
+    }
+    // Yes. User Have Room Type
     private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
         val binding = binding.includeUnitTypeYes
         // Hide Unnecessary View
@@ -475,9 +378,129 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+    private fun bindDataSpinner(roomList: List<RoomModel>?) {
+        val spinnerBinding = binding.includeUnitTypeYes
 
+        // Thêm mục mặc định vào danh sách
+        val roomDisplayList: List<String> = listOf("Chọn Mã Phòng") +
+                (roomList?.map { "Mã Phòng: ${it.roomInfoCode}" } ?: emptyList())
+
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        spinnerBinding.spUnitType.adapter = adapter
+
+        // Xử lý sự kiện khi chọn một item trong Spinner
+        spinnerBinding.spUnitType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (position == 0) {
+                        // Nếu người dùng chọn "Chọn Mã Phòng", không làm gì
+                        binding.includeUnitTypeYes.includeItemUnitType.root.visibility = View.GONE
+                        binding.includeUnitTypeYes.tvRoomName.text = ""
+                        binding.includeUnitTypeYes.tvRoomCode.text = ""
+                        postingFlowViewModel.updateTaskProgress(2)
+                        return
+                    }
+
+                    binding.scrollView.post {
+                        binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
+                    }
+                    postingFlowViewModel.updateTaskProgress(3)
+                    postingFlowViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
+
+                    // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
+                    val selectedRoom = roomList?.get(position - 1)
+
+                    binding.includeUnitTypeYes.tvRoomName.text =
+                        selectedRoom?.roomInfoName ?: "Unknown Name"
+                    binding.includeUnitTypeYes.tvRoomCode.text =
+                        selectedRoom?.roomInfoCode ?: "Unknown Code"
+
+                    // Lấy thông tin id của RoomModel tương ứng
+                    val unitTypeID = selectedRoom?.unitTypeId
+
+                    // Call API to get Unit Type Detail
+                    val token = TokenManager(requireContext()).getAccessToken()
+                    if (token != null && unitTypeID != null) {
+                        postingFlowViewModel.getUnitTypeDetail(token, unitTypeID)
+                    } else {
+                        MotionToast.createColorToast(
+                            requireActivity(),
+                            "Error",
+                            "Token is null",
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+                        )
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Không có gì được chọn
+                }
+            }
+    }
+    // No. User Don't Have Room Type, Create New Room
     private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
+        // Lấy danh sách duy nhất cho view và bedrooms
+        val viewList = listUnitType.map { it.view }.distinct()
+        val bedroomsList = listUnitType.map { it.bedrooms.toString() }.distinct()
+
+        // Gán dữ liệu cho customSpinnerViewDiretion
+        val viewAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewList)
+        viewAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.includeUnitTypeNo.customSpinnerViewDiretion.adapter = viewAdapter
+
+        // Gán dữ liệu cho customSpinnerBed
+        val bedroomsAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bedroomsList)
+        bedroomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.includeUnitTypeNo.customSpinnerBed.adapter = bedroomsAdapter
+
+        // Lọc dữ liệu dựa trên giá trị được chọn
+        binding.includeUnitTypeNo.customSpinnerViewDiretion.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    filterUnitTypes(listUnitType)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Không làm gì nếu không có gì được chọn
+                }
+            }
+
+        binding.includeUnitTypeNo.customSpinnerBed.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    filterUnitTypes(listUnitType)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Không làm gì nếu không có gì được chọn
+                }
+            }
+
+        // Hiển thị danh sách ban đầu
         unitTypeAdapterPosting.submitList(listUnitType)
+
         binding.includeUnitTypeNo.rvUnitType.apply {
             visibility = View.VISIBLE
             adapter = unitTypeAdapterPosting
@@ -489,82 +512,68 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
         unitTypeAdapterPosting.onItemClick = { it ->
-            rentalPostingViewModel.updateUnitTypeSelectionOptionNo(it)
+            postingFlowViewModel.updateUnitTypeSelectionOptionNo(it)
+        }
+
+        binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
+            if (!verifyDataAndSendRequest()) {
+                MotionToast.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Please fill in all required fields",
+                    MotionToastStyle.INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+                )
+                return@setOnClickListener
+            }
+
+            if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
+                MotionToast.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Please select a room type",
+                    MotionToastStyle.INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
+                }
+                return@setOnClickListener
+            }
+
+
+            postingFlowViewModel.updateTaskProgress(3)
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
+            }
+
+        }
+    }
+    private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
+        val selectedView =
+            binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
+        val selectedBedrooms =
+            binding.includeUnitTypeNo.customSpinnerBed.selectedItem?.toString()?.toIntOrNull()
+
+        val filteredList = listUnitType.filter {
+            (selectedView == null || it.view == selectedView) &&
+                    (selectedBedrooms == null || it.bedrooms == selectedBedrooms)
+        }
+
+        unitTypeAdapterPosting.submitList(filteredList)
+        if (filteredList.isEmpty() || filteredList.size == 0) {
+            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.VISIBLE
+        } else {
+            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.GONE
         }
     }
 
-    private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
-        val unitTypeDetail = CustomDialog(requireContext())
-        unitTypeDetail.show()
-    }
 
-    // UnitType
-    private fun bindDataAmenities(unitType: UnitTypeModel) {
-
-    }
-
-    private fun setEventSaveAmenities() {
-        binding.btnSaveAmenities.setOnClickListener {
-            rentalPostingViewModel.updateTaskProgress(5)
-        }
-
-    }
-
-
-    // User click to change location of Resort
-    private fun setEventChangeLocation() {
-        binding.tvChangeLocation.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
-            })
-            locationResultLauncher.launch(intent)
-
-
-        }
-        binding.btnSelectResortLocation.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
-            })
-            locationResultLauncher.launch(intent)
-
-
-        }
-    }
-
-    // Set Value for of Resort Location
-    private fun setValueUnitRoom() {
-
-
-        // Set List Amenities
-        binding.rvAmenities.apply {
-            adapter = amenitiesAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-        // Set List Amenities Entertament
-        binding.rvAmenitiesEntertainment.apply {
-            adapter = amenitiesEntertamentAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-        // Set List Policy
-        binding.rvPolicy.apply {
-            adapter = policyAmentitiesAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-        // Set List Image
-        binding.rvImage.apply {
-            adapter = imageUploadAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-
-    }
-
-    // Event to Change Date
+    // 3. Display Day Check In - Check Out
     private fun setEventChangeDate() {
         binding.llCheckInCheckOutDate.setOnClickListener {
             val constraintsBuilder = CalendarConstraints.Builder()
@@ -596,7 +605,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 val endDate = selection?.second
 
                 if (startDate != null && endDate != null) {
-                    rentalPostingViewModel.setDateRange(startDate, endDate)
+                    postingFlowViewModel.setDateRange(startDate, endDate)
                     // Calculate total days between startDate and endDate
                     val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
 
@@ -625,14 +634,47 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+    // User click to change location of Resort
+    private fun setEventChangeLocation() {
+        binding.tvChangeLocation.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
+            })
+            locationResultLauncher.launch(intent)
 
-    // Get Image Form Gallery
+
+        }
+        binding.btnSelectResortLocation.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
+            })
+            locationResultLauncher.launch(intent)
+
+
+        }
+    }
+
+
+    // 4. Display Amenities
+    private fun bindDataAmenities(unitType: UnitTypeModel) {
+
+    }
+    private fun setEventSaveAmenities() {
+        binding.btnSaveAmenities.setOnClickListener {
+            postingFlowViewModel.updateTaskProgress(5)
+        }
+
+    }
+
+
+    // 5. Display Image Upload
     private fun getImageFromGallery() {
         binding.btnAddImage.setOnClickListener {
             openGallery()
         }
     }
-
     private fun initActivityLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -641,13 +683,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     val selectedLocation: ResortModelResponse.Content? =
                         data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
                     selectedLocation?.let {
-                        rentalPostingViewModel.updateResortModel(it)
+                        postingFlowViewModel.updateResortModel(it)
                     }
                 }
             }
 
     }
-
+    fun openGallery() {
+        pickImagesLauncher.launch("image/*")
+    }
     private val pickImagesLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
@@ -659,14 +703,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
 
-    fun openGallery() {
-        pickImagesLauncher.launch("image/*")
-    }
 
-
+    // Send Request
     private fun sendRequestCreateTimeshare() {
         binding.btnNext.setOnClickListener {
-            val checkYN: Boolean = rentalPostingViewModel.isYesOrNoSelected.value!!
+            val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
             if (checkYN) {
                 sendRequestOptionYes()
             } else {
@@ -675,14 +716,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 val roomDTO: RoomDTO = RoomDTO(
                     roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
                     isActive = true,
-                    resortId = rentalPostingViewModel.resortModelResponse.value?.id!!,
+                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
                     status = "Available",
-                    unitTypeId = rentalPostingViewModel.unitTypeSelectionOptionNo.value?.id!!,
+                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
                     roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
                     roomAmenities = listOf()
                 )
                 if (token != null) {
-                    rentalPostingViewModel.postRoom(token, roomDTO)
+                    postingFlowViewModel.postRoom(token, roomDTO)
                 } else {
                     Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
                 }
@@ -696,10 +737,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Định dạng theo kiểu yyyy-MM-dd
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
         val startDateFormatted =
-            rentalPostingViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
+            postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
                 ?: ""
         val endDateFormatted =
-            rentalPostingViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
+            postingFlowViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
                 ?: ""
         val timeshareDTO = TimeshareDTO(
             status = "Available",
@@ -707,15 +748,121 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             endYear = 2025,
             startDate = startDateFormatted,
             endDate = endDateFormatted,
-            roomInfoId = rentalPostingViewModel.currentRoomInfo.value!!
+            roomInfoId = postingFlowViewModel.currentRoomInfo.value!!
         )
         Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
         if (token != null && timeshareDTO != null) {
-            rentalPostingViewModel.postTimeshareDTO(token, timeshareDTO)
+            postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
         } else {
             Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+    // Order of the steps
+    private fun showStepEventHandle(currentTask: Int) {
+        when (currentTask) {
+            1 -> {
+                binding.crlRoomDistribution.visibility = View.VISIBLE
+                binding.includeUnitTypeYes.root.visibility = View.GONE
+                binding.includeUnitTypeNo.root.visibility = View.GONE
+                binding.crlDayCheckIn.visibility = View.GONE
+                binding.crlContentAmenities.visibility = View.GONE
+                binding.crlContentImage.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+
+            }
+
+            2 -> {
+                binding.crlDayCheckIn.visibility = View.GONE
+                binding.crlContentAmenities.visibility = View.GONE
+                binding.crlContentImage.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+            }
+
+            3 -> {
+                binding.crlDayCheckIn.visibility = View.VISIBLE
+            }
+
+            4 -> {
+                binding.crlContentAmenities.visibility = View.VISIBLE
+                val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
+                if (checkYN) {
+                    binding.btnSaveAmenities.visibility = View.VISIBLE
+                } else {
+                    binding.btnSaveAmenities.visibility = View.GONE
+                    postingFlowViewModel.updateTaskProgress(5)
+
+                }
+            }
+
+            5 -> {
+                binding.crlContentImage.visibility = View.VISIBLE
+                binding.btnNext.visibility = View.VISIBLE
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
+            }
+        }
+    }
+    private fun setValueUnitRoom() {
+
+
+        // Set List Amenities
+        binding.rvAmenities.apply {
+            adapter = amenitiesAdapter
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        }
+
+        // Set List Amenities Entertament
+        binding.rvAmenitiesEntertainment.apply {
+            adapter = amenitiesEntertamentAdapter
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        }
+
+        // Set List Policy
+        binding.rvPolicy.apply {
+            adapter = policyAmentitiesAdapter
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        }
+
+        // Set List Image
+        binding.rvImage.apply {
+            adapter = imageUploadAdapter
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        }
+
+
+    }
+    private fun verifyDataAndSendRequest(): Boolean {
+        val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
+
+        if (!checkYN) {
+            val roomCode = binding.includeUnitTypeNo.edtRoomCode.text.toString().trim()
+            val roomName = binding.includeUnitTypeNo.edtRoomName.text.toString().trim()
+
+            if (roomCode.isEmpty()) {
+                binding.includeUnitTypeNo.edtRoomCode.error = "Mã phòng không được để trống"
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
+                }
+                return false
+            }
+
+            if (roomName.isEmpty()) {
+                binding.includeUnitTypeNo.edtRoomName.error = "Tên phòng không được để trống"
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
+                }
+                return false
+            }
+        }
+
+        // Nếu tất cả các kiểm tra đều vượt qua
+        return true
+    }
+
+
 
 
 }

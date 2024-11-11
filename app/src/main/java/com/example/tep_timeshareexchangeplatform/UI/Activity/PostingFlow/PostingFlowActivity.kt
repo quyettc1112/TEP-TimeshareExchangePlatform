@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_1_CheckTimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_5_CreatePostingFragment
@@ -17,16 +18,16 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragmen
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_4_SelectPackageFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_3_SelectTimeshareFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ProcessBar.ProcessBarManager
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RentalPostingActivity : BaseActivity() {
+class PostingFlowActivity : BaseActivity() {
     private lateinit var binding: ActivityRentalPostingBinding
     private lateinit var processBarManager: ProcessBarManager
     private lateinit var FragmentAdapter: FragmentAdapter
-    private val rentalPostingViewModel: RentalPostingViewModel by viewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,24 +43,46 @@ class RentalPostingActivity : BaseActivity() {
         binding.customToolbar3.onStartIconClick = {
             onBackPressed()
         }
+        getIntentValue()
     }
 
-    private fun initProcessBarWithViewModel() {
-        // Init Process Bar
-        processBarManager = ProcessBarManager(binding.progressBarLayout, rentalPostingViewModel)
+    private fun getIntentValue() {
+        val intent = intent
+        if (intent != null) {
+            when (intent.getStringExtra(Constant.POSTING_TYPE_FLOW)) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    postingFlowViewModel.updateTypeOfPostingFlow(Constant.RENTAL_POSTING_FLOW)
+                    binding.customToolbar3.setTitle("Đăng Bài Cho Thuê")
+                }
 
-        // Observe Step with viewModel
-        rentalPostingViewModel.step.observe(this) {
-            processBarManager.updateProgress(it)
-
-            // Chuyển ViewPager sang trang tương ứng với step
-            if (binding.viewPager.currentItem != rentalPostingViewModel.step.value!! - 1) {
-                binding.viewPager.setCurrentItem(rentalPostingViewModel.step.value!! - 1, true)
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    postingFlowViewModel.updateTypeOfPostingFlow(Constant.EXCHANGER_POSTING_FLOW)
+                    binding.customToolbar3.setTitle("Đăng Bài Trao Đổi")
+                }
             }
         }
 
 
     }
+
+
+    private fun initProcessBarWithViewModel() {
+        // Init Process Bar
+        processBarManager = ProcessBarManager(binding.progressBarLayout, postingFlowViewModel)
+
+        // Observe Step with viewModel
+        postingFlowViewModel.step.observe(this) {
+            processBarManager.updateProgress(it)
+
+            // Chuyển ViewPager sang trang tương ứng với step
+            if (binding.viewPager.currentItem != postingFlowViewModel.step.value!! - 1) {
+                binding.viewPager.setCurrentItem(postingFlowViewModel.step.value!! - 1, true)
+            }
+        }
+
+
+    }
+
     private fun setPostingFlowScreen() {
         val listFragment: ArrayList<Fragment> = ArrayList()
 
@@ -90,12 +113,11 @@ class RentalPostingActivity : BaseActivity() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    rentalPostingViewModel.updateStep(position + 1)
+                    postingFlowViewModel.updateStep(position + 1)
                 }
             })
         }
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()

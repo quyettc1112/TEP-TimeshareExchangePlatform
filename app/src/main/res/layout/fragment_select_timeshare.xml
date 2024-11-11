@@ -54,4 +54,15 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_loading"
+        android:translationZ="10dp"
+        app:lottie_rawRes="@raw/anim_loading_more"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package com.example.tep_timeshareexchangeplatform.Until.EmumClass
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 
-enum class PackageEnum(val packageModel: PackageModel) {
+enum class RentalPackageEnum(val packageModel: PackageModel) {
 
 
     // Gói Membership
@@ -49,7 +49,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
             price = 149000,
             description = "Unwind hỗ trợ quảng cáo và đưa người thuê đến với bạn.",
             duration = 2,  // Thời gian sử dụng là 1 tháng
-            type = "Service",
+            type = "Basic",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
                 "Gắn thẻ 'Bài mới' trong 30 ngày"
@@ -64,7 +64,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
             price = 179000,
             description = "Unwind cung cấp hệ thống đặt chỗ trực tuyến.",
             duration = 2,  // Thời gian sử dụng là 1 tháng
-            type = "Service",
+            type = "Standard",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
                 "Gắn thẻ 'Bài mới' trong 30 ngày",
@@ -82,7 +82,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
             price = 199000,
             description = "Unwind hỗ trợ quảng cáo và quản lý toàn bộ quá trình cho thuê.",
             duration = 12,  // Thời gian sử dụng là 1 tháng
-            type = "Service",
+            type = "Premium",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
                 "Gắn thẻ 'Bài mới' trong 30 ngày",
@@ -102,7 +102,7 @@ enum class PackageEnum(val packageModel: PackageModel) {
             price = 599000,
             description = "Unwind hỗ trợ toàn bộ quá trình cho thuê và thanh toán.",
             duration = 12,  // Thời gian sử dụng là 1 tháng
-            type = "Service",
+            type = "VIP",
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
                 "Gắn thẻ 'Bài mới' trong 30 ngày",

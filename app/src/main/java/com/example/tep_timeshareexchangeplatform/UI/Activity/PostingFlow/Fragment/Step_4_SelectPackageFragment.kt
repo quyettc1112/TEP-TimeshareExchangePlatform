@@ -12,16 +12,17 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDial
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.PackagePostingAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectPackageBinding
 
 class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_package) {
 
     private lateinit var binding: FragmentSelectPackageBinding
     private var packagePostingAdapter = PackagePostingAdapter()
-    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +36,41 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
         binding = FragmentSelectPackageBinding.inflate(layoutInflater, container, false)
         setViewPagerPackage()
         onButtonSelectPackageClick()
+        observeViewModel()
         return binding.root
     }
 
     private fun initAdapter() {
-        packagePostingAdapter.submitList(Constant.listPackage)
+        packagePostingAdapter.submitList(listOf())
     }
+
+    private fun observeViewModel() {
+        // Check Posting Flow Type. Use Package Posting Adapter to show the package
+        postingFlowViewModel.typeOfPostingFlow.observe(viewLifecycleOwner) {
+            when (it) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    packagePostingAdapter.submitList(
+                        listOf(
+                            RentalPackageEnum.BASIC_SERVICE.packageModel,
+                            RentalPackageEnum.ADVANCED_SERVICE.packageModel,
+                            RentalPackageEnum.PREMIUM_SERVICE.packageModel,
+                            RentalPackageEnum.DELEGATED_SERVICE.packageModel
+                        )
+                    )
+                }
+
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    packagePostingAdapter.submitList(
+                        listOf(
+                            ExchangePackageEnum.BASIC_SERVICE.packageModel,
+                            ExchangePackageEnum.ADVANCED_SERVICE.packageModel,
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 
     @SuppressLint("ResourceAsColor")
     private fun setViewPagerPackage() {
@@ -58,7 +88,7 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
 
     private fun onButtonSelectPackageClick() {
         binding.btnNext.setOnClickListener {
-            (activity as RentalPostingActivity).showConfirmDialog(
+            (activity as PostingFlowActivity).showConfirmDialog(
                 title = "Confirm",
                 message = "Selected this package?",
                 positiveButtonTitle = "Yes",
@@ -68,6 +98,7 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
                     override fun negativeAction() {
 
                     }
+
                     override fun positiveAction() {
                         savePackageSelected()
                     }
@@ -80,28 +111,55 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
     private fun savePackageSelected() {
         Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
         val packagePosition = binding.vpPackagePosting.currentItem
+        when (postingFlowViewModel.typeOfPostingFlow.value) {
+            Constant.RENTAL_POSTING_FLOW -> {
+                saveRentalPackageSelected(packagePosition)
+            }
+            Constant.EXCHANGER_POSTING_FLOW -> {
+                saveExchangePackageSelected(packagePosition)
+            }
+        }
+
+        postingFlowViewModel.updateStep(5)
+    }
+
+    private fun saveRentalPackageSelected(packagePosition: Int) {
         when (packagePosition) {
             0 -> {
-                rentalPostingViewModel.updatePackageStep4(PackageEnum.BASIC_SERVICE.packageModel)
+                postingFlowViewModel.updatePackageStep4(RentalPackageEnum.BASIC_SERVICE.packageModel)
             }
 
             1 -> {
-                rentalPostingViewModel.updatePackageStep4(PackageEnum.ADVANCED_SERVICE.packageModel)
+                postingFlowViewModel.updatePackageStep4(RentalPackageEnum.ADVANCED_SERVICE.packageModel)
             }
 
             2 -> {
-                rentalPostingViewModel.updatePackageStep4(PackageEnum.PREMIUM_SERVICE.packageModel)
+                postingFlowViewModel.updatePackageStep4(RentalPackageEnum.PREMIUM_SERVICE.packageModel)
             }
 
             3 -> {
-                rentalPostingViewModel.updatePackageStep4(PackageEnum.DELEGATED_SERVICE.packageModel)
+                postingFlowViewModel.updatePackageStep4(RentalPackageEnum.DELEGATED_SERVICE.packageModel)
             }
 
             else -> {
                 // Do Nothing
             }
         }
-        rentalPostingViewModel.updateStep(5)
+    }
+
+    private fun saveExchangePackageSelected(packagePosition: Int) {
+        when (packagePosition) {
+            0 -> {
+                postingFlowViewModel.updatePackageStep4(ExchangePackageEnum.BASIC_SERVICE.packageModel)
+            }
+
+            1 -> {
+                postingFlowViewModel.updatePackageStep4(ExchangePackageEnum.ADVANCED_SERVICE.packageModel)
+            }
+            else -> {
+                // Do Nothing
+            }
+        }
     }
 
 

@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -113,14 +113,14 @@ class PricingSupportActivity : BaseActivity() {
         binding.tvCheckInDate.text = postingData.checkInDate
         binding.tvCheckOutDate.text = postingData.checkOutDate
 
-        val packageEnum = PackageEnum.getPackageByName(postingData.packageSelection)
-        when (packageEnum) {
-            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+        val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingData.packageSelection)
+        when (rentalPackageEnum) {
+            RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.etPriceInput.setText(Constant.formatPrice(postingData.staffRefinementPrice) + "VND")
                 binding.btnChangePrice.text = "Thay Đổi Mức Giá"
             }
 
-            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+            RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.etPriceInput.setText(Constant.formatPrice(postingData.priceValuation) + "VND")
                 binding.btnChangePrice.text = "Từ Chối Mức Giá"
             }
@@ -157,14 +157,14 @@ class PricingSupportActivity : BaseActivity() {
     }
 
     private fun handleChangePriceSupport() {
-        val packageEnum = PackageEnum.getPackageByName(postingData.packageSelection)
+        val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingData.packageSelection)
 
-        when (packageEnum) {
-            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+        when (rentalPackageEnum) {
+            RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 showChangePriceDialog()
             }
 
-            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+            RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 // Call To Reject
                 if (tokenManager.isLoggedIn()) {
                     viewModel.acceptPricingSupport(
@@ -289,7 +289,7 @@ class PricingSupportActivity : BaseActivity() {
 
         // Set dialog window background to transparent
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val packageEnum = PackageEnum.getPackageByName(postingData.packageSelection)
+        val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingData.packageSelection)
 
 
         bindingDialog.apply {
@@ -298,7 +298,7 @@ class PricingSupportActivity : BaseActivity() {
             tvCheckOutDate.text = postingData.checkOutDate
             tvNumberNight.text = postingData.nights.toString()
 
-            if (packageEnum == PackageEnum.PREMIUM_SERVICE.packageModel) {
+            if (rentalPackageEnum == RentalPackageEnum.PREMIUM_SERVICE.packageModel) {
                 tvRoomPricePerNight.text =
                     Constant.formatPrice(postingData.staffRefinementPrice) + "VND"
                 tvEstimatedTotalPrice.text =
@@ -312,8 +312,8 @@ class PricingSupportActivity : BaseActivity() {
 
         bindingDialog.btnAcceptPrice.setOnClickListener {
             if (tokenManager.isLoggedIn()) {
-                when (packageEnum) {
-                    PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                when (rentalPackageEnum) {
+                    RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                         viewModel.acceptPricingSupport(
                             tokenManager.getAccessToken().toString(),
                             postingData.rentalPostingId.toInt(),
@@ -322,7 +322,7 @@ class PricingSupportActivity : BaseActivity() {
                         )
                     }
 
-                    PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                    RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                         viewModel.acceptPricingSupport(
                             tokenManager.getAccessToken().toString(),
                             postingData.rentalPostingId.toInt(),

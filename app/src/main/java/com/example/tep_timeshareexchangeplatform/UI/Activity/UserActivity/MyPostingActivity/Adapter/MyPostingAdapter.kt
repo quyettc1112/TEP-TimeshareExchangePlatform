@@ -11,7 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyP
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
@@ -139,9 +139,9 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             // Package Info
             binding.apply {
                 if (item.rentalPackageName != null) {
-                    val packageEnum = PackageEnum.getPackageByName(item.rentalPackageName)
-                    if (packageEnum != null) {
-                        tvPackageName.text = packageEnum?.name
+                    val rentalPackageEnum = RentalPackageEnum.getPackageByName(item.rentalPackageName)
+                    if (rentalPackageEnum != null) {
+                        tvPackageName.text = rentalPackageEnum?.name
                         if (item.expiredDate != null) {
                             tvExpiredDay.text = Constant.formatDateByLocale(
                                 item.expiredDate.toString() ?: "2024-12-31",

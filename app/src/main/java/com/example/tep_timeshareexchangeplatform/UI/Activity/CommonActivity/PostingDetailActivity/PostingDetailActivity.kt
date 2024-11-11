@@ -1,23 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -26,11 +19,10 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRent
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -315,25 +307,25 @@ class PostingDetailActivity : BaseActivity() {
         // Package Info
         binding.apply {
             if (postingDetail.rentalPackageName != null) {
-                val packageEnum = PackageEnum.getPackageByName(postingDetail.rentalPackageName)
-                when (packageEnum) {
-                    PackageEnum.BASIC_SERVICE.packageModel -> {
+                val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingDetail.rentalPackageName)
+                when (rentalPackageEnum) {
+                    RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                         tvNotion.visibility = View.VISIBLE
                         tvMemberRequest.visibility = View.VISIBLE
                         ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.redPrimary)
                     }
-                    PackageEnum.ADVANCED_SERVICE.packageModel -> {
+                    RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                         tvNotion.visibility = View.GONE
                         tvMemberRequest.visibility = View.GONE
                         ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
 
                     }
-                    PackageEnum.PREMIUM_SERVICE.packageModel -> {
+                    RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                         tvNotion.visibility = View.GONE
                         tvMemberRequest.visibility = View.GONE
                         ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
                     }
-                    PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                    RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                         tvNotion.visibility = View.GONE
                         tvMemberRequest.visibility = View.GONE
                         ctrRequestButton.backgroundTintList = resources.getColorStateList(R.color.blue_full)
@@ -428,9 +420,9 @@ class PostingDetailActivity : BaseActivity() {
         binding.ctrRequestButton.setOnClickListener {
             val postingDetail = postingDetailViewModel.postingDetail.value!!.data
             if (postingDetail!!.rentalPackageName != null) {
-                val packageEnum = PackageEnum.getPackageByName(postingDetail.rentalPackageName)
-                when (packageEnum) {
-                    PackageEnum.BASIC_SERVICE.packageModel -> {
+                val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingDetail.rentalPackageName)
+                when (rentalPackageEnum) {
+                    RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                         postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
                     }
                     else -> {

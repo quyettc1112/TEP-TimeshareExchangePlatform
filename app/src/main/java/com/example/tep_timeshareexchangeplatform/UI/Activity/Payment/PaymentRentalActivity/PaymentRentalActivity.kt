@@ -1,9 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -11,19 +8,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.HomeFragment.HomeFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.Fragment.Step_1_PaymentRentalFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.Fragment.Step_2_PaymentRentalFragment
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPaymentBinding
 import dagger.hilt.android.AndroidEntryPoint
 

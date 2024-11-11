@@ -13,10 +13,10 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.Adapter.MemberShipAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.PaymentPackageActivity
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -53,7 +53,7 @@ class MemberShipActivity : BaseActivity() {
             finish()
         }
         binding.imgNext.setOnClickListener {
-            startActivity(Intent(this, RentalPostingActivity::class.java))
+            startActivity(Intent(this, PostingFlowActivity::class.java))
         }
         clickRequestPaymentButton()
 
@@ -167,12 +167,12 @@ class MemberShipActivity : BaseActivity() {
                 super.onPageSelected(position)
                 when (position) {
                     0 -> {
-                        memberShipViewModel.updateCurrentPackage(PackageEnum.MEMBERSHIP_MONTHLY.packageModel)
+                        memberShipViewModel.updateCurrentPackage(RentalPackageEnum.MEMBERSHIP_MONTHLY.packageModel)
                         Log.d("CheckCurrentPackage", "Updated to MONTHLY")
                     }
 
                     1 -> {
-                        memberShipViewModel.updateCurrentPackage(PackageEnum.MEMBERSHIP_YEARLY.packageModel)
+                        memberShipViewModel.updateCurrentPackage(RentalPackageEnum.MEMBERSHIP_YEARLY.packageModel)
                         Log.d("CheckCurrentPackage", "Updated to YEARLY")
                     }
                 }

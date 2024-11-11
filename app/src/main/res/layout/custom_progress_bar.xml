@@ -103,7 +103,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/inter_regular"
             android:gravity="center"
-            android:text="Tạo Timeshare"
+            android:text="Khai Báo Timeshare"
             android:textColor="@android:color/darker_gray"
             android:textSize="10sp"
             android:textStyle="bold"

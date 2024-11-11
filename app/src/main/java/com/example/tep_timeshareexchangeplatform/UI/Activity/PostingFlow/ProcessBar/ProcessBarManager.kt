@@ -3,10 +3,10 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Proces
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.CustomProgressBarBinding
 
-class ProcessBarManager(private val binding: CustomProgressBarBinding, private val rentalPostingViewModel: RentalPostingViewModel) {
+class ProcessBarManager(private val binding: CustomProgressBarBinding, private val postingFlowViewModel: PostingFlowViewModel) {
     val layoutStep = listOf(
         binding.layoutStep1,
         binding.layoutStep2,
@@ -89,7 +89,7 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
     }
     // Function to handle step click
     private fun onStepClick(step: Int) {
-        if (rentalPostingViewModel.canNavigateToStep(step)) {
+        if (postingFlowViewModel.canNavigateToStep(step)) {
             // Allow navigation and update the UI
             tryNavigateToStep(step)
         } else {
@@ -101,7 +101,7 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
     // Function to update the progress UI
     private fun tryNavigateToStep(step: Int) {
         // Implement your step navigation logic here
-        rentalPostingViewModel.updateStep(step)
+        postingFlowViewModel.updateStep(step)
         updateProgress(step)
     }
 

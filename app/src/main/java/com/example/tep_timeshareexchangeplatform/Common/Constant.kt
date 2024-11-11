@@ -7,12 +7,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.De
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyPostingModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -80,6 +77,9 @@ class Constant {
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
 
+        const val POSTING_TYPE_FLOW = "postingTypeFlow"
+        const val RENTAL_POSTING_FLOW = "rentalPostingFlow"
+        const val EXCHANGER_POSTING_FLOW = "exchangerPostingFlow"
         const val POSTING_TIMESHARE_DTO = "postingTimeshareDTO"
 
         const val LOGGED_OUT = "loggedOut"
@@ -240,8 +240,8 @@ class Constant {
         )
 
         val listMemberShip = listOf(
-            PackageEnum.MEMBERSHIP_MONTHLY.packageModel,
-            PackageEnum.MEMBERSHIP_YEARLY.packageModel,
+            RentalPackageEnum.MEMBERSHIP_MONTHLY.packageModel,
+            RentalPackageEnum.MEMBERSHIP_YEARLY.packageModel,
 
             )
 
@@ -384,7 +384,7 @@ class Constant {
 
             )
 
-        val listPackage = listOf(
+        val rentalPackageList = listOf(
             PackageModel(
                 id = 1,
                 name = "Gói Cơ Bản",
@@ -442,6 +442,35 @@ class Constant {
                     "Gán cờ “Được xác minh” của Unwind",
                 )
             ),
+        )
+        val exchangePackageList = listOf(
+            PackageModel(
+                id = 1,
+                name = "Gói Cơ Bản",
+                price = 149000,
+                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
+                duration = 1,
+                type = "Basic",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                )
+            ),
+            PackageModel(
+                id = 2,
+                name = "Gói Nâng Cao",
+                price = 199000,
+                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
+                duration = 1,
+                type = "Standard",
+                listBenefit = listOf(
+                    "Thông báo qua mail khi có người thuê",
+                    "Gắn thẻ “Bài mới” trong 30 ngày",
+                    "Gán cờ “Được xác minh” của Unwind",
+                    "Được xác minh bới nhân viên của Resort, Khách sạn",
+                    "Cho thuê trực tuyến"
+                )
+            )
         )
 
 

@@ -3,15 +3,12 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPos
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,10 +20,9 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainAc
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter.MyPostingAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity.PricingSupportActivity
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingBinding
@@ -160,13 +156,13 @@ class MyPostingActivity : BaseActivity() {
                 Constant.formatDateByLocale(it.checkoutDate, this)
             )
 
-            val packageEnum = PackageEnum.getPackageByName(it.rentalPackageName)
-            when (packageEnum) {
-                PackageEnum.PREMIUM_SERVICE.packageModel -> {
+            val rentalPackageEnum = RentalPackageEnum.getPackageByName(it.rentalPackageName)
+            when (rentalPackageEnum) {
+                RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                     intent.putExtra(Constant.staffRefinementPrice, it.staffRefinementPrice)
                 }
 
-                PackageEnum.DELEGATED_SERVICE.packageModel -> {
+                RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                     intent.putExtra(Constant.priceValuation, it.priceValuation)
                 }
             }

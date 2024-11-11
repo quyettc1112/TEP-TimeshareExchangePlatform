@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.PostingFragment.Adapter.IntroSliderAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -32,7 +32,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     private lateinit var tokenManager: TokenManager
 
     private val viewModel: PostingViewModel by viewModels()
-    private val viewModelMain: MainViewModel by viewModels()
+    private var postingType: String =""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +52,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
     }
 
     private fun observeData() {
+        // Call Check User is Member, Get Balance
         viewModel.isCustomerExist.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -59,6 +60,8 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
                     if (it.data!!.isMember) {
                         tokenManager.saveCustomerInfo(it.data)
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+
+                        // Intent To Rental Posting Activity if User is Member and Valid
                         intentToRentalPostingActivity()
                     } else {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
@@ -68,7 +71,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
 
                 Status.ERROR -> {
                     (activity as MainActivity).hideLoadingWaiting()
-                    if(it.message!!.contains("404")) {
+                    if (it.message!!.contains("404")) {
                         intentToMemberShipActivity()
                     }
 
@@ -121,6 +124,8 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
         binding.llLayoutRentTimeshare.setOnClickListener {
             if (tokenManager.getAccessToken() != null) {
                 callIsCustomerExist()
+                // Add Flag Posting Type
+                postingType = Constant.RENTAL_POSTING_FLOW
             } else {
                 dialog.dismiss()
                 (activity as MainActivity).binding.vp2Main.currentItem = 4
@@ -138,14 +143,32 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
 
         // Exchange Click
         binding.llLayoutExchangeTimeshare.setOnClickListener {
-            startActivity(Intent(requireContext(), MemberShipActivity::class.java))
+            if (tokenManager.getAccessToken() != null) {
+                callIsCustomerExist()
+                // Add Flag Posting Type
+                postingType = Constant.EXCHANGER_POSTING_FLOW
+            } else {
+                dialog.dismiss()
+                (activity as MainActivity).binding.vp2Main.currentItem = 4
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Lỗi",
+                    "Bạn cần đăng nhập để thực hiện chức năng này",
+                    MotionToastStyle.INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+            }
         }
 
 
     }
 
     private fun intentToRentalPostingActivity() {
-        startActivity(Intent(requireContext(), RentalPostingActivity::class.java))
+        val intent = Intent(requireContext(), PostingFlowActivity::class.java)
+        intent.putExtra(Constant.POSTING_TYPE_FLOW, postingType)
+        startActivity(intent)
     }
 
     private fun intentToMemberShipActivity() {

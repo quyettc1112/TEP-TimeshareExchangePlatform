@@ -16,7 +16,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.FaqAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.TimeshareCompanyAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCheckTimeshareBinding
 
 
@@ -24,7 +24,7 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
     private lateinit var binding: FragmentCheckTimeshareBinding
     private var timeshareCompanyAdapter = TimeshareCompanyAdapter()
     private var faqAdapter = FaqAdapter()
-    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +50,14 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
     private fun setEventInputAction(){
         binding.btnYes.setOnClickListener {
             // Go to My Timeshare List
-            // (activity as RentalPostingActivity).goToCreateTimeshare()
-            rentalPostingViewModel.updateStep(3)
+            // (activity as PostingFlowActivity).goToCreateTimeshare()
+            postingFlowViewModel.updateStep(3)
         }
 
         binding.btnNo.setOnClickListener {
             // Go to Create Timeshare
-            // (activity as RentalPostingActivity).goToCreateTimeshare()
-            rentalPostingViewModel.updateStep(2)
+            // (activity as PostingFlowActivity).goToCreateTimeshare()
+            postingFlowViewModel.updateStep(2)
         }
 
         binding.searchInput.setOnClickListener {
@@ -97,8 +97,8 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
                     val data: Intent? = result.data
                     val selectedLocation: ResortModelResponse.Content? = data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
                     selectedLocation?.let {
-                        rentalPostingViewModel.updateResortModel(selectedLocation)
-                        rentalPostingViewModel.updateStep(2)
+                        postingFlowViewModel.updateResortModel(selectedLocation)
+                        postingFlowViewModel.updateStep(2)
                     }
                 }
             }

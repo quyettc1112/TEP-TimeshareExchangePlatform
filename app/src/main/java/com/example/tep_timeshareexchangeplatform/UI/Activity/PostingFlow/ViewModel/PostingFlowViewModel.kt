@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RentalPostingViewModel @Inject constructor(
+class PostingFlowViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
     private val publicResortAPIRepository: PublicResortAPIRepository,
     private val timeshareRepository: TimeshareRepository,
@@ -42,6 +42,15 @@ class RentalPostingViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val initStep: Int = 1
+
+    // Tracking Type of Posting Flow
+    private val _typeOfPostingFlow = MutableLiveData<String>()
+    val typeOfPostingFlow: MutableLiveData<String>
+        get() = _typeOfPostingFlow
+    fun updateTypeOfPostingFlow(type: String) {
+        _typeOfPostingFlow.value = type
+    }
+
 
 
     // ----------------------------------------------------------//

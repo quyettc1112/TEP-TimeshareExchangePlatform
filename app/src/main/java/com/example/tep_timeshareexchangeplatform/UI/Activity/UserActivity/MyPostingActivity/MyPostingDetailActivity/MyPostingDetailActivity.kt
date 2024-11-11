@@ -15,7 +15,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -301,36 +301,36 @@ class MyPostingDetailActivity : BaseActivity() {
     }
 
     private fun bindPackageData(packageName: String) {
-        val packageEnum = PackageEnum.getPackageByName(packageName)
+        val rentalPackageEnum = RentalPackageEnum.getPackageByName(packageName)
 
 
-        when (packageEnum) {
+        when (rentalPackageEnum) {
 
-            PackageEnum.BASIC_SERVICE.packageModel -> {
+            RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
-                    tvPackageName.text = packageEnum.name
-                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                    tvPackageName.text = rentalPackageEnum.name
+                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
                 }
             }
 
-            PackageEnum.ADVANCED_SERVICE.packageModel -> {
+            RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
-                    tvPackageName.text = packageEnum.name
-                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                    tvPackageName.text = rentalPackageEnum.name
+                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
                 }
             }
 
-            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+            RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
-                    tvPackageName.text = packageEnum.name
-                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                    tvPackageName.text = rentalPackageEnum.name
+                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
                 }
             }
 
-            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+            RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePackagePosting.apply {
-                    tvPackageName.text = packageEnum.name
-                    tvPackagePrice.text = "${formatPrice(packageEnum.price)} VND"
+                    tvPackageName.text = rentalPackageEnum.name
+                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
                 }
             }
 

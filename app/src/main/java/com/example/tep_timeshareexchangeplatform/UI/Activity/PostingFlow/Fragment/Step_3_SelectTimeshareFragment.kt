@@ -19,8 +19,8 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.MyTimeshareAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -31,7 +31,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     private lateinit var binding: FragmentSelectTimeshareBinding
     private var myTimeshareAdapter = MyTimeshareAdapter()
-    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
 
@@ -71,9 +71,9 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                 val lastCompletelyVisibleItem =
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
-                val totalPages = rentalPostingViewModel.myTimeshareList.value?.data?.totalPages ?: 0
-                if (lastCompletelyVisibleItem == (totalItemCount - 3) && rentalPostingViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
-                    rentalPostingViewModel.incrementCurrentMyTimesharePage()
+                val totalPages = postingFlowViewModel.myTimeshareList.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 3) && postingFlowViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
+                    postingFlowViewModel.incrementCurrentMyTimesharePage()
                     Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -82,21 +82,21 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     private fun observeData() {
         // Tracking data my timeshare list
-        rentalPostingViewModel.myTimeshareList.observe(viewLifecycleOwner) { resources ->
+        postingFlowViewModel.myTimeshareList.observe(viewLifecycleOwner) { resources ->
             when (resources.status) {
                 Status.LOADING -> {
-                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                   binding.lottieLoading.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    binding.lottieLoading.visibility = View.GONE
                     resources.data?.let {
-                        rentalPostingViewModel.loadMoreTimeshareList(it.content)
-                        myTimeshareAdapter.submitList(rentalPostingViewModel.getCurrentMyTimeshareList())
+                        postingFlowViewModel.loadMoreTimeshareList(it.content)
+                        myTimeshareAdapter.submitList(postingFlowViewModel.getCurrentMyTimeshareList())
                     }
                 }
                 Status.ERROR -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    binding.lottieLoading.visibility = View.GONE
                     MotionToast.Companion.createToast(
                         requireActivity(),
                         "Error",
@@ -110,8 +110,8 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
             }
         }
 
-        rentalPostingViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
-            rentalPostingViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+        postingFlowViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
+            postingFlowViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
         }
 
     }
@@ -131,7 +131,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
         // Select button click
         myTimeshareAdapter.onItemClick = {
-            (activity as RentalPostingActivity).showConfirmDialog(
+            (activity as PostingFlowActivity).showConfirmDialog(
                 title = "Confirm",
                 message = "Are you sure you want to select this Timeshare?",
                 positiveButtonTitle = "Yes",
@@ -143,8 +143,8 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     }
 
                     override fun positiveAction() {
-                        rentalPostingViewModel.updateMyTimeshareModel(it)
-                        rentalPostingViewModel.updateStep(4)
+                        postingFlowViewModel.updateMyTimeshareModel(it)
+                        postingFlowViewModel.updateStep(4)
                     }
                 }
             )
@@ -159,9 +159,9 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     val selectedMyTimeshare: MyTimeshareResponse.Content? =
                         data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
                     if (selectedMyTimeshare != null) {
-                        rentalPostingViewModel.updateMyTimeshareModel(selectedMyTimeshare)
+                        postingFlowViewModel.updateMyTimeshareModel(selectedMyTimeshare)
                         Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
-                        rentalPostingViewModel.updateStep(4)
+                        postingFlowViewModel.updateStep(4)
                     }
                 }
             }
@@ -169,7 +169,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     override fun onResume() {
         super.onResume()
-        rentalPostingViewModel.currentMyTimesharePage.value = 0
+        postingFlowViewModel.currentMyTimesharePage.value = 0
     }
 
 

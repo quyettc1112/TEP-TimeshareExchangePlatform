@@ -18,9 +18,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -37,7 +37,7 @@ import java.util.Locale
 class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posting) {
 
     private lateinit var binding: FragmentCreatePostingBinding
-    private val rentalPostingViewModel: RentalPostingViewModel by activityViewModels()
+    private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +61,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     // Funtion to observe view model
     private fun observeViewModel() {
         // Observe myTimeshareModelSelected
-        rentalPostingViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareModel ->
-            rentalPostingViewModel.getValidYearTimeshare(
+        postingFlowViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareModel ->
+            postingFlowViewModel.getValidYearTimeshare(
                 tokenManager.getAccessToken().toString(), myTimeshareModel.timeShareId
             )
             bindDataMyTimeshare(myTimeshareModel)
@@ -70,27 +70,27 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
 
         // Observer Package Type
-        rentalPostingViewModel.packageStep4.observe(viewLifecycleOwner) { packageType ->
+        postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageType ->
             checkPackageType(packageType)
         }
 
         // Observer Valid Year Timeshare of Customer
-        rentalPostingViewModel.validYearTimeshare.observe(viewLifecycleOwner) { resources ->
+        postingFlowViewModel.validYearTimeshare.observe(viewLifecycleOwner) { resources ->
             when (resources.status) {
                 Status.LOADING -> {
-                    (activity as RentalPostingActivity).showLoadingWaiting(true)
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                     resources.data?.let {
                         if (it.isEmpty()) {
-                            (activity as RentalPostingActivity).showInfoDialog(requireContext(),
+                            (activity as PostingFlowActivity).showInfoDialog(requireContext(),
                                 "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiem tra lại",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
-                                        rentalPostingViewModel.resetSteps()
-                                        rentalPostingViewModel.updateStep(3)
+                                        postingFlowViewModel.resetSteps()
+                                        postingFlowViewModel.updateStep(3)
                                     }
                                 })
                         } else {
@@ -100,7 +100,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 }
 
                 Status.ERROR -> {
-                    (activity as RentalPostingActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
                     MotionToast.Companion.createToast(
                         requireActivity(),
                         "Error",
@@ -115,11 +115,11 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
 
         // Observer Price Per Night
-        rentalPostingViewModel.pricePerNight.observe(viewLifecycleOwner) { pricePerNight ->
-            if (rentalPostingViewModel.numberOfNights.value != null) {
-                val totalPrice = pricePerNight * rentalPostingViewModel.numberOfNights.value!!
+        postingFlowViewModel.pricePerNight.observe(viewLifecycleOwner) { pricePerNight ->
+            if (postingFlowViewModel.numberOfNights.value != null) {
+                val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
                 val value =
-                    "${Constant.formatPrice(totalPrice.toInt())} đ/${rentalPostingViewModel.numberOfNights.value!!} đêm"
+                    "${Constant.formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
                 binding.includePaymentMethod12.etTotalPrice.setText(value)
             }
 
@@ -129,7 +129,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     // Function to set event change my timeshare
     private fun setEventChangeMyTimeshare() {
         binding.btnChangeMyTimeshare.setOnClickListener {
-            rentalPostingViewModel.updateStep(3)
+            postingFlowViewModel.updateStep(3)
         }
 
     }
@@ -137,7 +137,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     // Function to set event next
     private fun requestButtonClick() {
         binding.btnNext.setOnClickListener {
-            if (rentalPostingViewModel.pricePerNight.value == null) {
+            if (postingFlowViewModel.pricePerNight.value == null) {
                 MotionToast.Companion.createColorToast(
                     requireActivity(),
                     "Error",
@@ -151,7 +151,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
                 }
             } else {
-                rentalPostingViewModel.updateStep(6)
+                postingFlowViewModel.updateStep(6)
             }
         }
     }
@@ -204,7 +204,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     val longDescription =
                         Html.fromHtml(selectedPolicy.getLongDescription(requireContext()))
                     binding.tvCancellationPolicyDescription.text = longDescription
-                    rentalPostingViewModel.updateCancelPolicy(policyId)
+                    postingFlowViewModel.updateCancelPolicy(policyId)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -237,9 +237,9 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
                     // Lấy startDateString và endDateString từ ViewModel
                     val startDateString =
-                        rentalPostingViewModel.myTimeshareModelSelected.value?.startDate
+                        postingFlowViewModel.myTimeshareModelSelected.value?.startDate
                     val endDateString =
-                        rentalPostingViewModel.myTimeshareModelSelected.value?.endDate
+                        postingFlowViewModel.myTimeshareModelSelected.value?.endDate
 
                     // Kiểm tra xem startDateString và endDateString có null hay không
                     bindDataCheckInCheckOut(startDateString, endDateString, selectedYear)
@@ -293,8 +293,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 val dateFormatDTO = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val checkinDate = dateFormatDTO.format(calendarStart.time)
                 val checkoutDate = dateFormatDTO.format(calendarEnd.time)
-                rentalPostingViewModel.setCheckinDate(checkinDate)
-                rentalPostingViewModel.setCheckoutDate(checkoutDate)
+                postingFlowViewModel.setCheckinDate(checkinDate)
+                postingFlowViewModel.setCheckoutDate(checkoutDate)
 
                 // Cập nhật UI
                 binding.tvCheckInDate.text = newStartDateString
@@ -302,7 +302,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 binding.tvCheckInDayOfWeek.text = startDayOfWeek
                 binding.tvCheckOutDayOfWeek.text = endDayOfWeek
                 binding.etNightsCount.text = "$totalDays"
-                rentalPostingViewModel.updateNumberOfNights(totalDays)
+                postingFlowViewModel.updateNumberOfNights(totalDays)
             } catch (e: ParseException) {
                 e.printStackTrace()
                 // Xử lý lỗi khi chuỗi ngày không đúng định dạng
@@ -331,31 +331,31 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     // Function to check package type
     private fun checkPackageType(packageModel: PackageModel) {
         when (packageModel) {
-            PackageEnum.BASIC_SERVICE.packageModel -> {
+            RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
                 requestButtonClick()
 
             }
 
-            PackageEnum.ADVANCED_SERVICE.packageModel -> {
+            RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
                 requestButtonClick()
             }
 
-            PackageEnum.PREMIUM_SERVICE.packageModel -> {
+            RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
-                rentalPostingViewModel.updatePricePerNight(0)
+                postingFlowViewModel.updatePricePerNight(0)
                 requestButtonClick()
 
             }
 
-            PackageEnum.DELEGATED_SERVICE.packageModel -> {
+            RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
-                rentalPostingViewModel.updatePricePerNight(0)
+                postingFlowViewModel.updatePricePerNight(0)
                 requestButtonClick()
             }
         }
@@ -411,7 +411,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                         .replace("[^\\d]".toRegex(), "").toLongOrNull()
                     if (amount != null) {
                         if (amount > 0) {
-                            rentalPostingViewModel.updatePricePerNight(amount)
+                            postingFlowViewModel.updatePricePerNight(amount)
                         }
                     }
 

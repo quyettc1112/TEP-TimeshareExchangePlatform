@@ -16,7 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel.PaymentPackageViewModel
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -161,59 +161,59 @@ class PaymentPackageActivity : BaseActivity() {
             finish()
             return
         }
-        val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId } ?: return
+        val rentalPackageEnum = RentalPackageEnum.entries.find { it.packageModel.id == packageId } ?: return
 
-        if (packageEnum.packageModel.type == "Membership") {
-            when (packageEnum) {
-                PackageEnum.MEMBERSHIP_MONTHLY -> {
+        if (rentalPackageEnum.packageModel.type == "Membership") {
+            when (rentalPackageEnum) {
+                RentalPackageEnum.MEMBERSHIP_MONTHLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
                         tvPackagePrice.text =
-                            "${formatPrice(packageEnum.packageModel.price)} VND"
-                        tvPackageName.text = packageEnum.packageModel.name.toString()
+                            "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
+                        tvPackageName.text = rentalPackageEnum.packageModel.name.toString()
                         llTypePackage.setBackgroundResource(R.drawable.lite_gradient)
-                        bindDataPaymentInfo(packageEnum)
+                        bindDataPaymentInfo(rentalPackageEnum)
 
                     }
                 }
 
-                PackageEnum.MEMBERSHIP_YEARLY -> {
+                RentalPackageEnum.MEMBERSHIP_YEARLY -> {
                     binding.includePackagePosting.apply {
                         tvTitle.text = "Gói Thành Viên Unwind"
                         tvPackagePrice.text =
-                            "${formatPrice(packageEnum.packageModel.price)} VND"
-                        tvPackageName.text = packageEnum.packageModel.name.toString()
+                            "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
+                        tvPackageName.text = rentalPackageEnum.packageModel.name.toString()
                         llTypePackage.setBackgroundResource(R.drawable.pro_gradient)
-                        bindDataPaymentInfo(packageEnum)
+                        bindDataPaymentInfo(rentalPackageEnum)
                     }
                 }
 
-                PackageEnum.BASIC_SERVICE -> TODO()
-                PackageEnum.ADVANCED_SERVICE -> TODO()
-                PackageEnum.PREMIUM_SERVICE -> TODO()
-                PackageEnum.DELEGATED_SERVICE -> TODO()
+                RentalPackageEnum.BASIC_SERVICE -> TODO()
+                RentalPackageEnum.ADVANCED_SERVICE -> TODO()
+                RentalPackageEnum.PREMIUM_SERVICE -> TODO()
+                RentalPackageEnum.DELEGATED_SERVICE -> TODO()
             }
         }
 
-        if (tokenManager.getCustomerInfo()?.walletAvailableMoney!! < packageEnum.packageModel.price) {
+        if (tokenManager.getCustomerInfo()?.walletAvailableMoney!! < rentalPackageEnum.packageModel.price) {
             binding.cardUnwind.isEnabled = false }
 
 
 
     }
 
-    private fun bindDataPaymentInfo(packageEnum: PackageEnum) {
+    private fun bindDataPaymentInfo(rentalPackageEnum: RentalPackageEnum) {
         // Hide Unessary Views
         binding.includePackagePosting.rvFeatures.visibility = View.GONE
         binding.includePackagePosting.tvPackageDescription.visibility = View.GONE
 
         binding.apply {
-            tvServiceName.text = packageEnum.packageModel.name
-            tvPriceService.text = "${formatPrice(packageEnum.packageModel.price)} VND"
-            tvDuration.text = "${packageEnum.packageModel.duration} Tháng"
+            tvServiceName.text = rentalPackageEnum.packageModel.name
+            tvPriceService.text = "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
+            tvDuration.text = "${rentalPackageEnum.packageModel.duration} Tháng"
             tvFeeService.text = "Miễn Phí"
-            tvTotalFee.text = "${formatPrice(packageEnum.packageModel.price)} VND"
-            tvTotalAmount.text = "${formatPrice(packageEnum.packageModel.price)} VND"
+            tvTotalFee.text = "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
+            tvTotalAmount.text = "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
         }
 
     }
@@ -240,7 +240,7 @@ class PaymentPackageActivity : BaseActivity() {
             val paymentMethod = paymentPackageViewModel.selectedPaymentMethod.value
 
             // Get Package Enum
-            val packageEnum = PackageEnum.entries.find { it.packageModel.id == packageId }
+            val rentalPackageEnum = RentalPackageEnum.entries.find { it.packageModel.id == packageId }
                 ?: return@setOnClickListener
 
             // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
@@ -255,8 +255,8 @@ class PaymentPackageActivity : BaseActivity() {
                 // Call API to get Payment URL, Intent to VNPayActivity
                 PaymentMethod.VNPAY -> {
                     paymentPackageViewModel.getResponsePaymentUrl(
-                        packageEnum.packageModel.price,
-                        packageEnum.packageModel.name
+                        rentalPackageEnum.packageModel.price,
+                        rentalPackageEnum.packageModel.name
                     )
                 }
 

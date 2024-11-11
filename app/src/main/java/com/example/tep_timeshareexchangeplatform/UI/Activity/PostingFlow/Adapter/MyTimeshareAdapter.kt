@@ -19,7 +19,7 @@ class MyTimeshareAdapter: BaseAdapter<MyTimeshareResponse.Content, MyTimeshareAd
             // Hide Unessary View
 
             binding.tvResortName.text = item.resortName
-            binding.tvRoomType.text = "Tên Phòng: " + item.roomName
+            binding.tvRoomType.text =  item.roomName
             binding.tvCheckinDate.text = Constant.formatDateByLocale(item.startDate, binding.root.context)
             binding.tvCheckOutDate.text =Constant.formatDateByLocale(item.endDate, binding.root.context)
            /* Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)*/

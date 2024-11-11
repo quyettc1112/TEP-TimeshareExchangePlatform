@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/crl_content_unit_type"
@@ -70,26 +71,44 @@
                 android:textSize="14sp" />
 
             <!-- Input for house number or unit -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Mã Phòng"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
             <EditText
                 android:id="@+id/edt_room_code"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_stroke_around"
                 android:hint="Nhập mã phòng"
                 android:inputType="text"
+                android:textSize="14dp"
                 android:maxLines="1"
                 android:paddingStart="10dp"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Tên Phòng"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/edt_room_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_stroke_around"
                 android:hint="Nhập tên phòng"
+                android:textSize="14dp"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingStart="10dp"
@@ -111,7 +130,8 @@
                     android:layout_gravity="center_vertical"
                     android:text="Hướng quan sát của phòng"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -130,7 +150,7 @@
                 <Spinner
                     android:id="@+id/custom_spinner_view_diretion"
                     style="@style/CustomSpinner"
-                    android:layout_width="100dp"
+                    android:layout_width="140dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:spinnerMode="dropdown"
@@ -144,7 +164,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -154,7 +174,8 @@
                     android:layout_gravity="center_vertical"
                     android:text="Giường"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -173,7 +194,7 @@
                 <Spinner
                     android:id="@+id/custom_spinner_bed"
                     style="@style/CustomSpinner"
-                    android:layout_width="100dp"
+                    android:layout_width="140dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:spinnerMode="dropdown"
@@ -184,10 +205,64 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--// List of Bed Type-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/inter_bold"
+                android:text="Loại Phòng"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_light"
+                android:text="Chọn Loại Phòng Của Bạn"
+                android:textColor="@color/red_light"
+                android:textSize="14sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_unit_type"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/lottieAnimationView"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:lottie_rawRes="@raw/anim_not_found"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"/>
+                <TextView
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:gravity="center"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hiện tại chưa có loại phòng nào phù hợp theo yêu cầu cua bạn"/>
+
+
+            </LinearLayout>
+
+            <!--// Button Next-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save_room_info"
+                android:background="@drawable/ripple_effect_white"
+                android:backgroundTint="@color/blue_btn_search"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Lưu Thông Tin Phòng" />
+
 
 
         </LinearLayout>
