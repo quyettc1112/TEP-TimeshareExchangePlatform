@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/checkTimeshareFragment"
-        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment"
+        android:name="com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_1_CheckTimeshareFragment"
         android:label="CheckTimeshareFragment" >
         <action
             android:id="@+id/action_checkTimeshareFragment_to_resortLocationFragment"

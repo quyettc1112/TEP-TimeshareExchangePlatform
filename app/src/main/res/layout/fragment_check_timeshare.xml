@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity">
+    tools:context=".UI.Activity.PostingFlow.RentalPostingActivity">
 
     <ScrollView
         android:id="@+id/scrollView"

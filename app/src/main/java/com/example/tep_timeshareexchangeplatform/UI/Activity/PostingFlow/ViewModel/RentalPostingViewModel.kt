@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,10 +22,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -281,19 +279,6 @@ class RentalPostingViewModel @Inject constructor(
 
 
     // ----------------------------------------------------------//
-    // Call API get my timeshare Detail
-    private val _myTimeshareDetail = MutableLiveData<Resource<MyTimeshareDetailResponse>>()
-    val myTimeshareDetail: MutableLiveData<Resource<MyTimeshareDetailResponse>> = _myTimeshareDetail
-    fun getMyTimeshareDetail(token: String, timeShareId: Int) {
-        viewModelScope.launch {
-            _myTimeshareDetail.postValue(Resource.loading(null))
-            timeshareRepository.getMyTimeshareDetail(token, timeShareId).let {
-                _myTimeshareDetail.postValue(it)
-            }
-        }
-    }
-
-    // ----------------------------------------------------------//
     // Call API get valid year timeshare of Customer
     private val _validYearTimeshare = MutableLiveData<Resource<ValidYearResponse>>()
     val validYearTimeshare: MutableLiveData<Resource<ValidYearResponse>> = _validYearTimeshare
@@ -437,6 +422,14 @@ class RentalPostingViewModel @Inject constructor(
         this.isYesOrNo.value = isYesOrNo
     }
 
+    // ----------------------------------------------------------//
+    private val _currentRoomInfo = MutableLiveData<Int>()
+    val currentRoomInfo: MutableLiveData<Int>
+        get() = _currentRoomInfo
+    fun updateCurrentRoomInfo(currentRoomInfo: Int) {
+        _currentRoomInfo.value = currentRoomInfo
+    }
+
 
     // Init
     init {
@@ -445,6 +438,7 @@ class RentalPostingViewModel @Inject constructor(
         _stepCreateTimeshare.value = 0
         isYesOrNo.value = false
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
+        _currentRoomInfo.value = 0
 
         _currentMyTimesharePage.value = 0
     }

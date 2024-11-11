@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment
 
 import android.app.Activity
 import android.content.Intent
@@ -28,11 +28,11 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Im
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Adapter.AmenitiesAdaper
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Adapter.ImageUploadAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Adapter.UnitTypeAdapterPosting
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdaper
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.ImageUploadAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -76,6 +76,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         sendRequestCreateTimeshare()
         setEventChangeDate()
         nextStepHandle()
+        setEventSaveAmenities()
         return binding.root
     }
 
@@ -138,9 +139,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.SUCCESS -> {
                     binding.includeUnitTypeYes.llProcessbar.visibility = View.GONE
                     bindDataUnitTypeYesOption(unitType.data!!)
-
-                    // Open Step 3
-                    rentalPostingViewModel.updateTaskProgress(3)
                 }
 
                 Status.ERROR -> {
@@ -192,7 +190,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
                 }
                 rentalPostingViewModel.updateTaskProgress(4)
-                rentalPostingViewModel.updateTaskProgress(5)
             } else binding.crlContentAmenities.visibility = View.GONE
         }
 
@@ -218,9 +215,17 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    (activity as RentalPostingActivity).showErrorDialog(
+                    (activity as RentalPostingActivity).showFailedDialog(
+                        requireContext(),
                         "${timeshareDTO.message}",
-                        "Back"
+                        object: View.OnClickListener{
+                            override fun onClick(v: View?) {
+                                binding.scrollView.post {
+                                    binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
+                                }
+                            }
+
+                        }
                     )
                     (activity as RentalPostingActivity).hideLoadingWaiting()
                 }
@@ -299,7 +304,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             2 -> {
-                binding.crlDayCheckIn.visibility = View.VISIBLE
+                binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
                 binding.crlContentImage.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
@@ -311,11 +316,18 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
             4 -> {
                 binding.crlContentAmenities.visibility = View.VISIBLE
+                val checkYN: Boolean = rentalPostingViewModel.isYesOrNoSelected.value!!
+                if (checkYN) {
+                    binding.btnSaveAmenities.visibility = View.VISIBLE
+                }else binding.btnSaveAmenities.visibility = View.GONE
             }
 
             5 -> {
                 binding.crlContentImage.visibility = View.VISIBLE
                 binding.btnNext.visibility = View.VISIBLE
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
             }
         }
     }
@@ -367,17 +379,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
     private fun bindDataSpinner(roomList: List<RoomModel>?) {
-
         val spinnerBinding = binding.includeUnitTypeYes
-        val roomDisplayList: List<String> = roomList
-            ?.map { "Phòng: ${it.roomInfoName}, Code: ${it.roomInfoCode}" ?: "Unknown Room" }
-            ?: emptyList()
 
+        // Thêm mục mặc định vào danh sách
+        val roomDisplayList: List<String> = listOf("Chọn Mã Phòng") +
+                (roomList?.map { "Mã Phòng: ${it.roomInfoCode}" } ?: emptyList())
 
-
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         spinnerBinding.spUnitType.adapter = adapter
 
         // Xử lý sự kiện khi chọn một item trong Spinner
@@ -389,11 +398,26 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     position: Int,
                     id: Long
                 ) {
-                    // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
-                    val selectedRoom = roomList?.get(position)
+                    if (position == 0) {
+                        // Nếu người dùng chọn "Chọn Mã Phòng", không làm gì
+                        binding.includeUnitTypeYes.includeItemUnitType.root.visibility = View.GONE
+                        binding.includeUnitTypeYes.tvRoomName.text = ""
+                        binding.includeUnitTypeYes.tvRoomCode.text = ""
+                        rentalPostingViewModel.updateTaskProgress(2)
+                        return
+                    }
 
-                    binding.includeUnitTypeYes.tvRoomName.text = selectedRoom!!.roomInfoName
-                    binding.includeUnitTypeYes.tvRoomCode.text = selectedRoom!!.roomInfoCode
+                    binding.scrollView.post {
+                        binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
+                    }
+                    rentalPostingViewModel.updateTaskProgress(3)
+                    rentalPostingViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
+
+                    // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
+                    val selectedRoom = roomList?.get(position - 1)
+
+                    binding.includeUnitTypeYes.tvRoomName.text = selectedRoom?.roomInfoName ?: "Unknown Name"
+                    binding.includeUnitTypeYes.tvRoomCode.text = selectedRoom?.roomInfoCode ?: "Unknown Code"
 
                     // Lấy thông tin id của RoomModel tương ứng
                     val unitTypeID = selectedRoom?.unitTypeId
@@ -403,7 +427,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     if (token != null && unitTypeID != null) {
                         rentalPostingViewModel.getUnitTypeDetail(token, unitTypeID)
                     } else {
-                        MotionToast.Companion.createColorToast(
+                        MotionToast.createColorToast(
                             requireActivity(),
                             "Error",
                             "Token is null",
@@ -411,7 +435,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                             MotionToast.GRAVITY_BOTTOM,
                             MotionToast.LONG_DURATION,
                             ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                        );
+                        )
                     }
                 }
 
@@ -424,7 +448,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
         val binding = binding.includeUnitTypeYes
         // Hide Unnecessary View
-        binding.rvUnitType.visibility = View.GONE
         binding.includeItemUnitType.llAmennities.visibility = View.GONE
         binding.includeItemUnitType.tvPrice.visibility = View.GONE
 
@@ -432,7 +455,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Bind data to item unit type
         binding.includeItemUnitType.root.visibility = View.VISIBLE
         binding.includeItemUnitType.apply {
-            tvRoomName.text = unitType.title
+            tvRoomName.text = "Loại Phòng: " + unitType.title
             tvNumBathroom.text = unitType.bathrooms.toString()
             tvNumKitchen.text = 1.toString()
             tvKitchen.text = unitType.kitchen
@@ -440,6 +463,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             tvBed.text =
                 "${unitType.bedsQueen} Queen, ${unitType.bedsKing} King, ${unitType.bedsTwin} Twin"
             tvNumPerson.text = unitType.sleeps.toString()
+
             /* Glide.with(requireContext())
                  .load(unitType.photos)
                  .placeholder(R.drawable.ripple_effect)
@@ -473,6 +497,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         val unitTypeDetail = CustomDialog(requireContext())
         unitTypeDetail.show()
     }
+
+    // UnitType
+    private fun bindDataAmenities(unitType: UnitTypeModel) {
+
+    }
+
+    private fun setEventSaveAmenities() {
+        binding.btnSaveAmenities.setOnClickListener {
+            rentalPostingViewModel.updateTaskProgress(5)
+        }
+
+    }
+
 
     // User click to change location of Resort
     private fun setEventChangeLocation() {
@@ -650,11 +687,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
                 }
 
-
-
-
-
-
             }
         }
 
@@ -675,13 +707,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             endYear = 2025,
             startDate = startDateFormatted,
             endDate = endDateFormatted,
-            roomInfoId = rentalPostingViewModel.unitTypeDetail.value?.data?.id!!
+            roomInfoId = rentalPostingViewModel.currentRoomInfo.value!!
         )
         Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
-        if (token != null) {
+        if (token != null && timeshareDTO != null) {
             rentalPostingViewModel.postTimeshareDTO(token, timeshareDTO)
         } else {
-            Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
 

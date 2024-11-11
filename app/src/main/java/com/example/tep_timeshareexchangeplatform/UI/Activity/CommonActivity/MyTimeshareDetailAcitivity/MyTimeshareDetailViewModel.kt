@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.MyTimeshareDetailAcitivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyTimeshareDetailAcitivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

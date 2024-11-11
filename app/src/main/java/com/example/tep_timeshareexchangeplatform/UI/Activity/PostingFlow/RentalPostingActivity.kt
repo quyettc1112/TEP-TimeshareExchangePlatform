@@ -1,6 +1,5 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -11,15 +10,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_1_CheckTimeshareFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_5_CreatePostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_6_PaymentPostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_4_SelectPackageFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_3_SelectTimeshareFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ProcessBar.ProcessBarManager
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_1_CheckTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_5_CreatePostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_2_CreateTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_6_PaymentPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_4_SelectPackageFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment.Step_3_SelectTimeshareFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ProcessBar.ProcessBarManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityRentalPostingBinding
 import dagger.hilt.android.AndroidEntryPoint
 

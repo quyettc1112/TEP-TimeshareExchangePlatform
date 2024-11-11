@@ -1,9 +1,9 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ProcessBar
+package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ProcessBar
 
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.RentalPostingActivity.ViewModel.RentalPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.RentalPostingViewModel
 import com.example.tep_timeshareexchangeplatform.databinding.CustomProgressBarBinding
 
 class ProcessBarManager(private val binding: CustomProgressBarBinding, private val rentalPostingViewModel: RentalPostingViewModel) {
@@ -104,8 +104,6 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
         rentalPostingViewModel.updateStep(step)
         updateProgress(step)
     }
-
-
 
 
 }

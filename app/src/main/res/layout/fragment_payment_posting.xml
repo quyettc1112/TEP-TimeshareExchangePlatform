@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_6_PaymentPostingFragment">
+    tools:context=".UI.Activity.PostingFlow.Fragment.Step_6_PaymentPostingFragment">
 
     <ScrollView
         android:id="@+id/scrollView"

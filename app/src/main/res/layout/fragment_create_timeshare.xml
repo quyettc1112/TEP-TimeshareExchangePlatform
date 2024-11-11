@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UI.Activity.PostingFlow.RentalPostingActivity.Fragment.Step_2_CreateTimeshareFragment">
+    tools:context=".UI.Activity.PostingFlow.Fragment.Step_2_CreateTimeshareFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -139,13 +138,13 @@
             <!--// Check Phân Bổ Phòng-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/crl_room_distribution"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
+                android:visibility="gone"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
 
@@ -186,10 +185,10 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="20dp"
                         android:paddingStart="16dp"
                         android:paddingTop="10dp"
                         android:paddingEnd="16dp"
+                        android:paddingBottom="20dp"
                         android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/crl_room_distribution_info">
 
@@ -209,14 +208,14 @@
                         <!--// Yes Button-->
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_yes_room_distribution"
-                            android:textColor="@color/white"
-                            android:text="Có, tôi đã nhận được mã phòng từ Resort."
-                            android:textAllCaps="false"
-                            android:layout_marginTop="10dp"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/ripple_effect_white"
                             android:backgroundTint="@color/blue_full"
+                            android:text="Có, tôi đã nhận được mã phòng từ Resort."
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView25" />
@@ -226,9 +225,9 @@
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_no_room_distribution"
-                            android:layout_marginTop="10dp"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/ripple_effect_white"
                             android:backgroundTint="#B0BEC5"
                             android:text="Không, tôi sẽ tự thiêt lập phòng của mình."
@@ -245,40 +244,39 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             </com.google.android.material.card.MaterialCardView>
 
 
             <include
                 android:id="@+id/include_unit_type_yes"
-                android:visibility="gone"
+                layout="@layout/include_yes_distribution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                layout="@layout/include_yes_distribution"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/include_unit_type_no"
-                android:visibility="gone"
+                layout="@layout/include_no_distribution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                layout="@layout/include_no_distribution"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
 
             <!--// Select Check in and Check out date-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/crl_day_check_in"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
+                android:visibility="gone"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
 
@@ -319,8 +317,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="visible"
                         android:padding="16dp"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_day_check_in_info">
@@ -459,13 +457,13 @@
             <!--// List Amenities-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/crl_content_amenities"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
+                android:visibility="gone"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
 
@@ -580,6 +578,7 @@
 
                         <!--// Description-->
                         <LinearLayout
+                            android:id="@+id/ll_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -613,6 +612,21 @@
 
                         </LinearLayout>
 
+                        <!--// Save Button-->
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_save_amenities"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_margin="20dp"
+                            android:background="@drawable/ripple_effect_white"
+                            android:backgroundTint="@color/blue_btn_search"
+                            android:text="Lưu thông tin tiện ích"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:visibility="visible"
+                            app:layout_constraintTop_toBottomOf="@id/ll_description"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -623,13 +637,13 @@
             <!--// List Image-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/crl_content_image"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
+                android:visibility="gone"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
 
@@ -714,14 +728,13 @@
             <!--// Do Nothing-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:orientation="vertical" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
@@ -729,6 +742,7 @@
         android:backgroundTint="@color/blue_btn_search"
         android:text="Gửi yêu cầu tạo Timeshare"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -74,13 +74,13 @@
             android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PostingFlow.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
+            android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.PostingFlow.ExchangePostingActivity.ExchangePostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PostingFlow.RentalPostingActivity.RentalPostingActivity"
+            android:name=".UI.Activity.PostingFlow.RentalPostingActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.MemberShipActivity.MemberShipActivity"
