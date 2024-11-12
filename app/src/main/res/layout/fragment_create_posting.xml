@@ -369,6 +369,7 @@
 
 
                         <TextView
+                            android:id="@+id/title_type_posting"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/inter_medium"
@@ -402,19 +403,25 @@
                             app:layout_constraintTop_toTopOf="parent">
 
 
-                            <!--// Payment Method Package 1, 2-->
+                            <!--// Payment Method Rental Package 1, 2-->
                             <include
                                 android:id="@+id/include_payment_method_1_2"
                                 layout="@layout/include_input_price1_2"
                                 android:visibility="visible" />
 
-                            <!--// Payment Method pack 3, 4-->
+                            <!--// Payment Method Rental pack 3, 4-->
 
                             <include
                                 android:id="@+id/include_payment_method_3_4"
                                 layout="@layout/include_input_price3_4"
                                 android:visibility="visible" />
 
+                            <!--// Payment Method Exchange Package 1, 2-->
+
+                            <include
+                                android:id="@+id/include_exchange_method_1_2"
+                                layout="@layout/include_exchange_ui"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -423,6 +430,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
+                        android:id="@+id/llCancellationPolicy"
                         android:layout_marginTop="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -447,7 +455,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Chính sách hủy phòng"
                                 android:textColor="@android:color/black"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                             <!-- ConstraintLayout for Cancellation Policy Spinner and Button -->
@@ -488,7 +496,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="300dp"/>
 
 
         </LinearLayout>

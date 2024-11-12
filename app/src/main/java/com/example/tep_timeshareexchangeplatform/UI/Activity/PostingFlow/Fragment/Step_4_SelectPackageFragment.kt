@@ -2,10 +2,12 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragme
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
@@ -26,7 +28,6 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initAdapter()
     }
 
     override fun onCreateView(
@@ -34,14 +35,9 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSelectPackageBinding.inflate(layoutInflater, container, false)
-        setViewPagerPackage()
         onButtonSelectPackageClick()
         observeViewModel()
         return binding.root
-    }
-
-    private fun initAdapter() {
-        packagePostingAdapter.submitList(listOf())
     }
 
     private fun observeViewModel() {
@@ -68,20 +64,15 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
                     )
                 }
             }
+            setViewPagerPackage()
         }
     }
 
-
-    @SuppressLint("ResourceAsColor")
     private fun setViewPagerPackage() {
-        binding.vpPackagePosting.apply {
-            adapter = packagePostingAdapter
-            offscreenPageLimit = 3
-        }
-
+        binding.vpPackagePosting.adapter = packagePostingAdapter
         binding.indicator.apply {
             setViewPager(binding.vpPackagePosting)
-            tintIndicator(R.color.blue_full)
+            tintIndicator(ContextCompat.getColor(requireContext(), R.color.blue_full))
         }
 
     }

@@ -349,18 +349,21 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 postingFlowViewModel.updatePricePerNight(0)
                 rentalPackage34ButtonClick()
             }
@@ -368,25 +371,34 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 postingFlowViewModel.updatePricePerNight(0)
                 rentalPackage34ButtonClick()
             }
         }
+        binding.titleTypePosting.text = "Giá phòng và chính sách hủy phòng"
+        binding.llCancellationPolicy.visibility = View.VISIBLE
 
     }
 
     private fun exchangePackageHandle(packageModel: PackageModel) {
         when (packageModel) {
             ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
-                binding.includePaymentMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.llBenefit.visibility = View.GONE
+                binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.GONE
             }
 
             ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
-                binding.includePaymentMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.llBenefit.visibility = View.VISIBLE
+                binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.GONE
             }
         }
+        binding.titleTypePosting.text = "Thông tin Timeshare mong muốn trao đổi"
+        binding.llCancellationPolicy.visibility = View.GONE
     }
 
     // Function to validate all fields
@@ -462,7 +474,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         })
 
     }
-
 
     override fun onResume() {
         super.onResume()
