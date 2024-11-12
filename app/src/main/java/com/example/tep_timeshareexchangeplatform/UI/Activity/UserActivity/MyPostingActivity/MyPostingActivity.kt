@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPos
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -104,6 +105,7 @@ class MyPostingActivity : BaseActivity() {
                             null
                         )
                     }
+                    Log.d("CheckErrroer Posting", it.message.toString())
                 }
             }
         }

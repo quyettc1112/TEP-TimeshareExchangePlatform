@@ -91,6 +91,11 @@ class Constant {
             return formatter.format(price)
         }
 
+        fun formatPriceLong(price: Long): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+
         fun formatDateByLocale(dateString: String, context: Context): String {
             // Định dạng của chuỗi ngày nhập vào (dd-MM-yyyy)
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)

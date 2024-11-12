@@ -116,12 +116,12 @@ class PricingSupportActivity : BaseActivity() {
         val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingData.packageSelection)
         when (rentalPackageEnum) {
             RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
-                binding.etPriceInput.setText(Constant.formatPrice(postingData.staffRefinementPrice) + "VND")
+                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + "VND")
                 binding.btnChangePrice.text = "Thay Đổi Mức Giá"
             }
 
             RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
-                binding.etPriceInput.setText(Constant.formatPrice(postingData.priceValuation) + "VND")
+                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.priceValuation!!) + "VND")
                 binding.btnChangePrice.text = "Từ Chối Mức Giá"
             }
         }
@@ -138,8 +138,8 @@ class PricingSupportActivity : BaseActivity() {
         val nights = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_NIGHT, 0)
 
         // Kiểm tra và lấy dữ liệu theo Package
-        val staffRefinementPrice = intent.getIntExtra(Constant.staffRefinementPrice, 0)
-        val priceValuation = intent.getIntExtra(Constant.priceValuation, 0)
+        val staffRefinementPrice = intent.getLongExtra(Constant.staffRefinementPrice, 0)
+        val priceValuation = intent.getLongExtra(Constant.priceValuation, 0)
 
         // Trả về đối tượng chứa tất cả dữ liệu
         return PostingData(
@@ -170,7 +170,7 @@ class PricingSupportActivity : BaseActivity() {
                     viewModel.acceptPricingSupport(
                         tokenManager.getAccessToken().toString(),
                         postingData.rentalPostingId.toInt(),
-                        postingData.priceValuation.toFloat(),
+                        postingData.priceValuation!!.toFloat(),
                         false
                     )
                 } else {
@@ -194,7 +194,7 @@ class PricingSupportActivity : BaseActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_price_input, null)
         val binding = DialogPriceInputBinding.bind(dialogView)
 
-        binding.etPriceInput.setText(Constant.formatPrice(postingData.staffRefinementPrice) + " đ")
+        binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + " đ")
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -300,13 +300,13 @@ class PricingSupportActivity : BaseActivity() {
 
             if (rentalPackageEnum == RentalPackageEnum.PREMIUM_SERVICE.packageModel) {
                 tvRoomPricePerNight.text =
-                    Constant.formatPrice(postingData.staffRefinementPrice) + "VND"
+                    Constant.formatPriceLong(postingData.staffRefinementPrice!!) + "VND"
                 tvEstimatedTotalPrice.text =
-                    Constant.formatPrice(postingData.staffRefinementPrice * postingData.nights) + " VND"
+                    Constant.formatPriceLong(postingData.staffRefinementPrice!! * postingData.nights) + " VND"
             } else {
-                tvRoomPricePerNight.text = Constant.formatPrice(postingData.priceValuation) + "VND"
+                tvRoomPricePerNight.text = Constant.formatPriceLong(postingData.priceValuation!!) + "VND"
                 tvEstimatedTotalPrice.text =
-                    Constant.formatPrice(postingData.priceValuation * postingData.nights) + " VND"
+                    Constant.formatPriceLong(postingData.priceValuation!! * postingData.nights) + " VND"
             }
         }
 
@@ -317,7 +317,7 @@ class PricingSupportActivity : BaseActivity() {
                         viewModel.acceptPricingSupport(
                             tokenManager.getAccessToken().toString(),
                             postingData.rentalPostingId.toInt(),
-                            postingData.staffRefinementPrice.toFloat(),
+                            postingData.staffRefinementPrice!!.toFloat(),
                             null
                         )
                     }
@@ -326,7 +326,7 @@ class PricingSupportActivity : BaseActivity() {
                         viewModel.acceptPricingSupport(
                             tokenManager.getAccessToken().toString(),
                             postingData.rentalPostingId.toInt(),
-                            postingData.priceValuation.toFloat(),
+                            postingData.priceValuation!!.toFloat(),
                             true
                         )
                     }
@@ -361,8 +361,8 @@ class PricingSupportActivity : BaseActivity() {
         val roomName: String,
         val checkInDate: String,
         val checkOutDate: String,
-        val staffRefinementPrice: Int,
-        val priceValuation: Int,
+        val staffRefinementPrice: Long?,
+        val priceValuation: Long?,
         val nights: Int
     )
 }
