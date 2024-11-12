@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewMo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
@@ -60,12 +61,18 @@ class PostingFlowViewModel @Inject constructor(
         get() = _step
 
     fun updateStep(step: Int) {
-        if (step >= _currentStepInProgress.value!!) {
+        // Kiểm tra xem giá trị mới có khác giá trị hiện tại không để tránh cập nhật không cần thiết
+        if (_step.value == step) {
+            return
+        }
+
+        if (step >= _currentStepInProgress.value ?: 0) {
             updateCurrentStepInProgress(step)
         }
-        _step.value = step
-    }
 
+        _step.value = step
+
+    }
 
     // ----------------------------------------------------------//
     // Tracking Step in Step 2 (My Timeshare) - Create Timeshare
@@ -286,6 +293,19 @@ class PostingFlowViewModel @Inject constructor(
         return _currentMyTimeshareList
     }
 
+    fun clearCurrentMyTimeshareList() {
+        _currentMyTimeshareList.clear()
+    }
+
+    private val _isStep3Visible = MutableLiveData<Boolean>()
+    val isStep3Visible: LiveData<Boolean> get() = _isStep3Visible.distinctUntilChanged()
+
+    fun updateStep3Visibility(isVisible: Boolean) {
+        _isStep3Visible.value = isVisible
+    }
+
+
+
 
     // ----------------------------------------------------------//
     // Call API get valid year timeshare of Customer
@@ -439,6 +459,14 @@ class PostingFlowViewModel @Inject constructor(
         _currentRoomInfo.value = currentRoomInfo
     }
 
+    fun resetData() {
+        // Reset tất cả các LiveData hoặc MutableLiveData trong ViewModel
+        _currentMyTimesharePage.value = 0
+        _currentMyTimeshareList.clear()
+        step.value = 1 // hoặc giá trị mặc định ban đầu
+        // Reset các giá trị khác nếu cần
+    }
+
 
     // Init
     init {
@@ -449,7 +477,6 @@ class PostingFlowViewModel @Inject constructor(
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
         _currentRoomInfo.value = 0
 
-        _currentMyTimesharePage.value = 0
     }
 
 
