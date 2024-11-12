@@ -20,6 +20,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -67,11 +68,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             )
             bindDataMyTimeshare(myTimeshareModel)
 
-        }
-
-        // Observer Package Type
-        postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageType ->
-            checkPackageType(packageType)
         }
 
         // Observer Valid Year Timeshare of Customer
@@ -124,6 +120,19 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             }
 
         }
+
+        // Observer Package Selected
+        postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
+            when (postingFlowViewModel.typeOfPostingFlow.value) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    rentalPackageHandle(packageModel)
+                }
+
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    exchangePackageHandle(packageModel)
+                }
+            }
+        }
     }
 
     // Function to set event change my timeshare
@@ -135,9 +144,9 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     // Function to set event next
-    private fun requestButtonClick() {
+    private fun rentalPackage12ButtonClick() {
         binding.btnNext.setOnClickListener {
-            if (postingFlowViewModel.pricePerNight.value == null) {
+            if (postingFlowViewModel.pricePerNight.value == 0.toLong()) {
                 MotionToast.Companion.createColorToast(
                     requireActivity(),
                     "Error",
@@ -156,6 +165,12 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
+    private fun rentalPackage34ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            postingFlowViewModel.updateStep(6)
+        }
+    }
+
     // Function to bind data
     private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse.Content) {
         if (myTimeshareResponse == null) {
@@ -165,8 +180,9 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
                 tvRoomType.text = myTimeshareResponse.roomName
-                tvCheckinDate.text =
-                    "${myTimeshareResponse.startDate} - ${myTimeshareResponse.endDate}"/*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                tvCheckinDate.text = Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
+                tvCheckOutDate.text = Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
+            /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
             }
         }
     }
@@ -328,35 +344,47 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         return dateFormat.format(date)
     }
 
-    // Function to check package type
-    private fun checkPackageType(packageModel: PackageModel) {
+    private fun rentalPackageHandle(packageModel: PackageModel) {
         when (packageModel) {
             RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
-                requestButtonClick()
-
+                rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
-                requestButtonClick()
+                rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
                 postingFlowViewModel.updatePricePerNight(0)
-                requestButtonClick()
-
+                rentalPackage34ButtonClick()
             }
 
             RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
                 postingFlowViewModel.updatePricePerNight(0)
-                requestButtonClick()
+                rentalPackage34ButtonClick()
+            }
+        }
+
+    }
+
+    private fun exchangePackageHandle(packageModel: PackageModel) {
+        when (packageModel) {
+            ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
+                binding.includePaymentMethod12.root.visibility = View.VISIBLE
+                binding.includePaymentMethod34.root.visibility = View.GONE
+            }
+
+            ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
+                binding.includePaymentMethod12.root.visibility = View.VISIBLE
+                binding.includePaymentMethod34.root.visibility = View.GONE
             }
         }
     }
@@ -435,5 +463,9 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     }
 
+
+    override fun onResume() {
+        super.onResume()
+    }
 
 }

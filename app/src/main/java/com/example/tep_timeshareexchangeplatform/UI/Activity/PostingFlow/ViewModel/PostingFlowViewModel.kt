@@ -51,6 +51,9 @@ class PostingFlowViewModel @Inject constructor(
     fun updateTypeOfPostingFlow(type: String) {
         _typeOfPostingFlow.value = type
     }
+    fun getTypeOfPostingFlow(): String {
+        return _typeOfPostingFlow.value ?: ""
+    }
 
 
 
@@ -75,20 +78,6 @@ class PostingFlowViewModel @Inject constructor(
     }
 
     // ----------------------------------------------------------//
-    // Tracking Step in Step 2 (My Timeshare) - Create Timeshare
-    private val _stepCreateTimeshare = MutableLiveData<Int>()
-    val stepCreateTimeshare: MutableLiveData<Int>
-        get() = _stepCreateTimeshare
-
-    // Update the current step progress
-    fun updateTaskProgress(currentTask: Int) {
-        if (currentTask in 0..5) { // Assuming 5 tasks
-            _stepCreateTimeshare.value = currentTask
-        }
-    }
-
-
-    // ----------------------------------------------------------//
     // Tracking Current Step In Progress
     private val _currentStepInProgress = MutableLiveData<Int>()
     val currentStepInProgress: LiveData<Int> get() = _currentStepInProgress
@@ -105,6 +94,22 @@ class PostingFlowViewModel @Inject constructor(
     fun resetSteps() {
         _currentStepInProgress.value = 1
     }
+
+    // ----------------------------------------------------------//
+    // Tracking Step in Step 2 (My Timeshare) - Create Timeshare
+    private val _stepCreateTimeshare = MutableLiveData<Int>()
+    val stepCreateTimeshare: MutableLiveData<Int>
+        get() = _stepCreateTimeshare
+
+    // Update the current step progress
+    fun updateTaskProgress(currentTask: Int) {
+        if (currentTask in 0..5) { // Assuming 5 tasks
+            _stepCreateTimeshare.value = currentTask
+        }
+    }
+
+
+
 
 
     // ----------------------------------------------------------//
@@ -169,6 +174,10 @@ class PostingFlowViewModel @Inject constructor(
     // Funtion to update packageStep4
     fun updatePackageStep4(packageModel: PackageModel) {
         _packageStep4.value = packageModel
+    }
+
+    fun getPackageStep4(): PackageModel? {
+        return _packageStep4.value
     }
 
 

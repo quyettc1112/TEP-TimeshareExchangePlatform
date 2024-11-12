@@ -109,7 +109,6 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
     }
 
     private fun savePackageSelected() {
-        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
         val packagePosition = binding.vpPackagePosting.currentItem
         when (postingFlowViewModel.typeOfPostingFlow.value) {
             Constant.RENTAL_POSTING_FLOW -> {
