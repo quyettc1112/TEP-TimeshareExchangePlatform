@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,12 +8,13 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:paddingTop="10dp"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,6 +30,7 @@
                 android:background="@color/white"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -47,15 +48,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
-                            android:id="@+id/im_expanded"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_expend"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/titleTv"
@@ -89,11 +81,10 @@
                             android:background="@drawable/ripple_effect_white"
                             android:backgroundTint="@color/blue_btn_search"
                             android:text="Chỉnh sửa"
-                            android:layout_marginEnd="10dp"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/im_expanded"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -109,6 +100,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_package_info">
+
                         <include
                             android:id="@+id/include_packege_posting"
                             layout="@layout/item_package_posting"
@@ -128,6 +120,7 @@
                 android:background="@color/white"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -145,16 +138,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-
-                        <ImageView
-                            android:id="@+id/imageView12"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_expend"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/textView17"
@@ -181,19 +164,6 @@
                             app:layout_constraintStart_toEndOf="@+id/textView17"
                             app:layout_constraintTop_toTopOf="@+id/textView17" />
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_change_my_timeshare_info"
-                            android:layout_width="100dp"
-                            android:layout_height="35dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/ripple_effect_white"
-                            android:backgroundTint="@color/blue_btn_search"
-                            android:text="Chỉnh sửa"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView12"
-                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!--// Content UMy Timeshare-->
@@ -208,6 +178,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
+
                         <include
                             android:id="@+id/include_detail_billing"
                             layout="@layout/include_detail_billing"
@@ -216,6 +187,82 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+
+
+            <!--// Include Exchange Time&ndash-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_exchange_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--// Title Text-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/crl_exchange_time_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/blue_header_section"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/textView200"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxWidth="300dp"
+                            android:padding="5dp"
+                            android:text="Thông tin Timeshare của bạn"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView201"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textColor="@color/red_light"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toEndOf="@+id/textView200"
+                            app:layout_constraintTop_toTopOf="@+id/textView200" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <!--// Include Exchange Time-->
+                    <LinearLayout
+                        android:padding="14dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/crl_exchange_time_info">
+                        <include
+                            android:id="@+id/include_exchange_time"
+                            layout="@layout/include_exchange_ui"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
 
             <!--// My Package-->
             <com.google.android.material.card.MaterialCardView
@@ -227,6 +274,7 @@
                 android:background="@color/white"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -243,15 +291,6 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_expend"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/textView21"
@@ -285,10 +324,10 @@
                         android:id="@+id/tvAgreementText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:textAlignment="gravity"
                         android:gravity="center|left"
+                        android:padding="16dp"
                         android:text="Khi tạo bài đăng này, bạn đồng ý với những điều sau:\n\nBạn là chủ sở hữu của căn hộ/tuần được mô tả, hoặc có quyền hợp pháp để kiểm soát nó.\n\nTất cả các chi tiết trong bài đăng này đều chính xác, theo sự đồng ý các mục bạn đã chọn.\n\nBạn sẽ phản hồi tất cả các thắc mắc qua email một cách kịp thời (trong vòng 48 giờ) và xóa bài đăng nếu không còn áp dụng."
+                        android:textAlignment="gravity"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         app:layout_constraintTop_toBottomOf="@+id/crl_term_policy_info" />
@@ -300,10 +339,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
 
                 <!-- CheckBox -->
                 <CheckBox
@@ -316,10 +355,10 @@
                     android:id="@+id/tvAgreement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tôi đã đọc và đồng ý với các điều khoản trên *"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black"
                     android:layout_marginStart="4dp"
+                    android:text="Tôi đã đọc và đồng ý với các điều khoản trên *"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -330,8 +369,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="10dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -341,12 +380,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/background_stroke_around"
+                    android:backgroundTint="@color/white"
                     android:orientation="vertical"
                     android:paddingStart="20dp"
                     android:paddingTop="5dp"
-                    android:paddingEnd="20dp"
-                    android:background="@drawable/background_stroke_around"
-                    android:backgroundTint="@color/white">
+                    android:paddingEnd="20dp">
 
                     <!--// Total Price-->
                     <LinearLayout
@@ -625,7 +664,6 @@
                     </LinearLayout>
 
 
-
                     <!--// Button Request-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ctr_request_button"
@@ -636,10 +674,10 @@
                         android:background="@drawable/ripple_effect_white"
                         android:backgroundTint="#5F8BFF"
                         android:clickable="true"
-                        app:layout_constraintTop_toBottomOf="@+id/ll_payment_method"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" >
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_payment_method">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -651,9 +689,9 @@
                             tools:layout_editor_absoluteX="0dp">
 
                             <TextView
-                                android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:fontFamily="@font/inter_semibold"
                                 android:text="Hoàn tất đặt đơn"
                                 android:textColor="@color/white" />
@@ -670,12 +708,11 @@
             <!--// Do Nothing-->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp" />
 
         </LinearLayout>
 
     </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

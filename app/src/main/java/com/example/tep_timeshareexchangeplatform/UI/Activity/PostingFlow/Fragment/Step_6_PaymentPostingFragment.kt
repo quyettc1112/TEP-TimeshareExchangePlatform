@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -82,61 +84,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
 
         postingFlowViewModel.pricePerNight.observe(viewLifecycleOwner) { pricePerNight ->
-            if (pricePerNight.toInt() != 0) {
-                val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
-                val value =
-                    "${formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
-                Toast.makeText(requireContext(), "Có Tiền", Toast.LENGTH_SHORT).show()
-                binding.includeDetailBilling.tvEstimatedTotalPrice.text = value
-                binding.includeDetailBilling.tvRoomPricePerNight.text =
-                    "${formatPrice(pricePerNight.toInt())} đ"
-            } else {
-                binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
-                binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
-                Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
-            }
+            bindDataPriceOfTimeshare(pricePerNight)
         }
 
         postingFlowViewModel.numberOfNights.observe(viewLifecycleOwner) { numberOfNights ->
             binding.includeDetailBilling.tvNumberNight.text = "${numberOfNights} đêm"
-        }
-
-        postingFlowViewModel.checkinDate.observe(viewLifecycleOwner) { checkinDate ->
-            if (checkinDate != null) {
-                try {
-                    // Định dạng ban đầu từ ViewModel là "yyyy-MM-dd"
-                    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val date = inputDateFormat.parse(checkinDate)
-
-                    // Sử dụng hàm formatDateByLocale để định dạng ngày theo ngôn ngữ đã lưu
-                    val formattedDate = formatDateByLocale(date, requireContext())
-
-                    // Gán vào TextView
-                    binding.includeDetailBilling.tvCheckInDate.text = formattedDate
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Xử lý lỗi khi định dạng sai
-                }
-            }
-        }
-
-        postingFlowViewModel.checkoutDate.observe(viewLifecycleOwner) { checkoutDate ->
-            if (checkoutDate != null) {
-                try {
-                    // Định dạng ban đầu từ ViewModel là "yyyy-MM-dd"
-                    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val date = inputDateFormat.parse(checkoutDate)
-
-                    // Sử dụng hàm formatDateByLocale để định dạng ngày theo ngôn ngữ đã lưu
-                    val formattedDate = formatDateByLocale(date, requireContext())
-
-                    // Gán vào TextView
-                    binding.includeDetailBilling.tvCheckOutDate.text = formattedDate
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Xử lý lỗi khi định dạng sai
-                }
-            }
         }
 
         postingFlowViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareResponse ->
@@ -329,7 +281,85 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
 
 
+        // Check Type Posting
+        postingFlowViewModel.typeOfPostingFlow.observe(viewLifecycleOwner) { typePosting ->
+            when (typePosting) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    binding.cvExchangeTime.visibility = View.GONE
+                    binding.includeDetailBilling.tvCancellationPolicy.visibility = View.VISIBLE
+                }
+
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    binding.cvExchangeTime.visibility = View.VISIBLE
+                    binding.includeDetailBilling.tvCancellationPolicy.visibility = View.GONE
+                    observeViewModelExchange()
+                }
+            }
+        }
+
+
     }
+
+    private fun bindDataPriceOfTimeshare(pricePerNight: Long) {
+        if (pricePerNight.toInt() != 0) {
+            val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
+            val value =
+                "${formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
+            Toast.makeText(requireContext(), "Có Tiền", Toast.LENGTH_SHORT).show()
+            binding.includeDetailBilling.tvEstimatedTotalPrice.text = value
+            binding.includeDetailBilling.tvRoomPricePerNight.text =
+                "${formatPrice(pricePerNight.toInt())} đ"
+        } else {
+            binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
+            binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
+            Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Observe ViewModel of Exchange Posting
+    private fun observeViewModelExchange() {
+        // Exchange Posting Date Range
+        binding.includeExchangeTime.customSpinnerProvince.isEnabled = false
+
+
+        postingFlowViewModel.exchangeDateRange.observe(viewLifecycleOwner) { checkinDate ->
+            bindDataExchangeTime(checkinDate)
+        }
+
+        // Exchange Posting Note
+        postingFlowViewModel.note.observe(viewLifecycleOwner) { noteExchange ->
+            binding.includeExchangeTime.etNote.setText(noteExchange)
+        }
+
+        postingFlowViewModel.currentProvinceSelected.observe(viewLifecycleOwner) { provinceId ->
+            val spinner: Spinner = binding.includeExchangeTime.customSpinnerProvince
+            val provinces = resources.getStringArray(R.array.vietnam_provinces)
+
+            // Tạo ArrayAdapter và áp dụng cho Spinner
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                provinces
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            // Vô hiệu hóa tương tác của Spinner
+            spinner.isEnabled = false
+            spinner.isClickable = false
+
+            // Kiểm tra và cập nhật Spinner chỉ để hiển thị tên tỉnh
+            if (provinceId > 0 && provinceId <= provinces.size) {
+                binding.includeExchangeTime.customSpinnerProvince.setSelection(provinceId - 1)
+            } else {
+                // Nếu không hợp lệ, hiển thị vị trí mặc định
+                binding.includeExchangeTime.customSpinnerProvince.setSelection(0)
+            }
+
+        }
+
+    }
+
 
     // Funtion to Change Pakage
     private fun setEventChangePackage() {
@@ -456,6 +486,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             tvResortNameDtb.text =
                 "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomName}"
 
+            tvCheckInDate.text =
+                Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
+            tvCheckOutDate.text =
+                Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
+
 
         }
     }
@@ -476,10 +511,41 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     }
 
+    private fun bindDataExchangeTime(range: Pair<Long?, Long?>) {
+        val startDate = range.first
+        val endDate = range.second
+
+        if (startDate != null && endDate != null) {
+            val startDateString = formatDateByLocale(Date(startDate), requireContext())
+            val endDateString = formatDateByLocale(Date(endDate), requireContext())
+
+            val endDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
+            val startDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
+
+            binding.includeExchangeTime.tvCheckInDate.apply {
+                text = startDateString
+                setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+            }
+            binding.includeExchangeTime.tvCheckInDayOfWeek.text = startDateOfWeek
+            binding.includeExchangeTime.tvCheckOutDayOfWeek.text = endDateOfWeek
+            binding.includeExchangeTime.tvCheckOutDate.apply {
+                text = endDateString
+                setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+            }
+
+            binding.includeExchangeTime.etNightsCount.text =
+                "${postingFlowViewModel.getNumberOfExchangeNights()}"
+        }
+
+
+    }
+
+
     fun formatPrice(price: Int): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)
     }
+
 
     private fun formatDateByLocale(date: Date, context: Context): String {
         // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu

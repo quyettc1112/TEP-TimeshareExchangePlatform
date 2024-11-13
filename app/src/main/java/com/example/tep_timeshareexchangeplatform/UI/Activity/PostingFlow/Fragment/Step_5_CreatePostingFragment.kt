@@ -460,6 +460,22 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 }
             }
         }
+
+        // Write Note
+        binding.includeExchangeMethod12.etNote.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val note = s.toString()
+                postingFlowViewModel.updateNoteContent(note)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Không làm gì
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Không làm gì
+            }
+        })
     }
 
 
