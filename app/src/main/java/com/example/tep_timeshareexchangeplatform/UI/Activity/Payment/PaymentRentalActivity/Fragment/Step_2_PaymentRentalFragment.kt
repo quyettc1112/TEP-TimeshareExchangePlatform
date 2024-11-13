@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
@@ -326,7 +325,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             Constant.GENERAL_ID_PAYMENT,
             viewModel.postingDetail.value?.data!!.rentalPostingId
         )
-        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.RENTAL_PAYMENT)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.BOOKING_RENTAL_PAYMENT)
         paymentResultLauncher.launch(intent)
     }
 

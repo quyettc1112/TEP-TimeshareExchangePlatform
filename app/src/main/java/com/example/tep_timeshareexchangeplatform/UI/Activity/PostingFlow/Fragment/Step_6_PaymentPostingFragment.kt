@@ -134,7 +134,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     response.data?.let {
                         (activity as PostingFlowActivity).hideLoading()
-                        intentToVNPAYActivity(it.url.toString())
+                        intentToVNPAYActivity_RentalPosting(it.url.toString())
                     }
                 }
 
@@ -527,7 +527,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    private fun intentToVNPAYActivity(url: String) {
+    private fun intentToVNPAYActivity_RentalPosting(url: String) {
 
         val intent = Intent(requireContext(), VNPayActivity::class.java)
         val rentalPackageEnum =
@@ -548,7 +548,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         intent.putExtra(Constant.PAYMENT_URL, url)
         intent.putExtra(Constant.GENERAL_ID_PAYMENT, rentalPackageEnum.id)
         intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
-        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_POSTING)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING)
         paymentResultLauncher.launch(intent)
     }
 
@@ -596,7 +596,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     private fun paymentTypeHanldeFlow(
         paymentMethod: PaymentMethod?,
-        rentalPackageEnum: PackageModel?
+        packageEnum: PackageModel?
     ) {
         when (paymentMethod) {
             // Call API to check Wallet Balance, Intent to PaymentResultActivity
@@ -604,7 +604,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 when (postingFlowViewModel.typeOfPostingFlow.value) {
                     Constant.RENTAL_POSTING_FLOW -> {
                         postingFlowViewModel.purchasePackagePostingWallet(
-                            tokenManager.getAccessToken().toString(), rentalPackageEnum!!.id
+                            tokenManager.getAccessToken().toString(), packageEnum!!.id
                         )
                     }
 
@@ -618,8 +618,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             // Call API to get Payment URL, Intent to VNPayActivity
             PaymentMethod.VNPAY -> {
                 postingFlowViewModel.getResponsePaymentUrl(
-                    rentalPackageEnum!!.price,
-                    rentalPackageEnum.name
+                    packageEnum!!.price,
+                    packageEnum.name
                 )
             }
 

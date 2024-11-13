@@ -55,7 +55,7 @@ class VNPayActivity : BaseActivity() {
     }
 
     private fun observeData() {
-        // Observe Purchase Package by VN Pay
+        // Observe Create Transaction of Purchase Package Member Ship by VN Pay
         viewModel.memberShipResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -97,7 +97,7 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Deposit Wallet by VN Pay
+        // Observe Create Transaction of Deposit Wallet by VN Pay
         viewModel.depositByVNPAYResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -137,7 +137,7 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Purchase Package by VN Pay
+        // Observe Create Transaction of Purchase Rental Posting by VN Pay
         viewModel.purchasePackageResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -146,7 +146,7 @@ class VNPayActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     val postingTimeshareDTO = intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {
-                        viewModel.createPosting(tokenManager.getAccessToken().toString(),postingTimeshareDTO)
+                        viewModel.createRentalPosting(tokenManager.getAccessToken().toString(),postingTimeshareDTO)
                     }
                 }
 
@@ -164,7 +164,7 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Create Posting
+        // Observe Create Posting Rental for Customer
         viewModel.postingTimeshareResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
@@ -238,21 +238,14 @@ class VNPayActivity : BaseActivity() {
     }
 
 
-
     private fun checkPaymentType(
         paymentType: PaymentType,
         walletTransactionId: String,
         packageId: Int
     ) {
         when (paymentType) {
-            PaymentType.RENTAL_PAYMENT -> {
+            PaymentType.BOOKING_RENTAL_PAYMENT -> {
                 callAPIBookingRentalTransaction(
-                    walletTransactionId,
-                    packageId
-                )
-            }
-            PaymentType.PURCHASE_PACKAGE_MEMBER -> {
-                callAPIExtendMembershipTransaction(
                     walletTransactionId,
                     packageId
                 )
@@ -260,8 +253,17 @@ class VNPayActivity : BaseActivity() {
             PaymentType.DEPOSIT_WALLET -> {
                 callAPIDepositWalletTransaction(walletTransactionId)
             }
-            PaymentType.PURCHASE_PACKAGE_POSTING -> {
-                callAPIPurchasePackagePostingTransaction(walletTransactionId, packageId)
+            PaymentType.PURCHASE_PACKAGE_MEMBER -> {
+                callAPIExtendMembershipTransaction(
+                    walletTransactionId,
+                    packageId
+                )
+            }
+            PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING -> {
+                callAPICreateRentalPostingTransaction(walletTransactionId, packageId)
+            }
+            PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING -> {
+               // callAPIPurchasePackagePostingTransaction(walletTransactionId, packageId)
             }
         }
     }
@@ -391,7 +393,6 @@ class VNPayActivity : BaseActivity() {
         }
     }
 
-
     private fun showFailed(responseCodeEnum: VnpResponseCode) {
         MotionToast.Companion.createToast(
             this@VNPayActivity,
@@ -427,7 +428,7 @@ class VNPayActivity : BaseActivity() {
         viewModel.depositMoney(token, uuid)
     }
 
-    private fun callAPIPurchasePackagePostingTransaction(uuid: String, packageId: Int) {
+    private fun callAPICreateRentalPostingTransaction(uuid: String, packageId: Int) {
         val token = TokenManager(this).getAccessToken().toString()
         viewModel.purchasePackage(token, uuid, packageId)
     }

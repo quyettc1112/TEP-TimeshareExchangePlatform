@@ -65,7 +65,7 @@ class VNPayViewModel @Inject constructor(
     val postingTimeshareResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _postingTimeshareResponse
 
-    fun createPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+    fun createRentalPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
         viewModelScope.launch {
             _postingTimeshareResponse.postValue(Resource.loading(null))
             customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
