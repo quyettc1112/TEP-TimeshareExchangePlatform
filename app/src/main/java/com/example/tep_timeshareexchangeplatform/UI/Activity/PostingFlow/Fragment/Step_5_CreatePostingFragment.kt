@@ -5,14 +5,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.DateRangePickerDialog.DateRangeDialogFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
@@ -29,6 +36,7 @@ import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreatePostingBinding
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -125,11 +133,11 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
             when (postingFlowViewModel.typeOfPostingFlow.value) {
                 Constant.RENTAL_POSTING_FLOW -> {
-                    rentalPackageHandle(packageModel)
+                    rentalPackageHandleUI(packageModel)
                 }
 
                 Constant.EXCHANGER_POSTING_FLOW -> {
-                    exchangePackageHandle(packageModel)
+                    exchangePackageHandleUI(packageModel)
                 }
             }
         }
@@ -143,33 +151,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     }
 
-    // Function to set event next
-    private fun rentalPackage12ButtonClick() {
-        binding.btnNext.setOnClickListener {
-            if (postingFlowViewModel.pricePerNight.value == 0.toLong()) {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng nhập gia phong",
-                    MotionToastStyle.ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
-                }
-            } else {
-                postingFlowViewModel.updateStep(6)
-            }
-        }
-    }
-
-    private fun rentalPackage34ButtonClick() {
-        binding.btnNext.setOnClickListener {
-            postingFlowViewModel.updateStep(6)
-        }
-    }
 
     // Function to bind data
     private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse.Content) {
@@ -180,9 +161,11 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
                 tvRoomType.text = myTimeshareResponse.roomName
-                tvCheckinDate.text = Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
-                tvCheckOutDate.text = Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
-            /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                tvCheckinDate.text =
+                    Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
+                tvCheckOutDate.text =
+                    Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
+                /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
             }
         }
     }
@@ -326,6 +309,39 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
+    private fun bindDataSpinnerProvince() {
+        val spinner: Spinner = binding.includeExchangeMethod12.customSpinnerProvince
+        val provinces = resources.getStringArray(R.array.vietnam_provinces)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            provinces
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+// Xử lý khi người dùng chọn một tỉnh
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedProvince = provinces[position]
+                if (selectedProvince != "Chọn Tỉnh Thành") {
+                    val provinceId = position + 1
+                    postingFlowViewModel.updateCurrentProvinceSelected(provinceId)
+                } else {
+                    postingFlowViewModel.updateCurrentProvinceSelected(0)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Không làm gì
+            }
+        }
+    }
 
     private fun formatDateByLocale(date: Date, context: Context): String {
         // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
@@ -344,7 +360,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         return dateFormat.format(date)
     }
 
-    private fun rentalPackageHandle(packageModel: PackageModel) {
+    private fun rentalPackageHandleUI(packageModel: PackageModel) {
         when (packageModel) {
             RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
@@ -381,7 +397,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     }
 
-    private fun exchangePackageHandle(packageModel: PackageModel) {
+    private fun exchangePackageHandleUI(packageModel: PackageModel) {
         when (packageModel) {
             ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includeExchangeMethod12.root.visibility = View.VISIBLE
@@ -397,9 +413,109 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 binding.includePaymentMethod34.root.visibility = View.GONE
             }
         }
+
+        exchangePackage12ButtonClick()
+        //
         binding.titleTypePosting.text = "Thông tin Timeshare mong muốn trao đổi"
         binding.llCancellationPolicy.visibility = View.GONE
+
+        // Bind data Spinner Province
+        bindDataSpinnerProvince()
+
+        // Change Date
+        binding.includeExchangeMethod12.llCheckInCheckOut.setOnClickListener {
+            val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Chọn khoảng thời gian")
+                .build()
+
+            dateRangePicker.show(parentFragmentManager, "DATE_RANGE_PICKER")
+
+
+            dateRangePicker.addOnPositiveButtonClickListener {
+                val startDate = dateRangePicker.selection?.first
+                val endDate = dateRangePicker.selection?.second
+                if (startDate != null && endDate != null) {
+                    val startDateString = formatDateByLocale(Date(startDate), requireContext())
+                    val endDateString = formatDateByLocale(Date(endDate), requireContext())
+
+                    val endDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
+                    val startDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
+
+                    postingFlowViewModel.setExchangeDateRange(startDate, endDate)
+
+                    binding.includeExchangeMethod12.tvCheckInDate.apply {
+                        text = startDateString
+                        setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+                    }
+                    binding.includeExchangeMethod12.tvCheckInDayOfWeek.text = startDateOfWeek
+                    binding.includeExchangeMethod12.tvCheckOutDayOfWeek.text = endDateOfWeek
+                    binding.includeExchangeMethod12.tvCheckOutDate.apply {
+                        text = endDateString
+                        setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+                    }
+
+                    // Night
+                    val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
+                    binding.includeExchangeMethod12.etNightsCount.text = "$totalDays"
+                }
+            }
+        }
     }
+
+
+    // Function to set event next
+    private fun rentalPackage12ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            if (postingFlowViewModel.pricePerNight.value == 0.toLong()) {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng nhập gia phong",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+                }
+            } else {
+                postingFlowViewModel.updateStep(6)
+            }
+        }
+    }
+
+    private fun rentalPackage34ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            postingFlowViewModel.updateStep(6)
+        }
+    }
+
+    private fun exchangePackage12ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
+            val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
+
+            if (numberOfNights == 0) {
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+                }
+                Toast.makeText(requireContext(), "Vui lòng chọn ngày trao đổi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (provinceId == 0) {
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+                }
+                Toast.makeText(requireContext(), "Vui lòng chọn tỉnh thành mong muốn trao đổi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            postingFlowViewModel.updateStep(6)
+        }
+    }
+
 
     // Function to validate all fields
     private fun setupTextWatchers() {

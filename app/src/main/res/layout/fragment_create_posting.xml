@@ -135,16 +135,17 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:text="Ngày check in"
+                            android:text="Ngày nhận phòng và trả phòng Timeshare của bạn"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -175,7 +176,7 @@
                                 android:layout_gravity="left"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Năm hoạt động cho thuê khả dụng"
+                                android:text="Năm hoạt động khả dụng"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -386,7 +387,7 @@
 
                     <!--// Content Payment Method-->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout5"
+                        android:id="@+id/ll_content_type_posting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="15dp"
@@ -494,13 +495,17 @@
 
 
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"/>
 
 
+
         </LinearLayout>
     </ScrollView>
+
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"

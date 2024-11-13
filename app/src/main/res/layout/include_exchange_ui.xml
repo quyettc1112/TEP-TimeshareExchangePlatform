@@ -94,8 +94,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="19-08-2024"
-                    android:textColor="@android:color/black"
+                    android:text="Chọn Ngày"
+                    android:textColor="@android:color/holo_red_light"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -104,7 +104,6 @@
                     android:id="@+id/tvCheckInDayOfWeek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thứ 2"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -138,8 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="19-08-2024"
-                    android:textColor="@android:color/black"
+                    android:text="Chọn Ngày"
+                    android:textColor="@android:color/holo_red_light"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -148,7 +147,7 @@
                     android:id="@+id/tvCheckOutDayOfWeek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thứ 2"
+
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -221,7 +220,7 @@
                 android:textSize="14sp" />
 
             <Spinner
-                android:id="@+id/custom_spinner_year_valid"
+                android:id="@+id/custom_spinner_province"
                 style="@style/CustomSpinner"
                 android:layout_width="0dp"
                 android:layout_height="40dp"

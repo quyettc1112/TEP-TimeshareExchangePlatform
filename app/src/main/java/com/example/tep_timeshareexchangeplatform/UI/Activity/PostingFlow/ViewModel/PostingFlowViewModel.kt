@@ -110,6 +110,44 @@ class PostingFlowViewModel @Inject constructor(
 
 
 
+    // ----------------------------------------------------------//
+    // Exchange Date Selected
+    // LiveData to hold the pair of start and end dates
+    private val _exchangeDateRange = MutableLiveData<Pair<Long?, Long?>>()
+    val exchangeDateRange: LiveData<Pair<Long?, Long?>> get() = _exchangeDateRange
+    fun setExchangeDateRange(startDate: Long?, endDate: Long?) {
+        _exchangeDateRange.value = Pair(startDate, endDate)
+    }
+    fun resetExchangeDateRange() {
+        _exchangeDateRange.value = Pair(null, null)
+    }
+    fun getNumberOfExchangeNights(): Int {
+        val range = _exchangeDateRange.value
+        return if (range != null) {
+            val (start, end) = range
+            if (start != null && end != null) {
+                ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            } else {
+                0
+            }
+        } else {
+            0
+        }
+    }
+
+    // Check Current Province Selected
+    private var _currentProvinceSelected = MutableLiveData<Int>()
+    val currentProvinceSelected: MutableLiveData<Int>
+        get() = _currentProvinceSelected
+    fun updateCurrentProvinceSelected(currentProvince: Int) {
+        _currentProvinceSelected.value = currentProvince
+    }
+    fun getCurrentProvinceSelected(): Int {
+        return _currentProvinceSelected.value ?: 0
+    }
+
+
+
 
 
     // ----------------------------------------------------------//
