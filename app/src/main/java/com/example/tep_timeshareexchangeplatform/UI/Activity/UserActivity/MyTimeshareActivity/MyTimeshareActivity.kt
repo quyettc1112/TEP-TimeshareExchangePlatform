@@ -40,6 +40,23 @@ class MyTimeshareActivity : BaseActivity() {
             insets
         }
         tokenManager = TokenManager(this)
+
+        if (!tokenManager.isLoggedIn()) {
+            MotionToast.Companion.createToast(
+                this,
+                "Error",
+                "Bạn chưa đăng nhập",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            finish()
+        } else {
+            myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), 0, 10)
+        }
+
+        tokenManager = TokenManager(this)
         initAdapter()
         observeData()
         setEventItemClick()
@@ -64,7 +81,20 @@ class MyTimeshareActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     resources.data?.let {
-                        myTimeshareAdapter.submitList(it.content)
+                        if (it.content.isEmpty()) {
+                            showInfoDialog(
+                                this,
+                                "Bạn chưa có Timeshare nào",
+                                object : View.OnClickListener {
+                                    override fun onClick(v: View?) {
+                                        finish()
+                                    }
+                                }
+                            )
+                        } else {
+                            myTimeshareAdapter.submitList(it.content)
+                        }
+
                     }
                 }
 
@@ -76,7 +106,7 @@ class MyTimeshareActivity : BaseActivity() {
                             "Bạn chưa có Timeshare nào",
                             object : View.OnClickListener {
                                 override fun onClick(v: View?) {
-                                   finish()
+                                    finish()
                                 }
                             }
                         )
@@ -98,7 +128,7 @@ class MyTimeshareActivity : BaseActivity() {
 
     }
 
-    private fun setEventItemClick(){
+    private fun setEventItemClick() {
         // Item click
         myTimeshareAdapter.setItemOnclickListener {
             val intent = Intent(this, MyTimeshareDetailActivity::class.java)
@@ -115,6 +145,5 @@ class MyTimeshareActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), 0 , 10)
     }
 }

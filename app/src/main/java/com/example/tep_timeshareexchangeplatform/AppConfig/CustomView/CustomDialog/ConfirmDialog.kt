@@ -2,6 +2,8 @@ package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDia
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -21,6 +23,8 @@ class ConfirmDialog constructor(
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_confirm)
 
+        // Làm cho nền trong suốt
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val tvTitle = findViewById<TextView>(R.id.tvTitle)
         tvTitle.text = title
 

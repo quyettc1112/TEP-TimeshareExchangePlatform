@@ -135,7 +135,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 Constant.RENTAL_POSTING_FLOW -> {
                     rentalPackageHandleUI(packageModel)
                 }
-
                 Constant.EXCHANGER_POSTING_FLOW -> {
                     exchangePackageHandleUI(packageModel)
                 }
@@ -150,7 +149,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
 
     }
-
 
     // Function to bind data
     private fun bindDataMyTimeshare(myTimeshareResponse: MyTimeshareResponse.Content) {
@@ -482,7 +480,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     // Function to set event next
     private fun rentalPackage12ButtonClick() {
         binding.btnNext.setOnClickListener {
-            if (postingFlowViewModel.pricePerNight.value == 0.toLong()) {
+            if (postingFlowViewModel.pricePerNight.value == 0.toLong() || postingFlowViewModel.pricePerNight.value == null) {
                 MotionToast.Companion.createColorToast(
                     requireActivity(),
                     "Error",

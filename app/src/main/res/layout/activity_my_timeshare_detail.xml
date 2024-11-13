@@ -15,13 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:title="Flamingo Đại Lải | Studio King"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showTitleDetail="true"
-        app:showStartText="false"
-        app:titleDetail="19/08 - 23/08  | 4 khách " />
+        app:showStartText="false" />
 
     <!--// Timeshare Detail-->
     <ScrollView
@@ -106,7 +104,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="Flamingo Dai Lai | Studio King"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +152,7 @@
                         android:src="@drawable/ic_location" />
 
                     <TextView
+                        android:id="@+id/tvLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
@@ -162,58 +160,13 @@
                         android:fontFamily="@font/inter_light"
                         android:maxLines="2"
                         android:paddingStart="5dp"
-                        android:text="Đường Hồ Chí Minh, Phúc Yên, Vĩnh Phúc"
                         android:textSize="12sp" />
 
 
                 </LinearLayout>
 
-                <!--// Verify Button-->
-                <LinearLayout
-                    android:id="@+id/ll_verify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/ic_verify" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="9"
-                        android:fontFamily="@font/inter_light"
-                        android:maxLines="2"
-                        android:paddingStart="5dp"
-                        android:text="Đã được xác minh bởi Unwind"
-                        android:textSize="12sp" />
 
 
-                </LinearLayout>
-
-                <!--// Find More-->
-                <TextView
-                    android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center"
-                    android:layout_weight="9"
-                    android:fontFamily="@font/inter_light"
-                    android:maxLines="2"
-                    android:textColor="@color/blue_see_more"
-                    android:paddingStart="5dp"
-                    android:text="Tìm hiểu thêm"
-                    android:textSize="12sp"
-                    app:layout_constraintTop_toTopOf="@+id/ll_verify" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -276,7 +229,6 @@
                             android:id="@+id/tv_check_in"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Th 7, 28 thg 9 2024 (14:00)"
                             android:textSize="14sp"
                             android:fontFamily="@font/inter_extrabold"
                             android:textColor="#000000"
@@ -301,7 +253,6 @@
                             android:id="@+id/tv_check_out"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="CN, 29 thg 9 2024 (12:00)"
                             android:fontFamily="@font/inter_extrabold"
                             android:textSize="14sp"
                             android:textColor="#000000"
@@ -326,8 +277,6 @@
                             android:id="@+id/tv_nights"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4 đêm"
-                            android:fontFamily="@font/inter_extrabold"
                             android:textSize="14sp"
                             android:textColor="#000000"
                             android:paddingStart="16dp"/>
@@ -366,7 +315,7 @@
                         android:layout_marginStart="5dp"
                         android:fontFamily="@font/inter_bold"
                         android:maxLines="1"
-                        android:text="Chi Tiết Phòng | Phòng Studio King"
+                        android:text="Chi Tiết Phòng | "
                         android:textColor="@color/black"
                         android:textSize="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -409,7 +358,7 @@
                                 android:textSize="14dp" />
 
                             <TextView
-                                android:id="@+id/tv_location"
+                                android:id="@+id/tv_bath_room"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -658,59 +607,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--// Cancel Policy-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white">
-                <!-- // Suggest Title-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
-                        android:text="Chính sách hủy"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--// Cancel Policy Content-->
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_light"
-                    android:text="Không có chính sách hủy"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
-
-
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
             <!--// Do Nothing-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:background="@color/white"/>
 
         </LinearLayout>

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_margin="20dp"
     android:backgroundTint="@color/white"
-    android:padding="24dp"
+    android:padding="20dp"
     android:background="@drawable/ripple_effect_white"
     android:gravity="center">
 
@@ -17,7 +17,7 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/anim_sucess"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"/>
+        android:layout_height="100dp"/>
 
     <!-- Success Title -->
     <TextView

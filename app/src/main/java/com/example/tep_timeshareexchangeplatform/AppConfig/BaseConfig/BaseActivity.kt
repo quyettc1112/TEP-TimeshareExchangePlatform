@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -88,16 +90,15 @@ open class  BaseActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.dialog_success, null)
 
+
+
         // Tạo dialog với layout tuỳ chỉnh
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .create()
 
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
 
         dialog.setCancelable(false)
         val textSuccess = dialogView.findViewById<TextView>(R.id.tvSuccessMessage)
@@ -131,6 +132,8 @@ open class  BaseActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
 
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         dialog.setCancelable(false)
 
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
@@ -163,6 +166,8 @@ open class  BaseActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
         dialog.setCancelable(false)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
         textSuccess.text = message

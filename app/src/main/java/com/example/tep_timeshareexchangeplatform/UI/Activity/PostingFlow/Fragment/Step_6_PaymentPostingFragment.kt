@@ -171,7 +171,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                         MotionToast.LONG_DURATION,
                         null
                     )
-                    postingFlowViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+
                     val rentalPackageEnum =
                         RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
                     val postingTimeshareDTO = PostingTimeshareDTO(
@@ -184,10 +184,14 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                         checkoutDate = postingFlowViewModel.checkoutDate.value!!,
                         rentalPackageId = rentalPackageEnum?.id!!
                     )
+
                     postingFlowViewModel.createPosting(
                         tokenManager.getAccessToken().toString(),
                         postingTimeshareDTO
                     )
+
+                    // Call Get New Balance
+                    postingFlowViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
 
 
                 }
@@ -215,18 +219,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         postingFlowViewModel.newBalanceInfoResponse.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    (activity as PostingFlowActivity).showSuccessDialog(
-                        requireContext(),
-                        "Bạn đã đăng bài thành công",
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                val intent = Intent(requireContext(), MyPostingActivity::class.java)
-                                startActivity(intent)
-                                requireActivity().finish()
-                            }
-                        }
-                    )
                     response.data?.let {
                         tokenManager.saveCustomerInfo(it)
                         bindDataWalletInfo()
@@ -257,8 +249,15 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    startActivity(Intent(requireContext(), MyPostingActivity::class.java))
-                    requireActivity().finish()
+                    (activity as PostingFlowActivity).showSuccessDialog(
+                        requireContext(),
+                        "Đăng bài thành công",
+                        View.OnClickListener {
+                            startActivity(Intent(requireContext(), MyPostingActivity::class.java))
+                            requireActivity().finish()
+                        }
+                    )
+
                 }
 
                 Status.ERROR -> {
@@ -302,13 +301,9 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     private fun bindDataPriceOfTimeshare(pricePerNight: Long) {
         if (pricePerNight.toInt() != 0) {
-            val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
-            val value =
-                "${formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
-            Toast.makeText(requireContext(), "Có Tiền", Toast.LENGTH_SHORT).show()
-            binding.includeDetailBilling.tvEstimatedTotalPrice.text = value
-            binding.includeDetailBilling.tvRoomPricePerNight.text =
-                "${formatPrice(pricePerNight.toInt())} đ"
+            val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!.toInt()
+            binding.includeDetailBilling.tvEstimatedTotalPrice.text = "${Constant.formatPriceLong(totalPrice)}đ / ${postingFlowViewModel.numberOfNights.value} đêm"
+            binding.includeDetailBilling.tvRoomPricePerNight.text = "${Constant.formatPriceLong(pricePerNight)}đ / 1 đêm"
         } else {
             binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
             binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
@@ -348,14 +343,14 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             spinner.isEnabled = false
             spinner.isClickable = false
 
-            // Kiểm tra và cập nhật Spinner chỉ để hiển thị tên tỉnh
+            // Kiểm tra nếu provinceId hợp lệ
             if (provinceId > 0 && provinceId <= provinces.size) {
+                // Cập nhật Spinner đến vị trí tương ứng với provinceId
                 binding.includeExchangeTime.customSpinnerProvince.setSelection(provinceId - 1)
             } else {
-                // Nếu không hợp lệ, hiển thị vị trí mặc định
+                // Nếu không hợp lệ, đặt về vị trí mặc định (ví dụ: vị trí 0)
                 binding.includeExchangeTime.customSpinnerProvince.setSelection(0)
             }
-
         }
 
     }
@@ -368,60 +363,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    // Funtion to done Payment
-    private fun requestButtonClick() {
-        binding.ctrRequestButton.setOnClickListener {
-            if (!binding.cbAgreement.isChecked) {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Thông Báo",
-                    "Vui lòng đồng ý với điều khoản sử dụng",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                return@setOnClickListener
-            }
-            // Get Payment Method
-            val paymentMethod = postingFlowViewModel.selectedPaymentMethod.value
-
-            // Get Package Enum
-            val rentalPackageEnum =
-                RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
-
-            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
-            when (paymentMethod) {
-                // Call API to check Wallet Balance, Intent to PaymentResultActivity
-                PaymentMethod.UNWIND -> {
-                    postingFlowViewModel.purchasePackagePostingWallet(
-                        tokenManager.getAccessToken().toString(), rentalPackageEnum!!.id
-                    )
-                }
-
-                // Call API to get Payment URL, Intent to VNPayActivity
-                PaymentMethod.VNPAY -> {
-                    postingFlowViewModel.getResponsePaymentUrl(
-                        rentalPackageEnum!!.price,
-                        rentalPackageEnum.name
-                    )
-                }
-
-                else -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "Vui lòng chọn phương thức thanh toán",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-            }
-        }
-
-    }
 
     // Funtion to Bind data to UI
     private fun bindDataPackagePosting(packageModel: PackageModel) {
@@ -618,6 +559,82 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     requireActivity().finish()
                 }
             }
+    }
+
+
+    // Funtion to done Payment
+    private fun requestButtonClick() {
+        binding.ctrRequestButton.setOnClickListener {
+            if (!binding.cbAgreement.isChecked) {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Thông Báo",
+                    "Vui lòng đồng ý với điều khoản sử dụng",
+                    MotionToastStyle.INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.llAgreement.top)
+                }
+                return@setOnClickListener
+            }
+            // Get Payment Method
+            val paymentMethod = postingFlowViewModel.selectedPaymentMethod.value
+
+            // Get Package Enum
+            val rentalPackageEnum =
+                RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+
+            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
+            paymentTypeHanldeFlow(paymentMethod, rentalPackageEnum)
+        }
+
+    }
+
+    private fun paymentTypeHanldeFlow(
+        paymentMethod: PaymentMethod?,
+        rentalPackageEnum: PackageModel?
+    ) {
+        when (paymentMethod) {
+            // Call API to check Wallet Balance, Intent to PaymentResultActivity
+            PaymentMethod.UNWIND -> {
+                when (postingFlowViewModel.typeOfPostingFlow.value) {
+                    Constant.RENTAL_POSTING_FLOW -> {
+                        postingFlowViewModel.purchasePackagePostingWallet(
+                            tokenManager.getAccessToken().toString(), rentalPackageEnum!!.id
+                        )
+                    }
+
+                    Constant.EXCHANGER_POSTING_FLOW -> {
+                        Toast.makeText(requireContext(), "Chưa hỗ trợ", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+
+            // Call API to get Payment URL, Intent to VNPayActivity
+            PaymentMethod.VNPAY -> {
+                postingFlowViewModel.getResponsePaymentUrl(
+                    rentalPackageEnum!!.price,
+                    rentalPackageEnum.name
+                )
+            }
+
+            else -> {
+                MotionToast.createColorToast(
+                    requireActivity(),
+                    "Thất Bại",
+                    "Vui lòng chọn phương thức thanh toán",
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+            }
+        }
     }
 
 

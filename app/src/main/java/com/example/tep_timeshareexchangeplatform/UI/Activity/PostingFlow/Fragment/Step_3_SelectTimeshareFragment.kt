@@ -74,7 +74,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                 val totalPages = postingFlowViewModel.myTimeshareList.value?.data?.totalPages ?: 0
                 if (lastCompletelyVisibleItem == (totalItemCount - 2) && postingFlowViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
                     postingFlowViewModel.incrementCurrentMyTimesharePage()
-                    Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -86,8 +85,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
             when (resources.status) {
                 Status.LOADING -> {
                     binding.lottieLoading.visibility = View.VISIBLE
-                    myTimeshareAdapter.submitList(listOf())
-                    postingFlowViewModel.clearCurrentMyTimeshareList()
                 }
 
                 Status.SUCCESS -> {

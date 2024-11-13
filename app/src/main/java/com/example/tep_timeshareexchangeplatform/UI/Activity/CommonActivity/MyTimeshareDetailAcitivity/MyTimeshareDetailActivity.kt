@@ -27,7 +27,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
@@ -35,7 +37,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
-    private val myTimeshareDetailViewModel : MyTimeshareDetailViewModel by viewModels()
+    private val myTimeshareDetailViewModel: MyTimeshareDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
         myTimeshareDetailViewModel.myTimeshareDetail.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
-                   showLoadingWaiting(true)
+                    showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
@@ -87,10 +89,10 @@ class MyTimeshareDetailActivity : BaseActivity() {
             }
         }
     }
-    
+
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
-        
+
         val myTimeshareId = intent.getIntExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, 0)
         val token = TokenManager(this).getAccessToken()
         if (myTimeshareId == 0 || token == null) {
@@ -108,39 +110,50 @@ class MyTimeshareDetailActivity : BaseActivity() {
             myTimeshareDetailViewModel.getMyTimeshareDetail(token, myTimeshareId)
         }
     }
-    
+
     // Bind Data
     private fun bindDataTimeshareDetail(myTimeshareDetailResponse: MyTimeshareDetailResponse) {
         binding.apply {
-            // Hide Unessary View
-            llVerify.visibility = View.GONE
 
+            binding.customToolbar.apply {
+                setTitle("${myTimeshareDetailResponse.unitType.title}")
+                setTitleDetail("${myTimeshareDetailResponse.startDate} đến ${myTimeshareDetailResponse.endDate}")
+
+            }
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
             tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
 
             // Check In Date, Check Out Date
-            tvCheckIn.text = Constant.formatDateByLocale(myTimeshareDetailResponse.startDate, binding.root.context)
-            tvCheckOut.text = Constant.formatDateByLocale(myTimeshareDetailResponse.endDate, binding.root.context)
-            val checkInDate = LocalDate.parse(myTimeshareDetailResponse.startDate)
-            val checkOutDate = LocalDate.parse(myTimeshareDetailResponse.endDate)
-            val nights = ChronoUnit.DAYS.between(checkInDate, checkOutDate).toInt()
+            tvCheckIn.text = Constant.formatDateByLocale(
+                myTimeshareDetailResponse.startDate,
+                binding.root.context
+            )
+            tvCheckOut.text =
+                Constant.formatDateByLocale(myTimeshareDetailResponse.endDate, binding.root.context)
+
+            val dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault())
+
+            val startDate = LocalDate.parse(myTimeshareDetailResponse.startDate, dateFormat)
+            val endDate = LocalDate.parse(myTimeshareDetailResponse.endDate, dateFormat)
+
+// Tính số đêm
+            val nights = ChronoUnit.DAYS.between(startDate, endDate).toInt()
 
             tvNights.text = "$nights đêm"
 
             // Unit Type Detail
-            tvRoomName.text ="Chi tiết phòng | ${myTimeshareDetailResponse.roomName.toString()}"
+            tvRoomName.text = "Chi tiết phòng | ${myTimeshareDetailResponse.roomName.toString()}"
             tvNumBathroom.text = myTimeshareDetailResponse.unitType.bathrooms.toString()
             tvNumBed.text = myTimeshareDetailResponse.unitType.bedrooms.toString()
             tvNumPerson.text = myTimeshareDetailResponse.unitType.sleeps.toString()
 
-            
+
         }
-        
-        
-        
+
+
     }
-    
+
     private fun setListImageTimeshare() {
         // Set List Image Timeshare
         binding.viewPager.apply {
@@ -159,6 +172,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
         }
     }
+
     private fun setAmenitiesListTimeshare() {
         val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.flexDirection = FlexDirection.ROW
@@ -168,6 +182,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
             it.adapter = facilityAdapter
         }
     }
+
     private fun setEventButtonRequestClick() {
         binding.ctrRequestButton.setOnClickListener {
             showConfirmDialog(
@@ -180,8 +195,10 @@ class MyTimeshareDetailActivity : BaseActivity() {
                     override fun negativeAction() {
 
                     }
+
                     override fun positiveAction() {
-                        val timeshareDetail = myTimeshareDetailViewModel.myTimeshareDetail.value?.data
+                        val timeshareDetail =
+                            myTimeshareDetailViewModel.myTimeshareDetail.value?.data
                         val myTimeshareResponse = timeshareDetail?.let { it1 ->
                             MyTimeshareResponse.Content(
                                 timeShareId = it1.timeShareId,

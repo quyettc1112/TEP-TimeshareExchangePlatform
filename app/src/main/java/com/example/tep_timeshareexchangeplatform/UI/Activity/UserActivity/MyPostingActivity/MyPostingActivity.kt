@@ -105,13 +105,11 @@ class MyPostingActivity : BaseActivity() {
                             null
                         )
                     }
-                    Log.d("CheckErrroer Posting", it.message.toString())
                 }
             }
         }
 
         viewModel.currentPostingPage.observe(this) {
-            Toast.makeText(this, "Page: $it", Toast.LENGTH_SHORT).show()
             viewModel.getMyPostingList(
                 TokenManager(this).getAccessToken().toString(),
                 it,
@@ -191,7 +189,6 @@ class MyPostingActivity : BaseActivity() {
                 val totalPages = viewModel.myPostingList.value?.data?.totalPages ?: 0
                 if (lastCompletelyVisibleItem == (totalItemCount - 1) && viewModel.currentPostingPage.value!! < totalPages - 1) {
                     viewModel.incrementCurrentPostingsPage()
-                    Toast.makeText(this@MyPostingActivity, "Load More", Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -211,7 +208,6 @@ class MyPostingActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
