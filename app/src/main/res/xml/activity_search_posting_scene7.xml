@@ -16,6 +16,8 @@
        </KeyFrameSet>
         <OnSwipe />
         <OnSwipe motion:touchAnchorSide="bottom" />
+        <OnSwipe motion:touchAnchorId="@+id/view_pager" />
+        <OnSwipe motion:touchAnchorId="@+id/view_pager" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
