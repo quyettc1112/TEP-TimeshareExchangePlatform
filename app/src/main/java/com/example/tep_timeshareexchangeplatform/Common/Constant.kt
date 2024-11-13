@@ -39,6 +39,10 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val SEARCH_LOCATION = "searchLocation"
+        const val SEARCH_DATE = "searchDate"
+        const val SEARCH_ROOM = "searchRoom"
+
         const val FRAGMENT_HOME_CODE = "FH"
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 

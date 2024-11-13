@@ -38,6 +38,9 @@ class MainViewModel @Inject constructor(
     fun updateLocation(location: String) {
         _location.value = location
     }
+    fun getLocation(): String {
+        return _location.value ?: "Thành Phố Hồ Chí Minh"
+    }
 
 
     /**
@@ -72,6 +75,9 @@ class MainViewModel @Inject constructor(
     val dateRange: LiveData<String> = _dateRange
     fun updateDateRange(dateRange: String) {
         _dateRange.value = dateRange
+    }
+    fun getDateRange(): String {
+        return _dateRange.value ?: "20/10/2021 - 25/10/2021"
     }
 
 
@@ -260,6 +266,11 @@ class MainViewModel @Inject constructor(
     fun resetCurrentMyBookingPage() {
         _currentMyBookingList.clear()
         _currentMyBookingPage.value = 0
+
+        _location.value = "Thành Phố Hồ Chí Minh"
+        _dateRange.value = "20/10/2021 - 25/10/2021"
+        _roomCount.value = 1
+        _adultCount.value = 1
     }
 
 

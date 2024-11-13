@@ -349,11 +349,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
 
             it.btnSearch.setOnClickListener {
-                Toast.makeText(requireContext(), "Search", Toast.LENGTH_SHORT).show()
-
-                mainViewModel.apply {
-                    startActivity(Intent(requireContext(), SearchPostingActivity::class.java))
-                }
+                val location = mainViewModel.getLocation()
+                val dateRange = mainViewModel.getDateRange()
+                val roomCount = mainViewModel.roomCount.value
+                val intent = Intent(requireContext(), SearchPostingActivity::class.java)
+                intent.putExtra(Constant.SEARCH_LOCATION, location)
+                intent.putExtra(Constant.SEARCH_DATE, dateRange)
+                intent.putExtra(Constant.SEARCH_ROOM, roomCount)
+                startActivity(intent)
 
 
             }
