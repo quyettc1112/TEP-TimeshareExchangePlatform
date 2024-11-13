@@ -1,24 +1,26 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.ExchangePostingFragment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangesResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareVer1Binding
 import java.text.DecimalFormat
 
-class ExchangePostingAdapter : BaseAdapter<PublicPostingResponse.Content, ExchangePostingAdapter.ExchangePostingViewHolder>() {
+class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePostingAdapter.ExchangePostingViewHolder>() {
 
-    var onItemClick: ((PublicPostingResponse.Content) -> Unit)? = null
-    var onFavoriteClick: ((PublicPostingResponse.Content) -> Unit)? = null
+    var onItemClick: ((ExchangesResponse.Content) -> Unit)? = null
+    var onFavoriteClick: ((ExchangesResponse.Content) -> Unit)? = null
 
-    inner class ExchangePostingViewHolder(binding: ItemTimeshareVer1Binding): BaseItemViewHolderCF<PublicPostingResponse.Content, ItemTimeshareVer1Binding>(binding) {
-        override fun bind(item: PublicPostingResponse.Content) {
+    inner class ExchangePostingViewHolder(binding: ItemTimeshareVer1Binding): BaseItemViewHolderCF<ExchangesResponse.Content, ItemTimeshareVer1Binding>(binding) {
+        override fun bind(item: ExchangesResponse.Content) {
             Glide.with(binding.imImageTimeshare.context)
                 .load(R.drawable.im_matiral_timeshare)
                 .into(binding.imImageTimeshare)
@@ -26,8 +28,11 @@ class ExchangePostingAdapter : BaseAdapter<PublicPostingResponse.Content, Exchan
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
-
-            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND"
+            binding.tvNumberOfNight.apply {
+                text = "${item.nights} đêm"
+                textSize = 16f
+            }
+            binding.tvPrice.visibility =View.GONE
 
             binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
@@ -43,13 +48,13 @@ class ExchangePostingAdapter : BaseAdapter<PublicPostingResponse.Content, Exchan
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<PublicPostingResponse.Content> {
-        return object : DiffUtil.ItemCallback<PublicPostingResponse.Content>() {
-            override fun areItemsTheSame(oldItem: PublicPostingResponse.Content, newItem: PublicPostingResponse.Content): Boolean {
-                return oldItem.rentalPostingId == newItem.rentalPostingId
+    override fun differCallBack(): DiffUtil.ItemCallback<ExchangesResponse.Content> {
+        return object : DiffUtil.ItemCallback<ExchangesResponse.Content>() {
+            override fun areItemsTheSame(oldItem: ExchangesResponse.Content, newItem: ExchangesResponse.Content): Boolean {
+                return oldItem.exchangePostingId == newItem.exchangePostingId
             }
 
-            override fun areContentsTheSame(oldItem: PublicPostingResponse.Content, newItem: PublicPostingResponse.Content): Boolean {
+            override fun areContentsTheSame(oldItem: ExchangesResponse.Content, newItem: ExchangesResponse.Content): Boolean {
                 return oldItem == newItem
             }
         }

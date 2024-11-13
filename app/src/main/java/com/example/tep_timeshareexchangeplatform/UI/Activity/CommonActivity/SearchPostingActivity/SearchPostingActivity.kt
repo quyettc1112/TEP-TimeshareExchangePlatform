@@ -35,6 +35,11 @@ class SearchPostingActivity : BaseActivity() {
             insets
         }
         setUpTabLayoutViewPager()
+        binding.toolbar.onStartIconClick = {
+            onBackPressed()
+        }
+
+
     }
 
     private fun setUpTabLayoutViewPager() {
@@ -84,5 +89,11 @@ class SearchPostingActivity : BaseActivity() {
                 }
             })
         }
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

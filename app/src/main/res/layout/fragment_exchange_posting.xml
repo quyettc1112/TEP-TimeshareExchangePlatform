@@ -167,6 +167,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="70dp"
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:visibility="visible"
@@ -178,10 +179,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_marginBottom="35dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rc_posting"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/anim_loading_more"
             android:layout_width="match_parent"

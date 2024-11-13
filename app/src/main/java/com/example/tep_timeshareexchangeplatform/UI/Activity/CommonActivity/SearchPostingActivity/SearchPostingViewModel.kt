@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangesResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchPostingViewModel @Inject constructor(
     private val publicPostingAPIRepository: PublicPostingAPIRepository
-): ViewModel() {
+) : ViewModel() {
 
+    // Call Get Public Posting API
     private val _publicRentalPosingList = MutableLiveData<Resource<PublicPostingResponse>>()
     val publicRentalPosingList: MutableLiveData<Resource<PublicPostingResponse>> get() = _publicRentalPosingList
     fun getRentalPostingList(pageNo: Int, pageSize: Int, name: String) {
@@ -49,8 +51,44 @@ class SearchPostingViewModel @Inject constructor(
         _currentPostingsPage.value = currentValue + 1
     }
 
+    // Call Get Public Exchange Posting API
+    private val _publicExchangePosingList = MutableLiveData<Resource<ExchangesResponse>>()
+    val publicExchangePosingList: MutableLiveData<Resource<ExchangesResponse>> get() = _publicExchangePosingList
+
+    fun getExchangePostingList(pageNo: Int, pageSize: Int, name: String) {
+        viewModelScope.launch {
+            _publicExchangePosingList.postValue(Resource.loading(null))
+            publicPostingAPIRepository.getExchangePostings(pageNo, pageSize, name).let {
+                _publicExchangePosingList.postValue(it)
+            }
+        }
+    }
+
+    private val _currentExchangeList = MutableLiveData<List<ExchangesResponse.Content>>()
+    fun loadMoreExchange(list: List<ExchangesResponse.Content>) {
+        val currentList = _currentExchangeList.value ?: emptyList()
+        val updatedList = currentList + list
+        _currentExchangeList.value = updatedList
+    }
+
+    fun getCurrentExchangeList(): List<ExchangesResponse.Content>? {
+        return _currentExchangeList.value
+    }
+
+    private val _currentExchangePage = MutableLiveData<Int>()
+    var currentExchangePage: LiveData<Int> = _currentExchangePage
+    fun getCurrentExchangePage(): Int {
+        return _currentExchangePage.value ?: 0
+    }
+
+    fun incrementCurrentExchangePage() {
+        val currentValue = _currentExchangePage.value ?: 0
+        _currentExchangePage.value = currentValue + 1
+    }
+
 
     init {
         _currentPostingsPage.value = 0
+        _currentExchangePage.value = 0
     }
 }
