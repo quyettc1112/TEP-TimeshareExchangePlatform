@@ -28,8 +28,9 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_POSTING
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_RESORT
@@ -351,13 +352,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Toast.makeText(requireContext(), "Search", Toast.LENGTH_SHORT).show()
 
                 mainViewModel.apply {
-                    resetCurrentResortPage()
-                    resetCurrentPostingPage()
+                    startActivity(Intent(requireContext(), SearchPostingActivity::class.java))
                 }
 
-                (activity as MainActivity).apply {
-                    binding.vp2Main.currentItem = 1
-                }
+
             }
         }
     }

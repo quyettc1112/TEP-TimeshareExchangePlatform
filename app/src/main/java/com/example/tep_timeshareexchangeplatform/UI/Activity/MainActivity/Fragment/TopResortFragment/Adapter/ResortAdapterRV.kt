@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ResortModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRvBinding
 import java.text.DecimalFormat

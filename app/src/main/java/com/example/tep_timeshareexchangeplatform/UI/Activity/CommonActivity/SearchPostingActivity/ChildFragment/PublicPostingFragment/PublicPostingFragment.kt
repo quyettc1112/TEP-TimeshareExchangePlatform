@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -32,11 +30,13 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
 
     private lateinit var binding: FragmentTimeshareBinding
     var publicPostingAdapterRV = PublicPostingAdapterRV()
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val viewModel: SearchPostingViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         publicPostingAdapterRV.submitList(listOf())
+
 
     }
 
@@ -46,14 +46,48 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
     ): View {
         binding = FragmentTimeshareBinding.inflate(layoutInflater, container, false)
         setPublicPostingListUI()
-
-
         binding.rcPosting.adapter = publicPostingAdapterRV
-
-
         observeViewModel()
         return binding.root
     }
+
+    private fun observeViewModel() {
+        viewModel.publicRentalPosingList.observe(viewLifecycleOwner) { resources ->
+            when (resources.status) {
+                Status.SUCCESS -> {
+                    binding.animLoadingMore.visibility = View.GONE
+                    resources.data?.let {
+                        viewModel.loadMorePostings(it.content)
+                        publicPostingAdapterRV.submitList(viewModel.getCurrentPostingList())
+                    }
+                }
+
+                Status.ERROR -> {
+                    binding.animLoadingMore.visibility = View.GONE
+                    MotionToast.Companion.createColorToast(
+                        requireActivity(),
+                        "Error",
+                        resources.message ?: "Error",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    binding.animLoadingMore.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
+            viewModel.getRentalPostingList(it, PAGE_SIZE, "")
+        }
+
+
+    }
+
 
     private fun setPublicPostingListUI() {
         binding.rcPosting.layoutManager =
@@ -67,12 +101,12 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                 val totalItemCount = layoutManager.itemCount
 
                 val totalElementOfAPI =
-                    mainViewModel.posting_TopResort.value?.data?.totalElements ?: 0
+                    viewModel.publicRentalPosingList.value?.data?.totalElements ?: 0
                 val currentListSizeOfAdapter = publicPostingAdapterRV.differ.currentList.size
 
 
                 if (lastCompletelyVisibleItem == totalItemCount - 1 && currentListSizeOfAdapter < totalElementOfAPI) {
-                    mainViewModel.incrementCurrentPostingsPage()
+                    viewModel.incrementCurrentPostingsPage()
                 }
             }
         })
@@ -84,55 +118,9 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
         }
     }
 
-    private fun observeViewModel() {
-        mainViewModel.posting_TopResort.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    binding.animLoadingMore.visibility = View.GONE
-                    if (!it.data?.content.isNullOrEmpty()) {
-                        mainViewModel.loadMorePostings(it.data?.content ?: emptyList())
-                        publicPostingAdapterRV.submitList(mainViewModel.getCurrentPostingList())
-                    }
-                }
-
-                Status.ERROR -> {
-                    binding.animLoadingMore.visibility = View.VISIBLE
-                    MotionToast.Companion.createToast(
-                        requireActivity(),
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-
-                Status.LOADING -> {
-                    binding.animLoadingMore.visibility = View.VISIBLE
-                }
-            }
-        }
-        mainViewModel.currentPostingsPage.observe(viewLifecycleOwner) {
-            if (mainViewModel._isNewPostinglist.value == true && it == 0) {
-                publicPostingAdapterRV.clearData()
-                publicPostingAdapterRV.submitList(listOf())
-                mainViewModel.updateIsPostingNewList(false)
-                binding.rcPosting.smoothScrollToPosition(0)
-                mainViewModel.getPostingOnTopResort(0, PAGE_SIZE, "")
-
-            } else {
-                mainViewModel.getPostingOnTopResort(it, PAGE_SIZE, "")
-            }
-        }
-
-
-    }
 
     override fun onResume() {
         super.onResume()
-
-
     }
 
 }

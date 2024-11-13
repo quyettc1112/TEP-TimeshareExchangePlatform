@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment
 
 import androidx.lifecycle.ViewModel
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository

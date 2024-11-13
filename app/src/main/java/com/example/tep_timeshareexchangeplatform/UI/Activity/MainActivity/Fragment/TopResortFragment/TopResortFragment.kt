@@ -1,33 +1,18 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.TopDialog.TopDialogFragment
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ExchangePostingFragment.ExchangePostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortAdapterRV
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.OnBottomNavVisibilityListener
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.Adapter.ResortAdapterRV
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTopResortBinding
-import com.google.android.material.tabs.TabLayout
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
