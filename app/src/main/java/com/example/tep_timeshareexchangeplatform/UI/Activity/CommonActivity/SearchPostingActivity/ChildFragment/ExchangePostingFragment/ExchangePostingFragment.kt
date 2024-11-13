@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ExchangeDetailActivity.ExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
@@ -39,6 +40,7 @@ class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting)
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExchangePostingBinding.inflate(inflater, container, false)
+
         setPublicPostingListUI()
         binding.rcExchangePosting.adapter = adapter
         observeViewModel()
@@ -107,7 +109,7 @@ class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting)
         })
 
         adapter.onItemClick = {
-            val intent = Intent(requireActivity(), PostingDetailActivity::class.java)
+            val intent = Intent(requireActivity(), ExchangeDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_POSTING_ID, it.exchangePostingId)
             startActivity(intent)
         }

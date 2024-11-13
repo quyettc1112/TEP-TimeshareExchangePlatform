@@ -1,0 +1,1283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/primary_background_F9"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--// Custom Toolbar-->
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/customToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showTitleDetail="true"
+        app:showStartText="false" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--// Timeshare Detail-->
+        <ScrollView
+            android:visibility="visible"
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@+id/customToolbar">
+
+            <!--// Layout Container for Timeshare Detail-->
+            <LinearLayout
+                android:background="@color/primary_background_F9"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--// Timeshare Detail Image-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <!--// Image List-->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:maxWidth="360dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// Indicator-->
+                    <me.relex.circleindicator.CircleIndicator3
+                        android:id="@+id/indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!--// Next To Button-->
+                    <ImageView
+                        android:id="@+id/icBackTo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_back_to"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/ivNextPage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_next_page"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/viewPager"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Resort Info and Map-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="wrap_content">
+
+                    <!--// Resort Name-->
+                    <TextView
+                        android:id="@+id/tvResortName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:fontFamily="@font/inter_extrabold"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_favorite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// Resort Type-->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/materialCardView4"
+                        android:layout_width="90dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvResortName"
+                        app:strokeColor="#20A3C9"
+                        app:strokeWidth="2dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="Khách sạn"
+                            android:textColor="#20A3C9" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- // Rating-->
+                    <LinearLayout
+                        android:id="@+id/materialCardView3"
+                        android:layout_width="130dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/background_rating"
+                        app:layout_constraintStart_toEndOf="@+id/materialCardView4"
+                        app:layout_constraintTop_toBottomOf="@+id/tvResortName"
+                        app:strokeColor="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center|left"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/baseline_star_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:gravity="center"
+                                android:text="4.5"
+                                android:textColor="#007EF2"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/tv_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:gravity="center"
+                                android:text="254 đánh giá"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <!-- // Favorite Button-->
+                    <LinearLayout
+                        android:id="@+id/ll_favorite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/background_circle"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/baseline_favorite_24" />
+                    </LinearLayout>
+
+                    <!--// Location-->
+                    <LinearLayout
+                        android:id="@+id/linearLayout9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
+                        tools:layout_editor_absoluteX="20dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/tv_location"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/inter_light"
+                            android:maxLines="2"
+                            android:paddingStart="5dp"
+
+                            android:textSize="12sp" />
+
+
+                    </LinearLayout>
+
+                    <!--// Verify Button-->
+                    <LinearLayout
+                        android:id="@+id/ll_verify"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_verify" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/inter_light"
+                            android:maxLines="2"
+                            android:paddingStart="5dp"
+                            android:text="Đã được xác minh bởi Unwind"
+                            android:textSize="12sp" />
+
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Ngày nhận phòng-->
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <!-- Check-in Date Section -->
+                    <LinearLayout
+                        android:layout_weight="4.5"
+                        android:layout_width="0dp"
+                        android:background="@drawable/ripple_effect_white"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <!-- Label for Check-in Date -->
+                        <LinearLayout
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Ngày Nhận Phòng"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                            <ImageView
+                                android:src="@drawable/ic_check_in"
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"/>
+
+
+                        </LinearLayout>
+
+
+                        <!-- Check-in Date -->
+                        <TextView
+                            android:id="@+id/tv_checkin_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:maxLines="1"
+                            android:fontFamily="@font/inter_bold"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <!-- Check-in Day -->
+
+                        <TextView
+                            android:id="@+id/tv_checkin_dayOfWeek"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_light"
+                            android:textColor="@color/gray_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Arrow Icon -->
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
+
+                    <!-- Check-out Date Section -->
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="4.5"
+                        android:layout_width="0dp"
+                        android:background="@drawable/ripple_effect_white"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical">
+
+                        <!-- Label for Check-in Date -->
+                        <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Ngày Trả Phòng"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                            <ImageView
+                                android:src="@drawable/ic_check_out"
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"/>
+
+                        </LinearLayout>
+
+                        <!-- Check-out Date -->
+                        <TextView
+                            android:id="@+id/tv_checkout_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:maxLines="1"
+                            android:fontFamily="@font/inter_bold"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <!-- Check-out Day -->
+                        <TextView
+                            android:id="@+id/tv_checkout_dayOfWeek"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_light"
+                            android:textColor="@color/gray_text"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--// Type Room-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:background="@color/white"
+                    android:layout_marginTop="2dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--// Resort Info-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+                        <!--// Resort Name-->
+                        <TextView
+                            android:id="@+id/tv_room_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
+
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!--// Tiên Ích Phòng-->
+                        <LinearLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="150dp"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_room_name">
+
+                            <!-- // Bath-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center|left"
+                                android:minHeight="20dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_bathtub" />
+
+                                <TextView
+                                    android:id="@+id/tv_num_bath"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="1"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_bath"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center|left"
+                                    android:maxLines="1"
+                                    android:text="Phòng Tắm"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <!-- // Bed-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center|left"
+                                android:minHeight="20dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_bedroom" />
+
+                                <TextView
+                                    android:id="@+id/tv_num_bed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="1"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_bed"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center|left"
+                                    android:maxLines="1"
+                                    android:text="Giường Ngủ King"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <!-- // Kitchen-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center|left"
+                                android:minHeight="20dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_kitchen" />
+
+                                <TextView
+                                    android:id="@+id/tv_num_kitchen"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="1"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_kitchen"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center|left"
+                                    android:maxLines="1"
+                                    android:text="Nhà bếp đầy đủ nội thất"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <!-- // Person-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center|left"
+                                android:minHeight="20dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_person" />
+
+                                <TextView
+                                    android:id="@+id/tv_num_person"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="2"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_person"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center|left"
+                                    android:maxLines="1"
+                                    android:text="2 Nguời lớn tối đa"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Facilities-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="20dp"
+                    android:background="@color/white">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Những tiện nghi phổ biến nhất"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Frame Layout Facilities-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_resort_facilities"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+                        tools:layout_editor_absoluteX="20dp"
+                        tools:listitem="@layout/item_facilitie"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Room Terms-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="20dp"
+                    android:background="@color/white">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Quy đinh phòng"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Room Terms-->
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+                        <LinearLayout
+                            android:layout_marginEnd="20dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/ic_no_pet"/>
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cấm vật nuôi"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginEnd="10dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/ic_no_smooking"/>
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cấm hút thuốc"/>
+
+                        </LinearLayout>
+
+                    </com.google.android.flexbox.FlexboxLayout>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Cancel Policy-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="2dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="20dp"
+                    android:background="@color/white">
+                    <!-- // Suggest Title-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Chính sách hủy"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Cancel Policy Content-->
+                    <TextView
+                        android:id="@+id/tv_cancel_policy"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_light"
+                        android:text="Không có chính sách hủy"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+
+
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Resort Review-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginTop="2dp"
+                    android:background="@color/white"
+                    android:minHeight="300dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--// Review Scrore-->
+                    <TextView
+                        android:id="@+id/tv_review_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="4.5"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// Review Level-->
+                    <TextView
+                        android:id="@+id/tv_review_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Tuyệt vời"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// Review Count-->
+                    <TextView
+                        android:id="@+id/tv_review_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/inter_light"
+                        android:text="5 đánh giá"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_review_level" />
+
+                    <!--// Review List-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_review"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_height="300dp"
+                        android:maxHeight="250dp"
+                        tools:listitem="@layout/item_review"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_review_score">
+
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <!--// See More Review-->
+                    <TextView
+                        android:id="@+id/tv_see_more_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Xem tất cả đánh giá >"
+                        android:textColor="@color/quantum_orange"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Detail Billing-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="10dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp">
+
+
+                    <!-- // Image-->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/materialCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/yellow_stroke_image"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            android:id="@+id/im_imageTimeshare"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/im_matiral_timeshare" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!--// Resort Info and Map-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingTop="5dp"
+                        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+                        tools:layout_editor_absoluteX="20dp">
+
+                        <!--// Resort Name-->
+                        <TextView
+                            android:id="@+id/tvResortName_dtb"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Flamingo Dai Lai | Studio King"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!--// Location-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            app:layout_constraintTop_toBottomOf="@+id/tvResortName_dtb"
+                            tools:layout_editor_absoluteX="20dp">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="left|center"
+                                android:layout_weight="0.5"
+                                android:src="@drawable/ic_location" />
+
+                            <TextView
+                                android:id="@+id/tv_location_dtb"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:layout_weight="9"
+                                android:fontFamily="@font/inter_light"
+                                android:maxLines="2"
+                                android:paddingStart="5dp"
+                                android:text="Đường Hồ Chí Minh, Phúc Yên, Vĩnh Phúc"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Timeshare Detail Billing Info-->
+                    <LinearLayout
+                        android:id="@+id/linearLayout13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11"
+                        tools:layout_editor_absoluteX="20dp">
+
+                        <!-- Divider Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="8dp"
+                            android:background="#E0E0E0" />
+                        <!-- First Section: Room Details -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!-- Number of Nights -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Đêm"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_night_dtb"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="4 đêm"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Check-in Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="4dp"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Ngày nhận phòng"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_check_in_date_dtb"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="Thứ 7, 19 tháng 8, 2024"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Check-out Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="4dp"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Ngày trả phòng"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_check_out_date_dtb"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="Thứ 3, 23 tháng 8, 2024"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Cancellation Policy -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="4dp"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Chính sách hủy"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_cancel_policy_dtb"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Divider Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="8dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Second Section: Room Pricing -->
+                        <LinearLayout
+                            android:id="@+id/ll_pricing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!-- Room Price Per Night -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Giá phòng"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_room_price_per_night"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="325.000 đ / 1 đêm"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Estimated Total Price -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingTop="4dp"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Giá phòng ước tính"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_estimated_total_price"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="1.300.000 đ / 4 đêm"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--// Timeshare Posting by-->
+                    <LinearLayout
+                        android:id="@+id/ll_posting_by"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
+                        tools:layout_editor_absoluteX="20dp">
+
+                        <!-- User Information Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:orientation="horizontal">
+
+                            <!-- User Image -->
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_user_default_avt"
+                                android:scaleType="centerCrop"
+                                android:layout_marginEnd="8dp"/>
+
+                            <!-- User Details -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_posted_by"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Đăng tải của Cường Quyết"
+                                    android:textColor="#000000"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Divider Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginVertical="8dp"
+                            android:background="#E0E0E0" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+
+                            <!-- Payment Method Section -->
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Phương thức thanh toán*"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <!-- Payment Icons, replace with your actual icons -->
+                            <ImageView
+                                android:id="@+id/imageView7"
+                                android:layout_width="25dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_momo"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView10"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView10"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_master_card"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView9"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_visa"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView8" />
+
+                            <ImageView
+                                android:id="@+id/imageView8"
+                                android:layout_width="25dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_paypal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Do Nothing-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/white"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
