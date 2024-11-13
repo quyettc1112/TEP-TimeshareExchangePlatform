@@ -132,10 +132,23 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    response.data?.let {
-                        (activity as PostingFlowActivity).hideLoading()
-                        intentToVNPAYActivity_RentalPosting(it.url.toString())
+                    when (postingFlowViewModel.typeOfPostingFlow.value) {
+                        Constant.RENTAL_POSTING_FLOW -> {
+                            response.data?.let {
+                                (activity as PostingFlowActivity).hideLoading()
+                                intentToVNPAYActivity_RentalPosting(it.url.toString())
+                            }
+                        }
+                        Constant.EXCHANGER_POSTING_FLOW -> {
+                            response.data?.let {
+                                (activity as PostingFlowActivity).hideLoading()
+                                intentToVNPAYActivity_ExchangePosting(it.url.toString())
+                            }
+                        }
+
                     }
+
+
                 }
 
                 Status.ERROR -> {
@@ -550,6 +563,32 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING)
         paymentResultLauncher.launch(intent)
+    }
+
+    private fun intentToVNPAYActivity_ExchangePosting(url: String) {
+        Toast.makeText(requireContext(), "Chưa hỗ trợ", Toast.LENGTH_SHORT).show()
+
+      /*  val intent = Intent(requireContext(), VNPayActivity::class.java)
+        val rentalPackageEnum =
+            RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+
+        val postingTimeshareDTO = PostingTimeshareDTO(
+            description = "String",
+            nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
+            pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
+            timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
+            cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
+            checkinDate = postingFlowViewModel.checkinDate.value!!,
+            checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+            rentalPackageId = rentalPackageEnum?.id!!
+        )
+        Log.d("CheckDTO", postingTimeshareDTO.toString())
+
+        intent.putExtra(Constant.PAYMENT_URL, url)
+        intent.putExtra(Constant.GENERAL_ID_PAYMENT, rentalPackageEnum.id)
+        intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING)
+        paymentResultLauncher.launch(intent)*/
     }
 
     private fun initActivityResultLauncher() {
