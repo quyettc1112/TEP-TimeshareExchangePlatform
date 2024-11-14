@@ -1,55 +1,56 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailViewModel
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
-import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingDetailBinding
+import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangDetailBinding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPostingDetailActivity : BaseActivity() {
-    private lateinit var binding: ActivityMyPostingDetailBinding
+class MyExchangeDetailActivity : BaseActivity() {
+    private lateinit var binding: ActivityMyExchangDetailBinding
     private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
-    private val viewModel: MyPostingDetailViewModel by viewModels()
-
+    private val viewModel: MyExchangeDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMyPostingDetailBinding.inflate(layoutInflater)
+        binding = ActivityMyExchangDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getIntentValue()
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        getIntentValue()
+
         initAdapter()
         setListImageTimeshare()
         setAmenitiesListTimeshare()
@@ -58,14 +59,13 @@ class MyPostingDetailActivity : BaseActivity() {
             finish()
         }
         binding.shimmerViewContainer.startShimmer()
-
     }
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
-            viewModel.getMyPostingDetail(token.getAccessToken().toString(), intent)
+            viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
             MotionToast.Companion.createColorToast(
@@ -79,9 +79,8 @@ class MyPostingDetailActivity : BaseActivity() {
             )
         }
     }
-
     private fun observeMyPostingDetail() {
-        viewModel.postingDetailResponse.observe(this) {
+        viewModel.myExchangeDetail.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
@@ -108,9 +107,9 @@ class MyPostingDetailActivity : BaseActivity() {
             }
         }
     }
-
-    private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
+    private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
         // Hide Unessary View
+
 
         binding.includePackagePosting.apply {
             tvPackageDescription.visibility = View.GONE
@@ -118,17 +117,17 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myRentalPostingDetailResponse.unitType.title}")
-            setTitleDetail("${myRentalPostingDetailResponse.checkinDate} - ${myRentalPostingDetailResponse.checkoutDate}")
+            setTitle("${myExchangePostingDetail.unitType.title}")
+            setTitleDetail("${myExchangePostingDetail.checkinDate} - ${myExchangePostingDetail.checkoutDate}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
-            tvLocation.text = myRentalPostingDetailResponse.address
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
+            tvLocation.text = myExchangePostingDetail.address
 
-            if (myRentalPostingDetailResponse.isVerify) {
+            if (myExchangePostingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
@@ -138,98 +137,75 @@ class MyPostingDetailActivity : BaseActivity() {
         // Checkin Date, Check out Date
         binding.apply {
             tvCheckInDate.text = Constant.formatDateByLocale(
-                myRentalPostingDetailResponse.checkinDate,
-                this@MyPostingDetailActivity
+                myExchangePostingDetail.checkinDate,
+                this@MyExchangeDetailActivity
             )
             tvCheckOutDate.text = Constant.formatDateByLocale(
-                myRentalPostingDetailResponse.checkoutDate,
-                this@MyPostingDetailActivity
+                myExchangePostingDetail.checkoutDate,
+                this@MyExchangeDetailActivity
             )
-            tvNights.text = "${myRentalPostingDetailResponse.nights} đêm"
+            tvNights.text = "${myExchangePostingDetail.nights} đêm"
         }
 
         // BindDAta Package
-        bindPackageData(myRentalPostingDetailResponse.rentalPackageName)
+        bindPackageData(myExchangePostingDetail.exchangePackageName)
 
         // Set Unit Type Of Posting
         binding.apply {
             tvRoomName.text =
-                "Chi Tiết Phòng | ${myRentalPostingDetailResponse.unitType.title} #${myRentalPostingDetailResponse.roomName}"
+                "Chi Tiết Phòng | ${myExchangePostingDetail.unitType.title} #${myExchangePostingDetail.roomName}"
 
             // Bath
-            tvNumBath.text = myRentalPostingDetailResponse.unitType.bathrooms.toString()
-            tvBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
+            tvNumBath.text = myExchangePostingDetail.unitType.bathrooms.toString()
+            tvBed.text = myExchangePostingDetail.unitType.bedrooms.toString()
 
             // Beds
             val unitTypeMap = mapOf(
-                "bedsFull" to myRentalPostingDetailResponse.unitType.bedsFull,
-                "bedsKing" to myRentalPostingDetailResponse.unitType.bedsKing,
-                "bedsSofa" to myRentalPostingDetailResponse.unitType.bedsSofa,
-                "bedsMurphy" to myRentalPostingDetailResponse.unitType.bedsMurphy,
-                "bedsQueen" to myRentalPostingDetailResponse.unitType.bedsQueen,
-                "bedsTwin" to myRentalPostingDetailResponse.unitType.bedsTwin
+                "bedsFull" to myExchangePostingDetail.unitType.bedsFull,
+                "bedsKing" to myExchangePostingDetail.unitType.bedsKing,
+                "bedsSofa" to myExchangePostingDetail.unitType.bedsSofa,
+                "bedsMurphy" to myExchangePostingDetail.unitType.bedsMurphy,
+                "bedsQueen" to myExchangePostingDetail.unitType.bedsQueen,
+                "bedsTwin" to myExchangePostingDetail.unitType.bedsTwin
             )
-            tvNumBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
+            tvNumBed.text = myExchangePostingDetail.unitType.bedrooms.toString()
             tvBed.text = displayBedsInfo(unitTypeMap)
 
             // Kitchen
-            tvKitchen.text = myRentalPostingDetailResponse.unitType.kitchen
+            tvKitchen.text = myExchangePostingDetail.unitType.kitchen
             tvNumKitchen.text = 1.toString()
 
             // Max Guest
-            tvNumPerson.text = myRentalPostingDetailResponse.unitType.sleeps.toString()
+            tvNumPerson.text = myExchangePostingDetail.unitType.sleeps.toString()
             tvPerson.text =
-                "${myRentalPostingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
+                "${myExchangePostingDetail.unitType.sleeps.toString()} người lớn tối đa"
 
             // Room Policy
             // Do IT Later
 
         }
 
-        // Cancel Policy
-        binding.apply {
-            if (myRentalPostingDetailResponse.cancelType.toString() == "null") {
-                tvCancelPolicy.text = "Không có"
-                includeDetailBilling.tvCancellationPolicy.text = "Không có"
-            } else {
-                val refundPolicy = RefundPolicy.getShortDescriptionFromName(
-                    this@MyPostingDetailActivity,
-                    myRentalPostingDetailResponse.cancelType.toString()
-                )
-                tvCancelPolicy.text = refundPolicy
-                includeDetailBilling.tvCancellationPolicy.text = refundPolicy
-            }
-        }
 
         // UI DTB
         binding.includeDetailBilling.apply {
 
             llPostingBy.visibility = View.GONE
             tvResortNameDtb.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
             tvCheckInDate.text = Constant.formatDateByLocale(
-                myRentalPostingDetailResponse.checkinDate,
-                this@MyPostingDetailActivity
+                myExchangePostingDetail.checkinDate,
+                this@MyExchangeDetailActivity
             )
             tvCheckOutDate.text = Constant.formatDateByLocale(
-                myRentalPostingDetailResponse.checkoutDate,
-                this@MyPostingDetailActivity
+                myExchangePostingDetail.checkoutDate,
+                this@MyExchangeDetailActivity
             )
-            tvNumberNight.text = "${myRentalPostingDetailResponse.nights} đêm"
+            tvNumberNight.text = "${myExchangePostingDetail.nights} đêm"
 
-            if (myRentalPostingDetailResponse.pricePerNights == 0) {
-                tvRoomPricePerNight.text = "Đang Chờ Xác Nhận"
-                tvEstimatedTotalPrice.text = "Đang Chờ Xác Nhận"
-            } else {
-                tvRoomPricePerNight.text =
-                    "${formatPrice(myRentalPostingDetailResponse.pricePerNights)} đ"
-                tvEstimatedTotalPrice.text =
-                    "${formatPrice(myRentalPostingDetailResponse.totalPrice)} đ"
-            }
-            tvLocation.text = myRentalPostingDetailResponse.address
+            tvLocation.text = myExchangePostingDetail.address
 
             Glide.with(binding.root.context)
-                .load(myRentalPostingDetailResponse.unitType.photos)
+                .load(myExchangePostingDetail.unitType.photos)
                 .placeholder(R.drawable.ripple_effect_white)
                 .error(R.drawable.im_material_mn)
                 .into(imImageTimeshare)
@@ -243,7 +219,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
 
-        when (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)) {
+        when (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)) {
             MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
                     this,
@@ -310,12 +286,11 @@ class MyPostingDetailActivity : BaseActivity() {
             }
         }
         binding.tvStatus.text =
-            MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)
+            MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)
                 ?.getDescription(this)
 
 
     }
-
     private fun bindPackageData(packageName: String) {
         val rentalPackageEnum = RentalPackageEnum.getPackageByName(packageName)
 
@@ -355,20 +330,9 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
     }
-
-    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
-        binding.apply {
-            llStatusContainer.visibility = View.VISIBLE
-            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
-            tvStatus.setTextColor(context.getColor(textColorRes))
-            cardStatus.setStrokeColor(context.getColor(textColorRes))
-        }
-    }
-
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
     }
-
     private fun setListImageTimeshare() {
         // Set List Image Timeshare
         binding.viewPager.apply {
@@ -387,7 +351,6 @@ class MyPostingDetailActivity : BaseActivity() {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
         }
     }
-
     private fun setAmenitiesListTimeshare() {
         val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.flexDirection = FlexDirection.ROW
@@ -397,12 +360,6 @@ class MyPostingDetailActivity : BaseActivity() {
             it.adapter = facilityAdapter
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        autoScrollHelper.pauseAutoScroll()
-    }
-
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
             "bedsFull" to "Full",
@@ -420,9 +377,12 @@ class MyPostingDetailActivity : BaseActivity() {
 
         return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+        binding.apply {
+            llStatusContainer.visibility = View.VISIBLE
+            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            tvStatus.setTextColor(context.getColor(textColorRes))
+            cardStatus.setStrokeColor(context.getColor(textColorRes))
+        }
     }
 }

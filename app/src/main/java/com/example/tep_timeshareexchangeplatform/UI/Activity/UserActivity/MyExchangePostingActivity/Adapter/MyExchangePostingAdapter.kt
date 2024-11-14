@@ -11,12 +11,10 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
-import java.text.DecimalFormat
 
 class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
     BaseAdapter<MyExchangePostingsResponse.Content, MyExchangePostingAdapter.MyExchangePostingViewHolder>() {

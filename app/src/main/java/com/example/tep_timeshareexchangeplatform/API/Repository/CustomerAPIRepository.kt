@@ -82,7 +82,7 @@ class CustomerAPIRepository @Inject constructor(
 
 
     // Get my posting list
-    suspend fun getMyPostingList(
+    suspend fun getCustomerPostingList(
         token: String,
         page: Int,
         size: Int
@@ -184,7 +184,7 @@ class CustomerAPIRepository @Inject constructor(
 
 
     // Get my booking detail
-    suspend fun getMyBookingDetail(
+    suspend fun getCustomerBookingDetail(
         token: String,
         bookingId: Int
     ): Resource<MyBookingDetailResponse> {

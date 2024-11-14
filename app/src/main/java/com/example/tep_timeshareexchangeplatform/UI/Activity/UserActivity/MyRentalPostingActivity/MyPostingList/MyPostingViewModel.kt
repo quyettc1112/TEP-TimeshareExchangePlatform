@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +22,7 @@ class MyPostingViewModel @Inject constructor(
     fun getMyPostingList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _myPostingList.postValue(Resource.loading(null))
-            customerAPIRepository.getMyPostingList(token, page, size).let {
+            customerAPIRepository.getCustomerPostingList(token, page, size).let {
                 _myPostingList.postValue(it)
             }
         }

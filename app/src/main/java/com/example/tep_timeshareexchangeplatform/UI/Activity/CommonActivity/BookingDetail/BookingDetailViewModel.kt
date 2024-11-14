@@ -23,7 +23,7 @@ class BookingDetailViewModel @Inject constructor(
     fun getMyBookingDetail(token: String, bookingId: Int) {
         viewModelScope.launch {
             _getMyBookingDetailResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getMyBookingDetail(token, bookingId).let {
+            customerAPIRepository.getCustomerBookingDetail(token, bookingId).let {
                 _getMyBookingDetailResponse.postValue(it)
             }
         }

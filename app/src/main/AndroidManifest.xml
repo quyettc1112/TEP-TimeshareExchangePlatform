@@ -22,10 +22,10 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangDetailActivity"
+            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingActivity"
+            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity"
             android:exported="false" />
         <activity
             android:name=".UI.Activity.CommonActivity.ExchangeDetailActivity.ExchangeDetailActivity"
@@ -83,7 +83,7 @@
             android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.PricingSupportActivity.PricingSupportActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingActivity"
+            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
