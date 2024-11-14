@@ -57,6 +57,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var policyAmentitiesAdapter = AmenitiesAdaper()
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
 
+    private lateinit var tokenManager: TokenManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateTimeshareBinding.inflate(inflater, container, false)
+        tokenManager = TokenManager(requireContext())
         initActivityLauncher()
         observeViewModel()
         setEventChangeLocation()
@@ -79,6 +82,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         setEventSaveAmenities()
         return binding.root
     }
+
     private fun observeViewModel() {
         // Tracking Data of Step Create Timeshare
         postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
@@ -182,7 +186,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
 
-
         // Tracking Date Range
         postingFlowViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
             if (postingFlowViewModel.getNumberOfNights() > 0) {
@@ -280,6 +283,30 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
 
+        // Upload Image
+        postingFlowViewModel.uploadImageResponse.observe(viewLifecycleOwner) { uploadImageResponse ->
+            when (uploadImageResponse.status) {
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    Log.d("CheckUploadImage", "observeViewModel: ${uploadImageResponse.data}")
+                    // Call Request Create Timeshare
+                    callRequestCreateTimeshare()
+                }
+
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).showErrorDialog(
+                        "${uploadImageResponse.message}",
+                        "Back"
+                    )
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                }
+            }
+        }
+
 
     }
 
@@ -291,6 +318,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         imageUploadAdapter.submitList(listOf())
         imageUploadAdapter.onDeleteClick = {
             imageUploadAdapter.removeItem(it)
+            postingFlowViewModel.deleteImage(it)
         }
 
     }
@@ -343,10 +371,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+
     private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
         val unitTypeDetail = CustomDialog(requireContext())
         unitTypeDetail.show()
     }
+
     // Yes. User Have Room Type
     private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
         val binding = binding.includeUnitTypeYes
@@ -378,6 +408,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+
     private fun bindDataSpinner(roomList: List<RoomModel>?) {
         val spinnerBinding = binding.includeUnitTypeYes
 
@@ -447,6 +478,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
     }
+
     // No. User Don't Have Room Type, Create New Room
     private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
         // Lấy danh sách duy nhất cho view và bedrooms
@@ -553,6 +585,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+
     private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
         val selectedView =
             binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
@@ -634,6 +667,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+
     // User click to change location of Resort
     private fun setEventChangeLocation() {
         binding.tvChangeLocation.setOnClickListener {
@@ -661,6 +695,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun bindDataAmenities(unitType: UnitTypeModel) {
 
     }
+
     private fun setEventSaveAmenities() {
         binding.btnSaveAmenities.setOnClickListener {
             postingFlowViewModel.updateTaskProgress(5)
@@ -675,23 +710,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             openGallery()
         }
     }
-    private fun initActivityLauncher() {
-        locationResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    val selectedLocation: ResortModelResponse.Content? =
-                        data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
-                    selectedLocation?.let {
-                        postingFlowViewModel.updateResortModel(it)
-                    }
-                }
-            }
 
-    }
     fun openGallery() {
         pickImagesLauncher.launch("image/*")
     }
+
     private val pickImagesLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
@@ -699,39 +722,84 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 for (uri in uris) {
                     listImage.add(ImageUploadModel.create(uri))
                 }
+                // Save To View Model
+                postingFlowViewModel.addImages(listImage)
+
+                // Show UI
                 imageUploadAdapter.addImage(listImage)
             }
         }
 
 
     // Send Request
+    // Send Request To Create Image List
+    private fun callRequestCreateImageList() {
+        if(!tokenManager.isLoggedIn()) {
+            MotionToast.createColorToast(
+                requireActivity(),
+                "Error",
+                "Token is null",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            )
+            return
+        }
+
+        if (postingFlowViewModel.imageList.value.isNullOrEmpty()) {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+            }
+
+            MotionToast.createColorToast(
+                requireActivity(),
+                "Error",
+                "Token is null",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            )
+            return
+        }
+
+        // Call If Token is not null, and Image List is not null
+        postingFlowViewModel.callUploadImages(tokenManager.getAccessToken().toString())
+    }
+
+    private fun callRequestCreateTimeshare() {
+        val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
+        if (checkYN) {
+            sendRequestOptionYes()
+        } else {
+            // Call API to create Room
+            if (!tokenManager.isLoggedIn()) {
+                Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+                return
+            }
+            val roomDTO: RoomDTO = RoomDTO(
+                roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
+                isActive = true,
+                resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
+                status = "Available",
+                unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
+                roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
+                roomAmenities = listOf()
+            )
+            postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
+
+        }
+    }
+
+
     private fun sendRequestCreateTimeshare() {
         binding.btnNext.setOnClickListener {
-            val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
-            if (checkYN) {
-                sendRequestOptionYes()
-            } else {
-                // Call API to create Room
-                val token = TokenManager(requireContext()).getAccessToken()
-                val roomDTO: RoomDTO = RoomDTO(
-                    roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
-                    isActive = true,
-                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
-                    status = "Available",
-                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
-                    roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
-                    roomAmenities = listOf()
-                )
-                if (token != null) {
-                    postingFlowViewModel.postRoom(token, roomDTO)
-                } else {
-                    Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
-                }
-
-            }
+            callRequestCreateImageList()
         }
 
     }
+
     private fun sendRequestOptionYes() {
         val token = TokenManager(requireContext()).getAccessToken()
         // Định dạng theo kiểu yyyy-MM-dd
@@ -758,6 +826,22 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
     }
 
+
+    // Location Activity Result
+    private fun initActivityLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation: ResortModelResponse.Content? =
+                        data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
+                    selectedLocation?.let {
+                        postingFlowViewModel.updateResortModel(it)
+                    }
+                }
+            }
+
+    }
 
     // Order of the steps
     private fun showStepEventHandle(currentTask: Int) {
@@ -805,6 +889,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
     }
+
     private fun setValueUnitRoom() {
 
 
@@ -834,6 +919,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
 
     }
+
     private fun verifyDataAndSendRequest(): Boolean {
         val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
 
@@ -861,8 +947,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Nếu tất cả các kiểm tra đều vượt qua
         return true
     }
-
-
 
 
 }

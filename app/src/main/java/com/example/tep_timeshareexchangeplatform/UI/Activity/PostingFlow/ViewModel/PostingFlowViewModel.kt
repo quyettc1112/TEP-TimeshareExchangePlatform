@@ -9,11 +9,13 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepos
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -30,6 +32,7 @@ import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +42,8 @@ class PostingFlowViewModel @Inject constructor(
     private val timeshareRepository: TimeshareRepository,
     private val customerAPIRepository: CustomerAPIRepository,
     private val paymentAPIRepository: PaymentAPIRepository,
-    private val walletAPIRepository: WalletAPIRepository
+    private val walletAPIRepository: WalletAPIRepository,
+    private val storageAPIRepository: StorageAPIRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -521,6 +525,35 @@ class PostingFlowViewModel @Inject constructor(
         _currentMyTimeshareList.clear()
         step.value = 1 // hoặc giá trị mặc định ban đầu
         // Reset các giá trị khác nếu cần
+    }
+
+    // ----------------------------------------------------------//
+    // Image URI, Bind To MutiplePart
+    private val _imageList = MutableLiveData<List<ImageUploadModel>>(emptyList())
+    val imageList: LiveData<List<ImageUploadModel>> get() = _imageList
+    fun addImages(newImages: List<ImageUploadModel>) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            addAll(newImages)
+        }
+    }
+    fun deleteImage(image: ImageUploadModel) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            remove(image)
+        }
+    }
+    fun getMultipartBodies(): List<MultipartBody.Part> {
+        return _imageList.value?.map { it.part } ?: emptyList()
+    }
+
+    private val _listImageResponse = MutableLiveData<Resource<List<String>>>()
+    val uploadImageResponse: LiveData<Resource<List<String>>> get() = _listImageResponse
+    fun callUploadImages(token: String) {
+        viewModelScope.launch {
+            _listImageResponse.postValue(Resource.loading(null))
+            val images = getMultipartBodies()
+            val response = storageAPIRepository.uploadFiles(token, images)
+            _listImageResponse.postValue(response)
+        }
     }
 
 

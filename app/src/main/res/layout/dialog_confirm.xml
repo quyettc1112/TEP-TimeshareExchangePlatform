@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
     android:background="@drawable/ripple_effect_white"
+    android:backgroundTint="@color/white"
     android:orientation="vertical">
 
     <TextView

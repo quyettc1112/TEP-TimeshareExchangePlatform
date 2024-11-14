@@ -203,8 +203,8 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // UI DTB
         binding.includeDetailBilling.apply {
-
             llPostingBy.visibility = View.GONE
+            llRoomPricing.visibility = View.GONE
             tvResortNameDtb.text =
                 myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
             tvCheckInDate.text = Constant.formatDateByLocale(
