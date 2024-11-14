@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.PricingSupportActivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

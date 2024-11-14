@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingActivity">
+    android:layout_height="match_parent">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Đăng Bài Của Tôi"
+        android:title="Bài Trao Đổi Của Tôi"
         app:showStartText="false"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -50,6 +49,8 @@
     </LinearLayout>
 
     <!--// List of My Posting-->
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_my_posting"
         android:layout_width="match_parent"
@@ -58,12 +59,12 @@
         android:paddingStart="10dp"
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.863"
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/item_my_posting" />
-
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/anim_loading_more"

@@ -23,7 +23,7 @@
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_margin="6dp"
-            android:layout_height="160dp"
+            android:layout_height="180dp"
             app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,6 @@
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/inter_bold"
                 android:maxLines="2"
-                android:text="Flamingo Đại Lải"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,11 +68,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:fontFamily="@font/inter_bold"
+                android:fontFamily="@font/inter_medium"
                 android:maxLines="2"
                 android:text="Phòng: P291, Code: Phòng "
-                android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 />
 
             <!--// Resort Info-->
@@ -180,6 +178,7 @@
 
                 <!-- Room Price Per Night -->
                 <LinearLayout
+                    android:id="@+id/ll_room_price_per_night"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

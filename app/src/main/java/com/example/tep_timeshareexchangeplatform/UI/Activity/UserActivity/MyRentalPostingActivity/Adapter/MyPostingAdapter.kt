@@ -1,31 +1,32 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
 
 class MyPostingAdapter(var context: MyPostingActivity) :
-    BaseAdapter<MyPostingResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
+    BaseAdapter<MyRentalPostingsResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
 
 
-    var onItemClick: ((MyPostingResponse.Content) -> Unit)? = null
-    var onItemPricingClick: ((MyPostingResponse.Content) -> Unit)? = null
+    var onItemClick: ((MyRentalPostingsResponse.Content) -> Unit)? = null
+    var onItemPricingClick: ((MyRentalPostingsResponse.Content) -> Unit)? = null
 
     inner class MyPostingViewHolder(binding: ItemMyPostingBinding) :
-        BaseItemViewHolderCF<MyPostingResponse.Content, ItemMyPostingBinding>(binding) {
-        override fun bind(item: MyPostingResponse.Content) {
+        BaseItemViewHolderCF<MyRentalPostingsResponse.Content, ItemMyPostingBinding>(binding) {
+        override fun bind(item: MyRentalPostingsResponse.Content) {
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
@@ -125,6 +126,11 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                     Constant.formatDateByLocale(item.checkinDate, binding.root.context)
                 tvCheckOutDate.text =
                     Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+                Glide.with(binding.root.context)
+                    .load(item.unitTypeDTO.photos)
+                    .placeholder(R.drawable.ripple_effect_white)
+                    .error(R.drawable.im_material_mn)
+                    .into(binding.imResortImage)
             }
 
             // Price
@@ -180,18 +186,18 @@ class MyPostingAdapter(var context: MyPostingActivity) :
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<MyPostingResponse.Content> {
-        return object : DiffUtil.ItemCallback<MyPostingResponse.Content>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<MyRentalPostingsResponse.Content> {
+        return object : DiffUtil.ItemCallback<MyRentalPostingsResponse.Content>() {
             override fun areItemsTheSame(
-                oldItem: MyPostingResponse.Content,
-                newItem: MyPostingResponse.Content
+                oldItem: MyRentalPostingsResponse.Content,
+                newItem: MyRentalPostingsResponse.Content
             ): Boolean {
                 return oldItem.rentalPostingId == newItem.rentalPostingId
             }
 
             override fun areContentsTheSame(
-                oldItem: MyPostingResponse.Content,
-                newItem: MyPostingResponse.Content
+                oldItem: MyRentalPostingsResponse.Content,
+                newItem: MyRentalPostingsResponse.Content
             ): Boolean {
                 return oldItem == newItem
             }

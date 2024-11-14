@@ -17,12 +17,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.MyProgressDialog
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
@@ -89,7 +87,6 @@ open class  BaseActivity : AppCompatActivity() {
     ) {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.dialog_success, null)
-
 
 
         // Tạo dialog với layout tuỳ chỉnh

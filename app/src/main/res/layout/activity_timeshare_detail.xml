@@ -781,6 +781,7 @@
                     android:layout_marginTop="2dp"
                     android:background="@color/white"
                     android:minHeight="300dp"
+                    android:visibility="gone"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:paddingTop="10dp"

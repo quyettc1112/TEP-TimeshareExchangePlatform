@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
@@ -108,7 +108,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindData(myPostingDetailResponse: MyPostingDetailResponse) {
+    private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
         // Hide Unessary View
 
 
@@ -118,17 +118,17 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myPostingDetailResponse.unitType.title}")
-            setTitleDetail("${myPostingDetailResponse.checkinDate} - ${myPostingDetailResponse.checkoutDate}")
+            setTitle("${myRentalPostingDetailResponse.unitType.title}")
+            setTitleDetail("${myRentalPostingDetailResponse.checkinDate} - ${myRentalPostingDetailResponse.checkoutDate}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myPostingDetailResponse.resortName + " | " + myPostingDetailResponse.unitType.title
-            tvLocation.text = myPostingDetailResponse.address
+                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
+            tvLocation.text = myRentalPostingDetailResponse.address
 
-            if (myPostingDetailResponse.isVerify) {
+            if (myRentalPostingDetailResponse.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
@@ -138,47 +138,47 @@ class MyPostingDetailActivity : BaseActivity() {
         // Checkin Date, Check out Date
         binding.apply {
             tvCheckInDate.text = Constant.formatDateByLocale(
-                myPostingDetailResponse.checkinDate,
+                myRentalPostingDetailResponse.checkinDate,
                 this@MyPostingDetailActivity
             )
             tvCheckOutDate.text = Constant.formatDateByLocale(
-                myPostingDetailResponse.checkoutDate,
+                myRentalPostingDetailResponse.checkoutDate,
                 this@MyPostingDetailActivity
             )
-            tvNights.text = "${myPostingDetailResponse.nights} đêm"
+            tvNights.text = "${myRentalPostingDetailResponse.nights} đêm"
         }
 
         // BindDAta Package
-        bindPackageData(myPostingDetailResponse.rentalPackageName)
+        bindPackageData(myRentalPostingDetailResponse.rentalPackageName)
 
         // Set Unit Type Of Posting
         binding.apply {
             tvRoomName.text =
-                "Chi Tiết Phòng | ${myPostingDetailResponse.unitType.title} #${myPostingDetailResponse.roomName}"
+                "Chi Tiết Phòng | ${myRentalPostingDetailResponse.unitType.title} #${myRentalPostingDetailResponse.roomName}"
 
             // Bath
-            tvNumBath.text = myPostingDetailResponse.unitType.bathrooms.toString()
-            tvBed.text = myPostingDetailResponse.unitType.bedrooms.toString()
+            tvNumBath.text = myRentalPostingDetailResponse.unitType.bathrooms.toString()
+            tvBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
 
             // Beds
             val unitTypeMap = mapOf(
-                "bedsFull" to myPostingDetailResponse.unitType.bedsFull,
-                "bedsKing" to myPostingDetailResponse.unitType.bedsKing,
-                "bedsSofa" to myPostingDetailResponse.unitType.bedsSofa,
-                "bedsMurphy" to myPostingDetailResponse.unitType.bedsMurphy,
-                "bedsQueen" to myPostingDetailResponse.unitType.bedsQueen,
-                "bedsTwin" to myPostingDetailResponse.unitType.bedsTwin
+                "bedsFull" to myRentalPostingDetailResponse.unitType.bedsFull,
+                "bedsKing" to myRentalPostingDetailResponse.unitType.bedsKing,
+                "bedsSofa" to myRentalPostingDetailResponse.unitType.bedsSofa,
+                "bedsMurphy" to myRentalPostingDetailResponse.unitType.bedsMurphy,
+                "bedsQueen" to myRentalPostingDetailResponse.unitType.bedsQueen,
+                "bedsTwin" to myRentalPostingDetailResponse.unitType.bedsTwin
             )
-            tvNumBed.text = myPostingDetailResponse.unitType.bedrooms.toString()
+            tvNumBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
             tvBed.text = displayBedsInfo(unitTypeMap)
 
             // Kitchen
-            tvKitchen.text = myPostingDetailResponse.unitType.kitchen
+            tvKitchen.text = myRentalPostingDetailResponse.unitType.kitchen
             tvNumKitchen.text = 1.toString()
 
             // Max Guest
-            tvNumPerson.text = myPostingDetailResponse.unitType.sleeps.toString()
-            tvPerson.text = "${myPostingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
+            tvNumPerson.text = myRentalPostingDetailResponse.unitType.sleeps.toString()
+            tvPerson.text = "${myRentalPostingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
 
             // Room Policy
             // Do IT Later
@@ -187,13 +187,13 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Cancel Policy
         binding.apply {
-            if (myPostingDetailResponse.cancelType.toString() == "null") {
+            if (myRentalPostingDetailResponse.cancelType.toString() == "null") {
                 tvCancelPolicy.text = "Không có"
                 includeDetailBilling.tvCancellationPolicy.text = "Không có"
             } else {
                 val refundPolicy = RefundPolicy.getShortDescriptionFromName(
                     this@MyPostingDetailActivity,
-                    myPostingDetailResponse.cancelType.toString()
+                    myRentalPostingDetailResponse.cancelType.toString()
                 )
                 tvCancelPolicy.text = refundPolicy
                 includeDetailBilling.tvCancellationPolicy.text = refundPolicy
@@ -205,19 +205,19 @@ class MyPostingDetailActivity : BaseActivity() {
 
             llPostingBy.visibility = View.GONE
             tvResortNameDtb.text =
-                myPostingDetailResponse.resortName + " | " + myPostingDetailResponse.unitType.title
+                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
             tvCheckInDate.text = Constant.formatDateByLocale(
-                myPostingDetailResponse.checkinDate,
+                myRentalPostingDetailResponse.checkinDate,
                 this@MyPostingDetailActivity
             )
             tvCheckOutDate.text = Constant.formatDateByLocale(
-                myPostingDetailResponse.checkoutDate,
+                myRentalPostingDetailResponse.checkoutDate,
                 this@MyPostingDetailActivity
             )
-            tvNumberNight.text = "${myPostingDetailResponse.nights} đêm"
-            tvRoomPricePerNight.text = "${formatPrice(myPostingDetailResponse.pricePerNights)} đ"
-            tvEstimatedTotalPrice.text = "${formatPrice(myPostingDetailResponse.pricePerNights)} đ"
-            tvLocation.text = myPostingDetailResponse.address
+            tvNumberNight.text = "${myRentalPostingDetailResponse.nights} đêm"
+            tvRoomPricePerNight.text = "${formatPrice(myRentalPostingDetailResponse.pricePerNights)} đ"
+            tvEstimatedTotalPrice.text = "${formatPrice(myRentalPostingDetailResponse.pricePerNights)} đ"
+            tvLocation.text = myRentalPostingDetailResponse.address
 
         }
 
@@ -228,7 +228,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
 
-        when (MyPostingStatus.fromApiStatus(myPostingDetailResponse.status)) {
+        when (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)) {
             MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
                     this,
@@ -295,7 +295,7 @@ class MyPostingDetailActivity : BaseActivity() {
             }
         }
         binding.tvStatus.text =
-            MyPostingStatus.fromApiStatus(myPostingDetailResponse.status)?.getDescription(this)
+            MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)?.getDescription(this)
 
 
     }

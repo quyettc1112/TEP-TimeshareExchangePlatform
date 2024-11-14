@@ -9,8 +9,10 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -50,14 +52,14 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Query ("page") page: Int,
         @Query ("size") size: Int
-    ) : Response<MyPostingResponse>
+    ) : Response<MyRentalPostingsResponse>
 
     // Get My Posting Detail
     @GET("customer/rental/posting/{postingId}")
     suspend fun getMyPostingDetail(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int
-    ) : Response<MyPostingDetailResponse>
+    ) : Response<MyRentalPostingDetailResponse>
 
 
     // Create Posting
@@ -101,5 +103,25 @@ interface CustomerAPIService {
         @Path ("postingId") postingId: Int,
         @Body guestDTO: GuestDTO
     ) : Response<MyBookingDetailResponse>
+
+
+    // Get Customer Exchange Posting
+    @GET("customer/exchange/posting")
+    suspend fun getCustomerExchangePosting(
+        @Header ("Authorization") token: String,
+        @Query ("page") page: Int,
+        @Query ("size") size: Int
+    ) : Response<MyExchangePostingsResponse>
+
+
+    // Get Customer Exchange Posting Detail
+    @GET("customer/exchange/posting/{postingId}")
+    suspend fun getCustomerExchangePostingDetail(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int
+    ) : Response<MyExchangePostingDetailResponse>
+
+
+
 
 }

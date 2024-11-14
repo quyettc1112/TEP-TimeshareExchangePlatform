@@ -97,7 +97,8 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="profile_title">Thông Tin Người Dùng</string>
     <string name="my_profile">Hồ sơ của tôi</string>
     <string name="my_timeshare">Danh sách Timeshare của tôi</string>
-    <string name="my_posting">Bài đăng của tôi</string>
+    <string name="my_rental_posting">Bài đăng thuê phòng của tôi</string>
+    <string name="my_exchange_posting">Bài đăng trao đổi của tôi</string>
     <string name="my_order">Đặt phòng của tôi</string>
     <string name="my_favorite">Sở thích du lịch</string>
     <string name="my_account_security">Tài Khoản &amp; Bảo mật</string>

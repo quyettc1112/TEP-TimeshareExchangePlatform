@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -15,9 +14,10 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthAc
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
@@ -181,6 +181,14 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     Intent(
                         requireContext(),
                         MyPostingActivity::class.java
+                    )
+                )
+            }
+            llMyExchangePosting.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyExchangePostingActivity::class.java
                     )
                 )
             }

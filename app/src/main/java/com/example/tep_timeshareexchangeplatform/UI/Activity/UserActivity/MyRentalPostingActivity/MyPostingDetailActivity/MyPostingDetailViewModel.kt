@@ -1,10 +1,10 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class MyPostingDetailViewModel @Inject constructor(
 ) : ViewModel(){
 
     // Call My posting detail
-    private val _postingDetailResponse = MutableLiveData<Resource<MyPostingDetailResponse>>()
-    val postingDetailResponse: MutableLiveData<Resource<MyPostingDetailResponse>>
+    private val _postingDetailResponse = MutableLiveData<Resource<MyRentalPostingDetailResponse>>()
+    val postingDetailResponse: MutableLiveData<Resource<MyRentalPostingDetailResponse>>
         get() = _postingDetailResponse
     fun getMyPostingDetail(token: String, postingId: Int) {
         viewModelScope.launch {

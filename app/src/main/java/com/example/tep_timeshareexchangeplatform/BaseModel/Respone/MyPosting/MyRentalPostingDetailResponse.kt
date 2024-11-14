@@ -111,7 +111,7 @@ import com.google.gson.annotations.SerializedName
   "active": true
 }
 */
-data class MyPostingDetailResponse(
+data class MyRentalPostingDetailResponse(
     @SerializedName("rentalPostingId") val rentalPostingId: Int,
     @SerializedName("description") val description: String,
     @SerializedName("expiredDate") val expiredDate: String,
