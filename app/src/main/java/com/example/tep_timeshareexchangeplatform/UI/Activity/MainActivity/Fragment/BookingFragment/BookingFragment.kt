@@ -1,7 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment
 
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomFeedbackDialog.CustomFeedbackDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
@@ -114,17 +116,54 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                 UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                     viewModel.getMyBooking(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
                 }
+
                 UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
                     viewModel.getMyBooking(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
                 }
+
                 else -> {
                     binding.llListContianer.visibility = View.GONE
                     binding.llLoadingContainer.visibility = View.VISIBLE
-                    binding.tvDescription.text = "Bạn cần cung cấp thông tin cá nhân để khám phá thêm"
+                    binding.tvDescription.text =
+                        "Bạn cần cung cấp thông tin cá nhân để khám phá thêm"
                 }
 
             }
 
+        }
+
+        // Posting feedback
+        viewModel.feedbackResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    (activity as MainActivity).showDoneFeedbackDialog(requireContext(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    it.message?.let {
+                        MotionToast.Companion.createColorToast(
+                            requireActivity(),
+                            "Error",
+                            it,
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            null
+                        )
+                    }
+                }
+
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(true)
+                }
+            }
         }
     }
 
@@ -134,6 +173,44 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             val intent = Intent(requireContext(), BookingDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_BOOKING_SELECTED_ID, it.bookingId)
             startActivity(intent)
+        }
+
+        myOrderAdapter.onFeedbackClick = {
+            val feedbackDialog = CustomFeedbackDialog(requireContext()) { rating, feedback ->
+                callSendFeedBack(rating, feedback, it.bookingId) // Gọi hàm xử lý feedback
+            }
+
+            feedbackDialog.show()
+        }
+    }
+
+    private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
+        if (!tokenManager.isLoggedIn()) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Error",
+                "Bạn cần đăng nhập để thực hiện chức năng này",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            return
+        }
+
+        val feedbackDTO = FeedbackDTO(rating, feedback, bookingId)
+        if (feedbackDTO.bookingId !== 0 && feedbackDTO.ratingPoint !== 0) {
+            viewModel.postFeedback(tokenManager.getAccessToken().toString(), feedbackDTO)
+        } else {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Error",
+                "Vui lòng nhập đầy đủ thông tin",
+                MotionToastStyle.ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
         }
 
     }

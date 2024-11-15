@@ -97,7 +97,8 @@ data class MyBookingDetailResponse(
     @SerializedName("totalNights") val totalNights: Int,
     @SerializedName("pricePerNights") val pricePerNights: Int,
     @SerializedName("createdDate") val createdDate: String,
-    @SerializedName("updatedDate") val updatedDate: String
+    @SerializedName("updatedDate") val updatedDate: String,
+    @SerializedName("source") val source: String
 ) {
     data class RentalPosting(
         @SerializedName("id") val id: Int,
@@ -151,7 +152,7 @@ data class MyBookingDetailResponse(
 
         data class CancellationType(
             @SerializedName("id") val id: Int,
-            @SerializedName("name") val name: String?,
+            @SerializedName("name") val name: String,
             @SerializedName("refundRate") val refundRate: Int,
             @SerializedName("durationBefore") val durationBefore: Int,
             @SerializedName("description") val description: String,

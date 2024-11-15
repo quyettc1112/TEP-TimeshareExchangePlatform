@@ -40,7 +40,7 @@
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity"
+            android:name=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity"

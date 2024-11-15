@@ -183,6 +183,35 @@ open class  BaseActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    open fun showDoneFeedbackDialog(
+        context: Context,
+        onClickListener: View.OnClickListener? = null
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_done_feedback, null)
+
+        // Tạo dialog với layout tuỳ chỉnh
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+        dialog.setCancelable(false)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Ánh xạ các view từ dialog
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        btnConfirm.setOnClickListener {
+            // Nếu có onClickListener tùy chỉnh, thực thi nó
+            onClickListener?.onClick(it)
+            // Đóng dialog sau khi xử lý
+            dialog.dismiss()
+        }
+
+
+        // Hiển thị dialog
+        dialog.show()
+    }
+
 
 
 

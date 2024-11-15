@@ -8,8 +8,10 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
@@ -261,6 +263,25 @@ class MainViewModel @Inject constructor(
     fun getCurrentMyBookingList(): List<MyBookingResponse.Content> {
         return _currentMyBookingList
     }
+
+    /**
+     * Call API To POST FeedBack
+     *
+     */
+    private var _feedbackResponse = MutableLiveData<Resource<FeedbackResponse>>()
+    val feedbackResponse: LiveData<Resource<FeedbackResponse>> = _feedbackResponse
+    fun postFeedback(token: String, feedbackDTO: FeedbackDTO) {
+        viewModelScope.launch {
+            _feedbackResponse.postValue(Resource.loading(null))
+            customerAPIRepository.postFeedbackForCustomerRental(token, feedbackDTO).let {
+                _feedbackResponse.postValue(it)
+            }
+        }
+    }
+
+
+
+
 
     fun resetCurrentMyBookingPage() {
         _currentMyBookingList.clear()
