@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
@@ -282,5 +283,23 @@ class CustomerAPIRepository @Inject constructor(
         }
     }
 
+    // Create Exchange Posting
+    suspend fun createExchangePosting(
+        token: String,
+        postingDTO: ExchangeTimeshareDTO
+    ): Resource<PostingTimeshareResponse> {
+        return try {
+            val response =
+                customerAPIService.createExchangePosting("Bearer $token", postingDTO)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 
 }

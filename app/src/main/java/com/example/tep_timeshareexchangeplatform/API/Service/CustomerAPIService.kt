@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
@@ -123,12 +124,23 @@ interface CustomerAPIService {
         @Path ("postingId") postingId: Int
     ) : Response<MyExchangePostingDetailResponse>
 
+    // Posting Exchange Posting
+    @POST("/api/customer/exchange/posting")
+    suspend fun createExchangePosting(
+        @Header ("Authorization") token: String,
+        @Body postingDTO: ExchangeTimeshareDTO
+    ) : Response<PostingTimeshareResponse>
+
+
+
     // Post Feedback For Customer, Rental
     @POST("customer/feedback/rental")
     suspend fun postFeedbackForCustomerRental(
         @Header ("Authorization") token: String,
         @Body feedbackDTO: FeedbackDTO
     ) : Response<FeedbackResponse>
+
+    //
 
 
 

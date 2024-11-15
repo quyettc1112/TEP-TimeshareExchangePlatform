@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
@@ -465,14 +466,26 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call API Purchase Package by Wallet
     private val _walletPurchaseResponse = MutableLiveData<Resource<WalletPurchaseResponse>>()
-    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> =
+    val createRentalPostingTransactionByWallet: MutableLiveData<Resource<WalletPurchaseResponse>> =
         _walletPurchaseResponse
 
-    fun purchasePackagePostingWallet(token: String, rentalPackageId: Int) {
+    fun createRentalPostingTransactionByWallet(token: String, rentalPackageId: Int) {
         viewModelScope.launch {
             _walletPurchaseResponse.postValue(Resource.loading(null))
             walletAPIRepository.purchasePackagePostingWallet(token, rentalPackageId).let {
                 _walletPurchaseResponse.postValue(it)
+            }
+        }
+    }
+
+    private val _createExchangePostingByWallet = MutableLiveData<Resource<WalletPurchaseResponse>>()
+    val createExchangePostingTransactionByWallet: MutableLiveData<Resource<WalletPurchaseResponse>> =
+        _createExchangePostingByWallet
+    fun createExchangePostingTransactionByWallet(token: String, exchangePackageId: Int) {
+        viewModelScope.launch {
+            _createExchangePostingByWallet.postValue(Resource.loading(null))
+            walletAPIRepository.purchasePackagePostingWallet(token, exchangePackageId).let {
+                _createExchangePostingByWallet.postValue(it)
             }
         }
     }
@@ -495,10 +508,10 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call API Create Posting
     private val _postingTimeshareResponse = MutableLiveData<Resource<PostingTimeshareResponse>>()
-    val postingTimeshareResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
+    val createRentalPosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _postingTimeshareResponse
 
-    fun createPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+    fun createRentalPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
         viewModelScope.launch {
             _postingTimeshareResponse.postValue(Resource.loading(null))
             customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
@@ -506,6 +519,20 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+
+
+    private val _createExchangePosting = MutableLiveData<Resource<PostingTimeshareResponse>>()
+    val createExchangePosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
+        _createExchangePosting
+    fun createExchangePosting(token: String, exchangeTimeshareDTO: ExchangeTimeshareDTO) {
+        viewModelScope.launch {
+            _createExchangePosting.postValue(Resource.loading(null))
+            customerAPIRepository.createExchangePosting(token, exchangeTimeshareDTO).let {
+                _createExchangePosting.postValue(it)
+            }
+        }
+    }
+
 
 
     // Tracking Yes or No for Step 2
