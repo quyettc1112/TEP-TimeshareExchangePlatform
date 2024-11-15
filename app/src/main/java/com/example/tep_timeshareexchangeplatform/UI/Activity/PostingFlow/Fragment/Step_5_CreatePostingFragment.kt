@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -599,33 +600,15 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     private fun exchangePackage12ButtonClick() {
         binding.btnNext.setOnClickListener {
+            if(!isDateExchangeValid()) {
+                return@setOnClickListener
+            }
+            if (!isProvinceValid()) {
+                return@setOnClickListener
+            }
             if (!isImageValid()) {
                 return@setOnClickListener
             }
-            val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
-            val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
-
-            if (numberOfNights == 0) {
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
-                }
-                Toast.makeText(requireContext(), "Vui lòng chọn ngày trao đổi", Toast.LENGTH_SHORT)
-                    .show()
-                return@setOnClickListener
-            }
-
-            if (provinceId == 0) {
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
-                }
-                Toast.makeText(
-                    requireContext(),
-                    "Vui lòng chọn tỉnh thành mong muốn trao đổi",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-
             postingFlowViewModel.updateStep(6)
         }
     }
@@ -691,6 +674,30 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             }
             binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
 
+            return false
+        }
+        return true
+    }
+
+    private fun isDateExchangeValid() : Boolean {
+        val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
+        if (numberOfNights == 0) {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            showInfoToast("Vui lòng chọn ngày trao đổi")
+            return false
+        }
+        return true
+    }
+
+    private fun isProvinceValid() : Boolean {
+        val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
+        if (provinceId == 0) {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            showInfoToast("Vui lòng chọn tỉnh thành")
             return false
         }
         return true
@@ -772,6 +779,42 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     override fun onResume() {
         super.onResume()
+    }
+
+    private fun showErrorToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Error",
+            string,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showSuccessToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Success",
+            string,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showInfoToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Failed",
+            string,
+            MotionToastStyle.INFO,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
     }
 
 }
