@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UI.Activity.PostingFlow.Fragment.Step_5_CreatePostingFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:fillViewport="true"
         android:paddingTop="10dp"
@@ -94,8 +94,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
-
-
 
                         <include
                             android:visibility="gone"
@@ -492,17 +490,142 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!--// List Image-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/crl_content_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:visibility="visible"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/crl_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--// Title Text-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/crl_image_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/blue_header_section"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_add_image"
+                            android:layout_width="100dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:backgroundTint="@color/blue_btn_search"
+                            android:text="Thêm ảnh"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <TextView
+                            android:id="@+id/textView16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxWidth="300dp"
+                            android:padding="5dp"
+                            android:text="Hình ảnh phòng"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Content Image -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/crl_image_info">
+                        <TextView
+                            android:layout_gravity="left"
+                            android:padding="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chọn ảnh đại diện Cho phòng của bạn"
+                            android:fontFamily="@font/inter_semibold"
+                            android:layout_marginTop="10dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_gravity="center"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primary_background_F9"
+                            android:layout_margin="5dp">
+                            <ImageView
+                                android:id="@+id/iv_main_image"
+                                android:src="@drawable/ic_image_placeholder"
+                                android:scaleType="centerCrop"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </ImageView>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_gravity="left"
+                            android:padding="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chọn ảnh phòng của bạn liên quan đến phòng của bạn"
+                            android:fontFamily="@font/inter_semibold"
+                            android:layout_marginTop="10dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:minHeight="150dp"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingTop="10dp"
+                            tools:listitem="@layout/item_image_upload"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="150dp"/>
 
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 

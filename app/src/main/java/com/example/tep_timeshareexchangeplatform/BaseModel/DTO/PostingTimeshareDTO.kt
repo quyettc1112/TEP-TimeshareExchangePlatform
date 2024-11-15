@@ -25,7 +25,8 @@ data class PostingTimeshareDTO(
     @SerializedName("cancellationTypeId") val cancellationTypeId: Int,
     @SerializedName("checkinDate") val checkinDate: String,
     @SerializedName("checkoutDate") val checkoutDate: String,
-    @SerializedName("rentalPackageId") val rentalPackageId: Int
+    @SerializedName("rentalPackageId") val rentalPackageId: Int,
+    @SerializedName("imageUrls") val imageUrls: List<String>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
@@ -35,7 +36,8 @@ data class PostingTimeshareDTO(
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString().toString(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.createStringArrayList() ?: emptyList()
     ) {
     }
 
@@ -48,6 +50,8 @@ data class PostingTimeshareDTO(
         parcel.writeString(checkinDate)
         parcel.writeString(checkoutDate)
         parcel.writeInt(rentalPackageId)
+        parcel.writeStringList(imageUrls)
+
     }
 
     override fun describeContents(): Int {

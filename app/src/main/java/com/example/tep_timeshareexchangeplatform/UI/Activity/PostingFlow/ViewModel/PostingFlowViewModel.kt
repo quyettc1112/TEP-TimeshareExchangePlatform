@@ -440,6 +440,9 @@ class PostingFlowViewModel @Inject constructor(
     fun selectPaymentMethod(method: PaymentMethod) {
         _selectedPaymentMethod.value = method
     }
+    fun getSelectedPaymentMethod(): PaymentMethod {
+        return _selectedPaymentMethod.value ?: PaymentMethod.VNPAY
+    }
 
     // ----------------------------------------------------------//
     // Call VNPAY API
@@ -454,6 +457,9 @@ class PostingFlowViewModel @Inject constructor(
                 _responseVNPAYUrl.postValue(it)
             }
         }
+    }
+    fun getVNPAYUrl(): String {
+        return _responseVNPAYUrl.value?.data?.url ?: ""
     }
 
     // ----------------------------------------------------------//
@@ -531,6 +537,16 @@ class PostingFlowViewModel @Inject constructor(
     // Image URI, Bind To MutiplePart
     private val _imageList = MutableLiveData<List<ImageUploadModel>>(emptyList())
     val imageList: LiveData<List<ImageUploadModel>> get() = _imageList
+    // Đặt ảnh chính
+    fun setMainImage(mainImage: ImageUploadModel) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            // Kiểm tra nếu ảnh chính đã tồn tại, xóa nó
+            remove(mainImage)
+            // Thêm ảnh chính vào đầu danh sách
+            add(0, mainImage)
+        } ?: listOf(mainImage) // Nếu danh sách rỗng, khởi tạo với ảnh chính
+    }
+
     fun addImages(newImages: List<ImageUploadModel>) {
         _imageList.value = _imageList.value?.toMutableList()?.apply {
             addAll(newImages)
@@ -554,6 +570,9 @@ class PostingFlowViewModel @Inject constructor(
             val response = storageAPIRepository.uploadFiles(token, images)
             _listImageResponse.postValue(response)
         }
+    }
+    fun getUploadedImageUrls(): List<String> {
+        return _listImageResponse.value?.data ?: emptyList()
     }
 
 

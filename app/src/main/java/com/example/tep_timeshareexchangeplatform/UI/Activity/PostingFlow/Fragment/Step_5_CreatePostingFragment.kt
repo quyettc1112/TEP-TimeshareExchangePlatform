@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -15,16 +16,20 @@ import android.widget.DatePicker
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.DateRangePickerDialog.DateRangeDialogFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.ImageUploadAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
@@ -48,6 +53,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private lateinit var binding: FragmentCreatePostingBinding
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
+    private val imageUploadAdapter = ImageUploadAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +70,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         setEventChangeMyTimeshare()
         bindDataSpinnerCancellationPolicy()
         setupTextWatchers()
+        initAdapter()
+        getImageFromGallery()
         return binding.root
     }
 
@@ -135,6 +143,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 Constant.RENTAL_POSTING_FLOW -> {
                     rentalPackageHandleUI(packageModel)
                 }
+
                 Constant.EXCHANGER_POSTING_FLOW -> {
                     exchangePackageHandleUI(packageModel)
                 }
@@ -436,20 +445,32 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     val startDateString = formatDateByLocale(Date(startDate), requireContext())
                     val endDateString = formatDateByLocale(Date(endDate), requireContext())
 
-                    val endDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
-                    val startDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
+                    val endDateOfWeek =
+                        SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
+                    val startDateOfWeek =
+                        SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
 
                     postingFlowViewModel.setExchangeDateRange(startDate, endDate)
 
                     binding.includeExchangeMethod12.tvCheckInDate.apply {
                         text = startDateString
-                        setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
                     }
                     binding.includeExchangeMethod12.tvCheckInDayOfWeek.text = startDateOfWeek
                     binding.includeExchangeMethod12.tvCheckOutDayOfWeek.text = endDateOfWeek
                     binding.includeExchangeMethod12.tvCheckOutDate.apply {
                         text = endDateString
-                        setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
                     }
 
                     // Night
@@ -477,36 +498,110 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
 
+    // Funtion to Load Image
+    private fun initAdapter() {
+        binding.rvImage.apply {
+            adapter = imageUploadAdapter
+            layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        }
+        imageUploadAdapter.onDeleteClick = {
+            imageUploadAdapter.removeItem(it)
+            postingFlowViewModel.deleteImage(it)
+        }
+    }
+
+    private fun getImageFromGallery() {
+        binding.btnAddImage.setOnClickListener {
+            binding.includePaymentMethod12.etRoomPrice.clearFocus()
+            showImageSelectionDialog()
+        }
+    }
+
+    private fun showImageSelectionDialog() {
+        val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Chọn loại ảnh")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        // Chọn ảnh chính
+                        openGallery(true)
+                    }
+
+                    1 -> {
+                        // Chọn ảnh phụ
+                        openGallery(false)
+                    }
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Hủy") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun openGallery(isMainImage: Boolean) {
+        if (isMainImage) {
+            pickSingleImageLauncher.launch("image/*") // Chỉ chọn 1 ảnh
+        } else {
+            pickImagesLauncher.launch("image/*") // Chọn nhiều ảnh
+        }
+    }
+
+    private val pickImagesLauncher =
+        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+            if (uris.isNotEmpty()) {
+                val listImage = mutableListOf<ImageUploadModel>()
+                for (uri in uris) {
+                    listImage.add(ImageUploadModel.create(uri))
+                }
+                // Save To View Model
+                postingFlowViewModel.addImages(listImage)
+                // Show UI
+                imageUploadAdapter.addImage(listImage)
+            }
+        }
+    private val pickSingleImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                // Load ảnh chính vào ImageView
+                binding.ivMainImage.setImageURI(uri)
+
+                // Optionally, update ViewModel or perform other actions
+                postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
+            }
+        }
+
+
     // Function to set event next
     private fun rentalPackage12ButtonClick() {
         binding.btnNext.setOnClickListener {
-            if (postingFlowViewModel.pricePerNight.value == 0.toLong() || postingFlowViewModel.pricePerNight.value == null) {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng nhập gia phong",
-                    MotionToastStyle.ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
-                }
-            } else {
-                postingFlowViewModel.updateStep(6)
+            if (!isPriceInputvalid()) {
+                return@setOnClickListener
             }
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
+            postingFlowViewModel.updateStep(6)
+
         }
     }
 
     private fun rentalPackage34ButtonClick() {
         binding.btnNext.setOnClickListener {
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
             postingFlowViewModel.updateStep(6)
         }
     }
 
     private fun exchangePackage12ButtonClick() {
         binding.btnNext.setOnClickListener {
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
             val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
             val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
 
@@ -514,7 +609,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
                 }
-                Toast.makeText(requireContext(), "Vui lòng chọn ngày trao đổi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Vui lòng chọn ngày trao đổi", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -522,7 +618,11 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
                 }
-                Toast.makeText(requireContext(), "Vui lòng chọn tỉnh thành mong muốn trao đổi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Vui lòng chọn tỉnh thành mong muốn trao đổi",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -530,6 +630,71 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
+
+    private fun isImageValid(): Boolean {
+        val mainImage =
+            postingFlowViewModel.imageList.value?.firstOrNull() // Ảnh chính là ảnh đầu tiên
+        val subImages =
+            postingFlowViewModel.imageList.value?.drop(1) // Ảnh phụ là các ảnh sau ảnh chính
+
+        return when {
+            mainImage == null -> {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng chọn ảnh chính",
+                    MotionToastStyle.WARNING,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
+                false
+            }
+
+            subImages.isNullOrEmpty() || subImages.size < 6 -> {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng chọn ít nhất 6 ảnh phụ",
+                    MotionToastStyle.WARNING,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
+                false
+            }
+
+            else -> true
+        }
+    }
+
+    private fun isPriceInputvalid(): Boolean {
+        val pricePerNight = binding.includePaymentMethod12.etRoomPrice.text.toString()
+        if (pricePerNight.isEmpty()) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Error",
+                "Vui lòng nhập gia phong",
+                MotionToastStyle.WARNING,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
+
+            return false
+        }
+        return true
+    }
 
     // Function to validate all fields
     private fun setupTextWatchers() {

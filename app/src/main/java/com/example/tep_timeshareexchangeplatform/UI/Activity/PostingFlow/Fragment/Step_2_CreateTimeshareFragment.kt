@@ -53,7 +53,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var unitTypeAdapterPosting = UnitTypeAdapterPosting(true)
     private var amenitiesAdapter = AmenitiesAdaper()
     private var amenitiesEntertamentAdapter = AmenitiesAdaper()
-    private var imageUploadAdapter = ImageUploadAdapter()
     private var policyAmentitiesAdapter = AmenitiesAdaper()
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
 
@@ -75,8 +74,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         observeViewModel()
         setEventChangeLocation()
         setValueUnitRoom()
-        getImageFromGallery()
-        sendRequestCreateTimeshare()
         setEventChangeDate()
         routeRoomDistribution()
         setEventSaveAmenities()
@@ -121,15 +118,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${listUnitType.status}",
-                        "${listUnitType.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${listUnitType.message}")
                 }
             }
         }
@@ -145,15 +134,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${roomList.status}",
-                        "${roomList.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${roomList.message}")
                 }
             }
         }
@@ -171,15 +152,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${unitType.status}",
-                        "${unitType.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${unitType.message}")
                 }
             }
 
@@ -206,15 +179,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${timeshareDTO.status}",
-                        "${timeshareDTO.data}",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showSuccessToast("Create Timeshare Success")
                     postingFlowViewModel.updateTaskProgress(1)
                     postingFlowViewModel.updateStep(3)
                 }
@@ -283,30 +248,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
 
-        // Upload Image
-        postingFlowViewModel.uploadImageResponse.observe(viewLifecycleOwner) { uploadImageResponse ->
-            when (uploadImageResponse.status) {
-                Status.LOADING -> {
-                    (activity as PostingFlowActivity).showLoadingWaiting(true)
-                }
-
-                Status.SUCCESS -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    Log.d("CheckUploadImage", "observeViewModel: ${uploadImageResponse.data}")
-                    // Call Request Create Timeshare
-                    callRequestCreateTimeshare()
-                }
-
-                Status.ERROR -> {
-                    (activity as PostingFlowActivity).showErrorDialog(
-                        "${uploadImageResponse.message}",
-                        "Back"
-                    )
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                }
-            }
-        }
-
 
     }
 
@@ -315,11 +256,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         amenitiesAdapter.submitList(Constant.listAmenities)
         amenitiesEntertamentAdapter.submitList(Constant.listEntertament)
         policyAmentitiesAdapter.submitList(Constant.listPolicy)
-        imageUploadAdapter.submitList(listOf())
-        imageUploadAdapter.onDeleteClick = {
-            imageUploadAdapter.removeItem(it)
-            postingFlowViewModel.deleteImage(it)
-        }
+
 
     }
 
@@ -461,15 +398,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     if (token != null && unitTypeID != null) {
                         postingFlowViewModel.getUnitTypeDetail(token, unitTypeID)
                     } else {
-                        MotionToast.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            "Token is null",
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                        )
+                        showErrorToast("Token is null")
                     }
                 }
 
@@ -549,28 +478,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                MotionToast.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Please fill in all required fields",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                )
+                showInfoToast("Please fill in all required fields")
                 return@setOnClickListener
             }
 
             if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
-                MotionToast.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Please select a room type",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                )
+                showErrorToast("Please select a unit type")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
                 }
@@ -704,100 +617,30 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
 
-    // 5. Display Image Upload
-    private fun getImageFromGallery() {
-        binding.btnAddImage.setOnClickListener {
-            openGallery()
-        }
-    }
-
-    fun openGallery() {
-        pickImagesLauncher.launch("image/*")
-    }
-
-    private val pickImagesLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-            if (uris.isNotEmpty()) {
-                val listImage = mutableListOf<ImageUploadModel>()
-                for (uri in uris) {
-                    listImage.add(ImageUploadModel.create(uri))
-                }
-                // Save To View Model
-                postingFlowViewModel.addImages(listImage)
-
-                // Show UI
-                imageUploadAdapter.addImage(listImage)
-            }
-        }
-
-
-    // Send Request
-    // Send Request To Create Image List
-    private fun callRequestCreateImageList() {
-        if(!tokenManager.isLoggedIn()) {
-            MotionToast.createColorToast(
-                requireActivity(),
-                "Error",
-                "Token is null",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-            )
-            return
-        }
-
-        if (postingFlowViewModel.imageList.value.isNullOrEmpty()) {
-            binding.scrollView.post {
-                binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-            }
-
-            MotionToast.createColorToast(
-                requireActivity(),
-                "Error",
-                "Token is null",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-            )
-            return
-        }
-
-        // Call If Token is not null, and Image List is not null
-        postingFlowViewModel.callUploadImages(tokenManager.getAccessToken().toString())
-    }
-
     private fun callRequestCreateTimeshare() {
-        val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
-        if (checkYN) {
-            sendRequestOptionYes()
-        } else {
-            // Call API to create Room
-            if (!tokenManager.isLoggedIn()) {
-                Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
-                return
-            }
-            val roomDTO: RoomDTO = RoomDTO(
-                roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
-                isActive = true,
-                resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
-                status = "Available",
-                unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
-                roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
-                roomAmenities = listOf()
-            )
-            postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
-
-        }
-    }
-
-
-    private fun sendRequestCreateTimeshare() {
         binding.btnNext.setOnClickListener {
-            callRequestCreateImageList()
-        }
+            val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
+            if (checkYN) {
+                sendRequestOptionYes()
+            } else {
+                // Call API to create Room
+                if (!tokenManager.isLoggedIn()) {
+                    Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val roomDTO: RoomDTO = RoomDTO(
+                    roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
+                    isActive = true,
+                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
+                    status = "Available",
+                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
+                    roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
+                    roomAmenities = listOf()
+                )
+                postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
 
+            }
+        }
     }
 
     private fun sendRequestOptionYes() {
@@ -826,7 +669,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
     }
 
-
     // Location Activity Result
     private fun initActivityLauncher() {
         locationResultLauncher =
@@ -852,7 +694,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.includeUnitTypeNo.root.visibility = View.GONE
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
 
             }
@@ -860,7 +701,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             2 -> {
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
             }
 
@@ -881,18 +721,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             5 -> {
-                binding.crlContentImage.visibility = View.VISIBLE
                 binding.btnNext.visibility = View.VISIBLE
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-                }
+                callRequestCreateTimeshare()
             }
         }
     }
 
     private fun setValueUnitRoom() {
-
-
         // Set List Amenities
         binding.rvAmenities.apply {
             adapter = amenitiesAdapter
@@ -910,13 +745,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             adapter = policyAmentitiesAdapter
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
-
-        // Set List Image
-        binding.rvImage.apply {
-            adapter = imageUploadAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
 
     }
 
@@ -946,6 +774,42 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         // Nếu tất cả các kiểm tra đều vượt qua
         return true
+    }
+
+    private fun showErrorToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Error",
+            string,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showSuccessToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Success",
+            string,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showInfoToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Failed",
+            string,
+            MotionToastStyle.INFO,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
     }
 
 
