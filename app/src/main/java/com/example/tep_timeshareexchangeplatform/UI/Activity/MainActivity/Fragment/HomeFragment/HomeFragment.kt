@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -48,7 +49,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
-    private val publicsPostingAdapter = PublicPostingAdapterRV()
+    private val publicsPostingAdapter = HomePostingAdapter()
     private val resortAdapterMB = ResortAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter: GridAdapter
@@ -198,8 +199,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
      */
     private fun showUIAdapter() {
         // List Timesahre Recomend
-        binding.rvSuggestTimeshare.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSuggestTimeshare.layoutManager = GridLayoutManager(
+            requireContext(),
+            1, // Số lượng hàng (span) là 1
+            GridLayoutManager.HORIZONTAL, // Hiển thị theo chiều ngang
+            false
+        )
         binding.rvSuggestTimeshare.adapter = publicsPostingAdapter
 
         // List Blog

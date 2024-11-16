@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.databinding.ItemPostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareVer1Binding
 import java.text.DecimalFormat
 
@@ -19,10 +20,11 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
     var onItemClick: ((ExchangesResponse.Content) -> Unit)? = null
     var onFavoriteClick: ((ExchangesResponse.Content) -> Unit)? = null
 
-    inner class ExchangePostingViewHolder(binding: ItemTimeshareVer1Binding): BaseItemViewHolderCF<ExchangesResponse.Content, ItemTimeshareVer1Binding>(binding) {
+    inner class ExchangePostingViewHolder(binding: ItemPostingBinding): BaseItemViewHolderCF<ExchangesResponse.Content, ItemPostingBinding>(binding) {
         override fun bind(item: ExchangesResponse.Content) {
             Glide.with(binding.imImageTimeshare.context)
-                .load(R.drawable.im_matiral_timeshare)
+                .load(item.unitTypeDTO.photos)
+                .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
             binding.tvTimeshareName.text = item.roomName
             binding.tvLocation.text = item.address
@@ -62,7 +64,7 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangePostingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemTimeshareVer1Binding.inflate(inflater, parent, false)
+        val binding = ItemPostingBinding.inflate(inflater, parent, false)
         return ExchangePostingViewHolder(binding)
     }
 

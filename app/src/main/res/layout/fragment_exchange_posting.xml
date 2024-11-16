@@ -168,7 +168,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="70dp"
-        android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

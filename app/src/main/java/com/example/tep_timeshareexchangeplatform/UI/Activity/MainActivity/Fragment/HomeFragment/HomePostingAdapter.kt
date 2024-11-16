@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.HomeFragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +10,17 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.databinding.ItemPostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareVer1Binding
 import java.text.DecimalFormat
 
-class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, PublicPostingAdapterRV.TimeshareAdapterRVViewHolder>() {
+class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostingAdapter.HomePostingViewHolder>() {
+
     var onItemClick: ((PublicPostingResponse.Content) -> Unit)? = null
     var onFavoriteClick: ((PublicPostingResponse.Content) -> Unit)? = null
 
-    inner class TimeshareAdapterRVViewHolder(binding: ItemPostingBinding): BaseItemViewHolderCF<PublicPostingResponse.Content, ItemPostingBinding>(binding) {
+    inner class HomePostingViewHolder(binding: ItemTimeshareVer1Binding): BaseItemViewHolderCF<PublicPostingResponse.Content, ItemTimeshareVer1Binding>(binding) {
         override fun bind(item: PublicPostingResponse.Content) {
             Glide.with(binding.imImageTimeshare.context)
                 .load(item.unitTypeDTO.photos)
@@ -64,14 +66,13 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeshareAdapterRVViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePostingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemPostingBinding.inflate(inflater, parent, false)
-        return TimeshareAdapterRVViewHolder(binding)
+        val binding = ItemTimeshareVer1Binding.inflate(inflater, parent, false)
+        return HomePostingViewHolder(binding)
     }
 
     fun clearData() {
         submitList(listOf())
     }
-
 }
