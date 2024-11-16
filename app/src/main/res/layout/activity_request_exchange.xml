@@ -112,6 +112,7 @@
 
             <!--// Exchange Timeshare-->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ll_my_timeshare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

@@ -108,6 +108,9 @@ class RequestExchangeActivity : BaseActivity() {
                     binding.llAddMyTimeshare.visibility = View.GONE
                     binding.animationViewMyTimeshare.visibility = View.GONE
                     binding.llValidYear.visibility = View.VISIBLE
+                    binding.scrollView.post {
+                        binding.scrollView.smoothScrollTo(0, binding.llMyTimeshare.top)
+                    }
                     resources.data?.let {
                         bindDataMyTimeshare(it)
                     }
