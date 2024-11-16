@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -25,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyTimeshareActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMyTimeshareBinding
-    private var myTimeshareAdapter = MyTimeshareAdapter()
+    private lateinit var myTimeshareAdapter : MyTimeshareAdapter
     private lateinit var tokenManager: TokenManager
     private val myTimeshareViewModel: MyTimeshareViewModel by viewModels()
 
@@ -40,7 +41,7 @@ class MyTimeshareActivity : BaseActivity() {
             insets
         }
         tokenManager = TokenManager(this)
-
+        getIntentValue()
         if (!tokenManager.isLoggedIn()) {
             MotionToast.Companion.createToast(
                 this,
@@ -61,6 +62,15 @@ class MyTimeshareActivity : BaseActivity() {
         observeData()
         setEventItemClick()
 
+    }
+
+    private fun getIntentValue() {
+        val intent = intent
+        if (intent.hasExtra(Constant.REQUEST_GET_MY_TIMESHARE)) {
+            myTimeshareAdapter = MyTimeshareAdapter(true)
+        } else {
+            myTimeshareAdapter = MyTimeshareAdapter(false)
+        }
     }
 
     private fun initAdapter() {
@@ -136,6 +146,18 @@ class MyTimeshareActivity : BaseActivity() {
             startActivity(intent)
         }
 
+        myTimeshareAdapter.onSelectExchangeItemClick = {
+            returnSelectedTimeshare(it.timeShareId)
+        }
+
+    }
+
+    private fun returnSelectedTimeshare(timeshareID: Int) {
+        val resultIntent = Intent().apply {
+            putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, timeshareID)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish() // Đóng Activity và quay lại Activity gọi
     }
 
     override fun onBackPressed() {

@@ -30,7 +30,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectTimes
 class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_timeshare) {
 
     private lateinit var binding: FragmentSelectTimeshareBinding
-    private var myTimeshareAdapter = MyTimeshareAdapter()
+    private var myTimeshareAdapter = MyTimeshareAdapter(true)
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager

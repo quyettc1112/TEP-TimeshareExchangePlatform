@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
@@ -140,6 +141,13 @@ interface CustomerAPIService {
         @Body feedbackDTO: FeedbackDTO
     ) : Response<FeedbackResponse>
 
+
+    // Get My Timeshare Detail
+    @GET("customer/timeshare/{timeShareID}")
+    suspend fun getMyTimeshareDetail(
+        @Header ("Authorization") token: String,
+        @Path("timeShareID") timeshareId: Int
+    ): Response<MyTimeshareDetailResponse>
     //
 
 
