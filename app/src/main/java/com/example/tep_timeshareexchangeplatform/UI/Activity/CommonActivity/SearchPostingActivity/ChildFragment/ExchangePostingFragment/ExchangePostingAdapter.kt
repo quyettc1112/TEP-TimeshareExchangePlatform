@@ -19,6 +19,7 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
 
     var onItemClick: ((ExchangesResponse.Content) -> Unit)? = null
     var onFavoriteClick: ((ExchangesResponse.Content) -> Unit)? = null
+    var onExchangeButtonClick: ((ExchangesResponse.Content) -> Unit)? = null
 
     inner class ExchangePostingViewHolder(binding: ItemPostingBinding): BaseItemViewHolderCF<ExchangesResponse.Content, ItemPostingBinding>(binding) {
         override fun bind(item: ExchangesResponse.Content) {
@@ -39,6 +40,13 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
             binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
+            }
+            binding.tvNumberOfNight.visibility = View.GONE
+            binding.llRatingContainer.visibility = View.GONE
+            binding.tvPrice.visibility = View.GONE
+            binding.btnExchange.visibility = View.VISIBLE
+            binding.btnExchange.setOnClickListener {
+                onExchangeButtonClick?.let { it1 -> it1(item) }
             }
 
         }

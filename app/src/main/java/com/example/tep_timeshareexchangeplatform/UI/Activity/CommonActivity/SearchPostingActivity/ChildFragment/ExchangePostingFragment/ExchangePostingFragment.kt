@@ -16,8 +16,10 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ExchangeDetailActivity.ExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -85,7 +87,6 @@ class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting)
 
     }
 
-
     private fun setPublicPostingListUI() {
         binding.rcExchangePosting.layoutManager =
             GridLayoutManager(requireActivity(), 2, LinearLayoutManager.VERTICAL, false)
@@ -110,6 +111,11 @@ class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting)
 
         adapter.onItemClick = {
             val intent = Intent(requireActivity(), ExchangeDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_POSTING_ID, it.exchangePostingId)
+            startActivity(intent)
+        }
+        adapter.onExchangeButtonClick = {
+            val intent = Intent(requireActivity(), RequestExchangeActivity::class.java)
             intent.putExtra(Constant.DEFAULT_POSTING_ID, it.exchangePostingId)
             startActivity(intent)
         }

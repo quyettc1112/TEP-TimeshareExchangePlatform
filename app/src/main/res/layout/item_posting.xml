@@ -8,7 +8,6 @@
     android:minHeight="330dp"
     android:backgroundTint="@color/white"
     android:background="@drawable/background_stroke_around"
-    android:layout_marginBottom="10dp"
     android:layout_height="wrap_content">
 
     <!--// Image Timeshare-->
@@ -165,6 +164,20 @@
 
     </LinearLayout>
 
+    <!--// Exchange Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_exchange"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/ripple_no_color"
+        android:backgroundTint="@color/blue_see_more"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="Trao Đổi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
     <!--// Price-->
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -232,6 +245,7 @@
         app:strokeColor="@color/white">
 
         <LinearLayout
+            android:id="@+id/ll_rating_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|left"
