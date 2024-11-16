@@ -33,7 +33,6 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -310,8 +309,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
     private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
-        val unitTypeDetail = CustomDialog(requireContext())
-        unitTypeDetail.show()
     }
 
     // Yes. User Have Room Type

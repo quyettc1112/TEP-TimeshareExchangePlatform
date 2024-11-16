@@ -33,29 +33,4 @@ class ExchangeDetailViewModel @Inject constructor(
     }
 
 
-    // Call API Get Is Customer Exist
-    private val _isCustomerExist = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val isCustomerExist: MutableLiveData<Resource<CustomerInfoResponse>>
-        get() = _isCustomerExist
-    fun callIsCustomerExist(token: String) {
-        viewModelScope.launch {
-            _isCustomerExist.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
-                _isCustomerExist.postValue(it)
-            }
-        }
-    }
-
-    // Call API Create Customer
-    private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
-    val createCustomerResponse: MutableLiveData<Resource<CustomerResponse>>
-        get() = _customerResponse
-    fun callCreateCustomer(token: String, customerDTO: CustomerDTO) {
-        viewModelScope.launch {
-            _customerResponse.postValue(Resource.loading(null))
-            customerAPIRepository.createCustomer(token, customerDTO).let {
-                _customerResponse.postValue(it)
-            }
-        }
-    }
 }

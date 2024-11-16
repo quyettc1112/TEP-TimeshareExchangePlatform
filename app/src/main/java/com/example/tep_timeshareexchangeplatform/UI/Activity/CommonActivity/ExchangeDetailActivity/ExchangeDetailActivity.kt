@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
@@ -40,9 +41,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityExchangeDetailBinding
-    private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
     private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
+    private val imagePostingAdapter = ImagePostingAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var tokenManager: TokenManager
     private val exchangeDetailViewModel: ExchangeDetailViewModel by viewModels()
@@ -60,12 +61,10 @@ class ExchangeDetailActivity : BaseActivity() {
         tokenManager = TokenManager(this)
         initAdapter()
         getIntentValue()
-        setListImageTimeshare()
         setToolBarAction()
         amenitiesListTimeshare()
         setReviewTimeshare()
     }
-
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_POSTING_ID, 0)
@@ -108,72 +107,6 @@ class ExchangeDetailActivity : BaseActivity() {
             }
         }
 
-        // Call check User Is Member
-        exchangeDetailViewModel.isCustomerExist.observe(this) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    hideLoadingWaiting()
-                    if (it.data!!.isMember) {
-                        tokenManager.saveCustomerInfo(it.data)
-                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                        val intent =
-                            Intent(this@ExchangeDetailActivity, OwnerInfoActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                        //intentToMemberShipActivity()
-                    }
-                }
-
-                Status.ERROR -> {
-                    hideLoadingWaiting()
-                    if (it.message!!.contains("404")) {
-                        //intentToMemberShipActivity()
-                    }
-                }
-
-                Status.LOADING -> {
-                    showLoadingWaiting(true)
-                }
-            }
-        }
-
-        // Call Create Customer
-        exchangeDetailViewModel.createCustomerResponse.observe(this) {
-            when (it.status) {
-                Status.LOADING -> {
-                    showLoadingWaiting(true)
-                }
-
-                Status.SUCCESS -> {
-                    hideLoadingWaiting()
-                    MotionToast.createColorToast(
-                        this,
-                        "Success",
-                        "Create Customer Success",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                    exchangeDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
-                }
-
-                Status.ERROR -> {
-                    Log.d("CheckErrorCreate", it.message.toString() + " " + it.message.toString())
-                    MotionToast.createColorToast(
-                        this,
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                    hideLoadingWaiting()
-                }
-            }
-        }
 
 
     }
@@ -185,6 +118,9 @@ class ExchangeDetailActivity : BaseActivity() {
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
 
         }
+
+        // Bind Image Timeshare
+        bindDataListImage(postingDetail.imageUrls)
 
         // Resort Info
         binding.apply {
@@ -295,24 +231,26 @@ class ExchangeDetailActivity : BaseActivity() {
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
         reviewAdapter.submitList(Constant.listReview)
+        imagePostingAdapter.submitList(listOf())
     }
 
-    private fun setListImageTimeshare() {
+    private fun bindDataListImage( imageUrls: List<String>) {
+        imagePostingAdapter.submitList(imageUrls)
         // Set List Image Timeshare
-        binding.viewPager.apply {
-            adapter = imageAdapter
+        binding.viewPagerImage.apply {
+            adapter = imagePostingAdapter
         }
-        binding.indicator.setViewPager(binding.viewPager)
+        binding.indicator.setViewPager(binding.viewPagerImage)
 
         // Set Image Auto Scroll, Auto Scroll Time = 3s
-        autoScrollHelper.setupAutoScroll(binding.viewPager)
+        autoScrollHelper.setupAutoScroll(binding.viewPagerImage)
 
         // Set Action for Button Next Page and Back To
         binding.ivNextPage.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
+            binding.viewPagerImage.setCurrentItem(binding.viewPagerImage.currentItem + 1, true)
         }
         binding.icBackTo.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
+            binding.viewPagerImage.setCurrentItem(binding.viewPagerImage.currentItem - 1, true)
         }
     }
 
@@ -339,76 +277,5 @@ class ExchangeDetailActivity : BaseActivity() {
         }
     }
 
-    /*private fun setRequestButtonAction() {
-        binding.ctrRequestButton.setOnClickListener {
-            val postingDetail = exchangeDetailViewModel.exchangeDetail.value!!.data
-            if (postingDetail!!.exchangePackageName != null) {
-                val exchangePackge =
-                    ExchangePackageEnum.getPackageByName(postingDetail.exchangePackageName)
-                when (exchangePackge) {
-                    RentalPackageEnum.BASIC_SERVICE.packageModel -> {
-                        exchangeDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
-                    }
-
-                    else -> {
-                        val userLogState = tokenManager.getUserLogState()
-                        when (userLogState) {
-                            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
-                                val intent = Intent(this, PaymentRentalActivity::class.java)
-                                intent.putExtra(
-                                    Constant.DEFAULT_POSTING_ID,
-                                    postingDetail.exchangePostingId
-                                )
-                                startActivity(intent)
-                            }
-
-                            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
-                                val intent = Intent(this, PaymentRentalActivity::class.java)
-                                intent.putExtra(
-                                    Constant.DEFAULT_POSTING_ID,
-                                    postingDetail.exchangePostingId
-                                )
-                                startActivity(intent)
-                            }
-
-                            UserLogState.LOGGED_IN_AS_USER -> {
-                                val dialogFragment = MemberInfoDialog.newInstance()
-                                dialogFragment.show(supportFragmentManager, dialogFragment.tag)
-                                dialogFragment.setOnClickRequestButton(object :
-                                    MemberInfoDialog.OnClickRequestButton {
-                                    override fun onClickRequestButton(customerDTO: CustomerDTO) {
-                                        // Call API Create Customer
-                                        postingDetailViewModel.callCreateCustomer(
-                                            tokenManager.getAccessToken()
-                                                .toString(), customerDTO
-                                        )
-                                    }
-                                })
-                                // startActivity(Intent(this, MainActivity::class.java))
-                            }
-
-                            UserLogState.LOGGED_OUT -> {
-                                finish()
-                                MotionToast.Companion.createColorToast(
-                                    this,
-                                    "Thất Bại",
-                                    "Vui lòng đăng nhập để thực hiện chức năng này",
-                                    MotionToastStyle.ERROR,
-                                    MotionToast.GRAVITY_BOTTOM,
-                                    MotionToast.LONG_DURATION,
-                                    null
-                                )
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    private fun intentToMemberShipActivity() {
-        startActivity(Intent(this, MemberShipActivity::class.java))
-    }*/
 
 }

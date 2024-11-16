@@ -226,12 +226,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Divider Line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="8dp"
-                android:background="#E0E0E0" />
+
 
             <!-- Second Section: Room Pricing -->
             <LinearLayout
@@ -239,6 +234,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <!-- Divider Line -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="#E0E0E0" />
 
                 <!-- Room Price Per Night -->
                 <LinearLayout

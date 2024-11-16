@@ -17,7 +17,6 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.UnitTypeAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
@@ -65,7 +64,7 @@ class ResortDetailActivity : BaseActivity() {
 
 
         // Not yet Implemented
-        resortImageListAdapter = ResortImageListAdapter(Constant.listImage) {
+        resortImageListAdapter = ResortImageListAdapter(listOf()) {
             val intent = Intent(this, ImageListActivity::class.java)
             intent.putExtras(Bundle().apply {
                 putInt("imagePosition", it)
@@ -172,8 +171,7 @@ class ResortDetailActivity : BaseActivity() {
     }
 
     private fun bindDataUnitTypeDetailDialog(resortDetailModelResponse: ResortDetailModelResponse) {
-        val unitTypeDetail = CustomDialog(this)
-        unitTypeDetail.show()
+
     }
     private fun setListImageResort() {
         // List Destination

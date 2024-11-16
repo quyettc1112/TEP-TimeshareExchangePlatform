@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPostingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyPostingDetailBinding
-    private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
+    private var imageAdapter = ImageAdapter(listOf())
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val viewModel: MyPostingDetailViewModel by viewModels()

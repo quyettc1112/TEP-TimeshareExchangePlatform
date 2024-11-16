@@ -34,7 +34,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyTimeshareDetailBinding
-    private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
+    private var imageAdapter = ImageAdapter(listOf())
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val myTimeshareDetailViewModel: MyTimeshareDetailViewModel by viewModels()

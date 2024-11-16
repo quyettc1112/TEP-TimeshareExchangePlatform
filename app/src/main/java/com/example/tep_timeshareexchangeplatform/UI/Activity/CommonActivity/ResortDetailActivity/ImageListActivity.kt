@@ -51,16 +51,16 @@ class ImageListActivity : BaseActivity() {
 
         binding.viewPager.apply {
             viewPager = ImageViewPagerAdapter()
-            viewPager.submitList(Constant.listImage)
+            viewPager.submitList(listOf())
             adapter = viewPager
             setCurrentItem(startPosition, false)
-            binding.tvImageCount.text = "${startPosition + 1}/${Constant.listImage.size}"
+            binding.tvImageCount.text = "${startPosition + 1}"
 
         }
 
         binding.thumbnailRecyclerView.apply {
             recycler = ImageDetailAdapter(binding.thumbnailRecyclerView)
-            recycler.submitList(Constant.listImage)
+            recycler.submitList(listOf())
             recycler.onItemClick = {
                 binding.viewPager.setCurrentItem(it, true)
             }
@@ -76,7 +76,7 @@ class ImageListActivity : BaseActivity() {
                 super.onPageSelected(position)
                 recycler.setSelectedPosition(position)
                 recycler.smoothScrollToSelectedPosition(position)
-                binding.tvImageCount.text = "${position + 1}/${Constant.listImage.size}"
+                binding.tvImageCount.text = "${position + 1}"
             }
         })
 

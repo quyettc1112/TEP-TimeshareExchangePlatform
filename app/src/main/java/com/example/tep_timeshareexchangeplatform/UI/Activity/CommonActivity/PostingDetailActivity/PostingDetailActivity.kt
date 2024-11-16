@@ -39,7 +39,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostingDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTimeshareDetailBinding
-    private var imageAdapter = ImageAdapter(Constant.listTimeshareImage)
+    private var imageAdapter = ImageAdapter(listOf())
     private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
