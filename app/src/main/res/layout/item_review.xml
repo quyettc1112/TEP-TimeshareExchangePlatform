@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="5dp"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -21,7 +21,6 @@
             android:numStars="5"
             android:rating="4.5"
             android:stepSize="0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,20 +30,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="Username"
+            android:layout_marginTop="5dp"
             android:textColor="#999999"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
         <TextView
             android:id="@+id/tv_date_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginStart="10dp"
             android:text="26/07/2021"
             android:textColor="#999999"
-            android:layout_marginStart="10dp"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
             app:layout_constraintStart_toEndOf="@+id/ratingBar"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -56,11 +57,11 @@
         android:text="User has not shared any reviews yet"
         android:textColor="#666666"
         android:fontFamily="@font/inter_medium"
-        android:textSize="16sp"
+        android:textSize="14sp"
          />
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/primary_background"/>

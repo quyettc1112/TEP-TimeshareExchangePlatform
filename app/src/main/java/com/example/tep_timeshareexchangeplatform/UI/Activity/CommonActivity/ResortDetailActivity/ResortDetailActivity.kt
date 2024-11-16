@@ -63,15 +63,6 @@ class ResortDetailActivity : BaseActivity() {
 
 
 
-        // Not yet Implemented
-        resortImageListAdapter = ResortImageListAdapter(listOf()) {
-            val intent = Intent(this, ImageListActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putInt("imagePosition", it)
-            })
-            startActivity(intent)
-        }
-
     }
 
     private fun observeData() {
@@ -85,10 +76,12 @@ class ResortDetailActivity : BaseActivity() {
                         // Set Resort Detail Info
                         bindDataResortInfo(resortDetailViewModel.resortDetail.value?.data!!)
 
+                        bindDataImage(resortDetail.imageUrls)
+
                         setListImageResort()
                         bindDataUnitType(resortDetail.unitTypeDtoList)
                         bindDataAmenities()
-                        setReviewResort()
+                        bindDataReviewResort(resortDetail.feedbackList)
 
                         // Action Event
                         setTypeRoomClickAction()
@@ -115,7 +108,7 @@ class ResortDetailActivity : BaseActivity() {
     private fun initAdapter() {
         unitTypeAdapter.submitList(listOf())
         amenitiesAdapter.submitList(listOf())
-        reviewAdapter.submitList(Constant.listReview)
+        reviewAdapter.submitList(listOf())
     }
 
     private fun setTypeRoomClickAction() {
@@ -146,6 +139,16 @@ class ResortDetailActivity : BaseActivity() {
                 tvFindMore.visibility = View.GONE
             }
 
+        }
+    }
+    private fun bindDataImage(listResortImage: List<String>){
+        // Not yet Implemented
+        resortImageListAdapter = ResortImageListAdapter(listResortImage) {
+            val intent = Intent(this, ImageListActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putInt("imagePosition", it)
+            })
+            startActivity(intent)
         }
     }
 
@@ -209,7 +212,8 @@ class ResortDetailActivity : BaseActivity() {
         }
 
     }
-    private fun setReviewResort() {
+    private fun bindDataReviewResort(listReview: List<ResortDetailModelResponse.Feedback>) {
+        reviewAdapter.submitList(listReview)
         binding.rvReview.apply {
             adapter = reviewAdapter
             layoutManager = LinearLayoutManager(this@ResortDetailActivity)

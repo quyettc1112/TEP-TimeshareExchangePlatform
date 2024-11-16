@@ -63,7 +63,6 @@ class ExchangeDetailActivity : BaseActivity() {
         getIntentValue()
         setToolBarAction()
         amenitiesListTimeshare()
-        setReviewTimeshare()
     }
 
     private fun getIntentValue() {
@@ -231,7 +230,7 @@ class ExchangeDetailActivity : BaseActivity() {
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
         facilityAdapter.submitList(listOf())
-        reviewAdapter.submitList(Constant.listReview)
+        reviewAdapter.submitList(listOf())
         imagePostingAdapter.submitList(listOf())
     }
 
@@ -271,12 +270,6 @@ class ExchangeDetailActivity : BaseActivity() {
         }
     }
 
-    private fun setReviewTimeshare() {
-        binding.rvReview.apply {
-            adapter = reviewAdapter
-            layoutManager = LinearLayoutManager(this@ExchangeDetailActivity)
-        }
-    }
 
 
 }

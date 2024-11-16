@@ -374,7 +374,7 @@ class PostingDetailActivity : BaseActivity() {
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
         facilityAdapter.submitList(listOf())
-        reviewAdapter.submitList(Constant.listReview)
+        reviewAdapter.submitList(listOf())
     }
 
     private fun bindDataListImage(imageList: List<String>) {

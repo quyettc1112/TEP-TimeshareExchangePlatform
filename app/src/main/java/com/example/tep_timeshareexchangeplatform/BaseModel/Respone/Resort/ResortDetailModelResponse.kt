@@ -2,7 +2,6 @@ package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort
 
 
 import com.google.gson.annotations.SerializedName
-
 data class ResortDetailModelResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("resortName") val resortName: String,
@@ -12,11 +11,18 @@ data class ResortDetailModelResponse(
     @SerializedName("status") val status: String,
     @SerializedName("address") val address: String,
     @SerializedName("timeshareCompanyId") val timeshareCompanyId: Int,
-    @SerializedName("description") val description: Any?,
-    @SerializedName("resortAmenityList") val resortAmenityList: List<Any?>,
+    @SerializedName("description") val description: String,
+    @SerializedName("resortAmenityList") val resortAmenityList: List<ResortAmenity>,
     @SerializedName("isActive") val isActive: Boolean,
-    @SerializedName("unitTypeDtoList") val unitTypeDtoList: List<UnitTypeDto>
+    @SerializedName("unitTypeDtoList") val unitTypeDtoList: List<UnitTypeDto>,
+    @SerializedName("feedbackList") val feedbackList: List<Feedback>,
+    @SerializedName("imageUrls") val imageUrls: List<String>
 ) {
+    data class ResortAmenity(
+        @SerializedName("name") val name: String,
+        @SerializedName("type") val type: String
+    )
+
     data class UnitTypeDto(
         @SerializedName("id") val id: Int,
         @SerializedName("title") val title: String,
@@ -42,7 +48,21 @@ data class ResortDetailModelResponse(
     ) {
         data class UnitTypeAmenities(
             @SerializedName("name") val name: String,
-            @SerializedName("type") val type: String?
+            @SerializedName("type") val type: String?,
+            @SerializedName("isActive") val isActive: Boolean
+        )
+    }
+
+    data class Feedback(
+        @SerializedName("ratingPoint") val ratingPoint: Int,
+        @SerializedName("comment") val comment: String,
+        @SerializedName("user") val user: User,
+        @SerializedName("createdDate") val createdDate: String,
+        @SerializedName("isActive") val isActive: Boolean
+    ) {
+        data class User(
+            @SerializedName("fullName") val fullName: String,
+            @SerializedName("avatar") val avatar: String?
         )
     }
 }
