@@ -43,7 +43,7 @@ class ExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityExchangeDetailBinding
     private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
-    private val imagePostingAdapter = ImagePostingAdapter()
+    private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var tokenManager: TokenManager
     private val exchangeDetailViewModel: ExchangeDetailViewModel by viewModels()
@@ -229,6 +229,7 @@ class ExchangeDetailActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
+        imagePostingAdapter = ImagePostingAdapter()
         facilityAdapter.submitList(listOf())
         reviewAdapter.submitList(Constant.listReview)
         imagePostingAdapter.submitList(listOf())

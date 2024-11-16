@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPostingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyPostingDetailBinding
-    private var imageAdapter = ImageAdapter(listOf())
+    private lateinit var imagePostingAdapter: ImagePostingAdapter
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val viewModel: MyPostingDetailViewModel by viewModels()
@@ -51,7 +52,6 @@ class MyPostingDetailActivity : BaseActivity() {
             insets
         }
         initAdapter()
-        setListImageTimeshare()
         setAmenitiesListTimeshare()
 
         binding.customToolbar.onStartIconClick = {
@@ -115,6 +115,9 @@ class MyPostingDetailActivity : BaseActivity() {
         binding.includePackagePosting.apply {
             tvPackageDescription.visibility = View.GONE
         }
+        // Image List
+        bindDataListImage(myRentalPostingDetailResponse.imageUrls)
+
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
@@ -367,12 +370,13 @@ class MyPostingDetailActivity : BaseActivity() {
 
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
+        imagePostingAdapter = ImagePostingAdapter()
     }
 
-    private fun setListImageTimeshare() {
-        // Set List Image Timeshare
+    private fun bindDataListImage(imageList: List<String>) {
+        imagePostingAdapter.submitList(imageList)
         binding.viewPager.apply {
-            adapter = imageAdapter
+            adapter = imagePostingAdapter
         }
         binding.indicator.setViewPager(binding.viewPager)
 

@@ -144,6 +144,7 @@ data class PublicPostingDetailResponse(
     @SerializedName("resortAmenities") val resortAmenities: List<ResortAmenity>,
     @SerializedName("roomAmenities") val roomAmenities: List<RoomAmenity>,
     @SerializedName("unitTypeAmenities") val unitTypeAmenities: List<UnitTypeAmenity>,
+    @SerializedName("imageUrls") val imageUrls: List<String>,
     @SerializedName("active") val active: Boolean
 ) {
     data class UnitType(

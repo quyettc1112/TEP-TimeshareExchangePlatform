@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
@@ -37,9 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PostingDetailActivity : BaseActivity() {
-
     private lateinit var binding: ActivityTimeshareDetailBinding
-    private var imageAdapter = ImageAdapter(listOf())
+    private var imagePostingAdapter = ImagePostingAdapter()
     private var facilityAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
@@ -61,8 +61,6 @@ class PostingDetailActivity : BaseActivity() {
 
         initAdapter()
 
-        // Image
-        setListImageTimeshare()
         // Facility
         amenitiesListTimeshare()
         // Review
@@ -203,6 +201,10 @@ class PostingDetailActivity : BaseActivity() {
                 llVerify.visibility = View.GONE
             }
         }
+
+        // Bind Image
+        bindDataListImage(postingDetail.imageUrls)
+
 
         // Checkin Date, Check out Date
         binding.apply {
@@ -370,14 +372,16 @@ class PostingDetailActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
+        imagePostingAdapter = ImagePostingAdapter()
         facilityAdapter.submitList(listOf())
         reviewAdapter.submitList(Constant.listReview)
     }
 
-    private fun setListImageTimeshare() {
-        // Set List Image Timeshare
+    private fun bindDataListImage(imageList: List<String>) {
+        imagePostingAdapter.submitList(imageList)
         binding.viewPager.apply {
-            adapter = imageAdapter
+            adapter = imagePostingAdapter
+            offscreenPageLimit = 10
         }
         binding.indicator.setViewPager(binding.viewPager)
 
