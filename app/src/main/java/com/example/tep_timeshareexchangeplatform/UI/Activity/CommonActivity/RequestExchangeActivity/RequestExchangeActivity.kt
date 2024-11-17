@@ -161,7 +161,7 @@ class RequestExchangeActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     resources.data?.let {
-                        showSuccessToast(resources.message.toString())
+                        showSuccessToast("Gửi yêu cầu trao đổi thành công, Chờ phản hồi từ chủ bài đăng")
                         finish()
                     }
                 }

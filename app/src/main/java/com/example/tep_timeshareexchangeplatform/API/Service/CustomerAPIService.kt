@@ -153,7 +153,7 @@ interface CustomerAPIService {
     //
 
     // Send Exchange Request
-    @POST("customer/exchange/booking/{postingId}")
+    @POST("customer/exchange/request/{postingId}")
     suspend fun sendExchangeRequest(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int,
