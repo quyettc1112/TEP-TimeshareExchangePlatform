@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.displayBedsInfo
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.DialogBottomSheetBinding
@@ -15,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class UnitTypeDataDialog (
-    private val unitType: MyExchangePostingDetailResponse.UnitType
+   private val unitTypeModel: UnitTypeModel
 ) : BottomSheetDialogFragment() {
 
     private var _binding: DialogUnitTypeBinding? = null
@@ -39,44 +40,44 @@ class UnitTypeDataDialog (
     private fun bindData() {
         // Set Image
         Glide.with(binding.root.context)
-            .load(unitType.photos) // URL hình ảnh
+            .load(unitTypeModel.photos) // URL hình ảnh
             .placeholder(R.drawable.backgroud_earth) // Placeholder khi tải ảnh
             .error(R.drawable.ic_error_) // Ảnh lỗi
             .into(binding.imUnitTypeDetail)
 
         // Set Title
-        binding.tvTitleUnit.text = unitType.title
+        binding.tvTitleUnit.text = unitTypeModel.title
 
         // Beds
         val unitTypeMap = mapOf(
-            "bedsFull" to unitType.bedsFull,
-            "bedsKing" to unitType.bedsKing,
-            "bedsSofa" to unitType.bedsSofa,
-            "bedsMurphy" to unitType.bedsMurphy,
-            "bedsQueen" to unitType.bedsQueen,
-            "bedsTwin" to unitType.bedsTwin
+            "bedsFull" to unitTypeModel.bedsFull,
+            "bedsKing" to unitTypeModel.bedsKing,
+            "bedsSofa" to unitTypeModel.bedsSofa,
+            "bedsMurphy" to unitTypeModel.bedsMurphy,
+            "bedsQueen" to unitTypeModel.bedsQueen,
+            "bedsTwin" to unitTypeModel.bedsTwin
         )
-        binding.tvNumBed.text = unitType.bedrooms.toString()
+        binding.tvNumBed.text = unitTypeModel.bedrooms.toString()
         binding.tvBed.text = displayBedsInfo(unitTypeMap)
 
         // Kitchen
-        binding.tvKitchen.text = unitType.kitchen
+        binding.tvKitchen.text = unitTypeModel.kitchen
         binding.tvNumKitchen.text = "1"
 
         // Bathroom
-        binding.tvNumBath.text = unitType.bathrooms.toString()
+        binding.tvNumBath.text = unitTypeModel.bathrooms.toString()
 
         // Max Guest
-        binding.tvNumPerson.text = unitType.sleeps.toString()
+        binding.tvNumPerson.text = unitTypeModel.sleeps.toString()
 
         // Scope
-        binding.tvScope.text = "Khu vực phân bổ: " + unitType.buildingsOption
+        binding.tvScope.text = "Khu vực phân bổ: " + unitTypeModel.buildingsOption
 
         // Direction
-        binding.tvDirection.text = "Hướng quan sát" + unitType.view
+        binding.tvDirection.text = "Hướng quan sát" + unitTypeModel.view
 
         // Set Description
-        binding.tvDescription.text = unitType.description
+        binding.tvDescription.text = unitTypeModel.description
     }
 
     override fun onDestroyView() {
@@ -85,8 +86,8 @@ class UnitTypeDataDialog (
     }
 
     companion object {
-        fun newInstance(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeDataDialog {
-            return UnitTypeDataDialog(unitType)
+        fun newInstance(unitTypeModel: UnitTypeModel): UnitTypeDataDialog {
+            return UnitTypeDataDialog(unitTypeModel)
         }
     }
 

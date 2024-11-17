@@ -20,6 +20,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.UnitTypeDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -518,6 +520,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Hide Unnecessary View
         binding.includeItemUnitType.llAmennities.visibility = View.GONE
         binding.includeItemUnitType.tvPrice.visibility = View.GONE
+        binding.includeItemUnitType.btnViewRoom.setOnClickListener {
+            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitType)
+            unitTypeDataDialog.show(parentFragmentManager, "UnitTypeDataDialog")
+        }
 
 
         // Bind data to item unit type

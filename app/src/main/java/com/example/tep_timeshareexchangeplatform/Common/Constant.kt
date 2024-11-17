@@ -8,6 +8,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FA
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
@@ -161,6 +163,42 @@ class Constant {
 
             return dateFormat.format(date)
         }
+        fun mapToUnitTypeModel(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeModel {
+            return UnitTypeModel(
+                id = unitType.id,
+                title = unitType.title,
+                area = unitType.area,
+                bathrooms = unitType.bathrooms,
+                bedrooms = unitType.bedrooms,
+                bedsFull = unitType.bedsFull,
+                bedsKing = unitType.bedsKing,
+                bedsSofa = unitType.bedsSofa,
+                bedsMurphy = unitType.bedsMurphy,
+                bedsQueen = unitType.bedsQueen,
+                bedsTwin = unitType.bedsTwin,
+                buildingsOption = unitType.buildingsOption, // Assuming this can be Any?
+                price = 0, // Default or calculated value, adjust as necessary
+                description = unitType.description,
+                kitchen = unitType.kitchen,
+                photos = unitType.photos,
+                resortId = null, // Assuming this is not in UnitType and can be Any?
+                sleeps = unitType.sleeps,
+                view = unitType.view,
+                isActive = true, // Assuming a default value
+                unitTypeAmenitiesDTOS = unitTypeAmenities(unitType) // Map amenities
+            )
+        }
+        private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {
+            // Assuming you're mapping from unitType details for amenities; adjust based on source data
+            return listOf(
+                UnitTypeModel.UnitTypeAmenitiesDTOS(
+                    name = "Sample Amenity", // Replace with actual logic if needed
+                    type = null,
+                    isActive = null
+                )
+            )
+        }
+
 
 
 

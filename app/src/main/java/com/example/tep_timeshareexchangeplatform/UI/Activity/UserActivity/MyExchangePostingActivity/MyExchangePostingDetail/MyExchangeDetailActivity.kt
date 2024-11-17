@@ -13,9 +13,11 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelect
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
@@ -338,7 +340,8 @@ class MyExchangeDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(data.unitType)
+                val unitTypeModel = mapToUnitTypeModel(data.unitType)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeModel)
                 unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
         }
