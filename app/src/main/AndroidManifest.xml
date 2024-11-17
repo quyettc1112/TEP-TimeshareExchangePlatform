@@ -93,8 +93,7 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.PostingFlow.PostingFlowActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.MemberShipActivity.MemberShipActivity"
             android:exported="true" />

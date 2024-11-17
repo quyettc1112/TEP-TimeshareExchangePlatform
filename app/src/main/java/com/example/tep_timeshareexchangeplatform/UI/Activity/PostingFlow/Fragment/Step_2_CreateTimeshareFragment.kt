@@ -3,46 +3,27 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragme
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcel
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdaper
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.ImageUploadAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
-import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimeshareBinding
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_timeshare) {
@@ -61,6 +42,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdapter()
+        tokenManager = TokenManager(requireContext())
     }
 
     override fun onCreateView(
@@ -69,29 +51,29 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     ): View? {
         binding = FragmentCreateTimeshareBinding.inflate(inflater, container, false)
         tokenManager = TokenManager(requireContext())
-        initActivityLauncher()
         observeViewModel()
-        setEventChangeLocation()
-        setValueUnitRoom()
-        setEventChangeDate()
-        routeRoomDistribution()
-        setEventSaveAmenities()
+        initActivityLauncher()
+
+        // Event CLick
+        eventClickSelectResort()
+
         return binding.root
     }
 
     private fun observeViewModel() {
-        // Tracking Data of Step Create Timeshare
+        // KEY FUNCTION
+        // Tracking Step And Show UI of Step
         postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
-            showStepEventHandle(currentTask)
+            changeUIBaseOnStep(currentTask)
         }
 
-        // API Value - Resort Model Selected
+
+        // Step 1 - Get Resort Info
         postingFlowViewModel.resortModelResponse.observe(viewLifecycleOwner) { resortModel ->
-            bindDataResort(resortModel)
             if (resortModel != null) {
                 // Show Progress Step 1
                 postingFlowViewModel.updateTaskProgress(1)
-                postingFlowViewModel.resetDateRange()
+                bindDataResort(resortModel)
 
                 // Call API to get Room List
                 val token = TokenManager(requireContext()).getAccessToken()
@@ -103,6 +85,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
         }
+
+        /*// Tracking Data of Step Create Timeshare
+        postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
+            showStepEventHandle(currentTask)
+        }
+
+
 
         // API Value - Unit Type List By Resort Id
         postingFlowViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
@@ -156,7 +145,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
         }
-
 
         // Tracking Date Range
         postingFlowViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
@@ -245,19 +233,140 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                 }
             }
-        }
+        }*/
 
 
     }
+
+    /**
+     * BASE CONFIG LOGIC
+     *
+     * A
+     * Show Step Event Handle,
+     * TRACKING STEP OF CREATE TIMESHARE
+     * CHANGE UI BASE ON STEP
+     *
+     * B
+     * INIT ACTIVITY LAUNCHER
+     * GET VALUE OF RESORT
+     */
+    private fun changeUIBaseOnStep(currentTask: Int) {
+        when (currentTask) {
+            1 -> {
+                // Off UI Resort Selection
+                binding.llSelectResortLocationContainer.visibility = View.GONE
+                binding.includeUnitTypeYes.root.visibility = View.GONE
+                binding.includeUnitTypeNo.root.visibility = View.GONE
+                binding.crlDayCheckIn.visibility = View.GONE
+                binding.crlContentAmenities.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+
+                // Show UI Step 1
+              //  binding.crlRoomDistribution.visibility = View.VISIBLE
+
+            }
+
+            2 -> {
+                binding.crlDayCheckIn.visibility = View.GONE
+                binding.crlContentAmenities.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+            }
+
+            3 -> {
+                binding.crlDayCheckIn.visibility = View.VISIBLE
+            }
+
+            4 -> {
+                binding.crlContentAmenities.visibility = View.VISIBLE
+                val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
+                if (checkYN) {
+                    binding.btnSaveAmenities.visibility = View.VISIBLE
+                } else {
+                    binding.btnSaveAmenities.visibility = View.GONE
+                    postingFlowViewModel.updateTaskProgress(5)
+
+                }
+            }
+
+            5 -> {
+                binding.btnNext.visibility = View.VISIBLE
+            }
+        }
+    }
+    private fun initActivityLauncher() {
+        locationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val selectedLocation: ResortModelResponse.Content? =
+                        data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
+                    selectedLocation?.let {
+                        postingFlowViewModel.updateResortModel(it)
+                    }
+                }
+            }
+    }
+
+
+    /**
+     * 1. Step 1 - Get Resort Info
+     */
+    private fun eventClickSelectResort() {
+        binding.tvChangeLocation.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
+            })
+            locationResultLauncher.launch(intent)
+        }
+        binding.btnSelectResortLocation.setOnClickListener {
+            val intent = Intent(requireContext(), LocationActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
+            })
+            locationResultLauncher.launch(intent)
+        }
+    }
+
+
+    /**
+     * BINDING DATA FUNTION
+     *
+     *
+     */
+    private fun bindDataResort(resortModelResponse: ResortModelResponse.Content) {
+        if (resortModelResponse != null) {
+            binding.let {
+                it.tvResortName.text = resortModelResponse.resortName
+                it.tvLocation.text = resortModelResponse.address
+                Glide.with(requireContext())
+                    .load(resortModelResponse.logo)
+                    .placeholder(R.drawable.ripple_effect)
+                    .into(it.ivResortImage)
+                binding.llResortLocation.visibility = View.VISIBLE
+                binding.btnSelectResortLocation.visibility = View.GONE
+            }
+        } else {
+            binding.llResortLocation.visibility = View.GONE
+            binding.btnSelectResortLocation.visibility = View.VISIBLE
+        }
+    }
+
+
+    /**
+     * CALL API FUNTION
+     *
+     *
+     */
+
 
     private fun initAdapter() {
         unitTypeAdapterPosting.submitList(listOf())
         amenitiesAdapter.submitList(Constant.listAmenities)
         amenitiesEntertamentAdapter.submitList(Constant.listEntertament)
         policyAmentitiesAdapter.submitList(Constant.listPolicy)
-
-
     }
+/*
 
     // 1. Binding Data of Resort
     private fun bindDataResort(resortModelResponse: ResortModelResponse.Content) {
@@ -331,10 +440,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 "${unitType.bedsQueen} Queen, ${unitType.bedsKing} King, ${unitType.bedsTwin} Twin"
             tvNumPerson.text = unitType.sleeps.toString()
 
-            /* Glide.with(requireContext())
+            */
+/* Glide.with(requireContext())
                  .load(unitType.photos)
                  .placeholder(R.drawable.ripple_effect)
-                 .into(imRoomTypeImage)*/
+                 .into(imRoomTypeImage)*//*
+
         }
 
         binding.includeItemUnitType.btnViewRoom.setOnClickListener {
@@ -613,7 +724,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     }
 
-
     private fun callRequestCreateTimeshare() {
         binding.btnNext.setOnClickListener {
             val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
@@ -682,47 +792,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     }
 
-    // Order of the steps
-    private fun showStepEventHandle(currentTask: Int) {
-        when (currentTask) {
-            1 -> {
-                binding.crlRoomDistribution.visibility = View.VISIBLE
-                binding.includeUnitTypeYes.root.visibility = View.GONE
-                binding.includeUnitTypeNo.root.visibility = View.GONE
-                binding.crlDayCheckIn.visibility = View.GONE
-                binding.crlContentAmenities.visibility = View.GONE
-                binding.btnNext.visibility = View.GONE
 
-            }
-
-            2 -> {
-                binding.crlDayCheckIn.visibility = View.GONE
-                binding.crlContentAmenities.visibility = View.GONE
-                binding.btnNext.visibility = View.GONE
-            }
-
-            3 -> {
-                binding.crlDayCheckIn.visibility = View.VISIBLE
-            }
-
-            4 -> {
-                binding.crlContentAmenities.visibility = View.VISIBLE
-                val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
-                if (checkYN) {
-                    binding.btnSaveAmenities.visibility = View.VISIBLE
-                } else {
-                    binding.btnSaveAmenities.visibility = View.GONE
-                    postingFlowViewModel.updateTaskProgress(5)
-
-                }
-            }
-
-            5 -> {
-                binding.btnNext.visibility = View.VISIBLE
-                callRequestCreateTimeshare()
-            }
-        }
-    }
 
     private fun setValueUnitRoom() {
         // Set List Amenities
@@ -772,6 +842,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Nếu tất cả các kiểm tra đều vượt qua
         return true
     }
+*/
 
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
