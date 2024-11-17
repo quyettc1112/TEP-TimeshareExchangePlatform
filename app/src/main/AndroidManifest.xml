@@ -22,13 +22,13 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity.CommonActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity"
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity.MyExchangeRequestDetailActivity"
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity.MyExchangeRequestDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.MyExchangeRequestActivity.MyExchangeRequestActivity"
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity"
             android:exported="false" />
         <activity
             android:name=".UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity"

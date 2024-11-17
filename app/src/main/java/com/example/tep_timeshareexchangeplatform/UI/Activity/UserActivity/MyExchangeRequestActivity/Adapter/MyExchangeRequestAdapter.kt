@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyExchangeRequestActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemExchangeRequestBinding
 
@@ -37,7 +37,7 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
                 MyExchangeRequestStatus.PENDING_CUSTOMER -> {
                     applyStatusStyle(
                         context,
-                        R.color.white,      // Background color (e.g., white background)
+                        R.color.green200,      // Background color (e.g., white background)
                         R.color.green_verify  // Text color (green for text)
                     )
                 }
@@ -45,7 +45,7 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
                 MyExchangeRequestStatus.COMPLETED -> {
                     applyStatusStyle(
                         context,
-                        R.color.blue_header_section,  // Background color (blue background)
+                        R.color.blue200,  // Background color (blue background)
                         R.color.blue_full             // Text color (lighter blue for text)
                     )
                 }
@@ -53,7 +53,7 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
                 MyExchangeRequestStatus.REJECTED -> {
                     applyStatusStyle(
                         context,
-                        R.color.white,      // Background color (white background)
+                        R.color.red200,      // Background color (white background)
                         R.color.status_rejected_text  // Text color (red text for rejection)
                     )
                 }

@@ -1,4 +1,0 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyExchangeRequestActivity.Adapter
-
-class ExchangeRequestOnPostAdapter {
-}

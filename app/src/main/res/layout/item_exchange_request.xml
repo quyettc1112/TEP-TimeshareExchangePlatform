@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
 
+            <!-- Check-In Date Label -->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -60,15 +61,24 @@
                     android:layout_height="wrap_content"
                     android:text="Ngày nhận phòng:"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Check-In Date Value -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/checkInDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="20/20/2024" />
+                    android:text="20/20/2024"
+                    android:textStyle="italic" />
             </LinearLayout>
 
+            <!-- Check-Out Date Label -->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -81,13 +91,21 @@
                     android:layout_height="wrap_content"
                     android:text="Ngày trả phòng:"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Check-Out Date Value -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/checkOutDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="20/20/2024" />
+                    android:text="20/20/2024"
+                    android:textStyle="italic" />
             </LinearLayout>
 
             <!-- Status -->

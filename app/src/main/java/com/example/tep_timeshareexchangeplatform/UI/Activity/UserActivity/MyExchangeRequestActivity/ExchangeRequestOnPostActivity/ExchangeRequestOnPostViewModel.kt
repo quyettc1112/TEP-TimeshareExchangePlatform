@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

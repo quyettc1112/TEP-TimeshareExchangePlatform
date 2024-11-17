@@ -2,7 +2,7 @@ package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeD
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.displayBedsInfo
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.DialogUnitTypeDetailBinding
@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class UnitTypeDetailBottomSheet(
     context: Context,
-    private val unitType: MyExchangePostingDetailResponse.UnitType
+    private val unitType: MyExchangeRequestDetailResponse.RoomInfo.UnitType
 ) {
     private val dialog: BottomSheetDialog = BottomSheetDialog(context)
     private val binding: DialogUnitTypeDetailBinding =
