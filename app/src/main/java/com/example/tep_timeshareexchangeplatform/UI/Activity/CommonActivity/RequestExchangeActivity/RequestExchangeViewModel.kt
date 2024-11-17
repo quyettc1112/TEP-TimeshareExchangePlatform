@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
@@ -38,6 +40,7 @@ class RequestExchangeViewModel @Inject constructor(
     private val _myTimeshareDetail = MutableLiveData<Resource<MyTimeshareDetailResponse>>()
     val myTimeshareDetail: MutableLiveData<Resource<MyTimeshareDetailResponse>> =
         _myTimeshareDetail
+
     fun getMyTimeshareDetail(token: String, timeShareId: Int) {
         viewModelScope.launch {
             _myTimeshareDetail.postValue(Resource.loading(null))
@@ -91,8 +94,23 @@ class RequestExchangeViewModel @Inject constructor(
     fun setCurrentTimeshareSelected(timeshareId: Int) {
         _currentTimeshareSelected.value = timeshareId
     }
-    fun getCurrentTimeshareSelected(): Int? {
+
+    fun getCurrentTimeshareIdSelected(): Int? {
         return _currentTimeshareSelected.value
+    }
+
+    // Send Exchange Request
+    private val _exchangeRequestResponse = MutableLiveData<Resource<ExchangeRequestResponse>>()
+    val exchangeRequestResponse: MutableLiveData<Resource<ExchangeRequestResponse>> =
+        _exchangeRequestResponse
+
+    fun callExchangeRequest(token: String, postingId: Int, exchangeRequestDTO: ExchangeRequestDTO) {
+        viewModelScope.launch {
+            _exchangeRequestResponse.postValue(Resource.loading(null))
+            customerAPIRepository.sendExchangeRequest(token, postingId, exchangeRequestDTO).let {
+                _exchangeRequestResponse.postValue(it)
+            }
+        }
     }
 
 

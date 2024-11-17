@@ -4,6 +4,7 @@ import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
@@ -12,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
@@ -307,6 +309,25 @@ class CustomerAPIRepository @Inject constructor(
     suspend fun getTimeShareDetail(token: String, timeShareId: Int): Resource<MyTimeshareDetailResponse> {
         return try {
             val response = customerAPIService.getMyTimeshareDetail("Bearer $token", timeShareId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Send Exchange Request
+    suspend fun sendExchangeRequest(
+        token: String,
+        postingId: Int,
+        exchangeRequestDTO: ExchangeRequestDTO
+    ): Resource<ExchangeRequestResponse> {
+        return try {
+            val response = customerAPIService.sendExchangeRequest("Bearer $token", postingId, exchangeRequestDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
@@ -9,6 +10,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
@@ -149,6 +151,14 @@ interface CustomerAPIService {
         @Path("timeShareID") timeshareId: Int
     ): Response<MyTimeshareDetailResponse>
     //
+
+    // Send Exchange Request
+    @POST("customer/exchange/booking/{postingId}")
+    suspend fun sendExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body exchangeRequestDTO: ExchangeRequestDTO
+    ) : Response<ExchangeRequestResponse>
 
 
 

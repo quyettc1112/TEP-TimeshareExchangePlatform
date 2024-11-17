@@ -653,7 +653,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         val timeshareDTO = TimeshareDTO(
             status = "Available",
             startYear = 2024,
-            endYear = 2025,
+            endYear = 2027,
             startDate = startDateFormatted,
             endDate = endDateFormatted,
             roomInfoId = postingFlowViewModel.currentRoomInfo.value!!

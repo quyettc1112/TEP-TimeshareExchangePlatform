@@ -4,32 +4,26 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
@@ -146,7 +140,7 @@ class RequestExchangeActivity : BaseActivity() {
                                     }
                                 })
                         } else {
-                            callGetMyTimeshareDetail(viewModel.getCurrentTimeshareSelected()!!)
+                            callGetMyTimeshareDetail(viewModel.getCurrentTimeshareIdSelected()!!)
                             bindDataSpinnerValidYear(it)
                         }
                     }
@@ -155,12 +149,32 @@ class RequestExchangeActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showErrorToast(resources.message.toString())
                 }
-
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
             }
         }
+
+        // Call API to Send Exchange Request
+        viewModel.exchangeRequestResponse.observe(this) { resources ->
+            when (resources.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    resources.data?.let {
+                        showSuccessToast(resources.message.toString())
+                        finish()
+                    }
+                }
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast(resources.message.toString())
+                }
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
     }
 
     // Function to bind data
@@ -244,6 +258,8 @@ class RequestExchangeActivity : BaseActivity() {
 
                     // Kiểm tra xem startDateString và endDateString có null hay không
                     bindDataCheckInCheckOut(startDateString, endDateString, selectedYear)
+                    binding.btnNext.visibility = View.VISIBLE
+                    sendButtonNextClick()
 
 
                 }
@@ -317,7 +333,16 @@ class RequestExchangeActivity : BaseActivity() {
     private fun callGetMyTimeshareDetail(timeShareId: Int) {
         viewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), timeShareId)
     }
-
+    private fun callSendExchangeRequest(exchangePostingId : Int) {
+        val exchangeRequestDTO = ExchangeRequestDTO (
+            timeshareId = viewModel.getCurrentTimeshareIdSelected()!!,
+            startDate = viewModel.checkinDate.value.toString(),
+            endDate = viewModel.checkoutDate.value.toString(),
+            exchangePostingId = exchangePostingId
+        )
+        Log.d("ExchangeRequestDTOValud", exchangeRequestDTO.toString())
+        viewModel.callExchangeRequest(tokenManager.getAccessToken().toString(), exchangePostingId, exchangeRequestDTO)
+    }
     private fun clickIntentToGetMyTimeshare() {
         binding.btnAddMyTimeshare.setOnClickListener {
             val intent = Intent(this, MyTimeshareActivity::class.java)
@@ -357,12 +382,30 @@ class RequestExchangeActivity : BaseActivity() {
         return dateFormat.format(date)
     }
 
+    private fun sendButtonNextClick() {
+        binding.btnNext.setOnClickListener {
+            callSendExchangeRequest(viewModel.exchangePostingDetail.value?.data?.exchangePostingId!!)
+        }
+    }
+
+
     private fun showErrorToast(message: String) {
         MotionToast.Companion.createColorToast(
             this,
             "Error",
             message,
             MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            null
+        )
+    }
+    private fun showSuccessToast(message: String) {
+        MotionToast.Companion.createColorToast(
+            this,
+            "Success",
+            message,
+            MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
             null
