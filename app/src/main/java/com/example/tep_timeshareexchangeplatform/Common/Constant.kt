@@ -145,6 +145,7 @@ class Constant {
             return dayFormat.format(date)
         }
 
+
         fun getFormattedDate(dateString: String, context: Context): String {
             // Input date format
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
@@ -162,6 +163,49 @@ class Constant {
             }
 
             return dateFormat.format(date)
+        }
+
+
+        fun getFormattedDateString(dateString: String, context: Context): String {
+            return try {
+                // Input format từ ViewModel (yyyy-MM-dd)
+                val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+                val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+                // Lấy ngôn ngữ người dùng từ PreferenceHelper
+                val preferenceHelper = PreferenceHelper(context)
+                val languageCode = preferenceHelper.getLanguage()
+
+                // Output format dựa trên ngôn ngữ
+                val outputDateFormat = if (languageCode == "vi") {
+                    SimpleDateFormat("dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+                } else {
+                    SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH)
+                }
+
+                outputDateFormat.format(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ""
+            }
+        }
+        fun getDayOfWeekString(dateString: String, context: Context): String {
+            // Input date format
+            val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Get saved language preference
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Format for day of the week
+            val dayFormat = if (languageCode == "vi") {
+                SimpleDateFormat("EEEE", Locale.forLanguageTag("vi"))
+            } else {
+                SimpleDateFormat("EEEE", Locale.ENGLISH)
+            }
+
+            return dayFormat.format(date)
         }
         fun mapToUnitTypeModel(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeModel {
             return UnitTypeModel(
@@ -326,8 +370,6 @@ class Constant {
             "https://storage.googleapis.com/youth-media/post-thumbnails/cPfglgEi3sEmtPwlq1EC1yn6VuxtHJ5NCG5JldFk.png",
             "https://th.bing.com/th/id/OIP.EAKmwEAsPqNb2dvIL6b63AAAAA?rs=1&pid=ImgDetMain",
             "https://everland.vn/upload/projects/original/crystal-holidays-heritage-ly-son-avartar-1666754442.png",
-            "https://media.discordapp.net/attachments/1257221915135840267/1291317831580909568/ic_flc_holiday.png?ex=66ffa8f2&is=66fe5772&hm=68d8deee0a8fc5314bccedc3cc1b965a43f3f21fe7e90516f008983ecc336b7e&=&format=webp&quality=lossless&width=390&height=46"
-
         )
 
         val listFaq = listOf(
