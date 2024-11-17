@@ -228,13 +228,12 @@ class BookingDetailActivity : BaseActivity() {
                     R.color.white
                 )
                 // Feedback
-                if (!data.isFeedback) {
-                    binding.llFeedbackContainer.visibility = View.VISIBLE
-                } else {
+                if (data.isFeedback) {
                     binding.llFeedbackContainer.visibility = View.GONE
+                } else {
+                    binding.llFeedbackContainer.visibility = View.VISIBLE
                 }
                 onFeedbackClick(data)
-                binding.llFeedbackContainer.visibility = View.VISIBLE
             }
 
             MyBookingStatus.NO_SHOW -> {
@@ -344,4 +343,29 @@ class BookingDetailActivity : BaseActivity() {
         super.onBackPressed()
         finish()
     }
+
+    private fun showSuccessToast(message: String) {
+        MotionToast.createToast(
+            this,
+            "Success",
+            message,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            null
+        )
+    }
+
+    private fun showFailToast(message: String) {
+        MotionToast.createToast(
+            this,
+            "Error",
+            message,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            null
+        )
+    }
+
 }
