@@ -67,6 +67,7 @@ class Constant {
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
         const val DEFAULT_MY_EXCHANGE_REQUEST_ID = "id"
         const val DEFAULT_MY_EXCHANGE_REQUEST_ID_1 = "requestId"
+        const val DEFAULT_BLOG_ID= "postingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
         const val REQUEST_GET_MY_TIMESHARE = "requestGetMyTimeshare"
 

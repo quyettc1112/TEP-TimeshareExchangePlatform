@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
@@ -89,8 +90,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
     }
     private fun bindData(myExchangeRequestDetail: MyExchangeRequestDetailResponse) {
-        // List Image
-//         bindDataListImage(myExchangeRequestDetail.exchangePosting.roomInfoUnitTypePhotos)
+
 
         // Unit Type
         bindDataUnitType(myExchangeRequestDetail)
@@ -105,6 +105,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         binding.apply {
             tvResortName.text =
                 myExchangeRequestDetail.exchangePosting.roomInfoResortResortName+ " | " + myExchangeRequestDetail.roomInfo.unitType.title
+            Glide.with(this@MyExchangeRequestDetailActivity)
+                .load(myExchangeRequestDetail.roomInfo.unitType.photos)
+                .into(imageView)
 
             if (myExchangeRequestDetail.exchangePosting.isVerify) {
                 llVerify.visibility = View.VISIBLE
