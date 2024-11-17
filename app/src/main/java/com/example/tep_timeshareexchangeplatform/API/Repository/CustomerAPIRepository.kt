@@ -18,6 +18,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feed
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
@@ -339,4 +342,63 @@ class CustomerAPIRepository @Inject constructor(
         }
     }
 
+    // Get Customer Exchange Request
+    suspend fun getCustomerExchangeRequest(
+        token: String,
+        page: Int,
+        size: Int
+    ): Resource<MyExchangeRequestResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequest("Bearer $token", page, size)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get My Exchange Request Detail
+    suspend fun getCustomerExchangeRequestDetail(
+        token: String,
+        requestId: Int
+    ): Resource<MyExchangeRequestDetailResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequestDetail("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    suspend fun getCustomerExchangeRequestPost(
+        token: String,
+        pageNo: Int,
+        pageSize: Int,
+        postingId: Int
+    ): Resource<ExchangeRequestPostingResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequestOnPost("Bearer $token", pageNo, pageSize, postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

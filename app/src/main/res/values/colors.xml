@@ -44,10 +44,14 @@
     <color name="light_blue_400">#FF29B6F6</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray500">#9E9E9E</color>
     <color name="gray_600">#FF757575</color>
+
 
     <color name="zxing_transparent">#00000000</color>
 
+    <color name="yellow200">#FFF9C4</color>
+    <color name="yellow600">#FBC02D</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

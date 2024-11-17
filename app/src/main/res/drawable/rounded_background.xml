@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#E0E0E0" /> <!-- Background color -->
+    <corners android:radius="32dp" /> <!-- Half the width/height of the View -->
+</shape>

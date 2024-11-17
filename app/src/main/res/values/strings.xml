@@ -99,6 +99,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="my_timeshare">My Timeshare listing</string>
     <string name="my_rental_posting">My Rental Posting</string>
     <string name="my_exchange_posting">My Exchange Posting</string>
+    <string name="my_exchange_request">My Exchange Request</string>
     <string name="my_order">My reservations</string>
     <string name="my_favorite">My travel interests</string>
     <string name="my_account_security">Account &amp; Security</string>
@@ -148,6 +149,9 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="reject_price">Reject Price</string>
     <string name="pending_pricing">Pending Pricing</string>
     <string name="closed">Closed</string>
+
+    <!--// Posting Status-->
+    <string name="pending_customer">Pending Customer</string>
 
     <!--// My Booking Status-->
     <string name="booked">Booked</string>
