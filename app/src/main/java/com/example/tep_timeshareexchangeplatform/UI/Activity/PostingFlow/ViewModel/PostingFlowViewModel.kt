@@ -255,7 +255,7 @@ class PostingFlowViewModel @Inject constructor(
     // Init MutableLiveData for Unit Type Detail
     private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>>()
     val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>> = _unitTypeDetail
-    fun getUnitTypeDetail(token: String, unitTypeID: Int) {
+    fun getUnitTypeDetailByID(token: String, unitTypeID: Int) {
         viewModelScope.launch {
             _unitTypeDetail.postValue(Resource.loading(null))
             publicResortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {

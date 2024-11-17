@@ -21,21 +21,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <!-- Verified Room Info Text -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:text="Thông tin phòng đã được xác minh"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
         <!-- Dropdown for Bed Selection -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
@@ -49,14 +39,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Số toà nhà/Số đơn vị(nếu đã được phân bổ)"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -66,47 +48,60 @@
                     android:text="Mã phòng"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Chọn mã Phòng hoặc nhập mã phòng của bạn ở ô tìm kiếm"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <!-- Search Input -->
-                    <EditText
-                        android:id="@+id/etRoomSearch"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="6"
-                        android:background="@drawable/ripple_effect_white"
-                        android:hint="Tìm kiếm Mã phòng"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:padding="12dp"
-                        android:textSize="14dp" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/card_view_contianer"
-                        android:layout_width="0dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="4"
-                        app:strokeColor="@color/blue_btn_search"
-                        app:strokeWidth="3dp">
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_view_contianer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="6.5"
+                            app:strokeColor="@color/blue_btn_search"
+                            app:strokeWidth="3dp">
 
-                        <Spinner
-                            android:id="@+id/sp_unit_type"
-                            style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
+                            <Spinner
+                                android:id="@+id/sp_unit_type"
+                                style="@style/CustomSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:spinnerMode="dialog" />
+
+                        </com.google.android.material.card.MaterialCardView>
+                        <!-- Search Input -->
+                        <EditText
+                            android:id="@+id/etRoomSearch"
+                            android:layout_width="0dp"
                             android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:spinnerMode="dialog" />
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="3.5"
+                            android:background="@drawable/background_stroke_around"
+                            android:hint="Nhập Mã Phòng"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textSize="14dp" />
 
-                    </com.google.android.material.card.MaterialCardView>
-
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -115,8 +110,11 @@
             <LinearLayout
                 android:id="@+id/ll_room_search_results"
                 android:translationZ="10dp"
+                android:background="@drawable/background_stroke_around"
+                android:backgroundTint="@color/i_blue_light"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
+                android:maxHeight="300dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,8 +123,8 @@
                 <!-- RecyclerView for search results -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRoomResults"
-                    android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="@color/white"
+                    android:padding="10dp"
+                    android:nestedScrollingEnabled="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -134,6 +132,7 @@
 
             <!--// Room Info-->
             <LinearLayout
+                android:id="@+id/ll_unity_type_detail"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
