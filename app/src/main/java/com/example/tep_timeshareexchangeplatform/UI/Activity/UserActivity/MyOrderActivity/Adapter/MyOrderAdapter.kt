@@ -21,10 +21,13 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemMyOrderBinding
 class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyOrderViewHolder>() {
 
     var onItemClick: ((MyBookingResponse.Content) -> Unit)? = null
+    var onFeedbackClick: ((MyBookingResponse.Content) -> Unit)? = null
 
     inner class MyOrderViewHolder(binding: ItemMyBookingBinding) :
         BaseItemViewHolderCF<MyBookingResponse.Content, ItemMyBookingBinding>(binding) {
         override fun bind(item: MyBookingResponse.Content) {
+
+
             binding.tvTimeshareName.text = "${item.resortName} | ${item.unitTypeTitle}"
             binding.tvCheckinDate.text =
                 Constant.getFormattedDate(item.checkinDate, binding.root.context)
@@ -49,6 +52,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.primaryColor,
                         R.color.white
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.CHECK_IN -> {
                     applyStatusStyle(
@@ -56,6 +60,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.blue_btn_search,
                         R.color.white
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.CHECKOUT -> {
                     applyStatusStyle(
@@ -63,6 +68,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.green_verify,
                         R.color.white
                     )
+                    binding.llFeedbackContainer.visibility = View.VISIBLE
                 }
                 MyBookingStatus.NO_SHOW -> {
                     applyStatusStyle(
@@ -70,6 +76,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.status_unknown_bg,
                         R.color.status_unknown_text
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.CANCELED -> {
                     applyStatusStyle(
@@ -77,6 +84,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.white,
                         R.color.status_rejected_text
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.REFUND -> {
                     applyStatusStyle(
@@ -84,6 +92,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.white,
                         R.color.status_rejected_text
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.PAYMENT_COMPLETED -> {
                     applyStatusStyle(
@@ -91,6 +100,7 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                         R.color.white,
                         R.color.status_pending_approval_text
                     )
+                    binding.llFeedbackContainer.visibility = View.GONE
                 }
                 else -> {
                     // Default or unknown status case
@@ -103,9 +113,15 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
             }
             binding.tvStatus.text = MyBookingStatus.fromApiStatus(item.status)?.getDescription(binding.root.context)
 
+
+
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
+            binding.llFeedbackContainer.setOnClickListener {
+                onFeedbackClick?.invoke(item)
+            }
+            binding.llFeedbackContainer.visibility = View.GONE
         }
 
         private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
@@ -147,5 +163,15 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemMyBookingBinding.inflate(layoutInflater, parent, false)
         return MyOrderViewHolder(binding)
+    }
+
+    fun hideFeedbackById(bookingId: Int) {
+        val currentList = differ.currentList.toMutableList()
+        val index = currentList.indexOfFirst { it.bookingId == bookingId }
+        if (index != -1) {
+            val item = currentList[index].copy(isFeedbackGiven = true) // Cập nhật trạng thái
+            currentList[index] = item
+            submitList(currentList) // Cập nhật danh sách thông qua DiffUtil
+        }
     }
 }

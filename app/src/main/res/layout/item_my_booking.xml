@@ -196,8 +196,9 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            <!--// Check-in, Check-out Date-->
             <LinearLayout
+                android:id="@+id/linearLayout27"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -329,6 +330,39 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <!--// Feedback-->
+            <LinearLayout
+                android:id="@+id/ll_feedback_container"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/background_stroke_around"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout27" >
+                <TextView
+                    android:gravity="center|right"
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:text="Gửi Đánh Giá"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textStyle="italic"
+                    android:textColor="@color/blue_see_more"/>
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_star"/>
+            </LinearLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

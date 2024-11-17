@@ -116,7 +116,7 @@ class WalletAPIRepository @Inject constructor(
     ): Resource<VNPAYPurchaseResponse> {
         return try {
             val response =
-                walletAPIService.purchasePackagePostingVNPAY("Bearer $token", uuid, rentalPackageId)
+                walletAPIService.createRentalPostingTransactionByVNPAY("Bearer $token", uuid, rentalPackageId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -135,7 +135,7 @@ class WalletAPIRepository @Inject constructor(
     ): Resource<WalletPurchaseResponse> {
         return try {
             val response =
-                walletAPIService.purchasePackagePostingWallet("Bearer $token", rentalPackageId)
+                walletAPIService.createRentalPostingTransactionByWallet("Bearer $token", rentalPackageId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -173,6 +173,42 @@ class WalletAPIRepository @Inject constructor(
     ): Resource<WalletPurchaseResponse> {
         return try {
             val response = walletAPIService.bookingRentalWallet("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Create Exchange Posting Transcation
+    suspend fun createExchangePostingTransaction(
+        token: String,
+        uuid: String,
+        exchangePackageId: Int
+    ): Resource<VNPAYPurchaseResponse> {
+        return try {
+            val response = walletAPIService.createExchangePostingTransactionByVNPAY("Bearer $token", uuid, exchangePackageId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+    // Create Exchange Posting Transaction By Wallet
+    suspend fun createExchangePostingTransactionByWallet(
+        token: String,
+        postingId: Int
+    ): Resource<WalletPurchaseResponse> {
+        return try {
+            val response = walletAPIService.createExchangePostingTransactionByWallet("Bearer $token", postingId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity">
+    tools:context=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Đăng Bài Của Tôi"
+        android:title="Bài Đăng Cho Thuê Của Tôi"
         app:showStartText="false"
         app:layout_constraintTop_toTopOf="parent"/>
 

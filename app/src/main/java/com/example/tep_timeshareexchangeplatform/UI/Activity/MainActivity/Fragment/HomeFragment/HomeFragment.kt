@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
@@ -28,8 +29,9 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.PublicPostingFragment.PublicPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_POSTING
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_RESORT
@@ -47,7 +49,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
-    private val publicsPostingAdapter = PublicPostingAdapterRV()
+    private val publicsPostingAdapter = HomePostingAdapter()
     private val resortAdapterMB = ResortAdapter()
     private val blogAdapter = BlogAdapter()
     lateinit var gridAdapter: GridAdapter
@@ -197,8 +199,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
      */
     private fun showUIAdapter() {
         // List Timesahre Recomend
-        binding.rvSuggestTimeshare.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSuggestTimeshare.layoutManager = GridLayoutManager(
+            requireContext(),
+            1, // Số lượng hàng (span) là 1
+            GridLayoutManager.HORIZONTAL, // Hiển thị theo chiều ngang
+            false
+        )
         binding.rvSuggestTimeshare.adapter = publicsPostingAdapter
 
         // List Blog
@@ -348,16 +354,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
 
             it.btnSearch.setOnClickListener {
-                Toast.makeText(requireContext(), "Search", Toast.LENGTH_SHORT).show()
+                val location = mainViewModel.getLocation()
+                val dateRange = mainViewModel.getDateRange()
+                val roomCount = mainViewModel.roomCount.value
+                val intent = Intent(requireContext(), SearchPostingActivity::class.java)
+                intent.putExtra(Constant.SEARCH_LOCATION, location)
+                intent.putExtra(Constant.SEARCH_DATE, dateRange)
+                intent.putExtra(Constant.SEARCH_ROOM, roomCount)
+                startActivity(intent)
 
-                mainViewModel.apply {
-                    resetCurrentResortPage()
-                    resetCurrentPostingPage()
-                }
 
-                (activity as MainActivity).apply {
-                    binding.vp2Main.currentItem = 1
-                }
             }
         }
     }

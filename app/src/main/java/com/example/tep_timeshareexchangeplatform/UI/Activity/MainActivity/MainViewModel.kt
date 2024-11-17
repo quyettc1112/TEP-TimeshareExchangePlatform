@@ -8,9 +8,10 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
@@ -37,6 +38,9 @@ class MainViewModel @Inject constructor(
     val location: LiveData<String> = _location
     fun updateLocation(location: String) {
         _location.value = location
+    }
+    fun getLocation(): String {
+        return _location.value ?: "Thành Phố Hồ Chí Minh"
     }
 
 
@@ -72,6 +76,9 @@ class MainViewModel @Inject constructor(
     val dateRange: LiveData<String> = _dateRange
     fun updateDateRange(dateRange: String) {
         _dateRange.value = dateRange
+    }
+    fun getDateRange(): String {
+        return _dateRange.value ?: "20/10/2021 - 25/10/2021"
     }
 
 
@@ -257,9 +264,33 @@ class MainViewModel @Inject constructor(
         return _currentMyBookingList
     }
 
+    /**
+     * Call API To POST FeedBack
+     *
+     */
+    private var _feedbackResponse = MutableLiveData<Resource<FeedbackResponse>>()
+    val feedbackResponse: LiveData<Resource<FeedbackResponse>> = _feedbackResponse
+    fun postFeedback(token: String, feedbackDTO: FeedbackDTO) {
+        viewModelScope.launch {
+            _feedbackResponse.postValue(Resource.loading(null))
+            customerAPIRepository.postFeedbackForCustomerRental(token, feedbackDTO).let {
+                _feedbackResponse.postValue(it)
+            }
+        }
+    }
+
+
+
+
+
     fun resetCurrentMyBookingPage() {
         _currentMyBookingList.clear()
         _currentMyBookingPage.value = 0
+
+        _location.value = "Thành Phố Hồ Chí Minh"
+        _dateRange.value = "20/10/2021 - 25/10/2021"
+        _roomCount.value = 1
+        _adultCount.value = 1
     }
 
 

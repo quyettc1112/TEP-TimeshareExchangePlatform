@@ -7,14 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
@@ -24,7 +28,9 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.VNPayActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
@@ -75,74 +81,21 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     // Observe ViewModel
     private fun observeViewModel() {
+        // Update Data Here
         postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
             if (packageModel != null) {
                 bindDataPackagePosting(packageModel)
             }
         }
-
         postingFlowViewModel.pricePerNight.observe(viewLifecycleOwner) { pricePerNight ->
-            if (pricePerNight.toInt() != 0) {
-                val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
-                val value =
-                    "${formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
-                Toast.makeText(requireContext(), "Có Tiền", Toast.LENGTH_SHORT).show()
-                binding.includeDetailBilling.tvEstimatedTotalPrice.text = value
-                binding.includeDetailBilling.tvRoomPricePerNight.text =
-                    "${formatPrice(pricePerNight.toInt())} đ"
-            } else {
-                binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
-                binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
-                Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
-            }
+            bindDataPriceOfTimeshare(pricePerNight)
         }
-
         postingFlowViewModel.numberOfNights.observe(viewLifecycleOwner) { numberOfNights ->
             binding.includeDetailBilling.tvNumberNight.text = "${numberOfNights} đêm"
         }
-
-        postingFlowViewModel.checkinDate.observe(viewLifecycleOwner) { checkinDate ->
-            if (checkinDate != null) {
-                try {
-                    // Định dạng ban đầu từ ViewModel là "yyyy-MM-dd"
-                    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val date = inputDateFormat.parse(checkinDate)
-
-                    // Sử dụng hàm formatDateByLocale để định dạng ngày theo ngôn ngữ đã lưu
-                    val formattedDate = formatDateByLocale(date, requireContext())
-
-                    // Gán vào TextView
-                    binding.includeDetailBilling.tvCheckInDate.text = formattedDate
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Xử lý lỗi khi định dạng sai
-                }
-            }
-        }
-
-        postingFlowViewModel.checkoutDate.observe(viewLifecycleOwner) { checkoutDate ->
-            if (checkoutDate != null) {
-                try {
-                    // Định dạng ban đầu từ ViewModel là "yyyy-MM-dd"
-                    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val date = inputDateFormat.parse(checkoutDate)
-
-                    // Sử dụng hàm formatDateByLocale để định dạng ngày theo ngôn ngữ đã lưu
-                    val formattedDate = formatDateByLocale(date, requireContext())
-
-                    // Gán vào TextView
-                    binding.includeDetailBilling.tvCheckOutDate.text = formattedDate
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Xử lý lỗi khi định dạng sai
-                }
-            }
-        }
-
         postingFlowViewModel.myTimeshareModelSelected.observe(viewLifecycleOwner) { myTimeshareResponse ->
             bindDataTimeshareInfo(myTimeshareResponse)
         }
-
         postingFlowViewModel.cancelPolicy.observe(viewLifecycleOwner) { cancelPolicy ->
             when (cancelPolicy) {
                 RefundPolicy.FULL_REFUND.id -> {
@@ -159,8 +112,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
-
-        // Observe Selected Payment Method
         postingFlowViewModel.selectedPaymentMethod.observe(viewLifecycleOwner) { paymentMethod ->
             when (paymentMethod) {
                 PaymentMethod.VNPAY -> {
@@ -175,15 +126,33 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
         }
 
-        // Observe Purchase Package By VNPAY
+
+        // FIRST CHECK TYPE POSTING
+        postingFlowViewModel.typeOfPostingFlow.observe(viewLifecycleOwner) { typePosting ->
+            when (typePosting) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    binding.cvExchangeTime.visibility = View.GONE
+                    binding.includeDetailBilling.tvCancellationPolicy.visibility = View.VISIBLE
+                }
+
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    binding.cvExchangeTime.visibility = View.VISIBLE
+                    binding.includeDetailBilling.tvCancellationPolicy.visibility = View.GONE
+                    observeViewModelExchange()
+                }
+            }
+        }
+
+
+        // Call API Payment With VN PAY
+        // 1. Observe Purchase Package By VNPAY
         postingFlowViewModel.responseVNPAYUrl.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    response.data?.let {
-                        (activity as PostingFlowActivity).hideLoading()
-                        intentToVNPAYActivity(it.url.toString())
-                    }
+                    //routingToVNPayByTypePosting(response)
+                    // Call Upload Image, After that Call Create Posting
+                    callRequestCreateImageList()
                 }
 
                 Status.ERROR -> {
@@ -204,40 +173,19 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
+        // 2. UPLOAD IMAGE -> CREATE POSTING
 
-        // Observe Purchase Package By Wallet
-        postingFlowViewModel.walletPurchaseResponse.observe(viewLifecycleOwner) { response ->
+
+        // Call API Payment With Wallet
+        // 1. Observe Purchase Package By Wallet. Call Wallet Purchase
+        postingFlowViewModel.createRentalPostingTransactionByWallet.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thành Công",
-                        "Mua gói thành công",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                    postingFlowViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
-                    val rentalPackageEnum =
-                        RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
-                    val postingTimeshareDTO = PostingTimeshareDTO(
-                        description = "String",
-                        nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
-                        pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
-                        timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
-                        cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
-                        checkinDate = postingFlowViewModel.checkinDate.value!!,
-                        checkoutDate = postingFlowViewModel.checkoutDate.value!!,
-                        rentalPackageId = rentalPackageEnum?.id!!
-                    )
-                    postingFlowViewModel.createPosting(
-                        tokenManager.getAccessToken().toString(),
-                        postingTimeshareDTO
-                    )
-
-
+                    showSuccessToast("Thanh toán thành công")
+                    // Payment Success, Call Create Upload Image and get new Balance same time
+                    callRequestCreateImageList()
+                    callGetNewBalance()
                 }
 
                 Status.ERROR -> {
@@ -258,23 +206,31 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
+        postingFlowViewModel.createExchangePostingTransactionByWallet.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    showSuccessToast("Thanh toán thành công")
+                    // Payment Success, Call Create Upload Image and get new Balance same time
+                    callRequestCreateImageList()
+                    callGetNewBalance()
+                }
 
-        // Observe Call Get New Available Balance
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    showErrorToast(response.message.toString())
+                }
+
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // 2.1. UPDATE BALANCE WALLET
         postingFlowViewModel.newBalanceInfoResponse.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    (activity as PostingFlowActivity).showSuccessDialog(
-                        requireContext(),
-                        "Bạn đã đăng bài thành công",
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                val intent = Intent(requireContext(), MyPostingActivity::class.java)
-                                startActivity(intent)
-                                requireActivity().finish()
-                            }
-                        }
-                    )
                     response.data?.let {
                         tokenManager.saveCustomerInfo(it)
                         bindDataWalletInfo()
@@ -282,31 +238,30 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
 
                 Status.ERROR -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        response.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast(response.message.toString() + " Update Balance")
                 }
 
                 Status.LOADING -> {
-                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                    // Do nothing
                 }
             }
         }
+        // 2.2. UPLOAD IMAGE -> CREATE POSTING
 
-        // Observe Create Posting
-        postingFlowViewModel.postingTimeshareResponse.observe(viewLifecycleOwner) { response ->
+        // 3. CREATE POSTING
+        postingFlowViewModel.createRentalPosting.observe(viewLifecycleOwner) { response ->
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    startActivity(Intent(requireContext(), MyPostingActivity::class.java))
-                    requireActivity().finish()
+                    (activity as PostingFlowActivity).showSuccessDialog(
+                        requireContext(),
+                        "Đăng bài thành công",
+                        View.OnClickListener {
+                            startActivity(Intent(requireContext(), MyPostingActivity::class.java))
+                            requireActivity().finish()
+                        }
+                    )
+
                 }
 
                 Status.ERROR -> {
@@ -327,7 +282,111 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
+        postingFlowViewModel.createExchangePosting.observe(viewLifecycleOwner) { response ->
+            when (response.status) {
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    (activity as PostingFlowActivity).showSuccessDialog(
+                        requireContext(),
+                        "Đăng bài thành công",
+                        View.OnClickListener {
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    MyExchangePostingActivity::class.java
+                                )
+                            )
+                            requireActivity().finish()
+                        }
+                    )
 
+                }
+
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    showErrorToast(response.message.toString())
+                }
+
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // UPLOAD IMAGE -> CREATE POSTING
+        postingFlowViewModel.uploadImageResponse.observe(viewLifecycleOwner) { uploadImageResponse ->
+            when (uploadImageResponse.status) {
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    when (postingFlowViewModel.getSelectedPaymentMethod()) {
+                        PaymentMethod.VNPAY -> {
+                            routingToVNPayByTypePosting()
+                        }
+
+                        PaymentMethod.UNWIND -> {
+                            routingWalletByTypePosting()
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).showErrorDialog(
+                        "${uploadImageResponse.message}",
+                        "Back"
+                    )
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                }
+            }
+        }
+
+    }
+
+
+    // Observe ViewModel of Exchange Posting
+    private fun observeViewModelExchange() {
+        // Exchange Posting Date Range
+        binding.includeExchangeTime.customSpinnerProvince.isEnabled = false
+
+
+        postingFlowViewModel.exchangeDateRange.observe(viewLifecycleOwner) { checkinDate ->
+            bindDataExchangeTime(checkinDate)
+        }
+
+        // Exchange Posting Note
+        postingFlowViewModel.note.observe(viewLifecycleOwner) { noteExchange ->
+            binding.includeExchangeTime.etNote.setText(noteExchange)
+        }
+
+        postingFlowViewModel.currentProvinceSelected.observe(viewLifecycleOwner) { provinceId ->
+            val spinner: Spinner = binding.includeExchangeTime.customSpinnerProvince
+            val provinces = resources.getStringArray(R.array.vietnam_provinces)
+
+            // Tạo ArrayAdapter và áp dụng cho Spinner
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                provinces
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            // Vô hiệu hóa tương tác của Spinner
+            spinner.isEnabled = false
+            spinner.isClickable = false
+
+            // Kiểm tra nếu provinceId hợp lệ
+            if (provinceId > 0 && provinceId <= provinces.size) {
+                // Cập nhật Spinner đến vị trí tương ứng với provinceId
+                binding.includeExchangeTime.customSpinnerProvince.setSelection(provinceId - 1)
+            } else {
+                // Nếu không hợp lệ, đặt về vị trí mặc định (ví dụ: vị trí 0)
+                binding.includeExchangeTime.customSpinnerProvince.setSelection(0)
+            }
+        }
 
     }
 
@@ -338,60 +397,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    // Funtion to done Payment
-    private fun requestButtonClick() {
-        binding.ctrRequestButton.setOnClickListener {
-            if (!binding.cbAgreement.isChecked) {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Thông Báo",
-                    "Vui lòng đồng ý với điều khoản sử dụng",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                return@setOnClickListener
-            }
-            // Get Payment Method
-            val paymentMethod = postingFlowViewModel.selectedPaymentMethod.value
-
-            // Get Package Enum
-            val rentalPackageEnum =
-                RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
-
-            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
-            when (paymentMethod) {
-                // Call API to check Wallet Balance, Intent to PaymentResultActivity
-                PaymentMethod.UNWIND -> {
-                    postingFlowViewModel.purchasePackagePostingWallet(
-                        tokenManager.getAccessToken().toString(), rentalPackageEnum!!.id
-                    )
-                }
-
-                // Call API to get Payment URL, Intent to VNPayActivity
-                PaymentMethod.VNPAY -> {
-                    postingFlowViewModel.getResponsePaymentUrl(
-                        rentalPackageEnum!!.price,
-                        rentalPackageEnum.name
-                    )
-                }
-
-                else -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "Vui lòng chọn phương thức thanh toán",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-            }
-        }
-
-    }
 
     // Funtion to Bind data to UI
     private fun bindDataPackagePosting(packageModel: PackageModel) {
@@ -437,7 +442,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    // Funtion to Bind Timeshare Info Data to UI
     private fun bindDataTimeshareInfo(
         myTimeshareResponse: MyTimeshareResponse.Content,
     ) {
@@ -447,14 +451,21 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             llLocation.visibility = View.GONE
             llPostingBy.visibility = View.GONE
 
-            /*  // Image
-              Glide.with(requireContext())
-                  .load(myTimeshareResponse.image)
-                  .into(imImageTimeshare)*/
+            /* // Image
+             Glide.with(requireContext())
+                 .load(myTimeshareResponse.rentalPosting.roomInfo.unitType.photos)
+                 .error(R.drawable.im_material_mn)
+                 .placeholder(R.drawable.ripple_effect_white)
+                 .into(imImageTimeshare)*/
 
             // Title
             tvResortNameDtb.text =
                 "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomName}"
+
+            tvCheckInDate.text =
+                Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
+            tvCheckOutDate.text =
+                Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
 
 
         }
@@ -475,6 +486,50 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
 
     }
+
+    private fun bindDataExchangeTime(range: Pair<Long?, Long?>) {
+        val startDate = range.first
+        val endDate = range.second
+
+        if (startDate != null && endDate != null) {
+            val startDateString = formatDateByLocale(Date(startDate), requireContext())
+            val endDateString = formatDateByLocale(Date(endDate), requireContext())
+
+            val endDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
+            val startDateOfWeek = SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
+
+            binding.includeExchangeTime.tvCheckInDate.apply {
+                text = startDateString
+                setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+            }
+            binding.includeExchangeTime.tvCheckInDayOfWeek.text = startDateOfWeek
+            binding.includeExchangeTime.tvCheckOutDayOfWeek.text = endDateOfWeek
+            binding.includeExchangeTime.tvCheckOutDate.apply {
+                text = endDateString
+                setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.black))
+            }
+
+            binding.includeExchangeTime.etNightsCount.text =
+                "${postingFlowViewModel.getNumberOfExchangeNights()}"
+        }
+
+
+    }
+
+    private fun bindDataPriceOfTimeshare(pricePerNight: Long) {
+        if (pricePerNight.toInt() != 0) {
+            val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!.toInt()
+            binding.includeDetailBilling.tvEstimatedTotalPrice.text =
+                "${Constant.formatPriceLong(totalPrice)}đ / ${postingFlowViewModel.numberOfNights.value} đêm"
+            binding.includeDetailBilling.tvRoomPricePerNight.text =
+                "${Constant.formatPriceLong(pricePerNight)}đ / 1 đêm"
+        } else {
+            binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
+            binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
+            Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun formatPrice(price: Int): String {
         val formatter = DecimalFormat("#,###")
@@ -520,8 +575,56 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
     }
 
-    private fun intentToVNPAYActivity(url: String) {
+    private fun routingToVNPayByTypePosting() {
+        val url = postingFlowViewModel.getVNPAYUrl()
+        when (postingFlowViewModel.typeOfPostingFlow.value) {
+            Constant.RENTAL_POSTING_FLOW -> {
+                intentToVNPAYActivity_RentalPosting(url.toString())
+            }
 
+            Constant.EXCHANGER_POSTING_FLOW -> {
+                intentToVNPAYActivity_ExchangePosting(url.toString())
+            }
+        }
+    }
+
+    private fun routingWalletByTypePosting() {
+        // Call Create Posting
+        val rentalPackageEnum =
+            RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+        when (postingFlowViewModel.typeOfPostingFlow.value) {
+            Constant.RENTAL_POSTING_FLOW -> {
+                val postingTimeshareDTO = PostingTimeshareDTO(
+                    description = "String",
+                    nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
+                    pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
+                    timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
+                    cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
+                    checkinDate = postingFlowViewModel.checkinDate.value!!,
+                    checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+                    rentalPackageId = rentalPackageEnum?.id!!,
+                    imageUrls = postingFlowViewModel.getUploadedImageUrls()
+                )
+                callCreateRentalPosting(postingTimeshareDTO)
+            }
+
+            Constant.EXCHANGER_POSTING_FLOW -> {
+                val exchangeTimeshareDTO = ExchangeTimeshareDTO(
+                    description = "String",
+                    nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
+                    exchangePackageId = rentalPackageEnum?.id!!,
+                    timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
+                    checkinDate = postingFlowViewModel.checkinDate.value!!,
+                    checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+                    imageUrls = postingFlowViewModel.getUploadedImageUrls()
+                )
+                callCreateExchangePosting(exchangeTimeshareDTO)
+            }
+        }
+    }
+
+
+    private fun intentToVNPAYActivity_RentalPosting(url: String) {
         val intent = Intent(requireContext(), VNPayActivity::class.java)
         val rentalPackageEnum =
             RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
@@ -534,15 +637,123 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
             checkinDate = postingFlowViewModel.checkinDate.value!!,
             checkoutDate = postingFlowViewModel.checkoutDate.value!!,
-            rentalPackageId = rentalPackageEnum?.id!!
+            rentalPackageId = rentalPackageEnum?.id!!,
+            imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
         Log.d("CheckDTO", postingTimeshareDTO.toString())
 
         intent.putExtra(Constant.PAYMENT_URL, url)
         intent.putExtra(Constant.GENERAL_ID_PAYMENT, rentalPackageEnum.id)
         intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
-        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_POSTING)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING)
         paymentResultLauncher.launch(intent)
+    }
+
+    private fun intentToVNPAYActivity_ExchangePosting(url: String) {
+        val intent = Intent(requireContext(), VNPayActivity::class.java)
+        val rentalPackageEnum =
+            ExchangePackageEnum.getPackageById(postingFlowViewModel.packageStep4.value?.id!!)
+
+        val postingTimeshareDTO = ExchangeTimeshareDTO(
+            description = "String",
+            nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
+            exchangePackageId = rentalPackageEnum?.id!!,
+            timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
+            checkinDate = postingFlowViewModel.checkinDate.value!!,
+            checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+            imageUrls = postingFlowViewModel.getUploadedImageUrls()
+        )
+        Log.d("CheckDTO", postingTimeshareDTO.toString())
+
+        intent.putExtra(Constant.PAYMENT_URL, url)
+        intent.putExtra(Constant.GENERAL_ID_PAYMENT, rentalPackageEnum.id)
+        intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING)
+        paymentResultLauncher.launch(intent)
+    }
+
+
+    // Send Request
+    // Send Request To Create Image List
+    private fun callRequestCreateImageList() {
+        postingFlowViewModel.callUploadImages(tokenManager.getAccessToken().toString())
+    }
+
+    private fun callCreateRentalPosting(postingTimeshareDTO: PostingTimeshareDTO) {
+        postingFlowViewModel.createRentalPosting(
+            tokenManager.getAccessToken().toString(),
+            postingTimeshareDTO
+        )
+    }
+
+    private fun callCreateExchangePosting(exchangeTimeshareDTO: ExchangeTimeshareDTO) {
+        postingFlowViewModel.createExchangePosting(
+            tokenManager.getAccessToken().toString(),
+            exchangeTimeshareDTO
+        )
+    }
+
+    private fun callGetNewBalance() {
+        postingFlowViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+    }
+
+    // Funtion to done Payment
+    private fun requestButtonClick() {
+        binding.ctrRequestButton.setOnClickListener {
+            if (!binding.cbAgreement.isChecked) {
+                showInfoToast("Vui lòng đọc và đồng ý với điều khoản sử dụng")
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.llAgreement.top)
+                }
+                return@setOnClickListener
+            }
+            // Get Payment Method
+            val paymentMethod = postingFlowViewModel.selectedPaymentMethod.value
+
+            // Get Package Enum
+            val rentalPackageEnum =
+                RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+
+            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
+            paymentTypeHanldeFlow(paymentMethod, rentalPackageEnum)
+        }
+
+    }
+
+    private fun paymentTypeHanldeFlow(
+        paymentMethod: PaymentMethod?,
+        packageEnum: PackageModel?
+    ) {
+        when (paymentMethod) {
+            // Call API to check Wallet Balance, Intent to PaymentResultActivity
+            PaymentMethod.UNWIND -> {
+                when (postingFlowViewModel.typeOfPostingFlow.value) {
+                    Constant.RENTAL_POSTING_FLOW -> {
+                        postingFlowViewModel.createRentalPostingTransactionByWallet(
+                            tokenManager.getAccessToken().toString(), packageEnum!!.id
+                        )
+                    }
+
+                    Constant.EXCHANGER_POSTING_FLOW -> {
+                        postingFlowViewModel.createExchangePostingTransactionByWallet(
+                            tokenManager.getAccessToken().toString(), packageEnum!!.id
+                        )
+                    }
+                }
+            }
+
+            // Call API to get Payment URL, Intent to VNPayActivity
+            PaymentMethod.VNPAY -> {
+                postingFlowViewModel.getResponsePaymentUrl(
+                    packageEnum!!.price,
+                    packageEnum.name
+                )
+            }
+
+            else -> {
+                showErrorToast("Chưa chọn phương thức thanh toán")
+            }
+        }
     }
 
     private fun initActivityResultLauncher() {
@@ -552,6 +763,42 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     requireActivity().finish()
                 }
             }
+    }
+
+    private fun showErrorToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Error",
+            string,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showSuccessToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Success",
+            string,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showInfoToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Failed",
+            string,
+            MotionToastStyle.INFO,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
     }
 
 

@@ -17,7 +17,6 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.UnitTypeAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
@@ -64,15 +63,6 @@ class ResortDetailActivity : BaseActivity() {
 
 
 
-        // Not yet Implemented
-        resortImageListAdapter = ResortImageListAdapter(Constant.listImage) {
-            val intent = Intent(this, ImageListActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putInt("imagePosition", it)
-            })
-            startActivity(intent)
-        }
-
     }
 
     private fun observeData() {
@@ -86,10 +76,12 @@ class ResortDetailActivity : BaseActivity() {
                         // Set Resort Detail Info
                         bindDataResortInfo(resortDetailViewModel.resortDetail.value?.data!!)
 
+                        bindDataImage(resortDetail.imageUrls)
+
                         setListImageResort()
                         bindDataUnitType(resortDetail.unitTypeDtoList)
                         bindDataAmenities()
-                        setReviewResort()
+                        bindDataReviewResort(resortDetail.feedbackList)
 
                         // Action Event
                         setTypeRoomClickAction()
@@ -116,7 +108,7 @@ class ResortDetailActivity : BaseActivity() {
     private fun initAdapter() {
         unitTypeAdapter.submitList(listOf())
         amenitiesAdapter.submitList(listOf())
-        reviewAdapter.submitList(Constant.listReview)
+        reviewAdapter.submitList(listOf())
     }
 
     private fun setTypeRoomClickAction() {
@@ -149,6 +141,16 @@ class ResortDetailActivity : BaseActivity() {
 
         }
     }
+    private fun bindDataImage(listResortImage: List<String>){
+        // Not yet Implemented
+        resortImageListAdapter = ResortImageListAdapter(listResortImage) {
+            val intent = Intent(this, ImageListActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putInt("imagePosition", it)
+            })
+            startActivity(intent)
+        }
+    }
 
     fun formatPrice(price: Int): String {
         val formatter = DecimalFormat("#,###")
@@ -172,8 +174,7 @@ class ResortDetailActivity : BaseActivity() {
     }
 
     private fun bindDataUnitTypeDetailDialog(resortDetailModelResponse: ResortDetailModelResponse) {
-        val unitTypeDetail = CustomDialog(this)
-        unitTypeDetail.show()
+
     }
     private fun setListImageResort() {
         // List Destination
@@ -211,7 +212,8 @@ class ResortDetailActivity : BaseActivity() {
         }
 
     }
-    private fun setReviewResort() {
+    private fun bindDataReviewResort(listReview: List<ResortDetailModelResponse.Feedback>) {
+        reviewAdapter.submitList(listReview)
         binding.rvReview.apply {
             adapter = reviewAdapter
             layoutManager = LinearLayoutManager(this@ResortDetailActivity)

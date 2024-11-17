@@ -291,7 +291,7 @@
 
                     </LinearLayout>
 
-                    <!--// My Posting-->
+                    <!--// My Rental Posting-->
                     <LinearLayout
                         android:id="@+id/ll_my_posting"
                         android:layout_width="match_parent"
@@ -314,7 +314,7 @@
                             android:layout_weight="8"
                             android:fontFamily="@font/inter_semibold"
                             android:paddingStart="20dp"
-                            android:text="@string/my_posting"
+                            android:text="@string/my_rental_posting"
                             android:textSize="16dp" />
 
                         <ImageView
@@ -326,6 +326,43 @@
 
 
                     </LinearLayout>
+
+                    <!--// My Posting-->
+                    <LinearLayout
+                        android:id="@+id/ll_my_exchange_posting"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_posting_exchange" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="8"
+                            android:fontFamily="@font/inter_semibold"
+                            android:paddingStart="20dp"
+                            android:text="@string/my_exchange_posting"
+                            android:textSize="16dp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="1"
+                            android:src="@drawable/baseline_navigate_next_24_black" />
+
+
+                    </LinearLayout>
+
 
                     <!--// My Transaction-->
                     <LinearLayout

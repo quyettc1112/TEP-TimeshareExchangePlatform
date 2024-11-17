@@ -39,6 +39,10 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val SEARCH_LOCATION = "searchLocation"
+        const val SEARCH_DATE = "searchDate"
+        const val SEARCH_ROOM = "searchRoom"
+
         const val FRAGMENT_HOME_CODE = "FH"
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 
@@ -62,6 +66,7 @@ class Constant {
         const val DEFAULT_POSTING_ID = "postingId"
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
+        const val REQUEST_GET_MY_TIMESHARE = "requestGetMyTimeshare"
 
         const val DEFAULT_MY_POSTING_RESORT_NAME = "myPostingResortName"
         const val DEFAULT_MY_POSTING_ROOM_NAME = "myPostingRoomName"
@@ -87,6 +92,11 @@ class Constant {
 
 
         fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+
+        fun formatPriceLong(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
@@ -206,16 +216,25 @@ class Constant {
             BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
+        fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+            val bedTypes = listOf(
+                "bedsFull" to "Full",
+                "bedsKing" to "King",
+                "bedsSofa" to "Sofa",
+                "bedsMurphy" to "Murphy",
+                "bedsQueen" to "Queen",
+                "bedsTwin" to "Twin"
+            )
+
+            val bedsList = bedTypes.mapNotNull { (key, label) ->
+                val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
+                if (count > 0) "$count giường $label" else null
+            }.joinToString(", ")
+
+            return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+        }
 
 
-        val listImage = listOf(
-            "https://i.pinimg.com/564x/05/fb/0e/05fb0e639fc5f3373433f4a8594bea54.jpg",
-            "https://i.pinimg.com/564x/02/18/15/021815591bfa2023e4ef3f9cc1d15590.jpg",
-            "https://i.pinimg.com/564x/02/18/15/021815591bfa2023e4ef3f9cc1d15590.jpg",
-            "https://i.pinimg.com/736x/4d/4c/a7/4d4ca70285d1bc68fee56ed86770b47c.jpg",
-            "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
-            "https://i.pinimg.com/736x/39/b0/d2/39b0d2f927ae284e9b593ad1239768de.jpg",
-        )
 
 
         // Get list Review
@@ -229,15 +248,6 @@ class Constant {
             ReviewModel(7, "Phòng đẹp, sạch sẽ, nhân viên thân thiện", 5, "26/08/2024", 1, 1),
         )
 
-        val listTimeshareImage = listOf(
-            "https://i.pinimg.com/564x/0f/df/c5/0fdfc565bc883a817317592ec37eaffe.jpg",
-            "https://i.pinimg.com/564x/3f/19/6f/3f196f360056fea74b88098a650131aa.jpg",
-            "https://i.pinimg.com/564x/0b/48/2b/0b482bf30e232ff44d74d92e22bad3b8.jpg",
-            "https://i.pinimg.com/736x/d9/5d/ca/d95dca792b2fdcb0c8c0021400c27cc7.jpg",
-            "https://i.pinimg.com/736x/a3/df/db/a3dfdbb0283cac6b594c676d00696779.jpg"
-
-
-        )
 
         val listMemberShip = listOf(
             RentalPackageEnum.MEMBERSHIP_MONTHLY.packageModel,

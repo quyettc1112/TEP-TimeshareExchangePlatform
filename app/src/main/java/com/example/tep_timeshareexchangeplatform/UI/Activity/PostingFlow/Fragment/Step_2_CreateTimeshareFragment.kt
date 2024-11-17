@@ -33,7 +33,6 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Custom.CustomDialog
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -53,9 +52,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var unitTypeAdapterPosting = UnitTypeAdapterPosting(true)
     private var amenitiesAdapter = AmenitiesAdaper()
     private var amenitiesEntertamentAdapter = AmenitiesAdaper()
-    private var imageUploadAdapter = ImageUploadAdapter()
     private var policyAmentitiesAdapter = AmenitiesAdaper()
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
+
+    private lateinit var tokenManager: TokenManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,17 +68,17 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateTimeshareBinding.inflate(inflater, container, false)
+        tokenManager = TokenManager(requireContext())
         initActivityLauncher()
         observeViewModel()
         setEventChangeLocation()
         setValueUnitRoom()
-        getImageFromGallery()
-        sendRequestCreateTimeshare()
         setEventChangeDate()
         routeRoomDistribution()
         setEventSaveAmenities()
         return binding.root
     }
+
     private fun observeViewModel() {
         // Tracking Data of Step Create Timeshare
         postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
@@ -117,15 +117,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${listUnitType.status}",
-                        "${listUnitType.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${listUnitType.message}")
                 }
             }
         }
@@ -141,15 +133,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${roomList.status}",
-                        "${roomList.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${roomList.message}")
                 }
             }
         }
@@ -167,20 +151,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${unitType.status}",
-                        "${unitType.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showErrorToast("${unitType.message}")
                 }
             }
 
         }
-
 
 
         // Tracking Date Range
@@ -203,15 +178,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "${timeshareDTO.status}",
-                        "${timeshareDTO.data}",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                    );
+                    showSuccessToast("Create Timeshare Success")
                     postingFlowViewModel.updateTaskProgress(1)
                     postingFlowViewModel.updateStep(3)
                 }
@@ -288,10 +255,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         amenitiesAdapter.submitList(Constant.listAmenities)
         amenitiesEntertamentAdapter.submitList(Constant.listEntertament)
         policyAmentitiesAdapter.submitList(Constant.listPolicy)
-        imageUploadAdapter.submitList(listOf())
-        imageUploadAdapter.onDeleteClick = {
-            imageUploadAdapter.removeItem(it)
-        }
+
 
     }
 
@@ -343,10 +307,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+
     private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
-        val unitTypeDetail = CustomDialog(requireContext())
-        unitTypeDetail.show()
     }
+
     // Yes. User Have Room Type
     private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
         val binding = binding.includeUnitTypeYes
@@ -378,6 +342,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
     }
+
     private fun bindDataSpinner(roomList: List<RoomModel>?) {
         val spinnerBinding = binding.includeUnitTypeYes
 
@@ -430,15 +395,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     if (token != null && unitTypeID != null) {
                         postingFlowViewModel.getUnitTypeDetail(token, unitTypeID)
                     } else {
-                        MotionToast.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            "Token is null",
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                        )
+                        showErrorToast("Token is null")
                     }
                 }
 
@@ -447,6 +404,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
     }
+
     // No. User Don't Have Room Type, Create New Room
     private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
         // Lấy danh sách duy nhất cho view và bedrooms
@@ -517,28 +475,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                MotionToast.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Please fill in all required fields",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                )
+                showInfoToast("Please fill in all required fields")
                 return@setOnClickListener
             }
 
             if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
-                MotionToast.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Please select a room type",
-                    MotionToastStyle.INFO,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
-                )
+                showErrorToast("Please select a unit type")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
                 }
@@ -553,6 +495,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+
     private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
         val selectedView =
             binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
@@ -634,6 +577,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+
     // User click to change location of Resort
     private fun setEventChangeLocation() {
         binding.tvChangeLocation.setOnClickListener {
@@ -661,6 +605,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun bindDataAmenities(unitType: UnitTypeModel) {
 
     }
+
     private fun setEventSaveAmenities() {
         binding.btnSaveAmenities.setOnClickListener {
             postingFlowViewModel.updateTaskProgress(5)
@@ -669,12 +614,59 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
 
-    // 5. Display Image Upload
-    private fun getImageFromGallery() {
-        binding.btnAddImage.setOnClickListener {
-            openGallery()
+    private fun callRequestCreateTimeshare() {
+        binding.btnNext.setOnClickListener {
+            val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
+            if (checkYN) {
+                sendRequestOptionYes()
+            } else {
+                // Call API to create Room
+                if (!tokenManager.isLoggedIn()) {
+                    Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val roomDTO: RoomDTO = RoomDTO(
+                    roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
+                    isActive = true,
+                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
+                    status = "Available",
+                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
+                    roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
+                    roomAmenities = listOf()
+                )
+                postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
+
+            }
         }
     }
+
+    private fun sendRequestOptionYes() {
+        val token = TokenManager(requireContext()).getAccessToken()
+        // Định dạng theo kiểu yyyy-MM-dd
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        val startDateFormatted =
+            postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
+                ?: ""
+        val endDateFormatted =
+            postingFlowViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
+                ?: ""
+        val timeshareDTO = TimeshareDTO(
+            status = "Available",
+            startYear = 2024,
+            endYear = 2027,
+            startDate = startDateFormatted,
+            endDate = endDateFormatted,
+            roomInfoId = postingFlowViewModel.currentRoomInfo.value!!
+        )
+        Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
+        if (token != null && timeshareDTO != null) {
+            postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
+        } else {
+            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Location Activity Result
     private fun initActivityLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -689,75 +681,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
     }
-    fun openGallery() {
-        pickImagesLauncher.launch("image/*")
-    }
-    private val pickImagesLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-            if (uris.isNotEmpty()) {
-                val listImage = mutableListOf<ImageUploadModel>()
-                for (uri in uris) {
-                    listImage.add(ImageUploadModel.create(uri))
-                }
-                imageUploadAdapter.addImage(listImage)
-            }
-        }
-
-
-    // Send Request
-    private fun sendRequestCreateTimeshare() {
-        binding.btnNext.setOnClickListener {
-            val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
-            if (checkYN) {
-                sendRequestOptionYes()
-            } else {
-                // Call API to create Room
-                val token = TokenManager(requireContext()).getAccessToken()
-                val roomDTO: RoomDTO = RoomDTO(
-                    roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
-                    isActive = true,
-                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
-                    status = "Available",
-                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
-                    roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
-                    roomAmenities = listOf()
-                )
-                if (token != null) {
-                    postingFlowViewModel.postRoom(token, roomDTO)
-                } else {
-                    Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        }
-
-    }
-    private fun sendRequestOptionYes() {
-        val token = TokenManager(requireContext()).getAccessToken()
-        // Định dạng theo kiểu yyyy-MM-dd
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-        val startDateFormatted =
-            postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
-                ?: ""
-        val endDateFormatted =
-            postingFlowViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
-                ?: ""
-        val timeshareDTO = TimeshareDTO(
-            status = "Available",
-            startYear = 2024,
-            endYear = 2025,
-            startDate = startDateFormatted,
-            endDate = endDateFormatted,
-            roomInfoId = postingFlowViewModel.currentRoomInfo.value!!
-        )
-        Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
-        if (token != null && timeshareDTO != null) {
-            postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
-        } else {
-            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-        }
-    }
-
 
     // Order of the steps
     private fun showStepEventHandle(currentTask: Int) {
@@ -768,7 +691,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.includeUnitTypeNo.root.visibility = View.GONE
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
 
             }
@@ -776,7 +698,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             2 -> {
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
-                binding.crlContentImage.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
             }
 
@@ -797,17 +718,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             5 -> {
-                binding.crlContentImage.visibility = View.VISIBLE
                 binding.btnNext.visibility = View.VISIBLE
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-                }
+                callRequestCreateTimeshare()
             }
         }
     }
+
     private fun setValueUnitRoom() {
-
-
         // Set List Amenities
         binding.rvAmenities.apply {
             adapter = amenitiesAdapter
@@ -826,14 +743,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
 
-        // Set List Image
-        binding.rvImage.apply {
-            adapter = imageUploadAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-
     }
+
     private fun verifyDataAndSendRequest(): Boolean {
         val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
 
@@ -862,7 +773,41 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         return true
     }
 
+    private fun showErrorToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Error",
+            string,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
 
+    private fun showSuccessToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Success",
+            string,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showInfoToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Failed",
+            string,
+            MotionToastStyle.INFO,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
 
 
 }

@@ -64,18 +64,36 @@ interface WalletAPIService {
      */
     // Purchase Package Posting By VN Pay
     @POST("wallet/vnpay/rental/posting")
-    suspend fun purchasePackagePostingVNPAY(
+    suspend fun createRentalPostingTransactionByVNPAY(
         @Header ("Authorization") token: String,
         @Query("uuid") uuid: String,
         @Query("rentalPackageId") rentalPackageId : Int
     ) : Response<VNPAYPurchaseResponse>
 
+    // Create Exchange Posting Transcation
+    @POST("wallet/vnpay/exchange/posting")
+    suspend fun createExchangePostingTransactionByVNPAY(
+        @Header("Authorization") token: String,
+        @Query("uuid") uuid: String,
+        @Query("postingId") postingId: Int
+    ): Response<VNPAYPurchaseResponse>
+
     // Purchase Package Posting By Wallet
     @POST("wallet/wallet/rental/posting")
-    suspend fun purchasePackagePostingWallet(
+    suspend fun createRentalPostingTransactionByWallet(
         @Header ("Authorization") token: String,
         @Query("rentalPackageId") rentalPackageId : Int
     ) : Response<WalletPurchaseResponse>
+
+    // Create Exchange Posting Transaction
+    // Purchase Package Posting By Wallet
+    @POST("wallet/wallet/exchange/posting")
+    suspend fun createExchangePostingTransactionByWallet(
+        @Header ("Authorization") token: String,
+        @Query("postingId") postingId : Int
+    ) : Response<WalletPurchaseResponse>
+
+
 
 
     /**
@@ -96,6 +114,8 @@ interface WalletAPIService {
         @Header ("Authorization") token: String,
         @Query("postingId") postingId : Int
     ) : Response<WalletPurchaseResponse>
+
+
 
 
 

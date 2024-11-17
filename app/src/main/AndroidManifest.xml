@@ -22,13 +22,28 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.CommonActivity.ExchangeDetailActivity.ExchangeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity"
+            android:exported="true" />
+        <activity
             android:name=".Sample.SampleActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity"
+            android:name=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity"
@@ -65,23 +80,21 @@
             android:label="@string/title_activity_transcation"
             android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform.NoActionBar" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity"
+            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyPostingActivity.PricingSupportActivity.PricingSupportActivity"
+            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.PricingSupportActivity.PricingSupportActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity"
+            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.PostingFlow.ExchangePostingActivity.ExchangePostingActivity"
-            android:exported="true" />
-        <activity
             android:name=".UI.Activity.PostingFlow.PostingFlowActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".UI.Activity.MemberShipActivity.MemberShipActivity"
             android:exported="true" />

@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,12 +17,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.MyProgressDialog
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
@@ -88,16 +88,14 @@ open class  BaseActivity : AppCompatActivity() {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.dialog_success, null)
 
+
         // Tạo dialog với layout tuỳ chỉnh
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .create()
 
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
 
         dialog.setCancelable(false)
         val textSuccess = dialogView.findViewById<TextView>(R.id.tvSuccessMessage)
@@ -130,6 +128,8 @@ open class  BaseActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialog.setCancelable(false)
 
@@ -164,8 +164,39 @@ open class  BaseActivity : AppCompatActivity() {
             .create()
         dialog.setCancelable(false)
 
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
         textSuccess.text = message
+
+        // Ánh xạ các view từ dialog
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        btnConfirm.setOnClickListener {
+            // Nếu có onClickListener tùy chỉnh, thực thi nó
+            onClickListener?.onClick(it)
+            // Đóng dialog sau khi xử lý
+            dialog.dismiss()
+        }
+
+
+        // Hiển thị dialog
+        dialog.show()
+    }
+
+    open fun showDoneFeedbackDialog(
+        context: Context,
+        onClickListener: View.OnClickListener? = null
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_done_feedback, null)
+
+        // Tạo dialog với layout tuỳ chỉnh
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+        dialog.setCancelable(false)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // Ánh xạ các view từ dialog
         val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)

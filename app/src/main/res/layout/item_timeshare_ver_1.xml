@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginEnd="25dp"
-    android:layout_width="170dp"
+    android:layout_width="180dp"
+    android:layout_marginEnd="20dp"
     android:minHeight="330dp"
     android:backgroundTint="@color/white"
     android:background="@drawable/background_stroke_around"
@@ -84,7 +84,7 @@
             android:maxLines="2"
             android:text="Biển Vịnh Hạ Long Resort"
             android:textColor="@color/black"
-            android:textSize="14dp" />
+            android:textSize="12dp" />
 
 
         <!-- // Date-->
@@ -96,9 +96,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/ic_schedule"/>
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_check_in"/>
 
             <TextView
                 android:id="@+id/tv_check_in_date"
@@ -107,9 +107,9 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center|left"
                 android:maxLines="1"
-                android:textStyle="bold"
                 android:text="26/08/2024 - 30/08/2024"
-                android:textSize="11dp" />
+                android:textSize="11dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,9 +120,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/ic_schedule"/>
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_check_out"/>
 
             <TextView
                 android:id="@+id/tv_check_out_date"
@@ -185,7 +185,7 @@
             android:fontFamily="@font/inter_extrabold"
             android:text="1.300.000 VND"
             android:textColor="@color/blue_full"
-            android:textSize="16dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_numberOfNight"

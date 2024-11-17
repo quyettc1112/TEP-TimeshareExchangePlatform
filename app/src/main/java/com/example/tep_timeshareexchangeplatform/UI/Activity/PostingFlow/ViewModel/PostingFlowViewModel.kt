@@ -3,16 +3,20 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewMo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -29,6 +33,7 @@ import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +43,8 @@ class PostingFlowViewModel @Inject constructor(
     private val timeshareRepository: TimeshareRepository,
     private val customerAPIRepository: CustomerAPIRepository,
     private val paymentAPIRepository: PaymentAPIRepository,
-    private val walletAPIRepository: WalletAPIRepository
+    private val walletAPIRepository: WalletAPIRepository,
+    private val storageAPIRepository: StorageAPIRepository
 ) : ViewModel() {
 
     private val initStep: Int = 1
@@ -50,6 +56,9 @@ class PostingFlowViewModel @Inject constructor(
     fun updateTypeOfPostingFlow(type: String) {
         _typeOfPostingFlow.value = type
     }
+    fun getTypeOfPostingFlow(): String {
+        return _typeOfPostingFlow.value ?: ""
+    }
 
 
 
@@ -60,26 +69,18 @@ class PostingFlowViewModel @Inject constructor(
         get() = _step
 
     fun updateStep(step: Int) {
-        if (step >= _currentStepInProgress.value!!) {
+        // Kiểm tra xem giá trị mới có khác giá trị hiện tại không để tránh cập nhật không cần thiết
+        if (_step.value == step) {
+            return
+        }
+
+        if (step >= _currentStepInProgress.value ?: 0) {
             updateCurrentStepInProgress(step)
         }
+
         _step.value = step
+
     }
-
-
-    // ----------------------------------------------------------//
-    // Tracking Step in Step 2 (My Timeshare) - Create Timeshare
-    private val _stepCreateTimeshare = MutableLiveData<Int>()
-    val stepCreateTimeshare: MutableLiveData<Int>
-        get() = _stepCreateTimeshare
-
-    // Update the current step progress
-    fun updateTaskProgress(currentTask: Int) {
-        if (currentTask in 0..5) { // Assuming 5 tasks
-            _stepCreateTimeshare.value = currentTask
-        }
-    }
-
 
     // ----------------------------------------------------------//
     // Tracking Current Step In Progress
@@ -98,6 +99,69 @@ class PostingFlowViewModel @Inject constructor(
     fun resetSteps() {
         _currentStepInProgress.value = 1
     }
+
+    // ----------------------------------------------------------//
+    // Tracking Step in Step 2 (My Timeshare) - Create Timeshare
+    private val _stepCreateTimeshare = MutableLiveData<Int>()
+    val stepCreateTimeshare: MutableLiveData<Int>
+        get() = _stepCreateTimeshare
+
+    // Update the current step progress
+    fun updateTaskProgress(currentTask: Int) {
+        if (currentTask in 0..5) { // Assuming 5 tasks
+            _stepCreateTimeshare.value = currentTask
+        }
+    }
+
+
+
+    // ----------------------------------------------------------//
+    // Exchange Date Selected
+    // LiveData to hold the pair of start and end dates
+    private val _exchangeDateRange = MutableLiveData<Pair<Long, Long>>()
+    val exchangeDateRange: LiveData<Pair<Long, Long>> get() = _exchangeDateRange
+    fun setExchangeDateRange(startDate: Long, endDate: Long) {
+        _exchangeDateRange.value = Pair(startDate, endDate)
+    }
+    fun getExchangeDateRange(): Pair<Long, Long> {
+        return (_exchangeDateRange.value ?: Pair(null, null)) as Pair<Long, Long>
+    }
+
+    fun getNumberOfExchangeNights(): Int {
+        val range = _exchangeDateRange.value
+        return if (range != null) {
+            val (start, end) = range
+            if (start != null && end != null) {
+                ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            } else {
+                0
+            }
+        } else {
+            0
+        }
+    }
+
+    // Check Current Province Selected
+    private var _currentProvinceSelected = MutableLiveData<Int>()
+    val currentProvinceSelected: MutableLiveData<Int>
+        get() = _currentProvinceSelected
+    fun updateCurrentProvinceSelected(currentProvince: Int) {
+        _currentProvinceSelected.value = currentProvince
+    }
+    fun getCurrentProvinceSelected(): Int {
+        return _currentProvinceSelected.value ?: 0
+    }
+
+
+    // Ghi Chu
+    private val _note = MutableLiveData<String?>()
+    val note: MutableLiveData<String?>
+        get() = _note
+    fun updateNoteContent(note: String?) {
+        _note.value = note
+    }
+
+
 
 
     // ----------------------------------------------------------//
@@ -162,6 +226,10 @@ class PostingFlowViewModel @Inject constructor(
     // Funtion to update packageStep4
     fun updatePackageStep4(packageModel: PackageModel) {
         _packageStep4.value = packageModel
+    }
+
+    fun getPackageStep4(): PackageModel? {
+        return _packageStep4.value
     }
 
 
@@ -286,6 +354,19 @@ class PostingFlowViewModel @Inject constructor(
         return _currentMyTimeshareList
     }
 
+    fun clearCurrentMyTimeshareList() {
+        _currentMyTimeshareList.clear()
+    }
+
+    private val _isStep3Visible = MutableLiveData<Boolean>()
+    val isStep3Visible: LiveData<Boolean> get() = _isStep3Visible.distinctUntilChanged()
+
+    fun updateStep3Visibility(isVisible: Boolean) {
+        _isStep3Visible.value = isVisible
+    }
+
+
+
 
     // ----------------------------------------------------------//
     // Call API get valid year timeshare of Customer
@@ -360,6 +441,9 @@ class PostingFlowViewModel @Inject constructor(
     fun selectPaymentMethod(method: PaymentMethod) {
         _selectedPaymentMethod.value = method
     }
+    fun getSelectedPaymentMethod(): PaymentMethod {
+        return _selectedPaymentMethod.value ?: PaymentMethod.VNPAY
+    }
 
     // ----------------------------------------------------------//
     // Call VNPAY API
@@ -375,18 +459,33 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+    fun getVNPAYUrl(): String {
+        return _responseVNPAYUrl.value?.data?.url ?: ""
+    }
 
     // ----------------------------------------------------------//
     // Call API Purchase Package by Wallet
     private val _walletPurchaseResponse = MutableLiveData<Resource<WalletPurchaseResponse>>()
-    val walletPurchaseResponse: MutableLiveData<Resource<WalletPurchaseResponse>> =
+    val createRentalPostingTransactionByWallet: MutableLiveData<Resource<WalletPurchaseResponse>> =
         _walletPurchaseResponse
 
-    fun purchasePackagePostingWallet(token: String, rentalPackageId: Int) {
+    fun createRentalPostingTransactionByWallet(token: String, rentalPackageId: Int) {
         viewModelScope.launch {
             _walletPurchaseResponse.postValue(Resource.loading(null))
             walletAPIRepository.purchasePackagePostingWallet(token, rentalPackageId).let {
                 _walletPurchaseResponse.postValue(it)
+            }
+        }
+    }
+
+    private val _createExchangePostingByWallet = MutableLiveData<Resource<WalletPurchaseResponse>>()
+    val createExchangePostingTransactionByWallet: MutableLiveData<Resource<WalletPurchaseResponse>> =
+        _createExchangePostingByWallet
+    fun createExchangePostingTransactionByWallet(token: String, exchangePackageId: Int) {
+        viewModelScope.launch {
+            _createExchangePostingByWallet.postValue(Resource.loading(null))
+            walletAPIRepository.purchasePackagePostingWallet(token, exchangePackageId).let {
+                _createExchangePostingByWallet.postValue(it)
             }
         }
     }
@@ -409,10 +508,10 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call API Create Posting
     private val _postingTimeshareResponse = MutableLiveData<Resource<PostingTimeshareResponse>>()
-    val postingTimeshareResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
+    val createRentalPosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _postingTimeshareResponse
 
-    fun createPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+    fun createRentalPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
         viewModelScope.launch {
             _postingTimeshareResponse.postValue(Resource.loading(null))
             customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
@@ -420,6 +519,20 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+
+
+    private val _createExchangePosting = MutableLiveData<Resource<PostingTimeshareResponse>>()
+    val createExchangePosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
+        _createExchangePosting
+    fun createExchangePosting(token: String, exchangeTimeshareDTO: ExchangeTimeshareDTO) {
+        viewModelScope.launch {
+            _createExchangePosting.postValue(Resource.loading(null))
+            customerAPIRepository.createExchangePosting(token, exchangeTimeshareDTO).let {
+                _createExchangePosting.postValue(it)
+            }
+        }
+    }
+
 
 
     // Tracking Yes or No for Step 2
@@ -439,6 +552,56 @@ class PostingFlowViewModel @Inject constructor(
         _currentRoomInfo.value = currentRoomInfo
     }
 
+    fun resetData() {
+        // Reset tất cả các LiveData hoặc MutableLiveData trong ViewModel
+        _currentMyTimesharePage.value = 0
+        _currentMyTimeshareList.clear()
+        step.value = 1 // hoặc giá trị mặc định ban đầu
+        // Reset các giá trị khác nếu cần
+    }
+
+    // ----------------------------------------------------------//
+    // Image URI, Bind To MutiplePart
+    private val _imageList = MutableLiveData<List<ImageUploadModel>>(emptyList())
+    val imageList: LiveData<List<ImageUploadModel>> get() = _imageList
+    // Đặt ảnh chính
+    fun setMainImage(mainImage: ImageUploadModel) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            // Kiểm tra nếu ảnh chính đã tồn tại, xóa nó
+            remove(mainImage)
+            // Thêm ảnh chính vào đầu danh sách
+            add(0, mainImage)
+        } ?: listOf(mainImage) // Nếu danh sách rỗng, khởi tạo với ảnh chính
+    }
+
+    fun addImages(newImages: List<ImageUploadModel>) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            addAll(newImages)
+        }
+    }
+    fun deleteImage(image: ImageUploadModel) {
+        _imageList.value = _imageList.value?.toMutableList()?.apply {
+            remove(image)
+        }
+    }
+    fun getMultipartBodies(): List<MultipartBody.Part> {
+        return _imageList.value?.map { it.part } ?: emptyList()
+    }
+
+    private val _listImageResponse = MutableLiveData<Resource<List<String>>>()
+    val uploadImageResponse: LiveData<Resource<List<String>>> get() = _listImageResponse
+    fun callUploadImages(token: String) {
+        viewModelScope.launch {
+            _listImageResponse.postValue(Resource.loading(null))
+            val images = getMultipartBodies()
+            val response = storageAPIRepository.uploadFiles(token, images)
+            _listImageResponse.postValue(response)
+        }
+    }
+    fun getUploadedImageUrls(): List<String> {
+        return _listImageResponse.value?.data ?: emptyList()
+    }
+
 
     // Init
     init {
@@ -449,7 +612,6 @@ class PostingFlowViewModel @Inject constructor(
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
         _currentRoomInfo.value = 0
 
-        _currentMyTimesharePage.value = 0
     }
 
 

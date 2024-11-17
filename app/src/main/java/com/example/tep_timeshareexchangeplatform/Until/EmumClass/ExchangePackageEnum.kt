@@ -39,11 +39,11 @@ enum class ExchangePackageEnum (val packageModel: PackageModel) {
 
     companion object {
         fun getPackageById(id: Int): PackageModel? {
-            return RentalPackageEnum.values().find { it.packageModel.id == id }?.packageModel
+            return ExchangePackageEnum.values().find { it.packageModel.id == id }?.packageModel
         }
 
         fun getPackageByName(name: String): PackageModel? {
-            return RentalPackageEnum.values().find { it.packageModel.name == name }?.packageModel
+            return ExchangePackageEnum.values().find { it.packageModel.name == name }?.packageModel
         }
     }
 }

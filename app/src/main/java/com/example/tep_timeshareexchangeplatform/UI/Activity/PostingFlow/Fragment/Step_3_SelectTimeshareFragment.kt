@@ -30,7 +30,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.FragmentSelectTimes
 class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_timeshare) {
 
     private lateinit var binding: FragmentSelectTimeshareBinding
-    private var myTimeshareAdapter = MyTimeshareAdapter()
+    private var myTimeshareAdapter = MyTimeshareAdapter(true)
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var selectMyTimeshareResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
@@ -72,9 +72,8 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
                 val totalPages = postingFlowViewModel.myTimeshareList.value?.data?.totalPages ?: 0
-                if (lastCompletelyVisibleItem == (totalItemCount - 3) && postingFlowViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
+                if (lastCompletelyVisibleItem == (totalItemCount - 2) && postingFlowViewModel.currentMyTimesharePage.value!! < totalPages - 1) {
                     postingFlowViewModel.incrementCurrentMyTimesharePage()
-                    Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -85,7 +84,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         postingFlowViewModel.myTimeshareList.observe(viewLifecycleOwner) { resources ->
             when (resources.status) {
                 Status.LOADING -> {
-                   binding.lottieLoading.visibility = View.VISIBLE
+                    binding.lottieLoading.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
@@ -95,6 +94,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                         myTimeshareAdapter.submitList(postingFlowViewModel.getCurrentMyTimeshareList())
                     }
                 }
+
                 Status.ERROR -> {
                     binding.lottieLoading.visibility = View.GONE
                     MotionToast.Companion.createToast(
@@ -111,7 +111,11 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         }
 
         postingFlowViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
-            postingFlowViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+            postingFlowViewModel.getMyTimeshareList(
+                tokenManager.getAccessToken().toString(),
+                it,
+                PAGE_SIZE
+            )
         }
 
     }
@@ -169,7 +173,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     override fun onResume() {
         super.onResume()
+        myTimeshareAdapter.submitList(listOf())
+        postingFlowViewModel.clearCurrentMyTimeshareList()
         postingFlowViewModel.currentMyTimesharePage.value = 0
+
     }
 
 

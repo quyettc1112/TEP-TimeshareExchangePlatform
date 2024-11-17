@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.MemberShipResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
@@ -48,10 +49,10 @@ class VNPayViewModel @Inject constructor(
 
     // Call API Purchase Package by VNPAY
     private val _purchasePackageResponse = MutableLiveData<Resource<VNPAYPurchaseResponse>>()
-    val purchasePackageResponse: MutableLiveData<Resource<VNPAYPurchaseResponse>> =
+    val createRentalPostingTransaction: MutableLiveData<Resource<VNPAYPurchaseResponse>> =
         _purchasePackageResponse
 
-    fun purchasePackage(token: String, uuid: String, packageId: Int) {
+    fun createRentalPostingTransaction(token: String, uuid: String, packageId: Int) {
         viewModelScope.launch {
             _purchasePackageResponse.postValue(Resource.loading(null))
             walletAPIRepository.purchasePackagePostingVNPAY(token, uuid, packageId).let {
@@ -65,7 +66,7 @@ class VNPayViewModel @Inject constructor(
     val postingTimeshareResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _postingTimeshareResponse
 
-    fun createPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+    fun createRentalPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
         viewModelScope.launch {
             _postingTimeshareResponse.postValue(Resource.loading(null))
             customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
@@ -86,7 +87,30 @@ class VNPayViewModel @Inject constructor(
         }
     }
 
-    // Call APi Create Booking
+    // Call API Create Exchange Posting
+    private val _exchangePostingResponse = MutableLiveData<Resource<PostingTimeshareResponse>>()
+    val exchangePostingResponse: MutableLiveData<Resource<PostingTimeshareResponse>> =
+        _exchangePostingResponse
+    fun createExchangePosting(token: String, postingTimeshareResponse: ExchangeTimeshareDTO) {
+        viewModelScope.launch {
+            _exchangePostingResponse.postValue(Resource.loading(null))
+            customerAPIRepository.createExchangePosting(token, postingTimeshareResponse).let {
+                _exchangePostingResponse.postValue(it)
+            }
+        }
+    }
+
+    // Create Exchange Posting Transcation
+    private val _exchangePostingResponseTransaction = MutableLiveData<Resource<VNPAYPurchaseResponse>>()
+    val createExchangePostingTransaction: MutableLiveData<Resource<VNPAYPurchaseResponse>> = _exchangePostingResponseTransaction
+    fun createExchangePostingTransaction(token: String, uuid: String, exchangeId: Int) {
+        viewModelScope.launch {
+            _exchangePostingResponseTransaction.postValue(Resource.loading(null))
+            walletAPIRepository.createExchangePostingTransaction(token, uuid, exchangeId).let {
+                _exchangePostingResponseTransaction.postValue(it)
+            }
+        }
+    }
 
 
 

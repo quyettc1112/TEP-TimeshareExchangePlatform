@@ -1,25 +1,39 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.DateRangePickerDialog.DateRangeDialogFragment
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.ImageUploadAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -28,6 +42,7 @@ import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreatePostingBinding
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -39,6 +54,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private lateinit var binding: FragmentCreatePostingBinding
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
+    private val imageUploadAdapter = ImageUploadAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +71,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         setEventChangeMyTimeshare()
         bindDataSpinnerCancellationPolicy()
         setupTextWatchers()
+        initAdapter()
+        getImageFromGallery()
         return binding.root
     }
 
@@ -67,11 +85,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             )
             bindDataMyTimeshare(myTimeshareModel)
 
-        }
-
-        // Observer Package Type
-        postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageType ->
-            checkPackageType(packageType)
         }
 
         // Observer Valid Year Timeshare of Customer
@@ -124,6 +137,19 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             }
 
         }
+
+        // Observer Package Selected
+        postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
+            when (postingFlowViewModel.typeOfPostingFlow.value) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    rentalPackageHandleUI(packageModel)
+                }
+
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    exchangePackageHandleUI(packageModel)
+                }
+            }
+        }
     }
 
     // Function to set event change my timeshare
@@ -132,28 +158,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             postingFlowViewModel.updateStep(3)
         }
 
-    }
-
-    // Function to set event next
-    private fun requestButtonClick() {
-        binding.btnNext.setOnClickListener {
-            if (postingFlowViewModel.pricePerNight.value == null) {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng nhập gia phong",
-                    MotionToastStyle.ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
-                }
-            } else {
-                postingFlowViewModel.updateStep(6)
-            }
-        }
     }
 
     // Function to bind data
@@ -166,7 +170,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 tvResortName.text = myTimeshareResponse.resortName
                 tvRoomType.text = myTimeshareResponse.roomName
                 tvCheckinDate.text =
-                    "${myTimeshareResponse.startDate} - ${myTimeshareResponse.endDate}"/*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                    Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
+                tvCheckOutDate.text =
+                    Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
+                /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
             }
         }
     }
@@ -310,6 +317,39 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
+    private fun bindDataSpinnerProvince() {
+        val spinner: Spinner = binding.includeExchangeMethod12.customSpinnerProvince
+        val provinces = resources.getStringArray(R.array.vietnam_provinces)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            provinces
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+// Xử lý khi người dùng chọn một tỉnh
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedProvince = provinces[position]
+                if (selectedProvince != "Chọn Tỉnh Thành") {
+                    val provinceId = position + 1
+                    postingFlowViewModel.updateCurrentProvinceSelected(provinceId)
+                } else {
+                    postingFlowViewModel.updateCurrentProvinceSelected(0)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Không làm gì
+            }
+        }
+    }
 
     private fun formatDateByLocale(date: Date, context: Context): String {
         // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
@@ -328,37 +368,339 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         return dateFormat.format(date)
     }
 
-    // Function to check package type
-    private fun checkPackageType(packageModel: PackageModel) {
+    private fun rentalPackageHandleUI(packageModel: PackageModel) {
         when (packageModel) {
             RentalPackageEnum.BASIC_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
-                requestButtonClick()
-
+                binding.includeExchangeMethod12.root.visibility = View.GONE
+                rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.VISIBLE
                 binding.includePaymentMethod34.root.visibility = View.GONE
-                requestButtonClick()
+                binding.includeExchangeMethod12.root.visibility = View.GONE
+                rentalPackage12ButtonClick()
             }
 
             RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 postingFlowViewModel.updatePricePerNight(0)
-                requestButtonClick()
-
+                rentalPackage34ButtonClick()
             }
 
             RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
                 binding.includePaymentMethod12.root.visibility = View.GONE
                 binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.root.visibility = View.GONE
                 postingFlowViewModel.updatePricePerNight(0)
-                requestButtonClick()
+                rentalPackage34ButtonClick()
             }
         }
+        binding.titleTypePosting.text = "Giá phòng và chính sách hủy phòng"
+        binding.llCancellationPolicy.visibility = View.VISIBLE
+
+    }
+
+    private fun exchangePackageHandleUI(packageModel: PackageModel) {
+        when (packageModel) {
+            ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
+                binding.includeExchangeMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.llBenefit.visibility = View.GONE
+                binding.includePaymentMethod12.root.visibility = View.GONE
+                binding.includePaymentMethod34.root.visibility = View.GONE
+            }
+
+            ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
+                binding.includeExchangeMethod12.root.visibility = View.VISIBLE
+                binding.includeExchangeMethod12.llBenefit.visibility = View.VISIBLE
+                binding.includePaymentMethod12.root.visibility = View.GONE
+                binding.includePaymentMethod34.root.visibility = View.GONE
+            }
+        }
+
+        exchangePackage12ButtonClick()
+        //
+        binding.titleTypePosting.text = "Thông tin Timeshare mong muốn trao đổi"
+        binding.llCancellationPolicy.visibility = View.GONE
+
+        // Bind data Spinner Province
+        bindDataSpinnerProvince()
+
+        // Change Date
+        binding.includeExchangeMethod12.llCheckInCheckOut.setOnClickListener {
+            val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Chọn khoảng thời gian")
+                .build()
+
+            dateRangePicker.show(parentFragmentManager, "DATE_RANGE_PICKER")
+
+
+            dateRangePicker.addOnPositiveButtonClickListener {
+                val startDate = dateRangePicker.selection?.first
+                val endDate = dateRangePicker.selection?.second
+                if (startDate != null && endDate != null) {
+                    val startDateString = formatDateByLocale(Date(startDate), requireContext())
+                    val endDateString = formatDateByLocale(Date(endDate), requireContext())
+
+                    val endDateOfWeek =
+                        SimpleDateFormat("EEEE", Locale.getDefault()).format(endDate)
+                    val startDateOfWeek =
+                        SimpleDateFormat("EEEE", Locale.getDefault()).format(startDate)
+
+                    postingFlowViewModel.setExchangeDateRange(startDate, endDate)
+
+                    binding.includeExchangeMethod12.tvCheckInDate.apply {
+                        text = startDateString
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
+                    }
+                    binding.includeExchangeMethod12.tvCheckInDayOfWeek.text = startDateOfWeek
+                    binding.includeExchangeMethod12.tvCheckOutDayOfWeek.text = endDateOfWeek
+                    binding.includeExchangeMethod12.tvCheckOutDate.apply {
+                        text = endDateString
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
+                    }
+
+                    // Night
+                    val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
+                    binding.includeExchangeMethod12.etNightsCount.text = "$totalDays"
+                }
+            }
+        }
+
+        // Write Note
+        binding.includeExchangeMethod12.etNote.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val note = s.toString()
+                postingFlowViewModel.updateNoteContent(note)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Không làm gì
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Không làm gì
+            }
+        })
+    }
+
+
+    // Funtion to Load Image
+    private fun initAdapter() {
+        binding.rvImage.apply {
+            adapter = imageUploadAdapter
+            layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        }
+        imageUploadAdapter.onDeleteClick = {
+            imageUploadAdapter.removeItem(it)
+            postingFlowViewModel.deleteImage(it)
+        }
+    }
+
+    private fun getImageFromGallery() {
+        binding.btnAddImage.setOnClickListener {
+            binding.includePaymentMethod12.etRoomPrice.clearFocus()
+            showImageSelectionDialog()
+        }
+    }
+
+    private fun showImageSelectionDialog() {
+        val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Chọn loại ảnh")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        // Chọn ảnh chính
+                        openGallery(true)
+                    }
+
+                    1 -> {
+                        // Chọn ảnh phụ
+                        openGallery(false)
+                    }
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Hủy") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun openGallery(isMainImage: Boolean) {
+        if (isMainImage) {
+            pickSingleImageLauncher.launch("image/*") // Chỉ chọn 1 ảnh
+        } else {
+            pickImagesLauncher.launch("image/*") // Chọn nhiều ảnh
+        }
+    }
+
+    private val pickImagesLauncher =
+        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+            if (uris.isNotEmpty()) {
+                val listImage = mutableListOf<ImageUploadModel>()
+                for (uri in uris) {
+                    listImage.add(ImageUploadModel.create(uri))
+                }
+                // Save To View Model
+                postingFlowViewModel.addImages(listImage)
+                // Show UI
+                imageUploadAdapter.addImage(listImage)
+            }
+        }
+    private val pickSingleImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                // Load ảnh chính vào ImageView
+                binding.ivMainImage.setImageURI(uri)
+
+                // Optionally, update ViewModel or perform other actions
+                postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
+            }
+        }
+
+
+    // Function to set event next
+    private fun rentalPackage12ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            if (!isPriceInputvalid()) {
+                return@setOnClickListener
+            }
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
+            postingFlowViewModel.updateStep(6)
+
+        }
+    }
+
+    private fun rentalPackage34ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
+            postingFlowViewModel.updateStep(6)
+        }
+    }
+
+    private fun exchangePackage12ButtonClick() {
+        binding.btnNext.setOnClickListener {
+            if(!isDateExchangeValid()) {
+                return@setOnClickListener
+            }
+            if (!isProvinceValid()) {
+                return@setOnClickListener
+            }
+            if (!isImageValid()) {
+                return@setOnClickListener
+            }
+            postingFlowViewModel.updateStep(6)
+        }
+    }
+
+
+    private fun isImageValid(): Boolean {
+        val mainImage =
+            postingFlowViewModel.imageList.value?.firstOrNull() // Ảnh chính là ảnh đầu tiên
+        val subImages =
+            postingFlowViewModel.imageList.value?.drop(1) // Ảnh phụ là các ảnh sau ảnh chính
+
+        return when {
+            mainImage == null -> {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng chọn ảnh chính",
+                    MotionToastStyle.WARNING,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
+                false
+            }
+
+            subImages.isNullOrEmpty() || subImages.size < 6 -> {
+                MotionToast.Companion.createColorToast(
+                    requireActivity(),
+                    "Error",
+                    "Vui lòng chọn ít nhất 6 ảnh phụ",
+                    MotionToastStyle.WARNING,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    null
+                )
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
+                }
+                false
+            }
+
+            else -> true
+        }
+    }
+
+    private fun isPriceInputvalid(): Boolean {
+        val pricePerNight = binding.includePaymentMethod12.etRoomPrice.text.toString()
+        if (pricePerNight.isEmpty()) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Error",
+                "Vui lòng nhập gia phong",
+                MotionToastStyle.WARNING,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.LONG_DURATION,
+                null
+            )
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
+
+            return false
+        }
+        return true
+    }
+
+    private fun isDateExchangeValid() : Boolean {
+        val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
+        if (numberOfNights == 0) {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            showInfoToast("Vui lòng chọn ngày trao đổi")
+            return false
+        }
+        return true
+    }
+
+    private fun isProvinceValid() : Boolean {
+        val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
+        if (provinceId == 0) {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
+            }
+            showInfoToast("Vui lòng chọn tỉnh thành")
+            return false
+        }
+        return true
     }
 
     // Function to validate all fields
@@ -435,5 +777,44 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    private fun showErrorToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Error",
+            string,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showSuccessToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Success",
+            string,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
+
+    private fun showInfoToast(string: String) {
+        MotionToast.createColorToast(
+            requireActivity(),
+            "Failed",
+            string,
+            MotionToastStyle.INFO,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+        )
+    }
 
 }

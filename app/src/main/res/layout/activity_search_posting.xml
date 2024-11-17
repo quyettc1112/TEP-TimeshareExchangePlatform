@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_search_posting_scene7">
+
+
+    <LinearLayout
+        android:id="@+id/motionLayout_Container"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:showTitleDetail="true"
+            app:showStartText="false" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tbl_topResort"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/tab_background"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:tabIndicator="@drawable/background_tab_indicator"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorGravity="stretch"
+            app:tabMode="fixed" />
+
+    </LinearLayout>
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/motionLayout_Container" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

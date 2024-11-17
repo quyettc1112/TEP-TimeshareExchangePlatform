@@ -89,6 +89,12 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
     }
     // Function to handle step click
     private fun onStepClick(step: Int) {
+        if (step == 6) {
+            Toast.makeText(binding.root.context, "You cannot access this step yet", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         if (postingFlowViewModel.canNavigateToStep(step)) {
             // Allow navigation and update the UI
             tryNavigateToStep(step)

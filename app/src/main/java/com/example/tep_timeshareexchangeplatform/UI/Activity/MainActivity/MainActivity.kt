@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment.AccountFragment
@@ -188,6 +190,30 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         checkUserStateLog()
         mainViewModel.resetCurrentMyBookingPage()
     }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        showConfirmDialog(
+            "Thoát ứng dụng",
+            "Bạn có chắc chắn muốn thoát ứng dụng không?",
+            "Có",
+            "Không",
+            null,
+            object : ConfirmDialog.ConfirmCallback {
+                override fun negativeAction() {
+
+                }
+
+                override fun positiveAction() {
+                    finish()
+                }
+
+            }
+        )
+
+    }
+
+
 
 
 }

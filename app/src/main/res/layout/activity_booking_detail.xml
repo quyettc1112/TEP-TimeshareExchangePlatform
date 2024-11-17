@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background_F9"
-    tools:context=".UI.Activity.CommonActivity.BookingDetail.BookingDetailActivity">
+    tools:context=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/toolbar"
@@ -43,10 +43,49 @@
                     android:orientation="vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp">
+                    <!--// Resort Status-->
+                    <LinearLayout
+                        android:id="@+id/ll_status_container"
+                        android:layout_gravity="right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/ripple_effect"
+                        android:backgroundTint="@color/white"
+                        android:elevation="3dp"
+                        android:padding="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_status"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:saveEnabled="false"
+                            app:cardCornerRadius="30dp"
+                            app:strokeColor="@color/red_light"
+                            app:strokeWidth="5dp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/inter_extrabold"
+                            android:text="Đã xác nhận"
+                            android:textColor="@color/red_light"
+                            android:textSize="10dp" />
+                    </LinearLayout>
 
                     <!--// Room Reservation Code-->
                     <TextView
                         android:id="@+id/tv_room_reservation_code"
+                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_bold"
@@ -72,6 +111,39 @@
                         android:text="Ghi chú: Vui lòng đưa barcode hoặc mã đặt phòng cho nhân viên để được check in."
                         android:textSize="14dp" />
 
+                    <!--// Type Booking-->
+                    <LinearLayout
+                        android:id="@+id/ll_type_booking_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/white"
+                        android:elevation="3dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_rental_booking" />
+
+
+                        <TextView
+                            android:id="@+id/tv_booking_tupe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Thuê Phòng"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+                    </LinearLayout>
 
                     <!--// Check in Day, Check Out day-->
                     <LinearLayout
@@ -224,6 +296,40 @@
 
 
                     </LinearLayout>
+
+                    <!--// Feedback-->
+                    <LinearLayout
+                        android:id="@+id/ll_feedback_container"
+                        android:layout_marginTop="20dp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/background_stroke_around"
+                        android:weightSum="3"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout27" >
+                        <TextView
+                            android:gravity="center|right"
+                            android:layout_weight="2"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:text="Gửi Đánh Giá"
+                            android:textSize="12dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textStyle="italic"
+                            android:textColor="@color/blue_see_more"/>
+                        <ImageView
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_star"/>
+                    </LinearLayout>
+
 
 
                 </LinearLayout>

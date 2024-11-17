@@ -16,12 +16,14 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel.VNPayViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyPostingActivity.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -55,12 +57,13 @@ class VNPayActivity : BaseActivity() {
     }
 
     private fun observeData() {
-        // Observe Purchase Package by VN Pay
+        // Observe Create Transaction of Purchase Package Member Ship by VN Pay
         viewModel.memberShipResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     showSuccessDialog(
@@ -97,12 +100,13 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Deposit Wallet by VN Pay
+        // Observe Create Transaction of Deposit Wallet by VN Pay
         viewModel.depositByVNPAYResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     showSuccessDialog(
@@ -113,7 +117,8 @@ class VNPayActivity : BaseActivity() {
                                 // Intent to FInsish Activity
                                 val intent = intent
                                 setResult(RESULT_OK, intent)
-                                val intentToBilling = Intent(this@VNPayActivity, PaymentResultActivity::class.java)
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, PaymentResultActivity::class.java)
                                 intentToBilling.putExtra(Constant.PAYMENT_SUCCESS_VNPAY, it.data)
                                 startActivity(intentToBilling)
                                 Log.d("WalletDepositResponseData", it.data.toString())
@@ -137,16 +142,22 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Purchase Package by VN Pay
-        viewModel.purchasePackageResponse.observe(this) {
+        // Create Transaction of Purchase Rental Posting by VN Pay
+        viewModel.createRentalPostingTransaction.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
-                    val postingTimeshareDTO = intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
+                    // Create Rental Posting
+                    val postingTimeshareDTO =
+                        intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {
-                        viewModel.createPosting(tokenManager.getAccessToken().toString(),postingTimeshareDTO)
+                        viewModel.createRentalPosting(
+                            tokenManager.getAccessToken().toString(),
+                            postingTimeshareDTO
+                        )
                     }
                 }
 
@@ -164,12 +175,48 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
-        // Observe Create Posting
+        // Create Transaction of Purchase Exchange Posting by VN Pay
+        viewModel.createExchangePostingTransaction.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    // Create Rental Posting
+                    val postingTimeshareDTO =
+                        intent.getParcelableExtra<ExchangeTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
+                    if (postingTimeshareDTO != null) {
+                        viewModel.createExchangePosting(
+                            tokenManager.getAccessToken().toString(),
+                            postingTimeshareDTO
+                        )
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString() + "Create Transaction",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+
+        }
+
+        // Create Rental Posting
         viewModel.postingTimeshareResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     showSuccessDialog(
@@ -205,12 +252,55 @@ class VNPayActivity : BaseActivity() {
             }
         }
 
+        // Create Exchange Posting
+        viewModel.exchangePostingResponse.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                // Intent to Billing Activity
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, MyExchangePostingActivity::class.java)
+                                startActivity(intentToBilling)
+
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
+
         // Observe Booking Rental
         viewModel.bookingResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     val intent = intent
@@ -237,31 +327,36 @@ class VNPayActivity : BaseActivity() {
 
     }
 
-
-
     private fun checkPaymentType(
         paymentType: PaymentType,
         walletTransactionId: String,
         packageId: Int
     ) {
         when (paymentType) {
-            PaymentType.RENTAL_PAYMENT -> {
+            PaymentType.BOOKING_RENTAL_PAYMENT -> {
                 callAPIBookingRentalTransaction(
                     walletTransactionId,
                     packageId
                 )
             }
+
+            PaymentType.DEPOSIT_WALLET -> {
+                callAPIDepositWalletTransaction(walletTransactionId)
+            }
+
             PaymentType.PURCHASE_PACKAGE_MEMBER -> {
                 callAPIExtendMembershipTransaction(
                     walletTransactionId,
                     packageId
                 )
             }
-            PaymentType.DEPOSIT_WALLET -> {
-                callAPIDepositWalletTransaction(walletTransactionId)
+
+            PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING -> {
+                callAPICreateRentalPostingTransaction(walletTransactionId, packageId)
             }
-            PaymentType.PURCHASE_PACKAGE_POSTING -> {
-                callAPIPurchasePackagePostingTransaction(walletTransactionId, packageId)
+
+            PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING -> {
+                callAPICreateExchangePostingTransaction(walletTransactionId, packageId)
             }
         }
     }
@@ -371,7 +466,8 @@ class VNPayActivity : BaseActivity() {
                         if (responseCodeEnum!!.equals(VnpResponseCode.SUCCESS)) {
                             hideLoadingWaiting()
                             // Call API to extend membership
-                            val paymentType = intent.getSerializableExtra(Constant.PAYMENT_METHOD_TYPE) as PaymentType
+                            val paymentType =
+                                intent.getSerializableExtra(Constant.PAYMENT_METHOD_TYPE) as PaymentType
                             checkPaymentType(
                                 paymentType,
                                 vnPayResponse.walletTransactionId,
@@ -390,7 +486,6 @@ class VNPayActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun showFailed(responseCodeEnum: VnpResponseCode) {
         MotionToast.Companion.createToast(
@@ -427,9 +522,14 @@ class VNPayActivity : BaseActivity() {
         viewModel.depositMoney(token, uuid)
     }
 
-    private fun callAPIPurchasePackagePostingTransaction(uuid: String, packageId: Int) {
+    private fun callAPICreateRentalPostingTransaction(uuid: String, packageId: Int) {
         val token = TokenManager(this).getAccessToken().toString()
-        viewModel.purchasePackage(token, uuid, packageId)
+        viewModel.createRentalPostingTransaction(token, uuid, packageId)
+    }
+
+    private fun callAPICreateExchangePostingTransaction(uuid: String, packageId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.createExchangePostingTransaction(token, uuid, packageId)
     }
 
 }

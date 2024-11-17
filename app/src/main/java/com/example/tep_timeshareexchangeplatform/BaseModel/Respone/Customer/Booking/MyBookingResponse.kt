@@ -83,7 +83,8 @@ data class MyBookingResponse(
         @SerializedName("unitTypeTitle") val unitTypeTitle: String,
         @SerializedName("resortId") val resortId: Int,
         @SerializedName("resortName") val resortName: String,
-        @SerializedName("logo") val logo: String
+        @SerializedName("logo") val logo: String,
+        var isFeedbackGiven: Boolean = false
     )
 
     data class Sort(

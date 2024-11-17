@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/main"
-    tools:context=".UI.Activity.MainActivity.Fragment.TopResortFragment.ChildFragment.ResortFragment.ResortFragment">
+    tools:context=".UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.ResortFragment.ResortFragment">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
