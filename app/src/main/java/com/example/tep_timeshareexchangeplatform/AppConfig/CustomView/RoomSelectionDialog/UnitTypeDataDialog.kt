@@ -1,45 +1,41 @@
-package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet
+package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.displayBedsInfo
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.databinding.DialogUnitTypeDetailBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogBottomSheetBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogUnitTypeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class UnitTypeDetailBottomSheet(
+class UnitTypeDataDialog (
     private val unitType: MyExchangePostingDetailResponse.UnitType
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: DialogUnitTypeDetailBinding? = null
+    private var _binding: DialogUnitTypeBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = DialogUnitTypeDetailBinding.inflate(inflater, container, false)
+    ): View? {
+        // Sử dụng View Binding để inflate layout
+        _binding = DialogUnitTypeBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.MyBottomSheetDialogTheme)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindData()
     }
-
-
     private fun bindData() {
         // Set Image
         Glide.with(binding.root.context)
@@ -87,9 +83,11 @@ class UnitTypeDetailBottomSheet(
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
-        fun newInstance(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeDetailBottomSheet {
-            return UnitTypeDetailBottomSheet(unitType)
+        fun newInstance(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeDataDialog {
+            return UnitTypeDataDialog(unitType)
         }
     }
+
 }

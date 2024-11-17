@@ -26,7 +26,7 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity"
             android:exported="false" />

@@ -9,6 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
@@ -336,7 +338,8 @@ class MyExchangeDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                UnitTypeDetailBottomSheet(this@MyExchangeDetailActivity, data.unitType).show()
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(data.unitType)
+                unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
         }
     }

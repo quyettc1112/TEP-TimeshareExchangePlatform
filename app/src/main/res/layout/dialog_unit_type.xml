@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:padding="16dp"
     android:backgroundTint="@color/white"
-    android:background="@drawable/background_bottom_sheet">
+    android:background="@drawable/background_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <!--// Timeshare Detail-->
     <ScrollView
@@ -27,7 +29,7 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:padding="5dp"
-                android:layout_height="250dp">
+                android:layout_height="200dp">
                 <com.google.android.material.card.MaterialCardView
                     android:layout_margin="5dp"
                     app:cardCornerRadius="20dp"
@@ -54,8 +56,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="16dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@color/white">
 
                 <!--// Resort Name-->
                 <TextView
@@ -90,7 +93,6 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -396,6 +398,8 @@
 
         </LinearLayout>
     </ScrollView>
+
+
 
 
 </LinearLayout>
