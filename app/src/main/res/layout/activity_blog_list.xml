@@ -9,7 +9,7 @@
         android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Yêu cầu trao đổi của tôi"
+        android:title="Blog"
         app:showStartText="false"
         app:layout_alignParentTop="true" />
 

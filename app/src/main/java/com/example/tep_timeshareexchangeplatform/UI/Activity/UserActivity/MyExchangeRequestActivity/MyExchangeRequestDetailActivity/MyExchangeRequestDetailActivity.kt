@@ -176,25 +176,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
     }
-//    private fun bindDataListImage(imageList: List<String>) {
-//        imagePostingAdapter.submitList(imageList)
-//        binding.viewPager.apply {
-//            adapter = imagePostingAdapter
-//            offscreenPageLimit = 10
-//        }
-//        binding.indicator.setViewPager(binding.viewPager)
-//
-//        // Set Image Auto Scroll, Auto Scroll Time = 3s
-//        autoScrollHelper.setupAutoScroll(binding.viewPager)
-//
-//        // Set Action for Button Next Page and Back To
-//        binding.ivNextPage.setOnClickListener {
-//            binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
-//        }
-//        binding.icBackTo.setOnClickListener {
-//            binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
-//        }
-//    }
 
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
