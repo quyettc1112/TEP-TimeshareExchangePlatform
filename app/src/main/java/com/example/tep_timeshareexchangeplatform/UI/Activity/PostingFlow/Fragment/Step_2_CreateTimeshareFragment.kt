@@ -1,17 +1,24 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,6 +45,8 @@ import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimeshareBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCreateTimesharePostingBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.Calendar
 
 
 class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_timeshare_posting) {
@@ -70,6 +79,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         // Event CLick
         eventClickSelectResort()
+        eventClickChangeDay()
 
         return binding.root
     }
@@ -137,6 +147,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
         }
+
+        // Step 2 -
 
 
         /*// Tracking Data of Step Create Timeshare
@@ -330,7 +342,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
     }
-
     private fun initActivityLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -365,6 +376,20 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             locationResultLauncher.launch(intent)
         }
     }
+    /**
+     * 2. Step 2 - Get Room List By Resort Id
+     */
+    private fun eventClickChangeDay() {
+        binding.llCheckInCheckOutDate.setOnClickListener {
+            showStylishYearPickerDialog(requireContext()) { selectedYear ->
+                // Xử lý năm được chọn
+                Toast.makeText(requireContext(), "Năm được chọn: $selectedYear", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+        }
+    }
 
 
     /**
@@ -390,7 +415,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             binding.btnSelectResortLocation.visibility = View.VISIBLE
         }
     }
-
     // 1. Binding Data of Room Distribution, Yes or No
     // YES
     private fun bindDataRoomCodeSpinner(roomList: List<RoomModel>?) {
@@ -483,8 +507,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
 
-
-
         bindingInclude.llRoomSearchResults.visibility = View.GONE
         bindingInclude.etRoomSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -501,6 +523,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 // Cập nhật danh sách cho RecyclerView
                 adapter.submitList(filteredList)
+
+                if (query.length == 0) {
+                    bindingInclude.etRoomSearch.clearFocus()
+                }
 
                 // Hiển thị RecyclerView nếu có kết quả, ngược lại ẩn và hiển thị thông báo
                 if (filteredList.isNotEmpty() && query.isNotEmpty() && query.length > 0) {
@@ -572,154 +598,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
     /*
 
-        // 1. Binding Data of Resort
-        private fun bindDataResort(resortModelResponse: ResortModelResponse.Content) {
-            if (resortModelResponse != null) {
-                binding.let {
-                    it.tvResortName.text = resortModelResponse.resortName
-                    it.tvLocation.text = resortModelResponse.address
-                    Glide.with(requireContext())
-                        .load(resortModelResponse.logo)
-                        .placeholder(R.drawable.ripple_effect)
-                        .into(it.ivResortImage)
-                    binding.llResortLocation.visibility = View.VISIBLE
-                    binding.btnSelectResortLocation.visibility = View.GONE
-                }
-            } else {
-                binding.llResortLocation.visibility = View.GONE
-                binding.btnSelectResortLocation.visibility = View.VISIBLE
-            }
-        }
-
-        // 2. Binding Data of Room Distribution, Yes or No
-        private fun routeRoomDistribution() {
-            // Yes
-            binding.btnYesRoomDistribution.setOnClickListener {
-                binding.includeUnitTypeYes.root.visibility = View.VISIBLE
-                binding.includeUnitTypeNo.root.visibility = View.GONE
-
-                postingFlowViewModel.updateTaskProgress(2)
-                postingFlowViewModel.updateIsYesOrNo(true)
-
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
-                }
-            }
-
-            // No
-            binding.btnNoRoomDistribution.setOnClickListener {
-                binding.includeUnitTypeYes.root.visibility = View.GONE
-                binding.includeUnitTypeNo.root.visibility = View.VISIBLE
-
-                postingFlowViewModel.updateTaskProgress(2)
-                postingFlowViewModel.updateIsYesOrNo(false)
-
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.root.top)
-                }
-            }
-
-        }
-
-        private fun bindDataUnitTypeDetailDialog(unitType: UnitTypeModel) {
-        }
-
-        // Yes. User Have Room Type
-        private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
-            val binding = binding.includeUnitTypeYes
-            // Hide Unnecessary View
-            binding.includeItemUnitType.llAmennities.visibility = View.GONE
-            binding.includeItemUnitType.tvPrice.visibility = View.GONE
 
 
-            // Bind data to item unit type
-            binding.includeItemUnitType.root.visibility = View.VISIBLE
-            binding.includeItemUnitType.apply {
-                tvRoomName.text = "Loại Phòng: " + unitType.title
-                tvNumBathroom.text = unitType.bathrooms.toString()
-                tvNumKitchen.text = 1.toString()
-                tvKitchen.text = unitType.kitchen
-                tvNumBed.text = "${unitType.bedrooms}"
-                tvBed.text =
-                    "${unitType.bedsQueen} Queen, ${unitType.bedsKing} King, ${unitType.bedsTwin} Twin"
-                tvNumPerson.text = unitType.sleeps.toString()
-
-                */
-    /* Glide.with(requireContext())
-                     .load(unitType.photos)
-                     .placeholder(R.drawable.ripple_effect)
-                     .into(imRoomTypeImage)*//*
-
-        }
-
-        binding.includeItemUnitType.btnViewRoom.setOnClickListener {
-            bindDataUnitTypeDetailDialog(unitType)
-        }
-
-    }
-
-    private fun bindDataSpinner(roomList: List<RoomModel>?) {
-        val spinnerBinding = binding.includeUnitTypeYes
-
-        // Thêm mục mặc định vào danh sách
-        val roomDisplayList: List<String> = listOf("Chọn Mã Phòng") +
-                (roomList?.map { "Mã Phòng: ${it.roomInfoCode}" } ?: emptyList())
-
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomDisplayList)
-        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
-        spinnerBinding.spUnitType.adapter = adapter
-
-        // Xử lý sự kiện khi chọn một item trong Spinner
-        spinnerBinding.spUnitType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position == 0) {
-                        // Nếu người dùng chọn "Chọn Mã Phòng", không làm gì
-                        binding.includeUnitTypeYes.includeItemUnitType.root.visibility = View.GONE
-                        binding.includeUnitTypeYes.tvRoomName.text = ""
-                        binding.includeUnitTypeYes.tvRoomCode.text = ""
-                        postingFlowViewModel.updateTaskProgress(2)
-                        return
-                    }
-
-                    binding.scrollView.post {
-                        binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
-                    }
-                    postingFlowViewModel.updateTaskProgress(3)
-                    postingFlowViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
-
-                    // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
-                    val selectedRoom = roomList?.get(position - 1)
-
-                    binding.includeUnitTypeYes.tvRoomName.text =
-                        selectedRoom?.roomInfoName ?: "Unknown Name"
-                    binding.includeUnitTypeYes.tvRoomCode.text =
-                        selectedRoom?.roomInfoCode ?: "Unknown Code"
-
-                    // Lấy thông tin id của RoomModel tương ứng
-                    val unitTypeID = selectedRoom?.unitTypeId
-
-                    // Call API to get Unit Type Detail
-                    val token = TokenManager(requireContext()).getAccessToken()
-                    if (token != null && unitTypeID != null) {
-                        postingFlowViewModel.getUnitTypeDetail(token, unitTypeID)
-                    } else {
-                        showErrorToast("Token is null")
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Không có gì được chọn
-                }
-            }
-    }
-
+  
     // No. User Don't Have Room Type, Create New Room
     private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
         // Lấy danh sách duy nhất cho view và bedrooms
@@ -831,67 +712,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
 
-    // 3. Display Day Check In - Check Out
-    private fun setEventChangeDate() {
-        binding.llCheckInCheckOutDate.setOnClickListener {
-            val constraintsBuilder = CalendarConstraints.Builder()
-                .setValidator(object : CalendarConstraints.DateValidator {
-                    override fun isValid(date: Long): Boolean {
-                        // Optional: Add logic to validate the selected date
-                        return true
-                    }
-
-                    override fun describeContents(): Int = 0
-                    override fun writeToParcel(dest: Parcel, flags: Int) {
-                        // Required to implement DateValidator
-                    }
-                })
-
-            // Create DateRangePicker with CalendarConstraints
-            val dateRangePicker =
-                MaterialDatePicker.Builder.dateRangePicker()
-                    .setTitleText(getString(R.string.date_range_picker))
-                    .setCalendarConstraints(constraintsBuilder.build())
-                    .build()
-
-            // Show DateRangePicker when button is clicked
-            dateRangePicker.show(requireActivity().supportFragmentManager, "DateRangePicker")
-
-            // Listen for positive button clicks (when a date is selected)
-            dateRangePicker.addOnPositiveButtonClickListener { selection ->
-                val startDate = selection?.first
-                val endDate = selection?.second
-
-                if (startDate != null && endDate != null) {
-                    postingFlowViewModel.setDateRange(startDate, endDate)
-                    // Calculate total days between startDate and endDate
-                    val totalDays = ((endDate - startDate) / (1000 * 60 * 60 * 24)).toInt() + 1
-
-                    // Update UI with the total number of days
-                    binding.etNightsCount.text = " $totalDays "
-
-                    // Format and display start date and end date
-                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val startDateString = dateFormat.format(Date(startDate))
-                    val endDateString = dateFormat.format(Date(endDate))
-
-                    binding.tvCheckInDate.text = startDateString
-                    binding.tvCheckOutDate.text = endDateString
-
-                    // Get day of the week for start date
-                    val startDayString =
-                        SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(startDate))
-                    binding.tvCheckInDayOfWeek.text = startDayString
-
-                    // Get day of the week for end date
-                    val endDayString =
-                        SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(endDate))
-                    binding.tvCheckOutDayOfWeek.text = endDayString
-                }
-            }
-
-        }
-    }
+    
 
     // User click to change location of Resort
     private fun setEventChangeLocation() {
@@ -1083,6 +904,35 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
         )
     }
+
+    fun showStylishYearPickerDialog(
+        context: Context,
+        initialYear: Int = 2023,
+        onYearSelected: (Int) -> Unit
+    ) {
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        val numberPicker = NumberPicker(context).apply {
+            minValue = currentYear
+            maxValue = 2100
+            value = initialYear.coerceIn(minValue, maxValue)
+            wrapSelectorWheel = false  // Tắt vòng lặp
+        }
+
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Chọn năm")
+            .setView(numberPicker)
+            .setPositiveButton("OK") { _, _ ->
+                onYearSelected(numberPicker.value)
+            }
+            .setNegativeButton("Hủy") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+
+
 
 
 }
