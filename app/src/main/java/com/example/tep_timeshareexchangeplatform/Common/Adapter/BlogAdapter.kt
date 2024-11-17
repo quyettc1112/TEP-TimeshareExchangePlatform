@@ -14,9 +14,9 @@ class BlogAdapter : BaseAdapter<BlogModel, BlogAdapter.BlogViewHolder> (){
     inner class BlogViewHolder(binding: ItemBlogBinding) : BaseItemViewHolderCF<BlogModel, ItemBlogBinding> (binding) {
         override fun bind(item: BlogModel) {
             binding.tvBlogTitle.text = item.title
-            Glide.with(binding.imBlog.context)
+            Glide.with(binding.root.context)
                 .load(item.image)
-                .into(binding.imBlog)
+                .into(binding.imgBlogThumbnail)
 
         }
 

@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="Blog"
-        app:showStartText="false"
-        app:layout_alignParentTop="true" />
+        app:showStartText="false" />
 
     <!-- RecyclerView for Blog List -->
     <androidx.recyclerview.widget.RecyclerView

@@ -336,7 +336,7 @@ class MyExchangeDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                UnitTypeDetailBottomSheet(this@MyExchangeDetailActivity, data.unitType).show()
+               // UnitTypeDetailBottomSheet(this@MyExchangeDetailActivity, data.unitType).show()
             }
         }
     }
