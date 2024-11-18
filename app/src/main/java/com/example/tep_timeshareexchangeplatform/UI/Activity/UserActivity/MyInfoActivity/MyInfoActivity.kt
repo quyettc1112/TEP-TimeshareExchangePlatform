@@ -1,15 +1,20 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CreateCustomerDialog.DialogUpdateCustomer
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.ViewModel.MyInfoViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
@@ -38,6 +43,7 @@ class MyInfoActivity : BaseActivity() {
         }
         tokenManager = TokenManager(this)
         observeViewModel()
+        eventClickUpdateCustomerInfo()
     }
 
     private fun observeViewModel() {
@@ -208,6 +214,24 @@ class MyInfoActivity : BaseActivity() {
             animMembership.visibility = View.VISIBLE
         }
 
+    }
+
+    private fun eventClickUpdateCustomerInfo() {
+        binding.btnEditButton.setOnClickListener {
+            val dialog = DialogUpdateCustomer(this,
+                object : DialogUpdateCustomer.ConfirmCallback {
+                    override fun positiveAction() {
+                        Toast.makeText(
+                            this@MyInfoActivity,
+                            "Cập nhật thông tin thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }, "Cập nhật thông tin"
+            )
+            dialog.show()
+
+        }
     }
 
     private fun clearCustomerInfo() {

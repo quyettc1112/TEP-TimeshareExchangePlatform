@@ -15,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.databinding.DialogMemberInfoBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogUpdateCustomerBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -31,19 +32,19 @@ class MemberInfoDialog: DialogFragment() {
     }
 
 
-    private lateinit var binding: DialogMemberInfoBinding // Assume you're using View Binding
+    private lateinit var binding: DialogUpdateCustomerBinding // Assume you're using View Binding
     private var gender: String = ""
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireContext(), R.style.FullScreen)
+        return Dialog(requireContext())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DialogMemberInfoBinding.inflate(inflater, container, false)
+        binding = DialogUpdateCustomerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,7 +57,7 @@ class MemberInfoDialog: DialogFragment() {
         binding.imClose.setOnClickListener { dismiss() }
 
         // Set up click listener for the update button
-        binding.ctrRequestButton.setOnClickListener {
+        binding.btnSaveButtonm.setOnClickListener {
             handleInput()
         }
 
@@ -105,7 +106,7 @@ class MemberInfoDialog: DialogFragment() {
         // Create a DatePickerDialog
         val datePickerDialog = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
             // Update the TextView with the selected date
-            binding.tvDob.text = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            binding.tvDob.setText("$selectedDay/${selectedMonth + 1}/$selectedYear")
         }, year, month, day)
 
         // Show the dialog
@@ -113,30 +114,30 @@ class MemberInfoDialog: DialogFragment() {
     }
 
     private fun handleInput() {
-        val fullName = binding.edtFullname.text.toString()
-        val phoneNumber = binding.edtPhone.text.toString()
-        val address = binding.edtAddress.text.toString()
+        val fullName = binding.tvFullNameIn.text.toString()
+        val phoneNumber = binding.tvPhone.text.toString()
+        val address = binding.tvAddress.text.toString()
         val dob = binding.tvDob.text.toString()
         val gender = gender
 
         // Clear previous errors
-        binding.edtFullname.error = null
-        binding.edtPhone.error = null
-        binding.edtAddress.error = null
+        binding.tvFullNameIn.error = null
+        binding.tvPhone.error = null
+        binding.tvAddress.error = null
 
         // Check for null or empty values
         var isValid = true
 
         if (fullName.isEmpty()) {
-            binding.edtFullname.error = "Tên Đầy Đủ không được để trống"
+            binding.tvFullNameIn.error = "Tên Đầy Đủ không được để trống"
             isValid = false
         }
         if (phoneNumber.isEmpty()) {
-            binding.edtPhone.error = "Số Điện Thoại không được để trống"
+            binding.tvPhone.error = "Số Điện Thoại không được để trống"
             isValid = false
         }
         if (address.isEmpty()) {
-            binding.edtAddress.error = "Địa Chỉ không được để trống"
+            binding.tvAddress.error = "Địa Chỉ không được để trống"
             isValid = false
         }
 
