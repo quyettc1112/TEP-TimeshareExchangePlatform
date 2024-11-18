@@ -62,6 +62,9 @@ class MyExchangeRequestActivity : BaseActivity() {
                 null
             )
         }
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
         initAdapter()
         bindDataMyPostingList()
     }

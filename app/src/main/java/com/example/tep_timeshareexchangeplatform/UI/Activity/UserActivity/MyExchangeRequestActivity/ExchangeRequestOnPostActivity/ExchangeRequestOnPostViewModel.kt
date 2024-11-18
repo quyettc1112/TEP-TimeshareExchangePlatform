@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,15 +15,15 @@ class ExchangeRequestOnPostViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
     // Call Get ALl Exchange Request
-    private val _myExchangeRequestOnPostList = MutableLiveData<Resource<ExchangeRequestPostingResponse>>()
-    val myExchangeRequestOnPostList: MutableLiveData<Resource<ExchangeRequestPostingResponse>> =
+    private val _myExchangeRequestOnPostList = MutableLiveData<Resource<ExchangeRequestOnPostResponse>>()
+    val myExchangeRequestOnPostList: MutableLiveData<Resource<ExchangeRequestOnPostResponse>> =
         _myExchangeRequestOnPostList
 
-    fun getMyExchangeRequestOnPostList(token: String, pageNo: Int, pageSize: Int, postingId: Int) {
+    fun getExchangeRequestOnPostList(token: String, postingId: Int, pageNo: Int, pageSize: Int) {
         viewModelScope.launch {
             _myExchangeRequestOnPostList.postValue(Resource.loading(null))
             val response =
-                customerAPIRepository.getCustomerExchangeRequestPost(token, pageNo, pageSize, postingId)
+                customerAPIRepository.getCustomerExchangeRequestOnPost(token, postingId , pageNo, pageSize)
             _myExchangeRequestOnPostList.postValue(response)
         }
     }
@@ -39,11 +39,11 @@ class ExchangeRequestOnPostViewModel @Inject constructor(
     }
 
     // Get Current Posting List
-    private val _currentRequestOnPostList = mutableListOf<ExchangeRequestPostingResponse.Content>()
-    fun loadMoreRequestOnPostList(list: List<ExchangeRequestPostingResponse.Content>) {
+    private val _currentRequestOnPostList = mutableListOf<ExchangeRequestOnPostResponse.Content>()
+    fun loadMoreRequestOnPostList(list: List<ExchangeRequestOnPostResponse.Content>) {
         _currentRequestOnPostList.addAll(list)
     }
-    fun getCurrentRequestOnPostList(): List<ExchangeRequestPostingResponse.Content> {
+    fun getCurrentRequestOnPostList(): List<ExchangeRequestOnPostResponse.Content> {
         return _currentRequestOnPostList
     }
 

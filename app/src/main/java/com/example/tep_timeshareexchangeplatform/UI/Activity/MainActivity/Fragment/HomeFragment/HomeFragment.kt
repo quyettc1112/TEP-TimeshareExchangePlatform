@@ -74,7 +74,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         publicsPostingAdapter.submitList(listOf())
         resortAdapterMB.submitList(listOf())
-        blogAdapter.submitList(Constant.blogList)
+        blogAdapter.submitList(listOf())
 
         // Khởi tạo ActivityResultLauncher
         initActivityResultLauncher()
@@ -180,6 +180,34 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 }
             }
         }
+
+        homeViewModel.blogList.observe(viewLifecycleOwner, { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    resource.data?.let { blogModel ->
+                        blogAdapter.submitList(blogModel.content)
+                    }
+
+                }
+
+                Status.ERROR -> {
+                    MotionToast.Companion.createToast(
+                        requireActivity(),
+                        "Error",
+                        "Error ${resource.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        })
     }
 
 
@@ -189,6 +217,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun callAPIGetData() {
         homeViewModel.getResortList(0, 10, "")
         homeViewModel.getPublicPostingsHome(0, 10, "")
+        homeViewModel.getBlogList(0, 10, "")
     }
 
 

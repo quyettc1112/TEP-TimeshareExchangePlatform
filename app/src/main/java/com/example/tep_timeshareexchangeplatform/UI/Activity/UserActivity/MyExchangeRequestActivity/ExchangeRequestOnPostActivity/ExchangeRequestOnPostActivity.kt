@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExc
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -26,10 +27,12 @@ import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityExchangePostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityExchangeRequestOnPostBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExchangeRequestOnPostActivity : BaseActivity() {
     private lateinit var binding: ActivityExchangeRequestOnPostBinding
-    private lateinit var exchangeAdapter: ExchangeRequestOnPostAdapter
+    private lateinit var exchangeRequestOnPostAdapter: ExchangeRequestOnPostAdapter
     private val viewModel: ExchangeRequestOnPostViewModel by viewModels()
     private var postingId: Int = 0
     companion object{
@@ -41,7 +44,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityExchangeRequestOnPostBinding.inflate(layoutInflater)
-        exchangeAdapter = ExchangeRequestOnPostAdapter(this)
+        exchangeRequestOnPostAdapter = ExchangeRequestOnPostAdapter(this)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -63,11 +66,11 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             )
         }
         initAdapter()
-        bindDataMyPostingList()
+        bindDataRequestOnPostList()
     }
 
     private fun initAdapter() {
-        exchangeAdapter.onItemClick = {
+        exchangeRequestOnPostAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
             startActivity(intent)
@@ -85,8 +88,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     binding.animLoadingMore.visibility = View.GONE
                     viewModel.loadMoreRequestOnPostList(it.data?.content ?: listOf())
-                    exchangeAdapter.submitList(viewModel.getCurrentRequestOnPostList())
-
+                    exchangeRequestOnPostAdapter.submitList(viewModel.getCurrentRequestOnPostList())
                 }
 
                 Status.ERROR -> {
@@ -100,24 +102,25 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
                         MotionToast.LONG_DURATION,
                         null
                     )
+
                 }
             }
         }
         postingId = intent.getIntExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, 0)
         viewModel.currentPage.observe(this) { currentPage ->
-            viewModel.getMyExchangeRequestOnPostList(
+            viewModel.getExchangeRequestOnPostList(
                 TokenManager(this).getAccessToken().toString(),
+                postingId,
                 currentPage,
-                MyExchangeRequestActivity.POSTING_PAGE_SIZE,
-                postingId
+                ExchangeRequestOnPostActivity.POSTING_PAGE_SIZE,
             )
         }
     }
 
 
-    private fun bindDataMyPostingList() {
+    private fun bindDataRequestOnPostList() {
         binding.requestOnPost.apply {
-            adapter = exchangeAdapter
+            adapter = exchangeRequestOnPostAdapter
             setHasFixedSize(true)
             layoutManager =
                 LinearLayoutManager(this@ExchangeRequestOnPostActivity, LinearLayoutManager.VERTICAL, false)
@@ -137,11 +140,5 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
                 }
             }
         })
-    }
-
-    private fun getDetailValue(){
-        var postingId: Int = 0
-        postingId = intent.getIntExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, 0)
-
     }
 }

@@ -68,15 +68,15 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
                 }
             }
 
+            binding.status.text = MyExchangeRequestStatus.fromApiStatus(item.status)?.getDescription(context);
+
             // Posting Info
             binding.apply {
                 resortName.text = "${item.exchangePosting.roomInfoResortResortName}"
-                roomInfoCode.text =
-                    "Mã Phòng: ${item.exchangePosting.roomInfoRoomInfoCode}"
-                checkInDate.text =
-                    Constant.formatDateByLocale(item.startDate, binding.root.context)
-                checkOutDate.text =
-                    Constant.formatDateByLocale(item.endDate, binding.root.context)
+//                checkInDate.text =
+//                    Constant.formatDateByLocale(item.startDate, binding.root.context)
+//                checkOutDate.text =
+//                    Constant.formatDateByLocale(item.endDate, binding.root.context)
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.exchangePosting.roomInfoResortLogo)

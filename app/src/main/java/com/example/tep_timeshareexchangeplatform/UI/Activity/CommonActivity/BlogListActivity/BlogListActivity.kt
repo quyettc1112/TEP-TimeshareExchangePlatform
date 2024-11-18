@@ -22,7 +22,9 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBlogListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BlogListActivity : BaseActivity() {
     private lateinit var binding: ActivityBlogListBinding
     private lateinit var blogListAdapter: BlogListAdapter
@@ -43,9 +45,15 @@ class BlogListActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
+
         observeData()
         initAdapter()
         bindDataMyPostingList()
+
+
     }
 
     private fun initAdapter() {

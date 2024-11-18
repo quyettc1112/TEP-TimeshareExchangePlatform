@@ -42,7 +42,7 @@ interface PublicPostingAPIService {
         @Path("postingId") postingId: Int
     ): Response<ExchangeDetailResponse>
 
-    @GET("public/exchange/postings")
+    @GET("public/blog/postings")
     suspend fun getBlog(
         @Query("page") page: Int,
         @Query("size") size: Int,

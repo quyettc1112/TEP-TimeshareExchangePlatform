@@ -25,11 +25,46 @@
             app:showStartText="false"
             app:showTitleDetail="true"
             app:titleDetail="Flamingo Dai Lai | Studio King" />
+        <!--// Resort Status-->
+    <LinearLayout
+        android:id="@+id/ll_status_container"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ripple_effect"
+        android:backgroundTint="@color/white"
+        android:padding="5dp"
+        android:translationZ="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView">
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_status"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:saveEnabled="false"
+            app:cardCornerRadius="100dp"
+            app:strokeColor="@color/red_light"
+            app:strokeWidth="8dp" />
+
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Đã xác nhận"
+            android:textColor="@color/red_light"
+            android:textSize="12dp" />
+    </LinearLayout>
         <!--// Timeshare Detail-->
         <ScrollView
             android:id="@+id/scrollView"
-            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -104,46 +139,7 @@
                     android:paddingEnd="20dp"
                     android:paddingBottom="10dp">
 
-                    <!--// Resort Status-->
-                    <LinearLayout
-                        android:id="@+id/ll_status_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/ripple_effect"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:translationZ="10dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_status"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:background="@color/white"
-                            android:saveEnabled="false"
-                            app:cardCornerRadius="100dp"
-                            app:strokeColor="@color/red_light"
-                            app:strokeWidth="8dp" />
-
-
-                        <TextView
-                            android:id="@+id/tv_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="Đã xác nhận"
-                            android:textColor="@color/red_light"
-                            android:textSize="18dp" />
-                    </LinearLayout>
 
                     <!--// Resort Name-->
                     <TextView

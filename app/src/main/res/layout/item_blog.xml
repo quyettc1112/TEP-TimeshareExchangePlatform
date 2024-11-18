@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/pro_gradient" />
+            android:drawable="@drawable/placeholder_image" />
 
         <!-- Blog Title -->
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_bold"
-            android:text="Sample Blog Title"
+            android:drawable="@drawable/placeholder_text"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:ellipsize="end"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/inter_regular"
-            android:text="Published: 16 Nov 2024"
+            android:drawable="@drawable/placeholder_text"
             android:textColor="@color/gray_400"
             android:textSize="12sp" />
 

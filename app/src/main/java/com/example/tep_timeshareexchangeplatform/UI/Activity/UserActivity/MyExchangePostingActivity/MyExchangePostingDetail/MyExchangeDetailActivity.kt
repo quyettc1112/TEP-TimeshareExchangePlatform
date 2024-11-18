@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExc
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -39,7 +40,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val viewModel: MyExchangeDetailViewModel by viewModels()
-
+private var postingId: Int =0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,6 +63,7 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+         postingId = intent;
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
@@ -165,7 +167,6 @@ class MyExchangeDetailActivity : BaseActivity() {
         binding.apply {
             btnListRequest.setOnClickListener {
                 val intent = Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
-                val postingId = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
                 intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,postingId)
                 startActivity(
                     intent
