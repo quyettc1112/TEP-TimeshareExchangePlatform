@@ -460,7 +460,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
             // Title
             tvResortNameDtb.text =
-                "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomName}"
+                "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomCode}"
 
             tvCheckInDate.text =
                 Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())

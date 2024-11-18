@@ -45,6 +45,7 @@ data class MyTimeshareDetailResponse(
     @SerializedName("roomId") val roomId: Int,
     @SerializedName("resortAddress") val resortAddress: String,
     @SerializedName("resortId") val resortId: Int,
+    @SerializedName("resortImage") val resortImage: String,
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
     @SerializedName("unitType") val unitType: UnitType
@@ -57,6 +58,7 @@ data class MyTimeshareDetailResponse(
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readInt(),
+        parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         TODO("unitType")
@@ -89,6 +91,7 @@ data class MyTimeshareDetailResponse(
         parcel.writeString(roomCode)
         parcel.writeString(roomName)
         parcel.writeInt(roomId)
+        parcel.writeString(resortImage)
         parcel.writeString(resortAddress)
         parcel.writeInt(resortId)
         parcel.writeString(startDate)

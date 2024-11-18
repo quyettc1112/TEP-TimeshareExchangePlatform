@@ -168,7 +168,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.includeMyTimeshare.root.visibility = View.VISIBLE
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomName
+                tvRoomType.text = myTimeshareResponse.roomCode
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
                 tvCheckOutDate.text =

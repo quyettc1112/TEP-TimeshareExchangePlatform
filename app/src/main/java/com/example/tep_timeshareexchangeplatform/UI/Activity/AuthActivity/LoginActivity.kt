@@ -100,7 +100,6 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-
         authViewModel.customerInfoResponse.observe(this) { resource ->
             when (resource.status) {
                 Status.LOADING -> {
@@ -158,7 +157,6 @@ class LoginActivity : BaseActivity() {
         }
         intentToMain()
     }
-
     // Call loginProcess() function when user click on login button
     private fun handleLoginInput() {
         val email = binding.edtEmail.text.toString()

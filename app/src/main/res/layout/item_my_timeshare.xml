@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
                     android:gravity="center|left"
-                    android:text="Tên Phòng: "
+                    android:text="Mã Phòng: "
                     android:textSize="12dp" />
 
                 <TextView

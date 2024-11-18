@@ -202,12 +202,13 @@ class MyTimeshareDetailActivity : BaseActivity() {
                         val myTimeshareResponse = timeshareDetail?.let { it1 ->
                             MyTimeshareResponse.Content(
                                 timeShareId = it1.timeShareId,
-                                resortName = timeshareDetail.resortName,
-                                roomName = timeshareDetail.roomName,
-                                bathRoom = timeshareDetail.unitType.bathrooms,
-                                bedRooms = timeshareDetail.unitType.bedrooms,
-                                startDate = timeshareDetail.startDate,
-                                endDate = timeshareDetail.endDate
+                                resortName = it1.resortName,
+                                resortImage = it1.resortImage,
+                                roomCode = it1.roomCode,
+                                bathRoom = it1.unitType.bathrooms,
+                                bedRooms = it1.unitType.bedrooms,
+                                startDate = it1.startDate,
+                                endDate = it1.endDate
                             )
                         }
                         intentValueToPostingFlow(myTimeshareResponse!!)

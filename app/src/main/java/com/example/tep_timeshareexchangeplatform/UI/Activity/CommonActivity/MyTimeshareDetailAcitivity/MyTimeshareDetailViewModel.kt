@@ -34,13 +34,14 @@ class MyTimeshareDetailViewModel @Inject constructor(
     val myTimeshareResponse: MutableLiveData<MyTimeshareResponse.Content> = _myTimeshareResponse
     fun mapTimeshareDetailToMyTimeshareResponse(timeshareDetail: MyTimeshareDetailResponse) {
         val myTimeshareResponse = MyTimeshareResponse.Content(
-            timeShareId = timeshareDetail.timeShareId,
-            resortName = timeshareDetail.resortName,
-            roomName = timeshareDetail.roomName,
-            bathRoom = timeshareDetail.unitType.bathrooms,
-            bedRooms = timeshareDetail.unitType.bedrooms,
-            startDate = timeshareDetail.startDate,
-            endDate = timeshareDetail.endDate
+            timeShareId = timeshareDetail.timeShareId, // Int
+            resortName = timeshareDetail.resortName,   // String
+            resortImage = timeshareDetail.resortImage, // String
+            roomCode = timeshareDetail.roomCode,       // String
+            bathRoom = timeshareDetail.unitType.bathrooms, // Int
+            bedRooms = timeshareDetail.unitType.bedrooms,  // Int
+            startDate = timeshareDetail.startDate,     // String
+            endDate = timeshareDetail.endDate          // String
         )
         _myTimeshareResponse.postValue(myTimeshareResponse)
     }
