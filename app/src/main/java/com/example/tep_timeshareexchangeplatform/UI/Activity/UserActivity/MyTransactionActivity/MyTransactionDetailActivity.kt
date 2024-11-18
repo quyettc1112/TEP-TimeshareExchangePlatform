@@ -91,6 +91,13 @@ class MyTransactionDetailActivity : BaseActivity() {
             tvDescription.text = walletDetailResponse.description.toString()
             tvServiceName.text = walletDetailResponse.transactionType.toString()
         }
+        if (walletDetailResponse.money > 0) {
+           binding.imAvatar.setImageResource(R.drawable.logo_tep_app)
+        } else {
+            binding.imAvatar.setImageResource(R.drawable.ic_deposit)
+        }
+
+
         binding.customToolbar.setTitleDetail(walletDetailResponse.createdAt)
     }
 
