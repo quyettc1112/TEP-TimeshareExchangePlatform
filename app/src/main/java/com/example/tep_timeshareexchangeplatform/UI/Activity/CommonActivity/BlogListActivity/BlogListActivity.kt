@@ -13,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.Adapter.BlogListAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogDetailActivity.BlogDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity.Companion
@@ -49,7 +50,7 @@ class BlogListActivity : BaseActivity() {
 
     private fun initAdapter() {
         blogListAdapter.onItemClick = {
-            val intent = Intent(this, MyExchangeDetailActivity::class.java)
+            val intent = Intent(this, BlogDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_BLOG_ID, it.id)
             startActivity(intent)
         }

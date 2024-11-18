@@ -17,6 +17,8 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity.Companion
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity.MyExchangeRequestDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -66,7 +68,7 @@ class MyExchangeRequestActivity : BaseActivity() {
 
     private fun initAdapter() {
         exchangeAdapter.onItemClick = {
-            val intent = Intent(this, MyExchangeDetailActivity::class.java)
+            val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
             startActivity(intent)
         }

@@ -27,6 +27,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
@@ -298,6 +299,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.tvBlogSeeMore.setOnClickListener {
+            val intent = Intent(requireContext(), BlogListActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,8 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
@@ -156,6 +159,18 @@ class MyExchangeDetailActivity : BaseActivity() {
             )
             tvCheckoutDayOfWeek.text =
                 Constant.getDayOfWeek(myExchangePostingDetail.checkoutDate, this@MyExchangeDetailActivity)
+        }
+
+        //Request List
+        binding.apply {
+            btnListRequest.setOnClickListener {
+                val intent = Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
+                val postingId = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,postingId)
+                startActivity(
+                    intent
+                )
+            }
         }
 
 
@@ -304,7 +319,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data : MyExchangePostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
-            tvRoomName.text = "Tên Phòng: " + data.roomName
+//            tvRoomName.text = "Tên Phòng: " + data.roomName
             tvRoomType.text ="Loại Phòng: " + data.unitType.title
 
             // Bath
@@ -336,7 +351,7 @@ class MyExchangeDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                UnitTypeDetailBottomSheet(this@MyExchangeDetailActivity, data.unitType).show()
+//                UnitTypeDetailBottomSheet(this@MyExchangeDetailActivity, data.unitType).show()
             }
         }
     }

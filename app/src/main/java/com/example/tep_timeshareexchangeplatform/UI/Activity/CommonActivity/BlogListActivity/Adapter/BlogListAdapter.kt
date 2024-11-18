@@ -1,22 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.Adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
-import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.Adapter.MyExchangeRequestAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemBlogBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ItemExchangeRequestBinding
 
 class BlogListAdapter(var context: BlogListActivity) :
     BaseAdapter<BlogResponse.Content, BlogListAdapter.BlogListViewHolder>() {

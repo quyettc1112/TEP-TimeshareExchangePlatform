@@ -39,16 +39,16 @@ class ExchangeRequestOnPostViewModel @Inject constructor(
     }
 
     // Get Current Posting List
-    private val _currentRequestList = mutableListOf<ExchangeRequestPostingResponse.Content>()
+    private val _currentRequestOnPostList = mutableListOf<ExchangeRequestPostingResponse.Content>()
     fun loadMoreRequestOnPostList(list: List<ExchangeRequestPostingResponse.Content>) {
-        _currentRequestList.addAll(list)
+        _currentRequestOnPostList.addAll(list)
     }
     fun getCurrentRequestOnPostList(): List<ExchangeRequestPostingResponse.Content> {
-        return _currentRequestList
+        return _currentRequestOnPostList
     }
 
     fun clearCurrentRequestOnPostList() {
-        _currentRequestList.clear()
+        _currentRequestOnPostList.clear()
     }
 
     init {

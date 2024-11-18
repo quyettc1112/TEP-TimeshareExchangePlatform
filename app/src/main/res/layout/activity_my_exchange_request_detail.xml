@@ -285,6 +285,7 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <!--// Bottom Button-->
+    <!-- Bottom Button -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_request_container"
         android:layout_width="match_parent"
@@ -305,24 +306,11 @@
             android:padding="5dp"
             android:backgroundTint="@color/white">
 
-            <!-- Reject Button -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_reject"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_reject_background"
-                android:text="Từ chối"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_bold" />
-
             <!-- Accept Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="1"
                 android:background="@drawable/button_accept_background"
                 android:text="Chấp nhận"
                 android:textColor="@color/white"
@@ -331,6 +319,7 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
 
 
 
