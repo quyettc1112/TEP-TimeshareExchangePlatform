@@ -28,7 +28,9 @@ data class ResortModelResponse(
         @SerializedName("status") val status: String,
         @SerializedName("address") val address: String,
         @SerializedName("timeshareCompanyId") val timeshareCompanyId: Int,
-        @SerializedName("isActive") val isActive: Boolean
+        @SerializedName("isActive") val isActive: Boolean,
+        @SerializedName("averageRating") val averageRating: Float,
+        @SerializedName("totalRating") val totalRating: Int,
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -39,7 +41,9 @@ data class ResortModelResponse(
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readInt(),
-            parcel.readByte() != 0.toByte()
+            parcel.readByte() != 0.toByte(),
+            parcel.readFloat(),
+            parcel.readInt()
         ) {
         }
 
@@ -57,6 +61,8 @@ data class ResortModelResponse(
             dest.writeString(address)
             dest.writeInt(timeshareCompanyId)
             dest.writeByte(if (isActive) 1 else 0)
+            dest.writeFloat(averageRating)
+            dest.writeInt(totalRating)
         }
 
         companion object CREATOR : Parcelable.Creator<Content> {

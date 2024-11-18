@@ -130,6 +130,7 @@
                         android:paddingEnd="10dp">
 
                         <TextView
+                            android:id="@+id/tv_avg_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/inter_semibold"
@@ -146,7 +147,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tv_rating"
+                        android:id="@+id/tv_rating_count"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="5dp"

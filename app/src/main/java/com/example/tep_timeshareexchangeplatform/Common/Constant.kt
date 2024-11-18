@@ -57,6 +57,9 @@ class Constant {
 
         const val PAYMENT_SUCCESS = "paymentSuccess"
 
+        const val AVG_RATING = "avgRating"
+        const val TOTAL_RATING = "totalRating"
+
         const val PAYMENT_SUCCESS_PACKAGE = "paymentSuccessPackage"
 
         const val PAYMENT_SUCCESS_POSTING = "paymentSuccessPosting"

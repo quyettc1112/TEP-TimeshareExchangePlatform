@@ -432,7 +432,7 @@
 
                 <!--// Review Scrore-->
                 <TextView
-                    android:id="@+id/tv_review_score"
+                    android:id="@+id/tv_avg_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
@@ -454,12 +454,12 @@
                     android:text="Tuyệt vời"
                     android:textColor="@color/black"
                     android:textSize="12dp"
-                    app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                    app:layout_constraintStart_toEndOf="@+id/tv_avg_rating"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!--// Review Count-->
                 <TextView
-                    android:id="@+id/tv_review_count"
+                    android:id="@+id/tv_total_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -467,7 +467,7 @@
                     android:text="5 đánh giá"
                     android:textColor="@color/black"
                     android:textSize="12dp"
-                    app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                    app:layout_constraintStart_toEndOf="@+id/tv_avg_rating"
                     app:layout_constraintTop_toBottomOf="@+id/tv_review_level" />
 
                 <!--// Review List-->
@@ -478,7 +478,7 @@
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/item_review"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_review_score">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_avg_rating">
 
 
                 </androidx.recyclerview.widget.RecyclerView>

@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Reso
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.UnitTypeAdapter
@@ -57,6 +58,8 @@ class ResortDetailActivity : BaseActivity() {
 
         // Init Adapter
         initAdapter()
+
+        eventClickViewAllFeedback()
 
         // Observe Data
         observeData()
@@ -125,6 +128,16 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
+    private fun eventClickViewAllFeedback() {
+        binding.tvSeeMoreReview.setOnClickListener {
+            val intent = Intent(this, FeedbackListActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
+            intent.putExtra(Constant.AVG_RATING, resortDetailViewModel.resortDetail.value?.data?.averageRating)
+            intent.putExtra(Constant.TOTAL_RATING, resortDetailViewModel.resortDetail.value?.data?.totalRating)
+            startActivity(intent)
+        }
+    }
+
     // Binding Data Group Function
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
@@ -138,6 +151,9 @@ class ResortDetailActivity : BaseActivity() {
                 llVerify.visibility = View.GONE
                 tvFindMore.visibility = View.GONE
             }
+
+            tvAvgRating.text = resortDetailModelResponse.averageRating.toString()
+            tvTotalRating.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
 
         }
     }

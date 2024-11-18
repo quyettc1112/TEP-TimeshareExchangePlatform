@@ -17,34 +17,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:showStartText="false" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--// Resort Review-->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="2dp"
             android:background="@color/white"
             android:minHeight="300dp"
-            android:paddingBottom="150dp"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
             android:paddingTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:paddingEnd="20dp">
 
             <!--// Review Scrore-->
             <TextView
-                android:id="@+id/tv_review_score"
+                android:id="@+id/tv_avg_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
                 android:text="4.5"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="30dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +61,7 @@
                 android:text="Tuyệt vời"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                app:layout_constraintStart_toEndOf="@+id/tv_avg_rating"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!--// Review Count-->
@@ -72,32 +74,35 @@
                 android:text="5 đánh giá"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                app:layout_constraintStart_toEndOf="@+id/tv_review_score"
+                app:layout_constraintStart_toEndOf="@+id/tv_avg_rating"
                 app:layout_constraintTop_toBottomOf="@+id/tv_review_level" />
 
             <!--// Review List-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_review"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_review"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_review_score">
+                app:layout_constraintTop_toBottomOf="@+id/tv_avg_rating"
+                tools:listitem="@layout/item_review"/>
 
-
-            </androidx.recyclerview.widget.RecyclerView>
-
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieLoading"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rv_review"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/anim_loading_more"
+                tools:layout_editor_absoluteX="20dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 
