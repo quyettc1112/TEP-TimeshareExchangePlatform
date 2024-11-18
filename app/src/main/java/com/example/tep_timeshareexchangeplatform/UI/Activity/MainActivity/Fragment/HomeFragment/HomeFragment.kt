@@ -118,7 +118,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             binding.tvTourist.text = mainViewModel.getRoomCount()
         })
 
-
         mainViewModel.location.observe(viewLifecycleOwner, Observer { location ->
             binding.tvLocation.text = location
         })
