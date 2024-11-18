@@ -322,8 +322,7 @@
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-                    tools:layout_editor_absoluteX="20dp"
-                    tools:listitem="@layout/item_resort_room_type" />
+                    tools:layout_editor_absoluteX="20dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
