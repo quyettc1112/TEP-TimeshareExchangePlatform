@@ -498,6 +498,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_edit_button"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
@@ -512,17 +513,6 @@
                     android:text="Chỉnh sửa"
                     android:textColor="#000000"
                     android:textSize="14sp" />
-                <TextView
-                    android:id="@+id/tv_update_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="12dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/blue_see_more"
-                    android:text="Bạn cần cập nhật thông tin cá nhân để sử dụng dịch vụ tốt nhất"/>
-
 
             </LinearLayout>
 

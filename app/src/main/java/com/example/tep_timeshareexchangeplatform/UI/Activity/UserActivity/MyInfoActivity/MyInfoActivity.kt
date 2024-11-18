@@ -158,6 +158,7 @@ class MyInfoActivity : BaseActivity() {
                 .load(userProfileResponse.avatar)
                 .error(R.drawable.ic_image_placeholder)
                 .into(ivUserAvt)
+            btnEditButton.visibility = View.VISIBLE
             btnEditButton.text = "Cập nhật thông tin !"
         }
     }
@@ -188,6 +189,7 @@ class MyInfoActivity : BaseActivity() {
                 .load(userProfileResponse.avatar)
                 .error(R.drawable.ic_image_placeholder)
                 .into(ivUserAvt)
+            btnEditButton.visibility = View.VISIBLE
             btnEditButton.text = "Cập nhật thông tin !"
         }
         binding.apply {
