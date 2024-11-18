@@ -39,7 +39,7 @@ interface CustomerAPIService {
 
     // Get check Customer Exist
     @GET("customer/initialize")
-    suspend fun getIsCustomerInit(
+    suspend fun getInitCustomer(
         @Header ("Authorization") token: String,
     ) : Response<CustomerInfoResponse>
 

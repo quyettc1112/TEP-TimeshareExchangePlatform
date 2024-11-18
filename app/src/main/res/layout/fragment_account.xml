@@ -202,7 +202,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:fontFamily="@font/inter_light"
+                            android:fontFamily="@font/inter_extrabold"
                             android:text="Bạn Đã Là Thành Viên Của Unwind"
                             android:textSize="14dp"
                             android:visibility="visible" />

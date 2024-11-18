@@ -56,7 +56,7 @@ class CustomerAPIRepository @Inject constructor(
     // Check if customer exist
     suspend fun getIsCustomerExist(token: String): Resource<CustomerInfoResponse> {
         return try {
-            val response = customerAPIService.getIsCustomerInit("Bearer $token")
+            val response = customerAPIService.getInitCustomer("Bearer $token")
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
