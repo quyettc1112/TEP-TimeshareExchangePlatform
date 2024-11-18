@@ -13,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
@@ -159,6 +160,12 @@ interface CustomerAPIService {
         @Path ("postingId") postingId: Int,
         @Body exchangeRequestDTO: ExchangeRequestDTO
     ) : Response<ExchangeRequestResponse>
+
+    // Call Get User Profile
+    @GET("customer/profile")
+    suspend fun getCustomerProfile(
+        @Header ("Authorization") token: String
+    ) : Response<CustomerProfileResponse>
 
 
 
