@@ -319,7 +319,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data : MyExchangePostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
-//            tvRoomName.text = "Tên Phòng: " + data.roomName
+            tvRoomName.text = "Tên Phòng: " + data.roomName
             tvRoomType.text ="Loại Phòng: " + data.unitType.title
 
             // Bath
