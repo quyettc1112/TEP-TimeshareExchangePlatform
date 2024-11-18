@@ -49,6 +49,8 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
                 onExchangeButtonClick?.let { it1 -> it1(item) }
             }
 
+            binding.llVerify.visibility = if (item.isVerify) View.VISIBLE else View.GONE
+
         }
 
         fun formatPrice(price: Int): String {
