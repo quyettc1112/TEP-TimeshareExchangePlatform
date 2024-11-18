@@ -81,6 +81,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         tokenManager = TokenManager(requireContext())
         observeViewModel()
         initActivityLauncher()
+        postingFlowViewModel.updateIsYesOrNo(true)
 
         // Binding Data
         bindDataAmenities()
@@ -92,6 +93,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         eventSaveDayClick()
         eventClickSaveAmenities()
         eventClickCreateTimeshare()
+        eventCLickChangeToOptionNo()
 
         return binding.root
     }
@@ -141,6 +143,22 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
         }
+        postingFlowViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
+            when (listUnitType.status) {
+                Status.LOADING -> {
+                    binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
+                }
+
+                Status.SUCCESS -> {
+                    binding.includeUnitTypeYes.llProcessbar.visibility = View.GONE
+                    bindDataUnitTypeNoOption(listUnitType.data!!)
+                }
+
+                Status.ERROR -> {
+                    showErrorToast("${listUnitType.message}")
+                }
+            }
+        }
         postingFlowViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
             when (unitType.status) {
                 Status.LOADING -> {
@@ -157,6 +175,37 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
 
+        }
+        // No - Create Room
+        postingFlowViewModel.roomModel.observe(viewLifecycleOwner) { roomModel ->
+            when (roomModel.status) {
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    val startDateFormatted = postingFlowViewModel.getTimeshareDateRange().first
+                    val endDateFormatted = postingFlowViewModel.getTimeshareDateRange().second
+                    val timeshareDTO = TimeshareDTO(
+                        status = "Available",
+                        startYear = postingFlowViewModel.getYearRange().first,
+                        endYear = postingFlowViewModel.getYearRange().second,
+                        startDate = startDateFormatted.toString(),
+                        endDate = endDateFormatted.toString(),
+                        roomInfoId = roomModel.data!!.roomId
+                    )
+                    callCreateTimeshare(timeshareDTO)
+                }
+
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).showErrorDialog(
+                        "${roomModel.message}",
+                        "Back"
+                    )
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                }
+            }
         }
 
         // Step 2 - Day Check In
@@ -211,38 +260,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
 
         // API Value - Unit Type List By Resort Id
-        postingFlowViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
-            when (listUnitType.status) {
-                Status.LOADING -> {
-                    binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
-                }
 
-                Status.SUCCESS -> {
-                    binding.includeUnitTypeYes.llProcessbar.visibility = View.GONE
-                    bindDataUnitTypeNoOption(listUnitType.data!!)
-                }
-
-                Status.ERROR -> {
-                    showErrorToast("${listUnitType.message}")
-                }
-            }
-        }
 
         // API Value - Room List By Resort Id
-        postingFlowViewModel.roomList.observe(viewLifecycleOwner) { roomList ->
-            when (roomList.status) {
-                Status.LOADING -> {
-                }
-
-                Status.SUCCESS -> {
-                    bindDataSpinner(roomList.data)
-                }
-
-                Status.ERROR -> {
-                    showErrorToast("${roomList.message}")
-                }
-            }
-        }
 
 
 
@@ -257,83 +277,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             } else binding.crlContentAmenities.visibility = View.GONE
         }
 
-        // Create Timeshare
-        postingFlowViewModel.timeshareDTO.observe(viewLifecycleOwner) { timeshareDTO ->
-            when (timeshareDTO.status) {
-                Status.LOADING -> {
-                    (activity as PostingFlowActivity).showLoadingWaiting(true)
-                }
 
-                Status.SUCCESS -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    showSuccessToast("Create Timeshare Success")
-                    postingFlowViewModel.updateTaskProgress(1)
-                    postingFlowViewModel.updateStep(3)
-                }
-
-                Status.ERROR -> {
-                    (activity as PostingFlowActivity).showFailedDialog(
-                        requireContext(),
-                        "${timeshareDTO.message}",
-                        object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                binding.scrollView.post {
-                                    binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
-                                }
-                            }
-
-                        }
-                    )
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                }
-            }
-        }
 
         // Create Room
-        postingFlowViewModel.roomModel.observe(viewLifecycleOwner) { roomModel ->
-            when (roomModel.status) {
-                Status.LOADING -> {
-                    (activity as PostingFlowActivity).showLoadingWaiting(true)
-                }
-
-                Status.SUCCESS -> {
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                    val token = TokenManager(requireContext()).getAccessToken()
-                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-                    val startDateFormatted =
-                        postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
-                            ?: ""
-                    val endDateFormatted =
-                        postingFlowViewModel.dateRange.value?.second?.let {
-                            dateFormatter.format(
-                                it
-                            )
-                        }
-                            ?: ""
-                    val timeshareDTO = TimeshareDTO(
-                        status = "Available",
-                        startYear = 2024,
-                        endYear = 2025,
-                        startDate = startDateFormatted,
-                        endDate = endDateFormatted,
-                        roomInfoId = roomModel.data!!.roomId
-                    )
-                    if (token != null) {
-                        postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
-                    } else {
-                        Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                Status.ERROR -> {
-                    (activity as PostingFlowActivity).showErrorDialog(
-                        "${roomModel.message}",
-                        "Back"
-                    )
-                    (activity as PostingFlowActivity).hideLoadingWaiting()
-                }
-            }
-        }*/
+       */
 
 
     }
@@ -365,13 +312,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.llSelectRoomContainer.visibility = View.VISIBLE
 
 
+
             }
 
             2 -> {
                 binding.crlDayCheckIn.visibility = View.VISIBLE
                 binding.crlContentAmenities.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
-                postingFlowViewModel.updateIsYesOrNo(true)
+
             }
 
             3 -> {
@@ -467,22 +415,40 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 sendRequestOptionYes()
             } else {
                 // Call API to create Room
-                if (!tokenManager.isLoggedIn()) {
-                    Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-                val roomDTO: RoomDTO = RoomDTO(
-                    roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
-                    isActive = true,
-                    resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
-                    status = "Available",
-                    unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
-                    roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
-                    roomAmenities = listOf()
-                )
-                postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
+                senRequestOptionNO()
 
             }
+        }
+    }
+
+
+
+
+    private fun eventCLickChangeToOptionNo() {
+        binding.btnOptionNo.setOnClickListener {
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
+            }
+            if (postingFlowViewModel.isYesOrNoSelected.value == true) {
+                postingFlowViewModel.updateIsYesOrNo(false)
+                postingFlowViewModel.updateTaskProgress(1)
+                postingFlowViewModel.resetTimeshareDateRange()
+                binding.includeUnitTypeYes.root.visibility = View.GONE
+                binding.includeUnitTypeNo.root.visibility = View.VISIBLE
+
+                binding.tvOptionNo.text = "Chọn Mã Phòng Có Sẵn Từ Resort"
+                binding.btnOptionNo.text = "Chọn Mã Phòng"
+            } else {
+                postingFlowViewModel.updateIsYesOrNo(true)
+                postingFlowViewModel.updateTaskProgress(1)
+                postingFlowViewModel.resetTimeshareDateRange()
+                binding.includeUnitTypeYes.root.visibility = View.VISIBLE
+                binding.includeUnitTypeNo.root.visibility = View.GONE
+
+                binding.tvOptionNo.text = "Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi"
+                binding.btnOptionNo.text = "Khai Báo"
+            }
+
         }
     }
 
@@ -672,7 +638,140 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }*/
 
     }
+    private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
+        // Lấy danh sách duy nhất cho view và bedrooms
+        val viewList = listUnitType.map { it.view }.distinct()
+        val bedroomsList = listUnitType.map { it.bedrooms.toString() }.distinct()
 
+        // Gán dữ liệu cho customSpinnerViewDiretion
+        val viewAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewList)
+        viewAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.includeUnitTypeNo.customSpinnerViewDiretion.adapter = viewAdapter
+
+        // Gán dữ liệu cho customSpinnerBed
+        val bedroomsAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bedroomsList)
+        bedroomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.includeUnitTypeNo.customSpinnerBed.adapter = bedroomsAdapter
+        // Lọc dữ liệu dựa trên giá trị được chọn
+        binding.includeUnitTypeNo.customSpinnerViewDiretion.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    filterUnitTypes(listUnitType)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Không làm gì nếu không có gì được chọn
+                }
+            }
+
+        binding.includeUnitTypeNo.customSpinnerBed.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    filterUnitTypes(listUnitType)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Không làm gì nếu không có gì được chọn
+                }
+            }
+
+        // Hiển thị danh sách ban đầu
+        unitTypeAdapterPosting.submitList(listUnitType)
+
+        binding.includeUnitTypeNo.rvUnitType.apply {
+            visibility = View.VISIBLE
+            adapter = unitTypeAdapterPosting
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
+
+        unitTypeAdapterPosting.onButtonBookClick = {
+            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(it)
+            unitTypeDataDialog.show(parentFragmentManager, "UnitTypeDataDialog")
+        }
+
+        unitTypeAdapterPosting.onItemClick = { it ->
+            postingFlowViewModel.updateUnitTypeSelectionOptionNo(it)
+        }
+
+        binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
+            if (!verifyDataAndSendRequest()) {
+                showInfoToast("Please fill in all required fields")
+                return@setOnClickListener
+            }
+
+            if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
+                showErrorToast("Please select a unit type")
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
+                }
+                return@setOnClickListener
+            }
+            binding.includeUnitTypeNo.edtRoomCode.clearFocus()
+            binding.includeUnitTypeNo.edtRoomName.clearFocus()
+            postingFlowViewModel.updateTaskProgress(2)
+            binding.scrollView.post {
+                binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
+            }
+
+        }
+    }
+    private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
+        val selectedView =
+            binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
+        val selectedBedrooms =
+            binding.includeUnitTypeNo.customSpinnerBed.selectedItem?.toString()?.toIntOrNull()
+
+        val filteredList = listUnitType.filter {
+            (selectedView == null || it.view == selectedView) &&
+                    (selectedBedrooms == null || it.bedrooms == selectedBedrooms)
+        }
+
+        unitTypeAdapterPosting.submitList(filteredList)
+        if (filteredList.isEmpty() || filteredList.size == 0) {
+            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.VISIBLE
+        } else {
+            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.GONE
+        }
+    }
+    private fun verifyDataAndSendRequest(): Boolean {
+        val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
+
+        if (!checkYN) {
+            val roomCode = binding.includeUnitTypeNo.edtRoomCode.text.toString().trim()
+            val roomName = binding.includeUnitTypeNo.edtRoomName.text.toString().trim()
+
+            if (roomCode.isEmpty()) {
+                binding.includeUnitTypeNo.edtRoomCode.error = "Mã phòng không được để trống"
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
+                }
+                return false
+            }
+
+            if (roomName.isEmpty()) {
+                binding.includeUnitTypeNo.edtRoomName.error = "Tên phòng không được để trống"
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
+                }
+                return false
+            }
+        }
+
+        // Nếu tất cả các kiểm tra đều vượt qua
+        return true
+    }
 
     // 2. Binding Data of Day Check In
     private fun bindDataSpinnerValidYear() {
@@ -782,9 +881,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
      *
      *
      */
-    private fun callGetUnitTypeDetailByID(int: Int) {
-        postingFlowViewModel.getUnitTypeDetailByID(tokenManager.getAccessToken().toString(), int)
-    }
     private fun sendRequestOptionYes() {
         val startDateFormatted = postingFlowViewModel.getTimeshareDateRange().first
         val endDateFormatted = postingFlowViewModel.getTimeshareDateRange().second
@@ -803,11 +899,33 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun senRequestOptionNO() {
+        if (!tokenManager.isLoggedIn()) {
+            Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val roomDTO: RoomDTO = RoomDTO(
+            roomInfoCode = binding.includeUnitTypeNo.edtRoomCode.text.toString(),
+            isActive = true,
+            resortId = postingFlowViewModel.resortModelResponse.value?.id!!,
+            status = "Available",
+            unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
+            roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
+            roomAmenities = listOf()
+        )
+        callCreateRoom(roomDTO)
+    }
+    private fun callGetUnitTypeDetailByID(int: Int) {
+        postingFlowViewModel.getUnitTypeDetailByID(tokenManager.getAccessToken().toString(), int)
+    }
     private fun callCreateTimeshare(timeshareDTO: TimeshareDTO) {
         postingFlowViewModel.postTimeshareDTO(
             tokenManager.getAccessToken().toString(),
             timeshareDTO
         )
+    }
+    private fun callCreateRoom(roomDTO: RoomDTO) {
+        postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
     }
 
 
@@ -1037,33 +1155,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     }
 
-    private fun verifyDataAndSendRequest(): Boolean {
-        val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
 
-        if (!checkYN) {
-            val roomCode = binding.includeUnitTypeNo.edtRoomCode.text.toString().trim()
-            val roomName = binding.includeUnitTypeNo.edtRoomName.text.toString().trim()
-
-            if (roomCode.isEmpty()) {
-                binding.includeUnitTypeNo.edtRoomCode.error = "Mã phòng không được để trống"
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
-                }
-                return false
-            }
-
-            if (roomName.isEmpty()) {
-                binding.includeUnitTypeNo.edtRoomName.error = "Tên phòng không được để trống"
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.edtRoomCode.top)
-                }
-                return false
-            }
-        }
-
-        // Nếu tất cả các kiểm tra đều vượt qua
-        return true
-    }
 */
 
     private fun showErrorToast(string: String) {
