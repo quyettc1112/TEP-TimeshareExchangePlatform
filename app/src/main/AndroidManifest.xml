@@ -110,13 +110,13 @@
             android:name=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity"
+            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ImageListActivity"
+            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ImageListActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity"
+            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ResortDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.AuthActivity.LoginActivity"

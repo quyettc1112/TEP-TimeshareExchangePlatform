@@ -22,7 +22,7 @@ class AuthViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ): ViewModel() {
 
-    // Login ViewModel Tracking
+    // Login ExchangeOfResortViewModel Tracking
     private val _loginResponse = MutableLiveData<Resource<LoginResponse>>()
     val loginResponse: LiveData<Resource<LoginResponse>> get() = _loginResponse
     // Login Function
@@ -34,7 +34,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    // Register ViewModel Tracking
+    // Register ExchangeOfResortViewModel Tracking
     private val _registerResponse = MutableLiveData<Resource<RegisterResponse>>()
     val registerResponse: LiveData<Resource<RegisterResponse>> get() = _registerResponse
     // Call Register Function

@@ -242,7 +242,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     // Lấy năm được chọn từ Spinner
                     val selectedYear = parent.getItemAtPosition(position).toString().toInt()
 
-                    // Lấy startDateString và endDateString từ ViewModel
+                    // Lấy startDateString và endDateString từ ExchangeOfResortViewModel
                     val startDateString =
                         postingFlowViewModel.myTimeshareModelSelected.value?.startDate
                     val endDateString =
@@ -569,7 +569,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 // Load ảnh chính vào ImageView
                 binding.ivMainImage.setImageURI(uri)
 
-                // Optionally, update ViewModel or perform other actions
+                // Optionally, update ExchangeOfResortViewModel or perform other actions
                 postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
             }
         }

@@ -9,7 +9,7 @@
 
     <!--// Filter-->
     <LinearLayout
-        android:id="@+id/linearLayout15"
+        android:id="@+id/ll_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -177,7 +177,7 @@
         android:paddingTop="10dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintTop_toBottomOf="@+id/ll_filter"
         app:spanCount="2"
         tools:listitem="@layout/item_timeshare_ver_1"/>
 

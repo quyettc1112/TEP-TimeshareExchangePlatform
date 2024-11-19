@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.Adapter.ResortAdapterRV
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle

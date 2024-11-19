@@ -34,11 +34,12 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.Unit
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdaper
+import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.RoomResultAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.UnitTypeAdapterPosting
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
@@ -59,9 +60,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private lateinit var binding: FragmentCreateTimesharePostingBinding
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
     private var unitTypeAdapterPosting = UnitTypeAdapterPosting(true)
-    private var amenitiesAdapter = AmenitiesAdaper()
-    private var amenitiesEntertamentAdapter = AmenitiesAdaper()
-    private var policyAmentitiesAdapter = AmenitiesAdaper()
+    private var kitchenAmenitiesAdapter = AmenitiesAdapter()
+    private var entertainmentAmenitiesAdapter = AmenitiesAdapter()
+    private var policyAmenitiesAdapter = AmenitiesAdapter()
+    private var featuresAmenitiesAdapter = AmenitiesAdapter()
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
 
     private lateinit var tokenManager: TokenManager
@@ -96,6 +98,41 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         eventCLickChangeToOptionNo()
 
         return binding.root
+    }
+
+    private fun initAdapter() {
+        unitTypeAdapterPosting.submitList(listOf())
+        kitchenAmenitiesAdapter.apply {
+            submitList(Constant.listAmenities)
+            onItemChecked = {
+                postingFlowViewModel.updateAmenitiesForType(AmenityType.KITCHEN, getCheckedItems())
+            }
+        }
+
+        entertainmentAmenitiesAdapter.apply {
+            submitList(Constant.listEntertament)
+            onItemChecked = {
+                postingFlowViewModel.updateAmenitiesForType(AmenityType.ENTERTAINMENT, getCheckedItems())
+
+            }
+        }
+
+        policyAmenitiesAdapter.apply {
+            submitList(Constant.listPolicy)
+            onItemChecked = {
+                postingFlowViewModel.updateAmenitiesForType(AmenityType.POLICY, getCheckedItems())
+
+            }
+        }
+
+        featuresAmenitiesAdapter.apply {
+            submitList(Constant.listFeatures)
+            onItemChecked = {
+                postingFlowViewModel.updateAmenitiesForType(AmenityType.FEATURES, getCheckedItems())
+
+            }
+        }
+
     }
 
     private fun observeViewModel() {
@@ -218,7 +255,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         // Step 3- Amennities
 
 
-
         // Final Step - Create Timeshare
         postingFlowViewModel.createTimeshareResponse.observe(viewLifecycleOwner) { timeshareDTO ->
             when (timeshareDTO.status) {
@@ -252,35 +288,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
 
-        /*// Tracking Data of Step Create Timeshare
-        postingFlowViewModel.stepCreateTimeshare.observe(viewLifecycleOwner) { currentTask ->
-            showStepEventHandle(currentTask)
-        }
-
-
-
-        // API Value - Unit Type List By Resort Id
-
-
-        // API Value - Room List By Resort Id
-
-
-
-        // Tracking Date Range
-        postingFlowViewModel.dateRange.observe(viewLifecycleOwner) { dateRange ->
-            if (postingFlowViewModel.getNumberOfNights() > 0) {
-                // Update Step 4
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
-                }
-                postingFlowViewModel.updateTaskProgress(4)
-            } else binding.crlContentAmenities.visibility = View.GONE
-        }
-
-
-
-        // Create Room
-       */
 
 
     }
@@ -312,7 +319,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.llSelectRoomContainer.visibility = View.VISIBLE
 
 
-
             }
 
             2 -> {
@@ -339,10 +345,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             5 -> {
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.btnNext.bottom)
+                }
                 binding.btnNext.visibility = View.VISIBLE
             }
         }
     }
+
     private fun initActivityLauncher() {
         locationResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -377,6 +387,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             locationResultLauncher.launch(intent)
         }
     }
+
     private fun eventClickChangeDay() {
         bindDataSpinnerValidYear()
         binding.btnSelectCheckInOutDate.setOnClickListener {
@@ -386,10 +397,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
     }
+
     private fun eventSaveDayClick() {
         binding.btnSaveDay.setOnClickListener {
             val night = postingFlowViewModel.getNumberOfNightsTimeshare()
-            if(night == null || night == 0) {
+            if (night == null || night == 0) {
                 showErrorToast("Please select number of nights")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
@@ -403,11 +415,21 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
     }
+
     private fun eventClickSaveAmenities() {
         binding.btnSaveAmenities.setOnClickListener {
-            postingFlowViewModel.updateTaskProgress(5)
+            if (postingFlowViewModel.checkEachTypeHasMinTwoSelected()) {
+                postingFlowViewModel.updateTaskProgress(5)
+                showSuccessToast("Lưu Thành Công")
+            } else {
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.crlContentAmenities.top)
+                }
+                showWarningToast("Mỗi loại tiện ích cần chọn ít nhất 2 mục")
+            }
         }
     }
+
     private fun eventClickCreateTimeshare() {
         binding.btnNext.setOnClickListener {
             val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
@@ -420,9 +442,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
     }
-
-
-
 
     private fun eventCLickChangeToOptionNo() {
         binding.btnOptionNo.setOnClickListener {
@@ -445,7 +464,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.includeUnitTypeYes.root.visibility = View.VISIBLE
                 binding.includeUnitTypeNo.root.visibility = View.GONE
 
-                binding.tvOptionNo.text = "Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi"
+                binding.tvOptionNo.text =
+                    "Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi"
                 binding.btnOptionNo.text = "Khai Báo"
             }
 
@@ -476,6 +496,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             binding.btnSelectResortLocation.visibility = View.VISIBLE
         }
     }
+
     // 1. Binding Data of Room Distribution, Yes or No
     // YES
     private fun bindDataRoomCodeSpinner(roomList: List<RoomModel>?) {
@@ -532,6 +553,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
             }
     }
+
     private fun bindDataRoomCodeBySearch(roomList: List<RoomModel>?) {
         val bindingInclude = binding.includeUnitTypeYes
         bindingInclude.etRoomSearch.setOnFocusChangeListener { _, hasFocus ->
@@ -602,6 +624,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         })
     }
+
     private fun bindDataUnitTypeYesOption(unitType: UnitTypeModel) {
         val binding = binding.includeUnitTypeYes
         // Hide Unnecessary View
@@ -638,6 +661,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }*/
 
     }
+
     private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
         // Lấy danh sách duy nhất cho view và bedrooms
         val viewList = listUnitType.map { it.view }.distinct()
@@ -707,7 +731,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                showInfoToast("Please fill in all required fields")
+                showWarningToast("Please fill in all required fields")
                 return@setOnClickListener
             }
 
@@ -727,6 +751,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         }
     }
+
     private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
         val selectedView =
             binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
@@ -745,6 +770,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             binding.includeUnitTypeNo.lottieAnimationView.visibility = View.GONE
         }
     }
+
     private fun verifyDataAndSendRequest(): Boolean {
         val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value ?: false
 
@@ -819,7 +845,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     binding.spValidEndYear.setSelection(if (currentEndYearPosition >= 0) currentEndYearPosition else 0)
 
                     // Lưu cặp giá trị năm Start và End
-                    val selectedEndYear = validEndYearList.getOrNull(currentEndYearPosition) ?: selectedStartYear
+                    val selectedEndYear =
+                        validEndYearList.getOrNull(currentEndYearPosition) ?: selectedStartYear
                     postingFlowViewModel.setYearRange(selectedStartYear, selectedEndYear)
                 }
 
@@ -852,28 +879,31 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     // 3. Amennities
     private fun bindDataAmenities() {
-        // Set List Amenities
-        binding.rvAmenities.apply {
-            adapter = amenitiesAdapter
+        // Set List Kitchen
+        binding.rvKitchen.apply {
+            adapter = kitchenAmenitiesAdapter
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
 
         // Set List Amenities Entertament
         binding.rvAmenitiesEntertainment.apply {
-            adapter = amenitiesEntertamentAdapter
+            adapter = entertainmentAmenitiesAdapter
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
 
         // Set List Policy
         binding.rvPolicy.apply {
-            adapter = policyAmentitiesAdapter
+            adapter = policyAmenitiesAdapter
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        }
+
+        // Set List Features
+        binding.rvFeatures.apply {
+            adapter = featuresAmenitiesAdapter
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         }
 
     }
-    private fun bindDataAmenities(unitType: UnitTypeModel) {
-    }
-
 
 
     /**
@@ -899,6 +929,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun senRequestOptionNO() {
         if (!tokenManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show()
@@ -911,252 +942,26 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             status = "Available",
             unitTypeId = postingFlowViewModel.unitTypeSelectionOptionNo.value?.id!!,
             roomName = binding.includeUnitTypeNo.edtRoomName.text.toString(),
-            roomAmenities = listOf()
+            roomAmenities = postingFlowViewModel.getSelectedAmenitiesForPost()
         )
         callCreateRoom(roomDTO)
     }
+
     private fun callGetUnitTypeDetailByID(int: Int) {
         postingFlowViewModel.getUnitTypeDetailByID(tokenManager.getAccessToken().toString(), int)
     }
+
     private fun callCreateTimeshare(timeshareDTO: TimeshareDTO) {
         postingFlowViewModel.postTimeshareDTO(
             tokenManager.getAccessToken().toString(),
             timeshareDTO
         )
     }
+
     private fun callCreateRoom(roomDTO: RoomDTO) {
         postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
     }
 
-
-    private fun initAdapter() {
-        unitTypeAdapterPosting.submitList(listOf())
-        amenitiesAdapter.submitList(Constant.listAmenities)
-        amenitiesEntertamentAdapter.submitList(Constant.listEntertament)
-        policyAmentitiesAdapter.submitList(Constant.listPolicy)
-    }
-    /*
-
-
-
-  
-    // No. User Don't Have Room Type, Create New Room
-    private fun bindDataUnitTypeNoOption(listUnitType: List<UnitTypeModel>) {
-        // Lấy danh sách duy nhất cho view và bedrooms
-        val viewList = listUnitType.map { it.view }.distinct()
-        val bedroomsList = listUnitType.map { it.bedrooms.toString() }.distinct()
-
-        // Gán dữ liệu cho customSpinnerViewDiretion
-        val viewAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewList)
-        viewAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeUnitTypeNo.customSpinnerViewDiretion.adapter = viewAdapter
-
-        // Gán dữ liệu cho customSpinnerBed
-        val bedroomsAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bedroomsList)
-        bedroomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeUnitTypeNo.customSpinnerBed.adapter = bedroomsAdapter
-
-        // Lọc dữ liệu dựa trên giá trị được chọn
-        binding.includeUnitTypeNo.customSpinnerViewDiretion.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    filterUnitTypes(listUnitType)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Không làm gì nếu không có gì được chọn
-                }
-            }
-
-        binding.includeUnitTypeNo.customSpinnerBed.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    filterUnitTypes(listUnitType)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Không làm gì nếu không có gì được chọn
-                }
-            }
-
-        // Hiển thị danh sách ban đầu
-        unitTypeAdapterPosting.submitList(listUnitType)
-
-        binding.includeUnitTypeNo.rvUnitType.apply {
-            visibility = View.VISIBLE
-            adapter = unitTypeAdapterPosting
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
-
-        unitTypeAdapterPosting.onButtonBookClick = {
-            bindDataUnitTypeDetailDialog(it)
-        }
-
-        unitTypeAdapterPosting.onItemClick = { it ->
-            postingFlowViewModel.updateUnitTypeSelectionOptionNo(it)
-        }
-
-        binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
-            if (!verifyDataAndSendRequest()) {
-                showInfoToast("Please fill in all required fields")
-                return@setOnClickListener
-            }
-
-            if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
-                showErrorToast("Please select a unit type")
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
-                }
-                return@setOnClickListener
-            }
-
-
-            postingFlowViewModel.updateTaskProgress(3)
-            binding.scrollView.post {
-                binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
-            }
-
-        }
-    }
-
-    private fun filterUnitTypes(listUnitType: List<UnitTypeModel>) {
-        val selectedView =
-            binding.includeUnitTypeNo.customSpinnerViewDiretion.selectedItem?.toString()
-        val selectedBedrooms =
-            binding.includeUnitTypeNo.customSpinnerBed.selectedItem?.toString()?.toIntOrNull()
-
-        val filteredList = listUnitType.filter {
-            (selectedView == null || it.view == selectedView) &&
-                    (selectedBedrooms == null || it.bedrooms == selectedBedrooms)
-        }
-
-        unitTypeAdapterPosting.submitList(filteredList)
-        if (filteredList.isEmpty() || filteredList.size == 0) {
-            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.VISIBLE
-        } else {
-            binding.includeUnitTypeNo.lottieAnimationView.visibility = View.GONE
-        }
-    }
-
-
-    
-
-    // User click to change location of Resort
-    private fun setEventChangeLocation() {
-        binding.tvChangeLocation.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
-            })
-            locationResultLauncher.launch(intent)
-
-
-        }
-        binding.btnSelectResortLocation.setOnClickListener {
-            val intent = Intent(requireContext(), LocationActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putString(Constant.DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW, "getResortLocation")
-            })
-            locationResultLauncher.launch(intent)
-
-
-        }
-    }
-
-
-    // 4. Display Amenities
-    private fun bindDataAmenities(unitType: UnitTypeModel) {
-
-    }
-
-    private fun setEventSaveAmenities() {
-        binding.btnSaveAmenities.setOnClickListener {
-            postingFlowViewModel.updateTaskProgress(5)
-        }
-
-    }
-
-
-
-    private fun sendRequestOptionYes() {
-        val token = TokenManager(requireContext()).getAccessToken()
-        // Định dạng theo kiểu yyyy-MM-dd
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
-        val startDateFormatted =
-            postingFlowViewModel.dateRange.value?.first?.let { dateFormatter.format(it) }
-                ?: ""
-        val endDateFormatted =
-            postingFlowViewModel.dateRange.value?.second?.let { dateFormatter.format(it) }
-                ?: ""
-        val timeshareDTO = TimeshareDTO(
-            status = "Available",
-            startYear = 2024,
-            endYear = 2027,
-            startDate = startDateFormatted,
-            endDate = endDateFormatted,
-            roomInfoId = postingFlowViewModel.currentRoomInfo.value!!
-        )
-        Log.d("CheckTImesahreModel", "sendRequestCreateTimeshare: $timeshareDTO")
-        if (token != null && timeshareDTO != null) {
-            postingFlowViewModel.postTimeshareDTO(token, timeshareDTO)
-        } else {
-            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // Location Activity Result
-    private fun initActivityLauncher() {
-        locationResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    val selectedLocation: ResortModelResponse.Content? =
-                        data?.getParcelableExtra(Constant.DEFAULT_RESORT_SEARCHED_SELECTION)
-                    selectedLocation?.let {
-                        postingFlowViewModel.updateResortModel(it)
-                    }
-                }
-            }
-
-    }
-
-
-
-    private fun setValueUnitRoom() {
-        // Set List Amenities
-        binding.rvAmenities.apply {
-            adapter = amenitiesAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-        // Set List Amenities Entertament
-        binding.rvAmenitiesEntertainment.apply {
-            adapter = amenitiesEntertamentAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-        // Set List Policy
-        binding.rvPolicy.apply {
-            adapter = policyAmentitiesAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
-
-    }
-
-
-*/
 
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
@@ -1182,76 +987,18 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         )
     }
 
-    private fun showInfoToast(string: String) {
+    private fun showWarningToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
             "Failed",
             string,
-            MotionToastStyle.INFO,
+            MotionToastStyle.WARNING,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
-    fun showStylishYearPickerDialog(
-        context: Context,
-        initialYear: Int = 2023,
-        onYearSelected: (Int) -> Unit
-    ) {
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-
-        val numberPicker = NumberPicker(context).apply {
-            minValue = currentYear
-            maxValue = 2100
-            value = initialYear.coerceIn(minValue, maxValue)
-            wrapSelectorWheel = false  // Tắt vòng lặp
-        }
-
-        MaterialAlertDialogBuilder(context)
-            .setTitle("Chọn năm")
-            .setView(numberPicker)
-            .setPositiveButton("OK") { _, _ ->
-                onYearSelected(numberPicker.value)
-            }
-            .setNegativeButton("Hủy") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    fun showDayPickerDialog(
-        context: Context,
-        startYear: Int,
-        onDateSelected: (Int, Int, Int) -> Unit
-    ) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, startYear)
-        calendar.set(Calendar.DAY_OF_YEAR, 1)  // Ngày đầu tiên trong năm Start Year
-
-        val minDate = calendar.timeInMillis  // Ngày bắt đầu
-        calendar.set(
-            Calendar.DAY_OF_YEAR,
-            calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-        )  // Ngày cuối cùng trong năm
-        val maxDate = calendar.timeInMillis
-
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                onDateSelected(year, month + 1, dayOfMonth) // Callback trả về ngày được chọn
-            },
-            startYear,
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        // Giới hạn ngày trong năm Start Year
-        datePickerDialog.datePicker.minDate = minDate
-        datePickerDialog.datePicker.maxDate = maxDate
-
-        datePickerDialog.show()
-    }
 
     fun showRangeDayPickerDialog(
         context: Context,

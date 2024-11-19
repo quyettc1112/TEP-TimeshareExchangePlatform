@@ -1,8 +1,6 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -10,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ImageDetailAdapter
-import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ImageViewPagerAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper

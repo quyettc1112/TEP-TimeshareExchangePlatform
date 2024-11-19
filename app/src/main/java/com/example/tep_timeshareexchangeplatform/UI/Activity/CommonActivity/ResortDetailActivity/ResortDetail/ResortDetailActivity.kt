@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,7 +18,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Feed
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.UnitTypeAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.TimeshareListActivity.TimeshareListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
 import com.google.android.flexbox.FlexDirection
@@ -29,7 +29,6 @@ import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class ResortDetailActivity : BaseActivity() {
-
     private lateinit var binding: ActivityResortDetailBinding
     private lateinit var resortImageListAdapter: ResortImageListAdapter
     private var unitTypeAdapter = UnitTypeAdapter(true)
@@ -223,7 +222,9 @@ class ResortDetailActivity : BaseActivity() {
     }
     private fun setButtonSelectRoomClick() {
         binding.btnSelectRoom.setOnClickListener {
-            val intent = Intent(this, TimeshareListActivity::class.java)
+            val intent = Intent(this, PostingOfResortActivity::class.java)
+            intent.putExtra(Constant.RESORT_NAME, resortDetailViewModel.resortDetail.value?.data?.resortName)
+            intent.putExtra(Constant.RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
             startActivity(intent)
         }
 

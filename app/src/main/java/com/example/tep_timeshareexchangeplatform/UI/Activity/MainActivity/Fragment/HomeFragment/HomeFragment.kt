@@ -27,14 +27,10 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_POSTING
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_RESORT
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -96,13 +92,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     /**
-     * Observer ViewModel
+     * Observer ExchangeOfResortViewModel
      *
      * Observer Search Component
-     * Observer ViewModel
+     * Observer ExchangeOfResortViewModel
      */
     private fun observerSearchComponent() {
-        // Quan sát các giá trị từ ViewModel
+        // Quan sát các giá trị từ ExchangeOfResortViewModel
         mainViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
             // Cập nhật giao diện với số phòng
             binding.tvTourist.text = mainViewModel.getRoomCount()

@@ -79,7 +79,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         return binding.root
     }
 
-    // Observe ViewModel
+    // Observe ExchangeOfResortViewModel
     private fun observeViewModel() {
         // Update Data Here
         postingFlowViewModel.packageStep4.observe(viewLifecycleOwner) { packageModel ->
@@ -346,7 +346,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     }
 
 
-    // Observe ViewModel of Exchange Posting
+    // Observe ExchangeOfResortViewModel of Exchange Posting
     private fun observeViewModelExchange() {
         // Exchange Posting Date Range
         binding.includeExchangeTime.customSpinnerProvince.isEnabled = false

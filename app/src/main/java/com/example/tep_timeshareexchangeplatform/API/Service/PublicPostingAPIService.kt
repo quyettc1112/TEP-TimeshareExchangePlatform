@@ -40,5 +40,13 @@ interface PublicPostingAPIService {
         @Path("postingId") postingId: Int
     ): Response<ExchangeDetailResponse>
 
+    // Get List Posting of Resort By Id ()
+    @GET("public/posting/{resortId}")
+    suspend fun getRentalPostingOfResortByID(
+        @Path("resortId") resortId: Int,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+    ) : Response<PublicPostingResponse>
+
 
 }

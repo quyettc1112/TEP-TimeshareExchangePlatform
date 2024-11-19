@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshare
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
@@ -29,6 +30,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoom
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -366,6 +368,8 @@ class PostingFlowViewModel @Inject constructor(
     // Call API create room
     private val _roomModel = MutableLiveData<Resource<PostRoomRespone>>()
     val roomModel: MutableLiveData<Resource<PostRoomRespone>> = _roomModel
+
+
     fun postRoom(token: String, roomDTO: RoomDTO) {
         viewModelScope.launch {
             _roomModel.postValue(Resource.loading(null))
@@ -374,6 +378,34 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+    // Lưu trạng thái tiện ích theo từng loại (type)
+    // Lưu trạng thái tiện ích theo từng loại (Enum)
+    private val _selectedAmenities = MutableLiveData<Map<AmenityType, List<AmenitiesModel>>>()
+    val selectedAmenities: LiveData<Map<AmenityType, List<AmenitiesModel>>> get() = _selectedAmenities
+
+
+    fun updateAmenitiesForType(type: AmenityType, selectedAmenities: List<AmenitiesModel>) {
+        val currentMap = _selectedAmenities.value?.toMutableMap() ?: mutableMapOf()
+        currentMap[type] = selectedAmenities
+        _selectedAmenities.value = currentMap
+    }
+
+    fun checkEachTypeHasMinTwoSelected(): Boolean {
+        val currentMap = _selectedAmenities.value ?: return false
+        return currentMap.all { (_, amenities) -> amenities.count { it.isChecked } >= 2 }
+    }
+    fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
+        return _selectedAmenities.value
+            ?.flatMap { (type, amenities) ->
+                amenities.filter { it.isChecked }.map { RoomDTO.RoomAmenity(it.name, type.name) }
+            }
+            ?: emptyList()
+    }
+
+    fun clearAllAmenities() {
+        _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
+    }
+
 
 
     // ----------------------------------------------------------//
@@ -610,7 +642,7 @@ class PostingFlowViewModel @Inject constructor(
     }
 
     fun resetData() {
-        // Reset tất cả các LiveData hoặc MutableLiveData trong ViewModel
+        // Reset tất cả các LiveData hoặc MutableLiveData trong ExchangeOfResortViewModel
         _currentMyTimesharePage.value = 0
         _currentMyTimeshareList.clear()
         step.value = 1 // hoặc giá trị mặc định ban đầu
@@ -673,6 +705,8 @@ class PostingFlowViewModel @Inject constructor(
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
         _currentRoomInfo.value = 0
 
+        // Khởi tạo map rỗng cho từng loại
+        _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
     }
 
 

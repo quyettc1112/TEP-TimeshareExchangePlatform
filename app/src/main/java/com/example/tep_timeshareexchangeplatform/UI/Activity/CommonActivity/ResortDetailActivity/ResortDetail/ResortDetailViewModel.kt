@@ -1,9 +1,10 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResortDetailViewModel @Inject constructor(
-    private val publicResortAPIRepository: PublicResortAPIRepository
+    private val publicResortAPIRepository: PublicResortAPIRepository,
+
 ) : ViewModel() {
 
     private val _resortDetail = MutableLiveData<Resource<ResortDetailModelResponse>>()
@@ -26,6 +28,8 @@ class ResortDetailViewModel @Inject constructor(
             }
         }
     }
+
+
 
 
 }

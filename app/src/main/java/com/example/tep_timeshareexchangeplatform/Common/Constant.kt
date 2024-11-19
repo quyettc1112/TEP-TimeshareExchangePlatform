@@ -41,6 +41,9 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val RESORT_NAME = "resortName"
+        const val RESORT_ID = "resortId"
+
         const val SEARCH_LOCATION = "searchLocation"
         const val SEARCH_DATE = "searchDate"
         const val SEARCH_ROOM = "searchRoom"
@@ -171,7 +174,7 @@ class Constant {
 
         fun getFormattedDateString(dateString: String, context: Context): String {
             return try {
-                // Input format từ ViewModel (yyyy-MM-dd)
+                // Input format từ ExchangeOfResortViewModel (yyyy-MM-dd)
                 val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
                 val date: Date = inputDateFormat.parse(dateString) ?: return ""
 
@@ -192,6 +195,7 @@ class Constant {
                 ""
             }
         }
+
         fun getDayOfWeekString(dateString: String, context: Context): String {
             // Input date format
             val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
@@ -210,6 +214,7 @@ class Constant {
 
             return dayFormat.format(date)
         }
+
         fun mapToUnitTypeModel(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeModel {
             return UnitTypeModel(
                 id = unitType.id,
@@ -235,6 +240,7 @@ class Constant {
                 unitTypeAmenitiesDTOS = unitTypeAmenities(unitType) // Map amenities
             )
         }
+
         private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {
             // Assuming you're mapping from unitType details for amenities; adjust based on source data
             return listOf(
@@ -245,9 +251,6 @@ class Constant {
                 )
             )
         }
-
-
-
 
 
         val destiantionList = listOf(
@@ -301,6 +304,7 @@ class Constant {
             BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
+
         fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
             val bedTypes = listOf(
                 "bedsFull" to "Full",
@@ -318,8 +322,6 @@ class Constant {
 
             return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
         }
-
-
 
 
         // Get list Review
@@ -411,26 +413,37 @@ class Constant {
         val listAmenities = listOf(
             AmenitiesModel(
                 name = "Máy pha cà phê",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Lò vi sóng",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Máy rửa chén",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Máy nướng bánh mì",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Tủ lạnh (lớn)",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Tủ lạnh (nhỏ)",
+                type = "Bếp",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bếp lò",
+                type = "Bếp",
                 isChecked = false,
             ),
         )
@@ -438,44 +451,111 @@ class Constant {
         val listEntertament = listOf(
             AmenitiesModel(
                 name = "Máy phát DVD",
+                type = "Giải Trí",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Quầy Bar",
+                type = "Giải Trí",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy Chiếu Phim",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Mạng Internet",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Radio",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "TV thông minh",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Điện thoại bàn",
+                type = "Giải Trí",
                 isChecked = false,
             ),
 
 
             )
+
+        val listFeatures = listOf(
+            AmenitiesModel(
+                name = "Máy Điều Hòa",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Wifi",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Nước nóng/lạnh",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Nước uống miễn phí",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Sân hiên hoặc Ban Công",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bàn ăn",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bàn làm việc",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy giặt và máy sấy (trong căn hộ)",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+
+        )
 
         val listPolicy = listOf(
             AmenitiesModel(
                 name = "Không hút thuốc",
+                type = "Chính Sách",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Không thú cưng",
+                type = "Chính Sách",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Không tổ chức tiệc",
+                type = "Chính Sách",
                 isChecked = false,
             ),
-
-
+            AmenitiesModel(
+                name = "Độ tuổi tối thiểu để nhận phòng: 18",
+                type = "Chính Sách",
+                isChecked = false,
             )
+
+
+        )
 
         val rentalPackageList = listOf(
             PackageModel(

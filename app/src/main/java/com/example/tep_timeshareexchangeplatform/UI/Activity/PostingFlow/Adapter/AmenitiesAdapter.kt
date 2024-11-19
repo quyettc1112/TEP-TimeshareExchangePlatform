@@ -8,8 +8,8 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.databinding.ItemAmenitiesBinding
 
-class AmenitiesAdaper: BaseAdapter<AmenitiesModel, AmenitiesAdaper.AmenitiesViewHolder>() {
-    val onItemChecked: (AmenitiesModel) -> Unit = {}
+class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesViewHolder>() {
+    var onItemChecked: (AmenitiesModel) -> Unit = {}
 
     inner class AmenitiesViewHolder(binding: ItemAmenitiesBinding) : BaseItemViewHolderCF<AmenitiesModel, ItemAmenitiesBinding>(binding) {
         override fun bind(item: AmenitiesModel) {
@@ -40,5 +40,8 @@ class AmenitiesAdaper: BaseAdapter<AmenitiesModel, AmenitiesAdaper.AmenitiesView
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemAmenitiesBinding.inflate(layoutInflater, parent, false)
         return AmenitiesViewHolder(binding)
+    }
+    fun getCheckedItems(): List<AmenitiesModel> {
+        return differ.currentList.filter { it.isChecked }
     }
 }

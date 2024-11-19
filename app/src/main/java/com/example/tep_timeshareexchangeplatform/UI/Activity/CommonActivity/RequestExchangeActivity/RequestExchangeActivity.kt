@@ -250,7 +250,7 @@ class RequestExchangeActivity : BaseActivity() {
                     // Lấy năm được chọn từ Spinner
                     val selectedYear = parent.getItemAtPosition(position).toString().toInt()
 
-                    // Lấy startDateString và endDateString từ ViewModel
+                    // Lấy startDateString và endDateString từ ExchangeOfResortViewModel
                     val startDateString =
                         viewModel.myTimeshareDetail.value?.data?.startDate
                     val endDateString =

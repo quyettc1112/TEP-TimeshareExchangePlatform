@@ -1,0 +1,4 @@
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Exchange
+
+class ExchangeOfResortViewModel {
+}

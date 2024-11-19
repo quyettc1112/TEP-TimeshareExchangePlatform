@@ -1,145 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:id="@+id/main"
-    tools:context=".UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.ResortFragment.ResortFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_search_posting_scene7">
 
-    <!--// Custom Toolbar-->
-    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolBar"
+
+    <LinearLayout
+        android:id="@+id/motionLayout_Container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:title="Flamingo Đại Lải"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:showTitleDetail="true"
+            app:showStartText="false" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tbl_topResort"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/tab_background"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:tabIndicator="@drawable/background_tab_indicator"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorGravity="stretch"
+            app:tabMode="fixed" />
+
+    </LinearLayout>
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showStartText="false" />
+        app:layout_constraintTop_toBottomOf="@+id/motionLayout_Container" />
 
-
-    <!--// Resort Fillter-->
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/flexboxLayout"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:flexWrap="wrap"
-        app:layout_constraintTop_toBottomOf="@+id/customToolBar"
-        tools:layout_editor_absoluteX="20dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ripple_effect_white"
-            android:clickable="true"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/ic_sort"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/sort"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ripple_effect_white"
-            android:clickable="true"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/ic_filter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/filter"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:background="@drawable/ripple_effect_white"
-            android:clickable="true"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/ic_protect"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/verify"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.flexbox.FlexboxLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rc_timeshare"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="100dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/flexboxLayout"
-        app:spanCount="2"
-        tools:listitem="@layout/item_timeshare_ver_1">
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

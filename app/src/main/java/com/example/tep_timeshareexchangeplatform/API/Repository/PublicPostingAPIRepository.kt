@@ -89,4 +89,22 @@ class PublicPostingAPIRepository @Inject constructor(
         }
     }
 
+    // call get rental posting of resort by ID
+    suspend fun getRentalPostingOfResortByID(
+        resortId: Int,
+        pageNo: Int,
+        pageSize: Int
+    ): Resource<PublicPostingResponse> {
+        return try {
+            val response = publicPostingAPIService.getRentalPostingOfResortByID(resortId, pageNo, pageSize)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

@@ -1,9 +1,7 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -12,57 +10,58 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.ExchangePostingFragment.ExchangePostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionAllFragment.TransactionAllFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionPaymentFragment.TransactionPaymentFragment
-import com.example.tep_timeshareexchangeplatform.databinding.ActivitySearchPostingBinding
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Exchange.ExchangePostingResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Rental.RentalPostingResortFragment
+import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareListBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import org.checkerframework.checker.units.qual.C
 
 @AndroidEntryPoint
-class SearchPostingActivity : BaseActivity() {
-    private lateinit var binding: ActivitySearchPostingBinding
+class PostingOfResortActivity : BaseActivity() {
+    private lateinit var binding: ActivityTimeshareListBinding
     private lateinit var FragmentAdapter: FragmentAdapter
+    private val postingOfResortViewModel: PostingOfResortViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivitySearchPostingBinding.inflate(layoutInflater)
+        binding = ActivityTimeshareListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getIntentData()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        setUpTabLayoutViewPager()
-        binding.toolbar.onStartIconClick = {
-            onBackPressed()
-        }
+        val intent = intent.getIntExtra(Constant.RESORT_ID, 0)
+        if (intent == 0) finish()
+        postingOfResortViewModel.setCurrentResortID(intent)
 
+
+
+        getIntentData()
+        setUpTabLayoutViewPager()
 
     }
 
 
+    private fun enableEdgeToEdge() {
+        window.setDecorFitsSystemWindows(false)
+        window.navigationBarColor = getColor(R.color.white)
+    }
+
     // Get Intent Data
     private fun getIntentData() {
-        val location = intent.getStringExtra(Constant.SEARCH_LOCATION)
-        val date = intent.getStringExtra(Constant.SEARCH_DATE)
-        val roomCount = intent.getIntExtra(Constant.SEARCH_ROOM, 0)
-
+        val resort_name = intent.getStringExtra(Constant.RESORT_NAME)
         binding.toolbar.apply {
-            setTitle(location.toString())
-            isShowTitleDetail(true)
-            setTitleDetail(date.toString() + "  .  " + roomCount.toString() + " Phòng")
+            setTitle(resort_name)
         }
     }
 
     private fun setUpTabLayoutViewPager() {
         val listFragment: ArrayList<Fragment> = ArrayList()
-        listFragment.add(PublicPostingFragment())
-        listFragment.add(ExchangePostingFragment())
+        listFragment.add(RentalPostingResortFragment())
+        listFragment.add(ExchangePostingResortFragment())
 
         // Set up TabLayout
         binding.tblTopResort.let {
@@ -109,8 +108,4 @@ class SearchPostingActivity : BaseActivity() {
     }
 
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 }
