@@ -94,6 +94,17 @@
         <activity
             android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".UI.Activity.ResortDetailActivity.ResortDetail.ResortDetailActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".UI.Activity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity"
+            android:exported="true" />
         <activity
             android:name=".UI.Activity.PostingFlow.PostingFlowActivity"
             android:exported="true" />
@@ -109,15 +120,7 @@
         <activity
             android:name=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity"
             android:exported="true" />
-        <activity
-            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity"
-            android:exported="true" />
-        <activity
-            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ImageListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ResortDetailActivity"
-            android:exported="true" />
+
         <activity
             android:name=".UI.Activity.AuthActivity.LoginActivity"
             android:exported="true" />

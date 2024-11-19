@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ResortDetailActivity">
+    android:layout_height="match_parent">
 
     <!--// Custom Toolbar-->
 
@@ -14,14 +13,12 @@
         android:id="@+id/customToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Flamingo Dai Lai Resort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showTitleDetail="true"
-        app:textStart="@string/back"
-        app:titleDetail="19/08 - 23/08  | 4 khách " />
+        app:textStart="@string/back" />
 
     <!--// Resort Detail Scroll Container-->
     <androidx.core.widget.NestedScrollView

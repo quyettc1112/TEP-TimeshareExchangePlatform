@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.Resort
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeBinding
 
-class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDetailModelResponse.UnitTypeDto, UnitTypeAdapter.RoomTypeViewHolder>(){
+class UnitTypeAdapter(private val showFullInfo: Boolean): BaseAdapter<ResortDetailModelResponse.UnitTypeDto, com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter.RoomTypeViewHolder>(){
 
     var onItemClick: ((ResortDetailModelResponse.UnitTypeDto) -> Unit)? = null
     var onButtonBookClick: ((ResortDetailModelResponse.UnitTypeDto) -> Unit)? = null

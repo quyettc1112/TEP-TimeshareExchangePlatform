@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

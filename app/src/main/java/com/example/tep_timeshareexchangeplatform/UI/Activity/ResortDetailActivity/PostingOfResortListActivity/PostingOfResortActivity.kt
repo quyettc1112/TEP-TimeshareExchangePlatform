@@ -1,6 +1,7 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -10,8 +11,8 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Exchange.ExchangePostingResortFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Rental.RentalPostingResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Exchange.ExchangePostingResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Rental.RentalPostingResortFragment
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareListBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,8 +54,10 @@ class PostingOfResortActivity : BaseActivity() {
     // Get Intent Data
     private fun getIntentData() {
         val resort_name = intent.getStringExtra(Constant.RESORT_NAME)
+        Log.d("CheckResortName", "getIntentData: $resort_name")
         binding.toolbar.apply {
-            setTitle(resort_name)
+            setTitle(resort_name.toString())
+            isShowTitleDetail(false)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Rental
+package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.ChildFragment.Rental
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,14 +14,15 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.databinding.FragmentRentalPostingResortBinding
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTimeshareBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +33,7 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
         fun newInstance() = RentalPostingResortFragment()
         const val PAGE_SIZE = 16
     }
-    private lateinit var binding: FragmentTimeshareBinding
+    private lateinit var binding: FragmentRentalPostingResortBinding
     var publicPostingAdapterRV = PublicPostingAdapterRV()
     private val viewModel: PostingOfResortViewModel by activityViewModels()
 
@@ -45,8 +46,7 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTimeshareBinding.inflate(layoutInflater, container, false)
-        binding.llFilter.visibility = View.GONE
+        binding = FragmentRentalPostingResortBinding.inflate(layoutInflater, container, false)
         setPublicPostingListUI()
         binding.rcPosting.adapter = publicPostingAdapterRV
         observeViewModel()
