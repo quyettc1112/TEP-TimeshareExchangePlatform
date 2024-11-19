@@ -151,6 +151,7 @@ class VNPayActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     // Create Rental Posting
+                    Log.d("CheckkDOO - Done Rental Posting", it.data.toString())
                     val postingTimeshareDTO =
                         intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {

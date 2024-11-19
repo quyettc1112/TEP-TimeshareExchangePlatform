@@ -4,12 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
-    <ImageView
+
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/im_material_da_lat"
         android:scaleType="centerCrop"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="5dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_num_image_container"
+        android:backgroundTintMode="multiply"
+        android:background="@color/primary_background_F9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_num_image_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="4+"
+            android:gravity="center"
+            android:textSize="40dp"
+            android:fontFamily="@font/inter_bold"/>
+
+    </LinearLayout>
+
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottiePlaceholder"

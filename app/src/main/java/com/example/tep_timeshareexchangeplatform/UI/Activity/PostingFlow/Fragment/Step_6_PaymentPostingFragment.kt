@@ -317,6 +317,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         postingFlowViewModel.uploadImageResponse.observe(viewLifecycleOwner) { uploadImageResponse ->
             when (uploadImageResponse.status) {
                 Status.LOADING -> {
+                    Log.d("CheckkDOO - Create Image", "Loading")
                     (activity as PostingFlowActivity).showLoadingWaiting(true)
                 }
 

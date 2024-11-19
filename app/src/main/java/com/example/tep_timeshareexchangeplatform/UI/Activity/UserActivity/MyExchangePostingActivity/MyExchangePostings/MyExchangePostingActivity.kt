@@ -68,8 +68,6 @@ class MyExchangePostingActivity : BaseActivity() {
             startActivity(intent)
         }
     }
-
-
     private fun observeData() {
         viewModel.myExchangePostingList.observe(this) {
             when (it.status) {

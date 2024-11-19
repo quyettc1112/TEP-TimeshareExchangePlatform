@@ -323,6 +323,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     showSuccessToast("Create Timeshare Success")
+                    postingFlowViewModel.updateTaskProgress(1)
                     postingFlowViewModel.updateTaskProgress(0)
                     postingFlowViewModel.resetTimeshareDateRange()
                     postingFlowViewModel.resetData()
