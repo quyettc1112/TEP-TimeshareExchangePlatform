@@ -9,8 +9,10 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.In
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.text.DecimalFormat
@@ -557,94 +559,21 @@ class Constant {
 
         )
 
-        val rentalPackageList = listOf(
-            PackageModel(
-                id = 1,
-                name = "Gói Cơ Bản",
-                price = 149000,
-                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                )
-            ),
-            PackageModel(
-                id = 2,
-                name = "Gói Nâng Cao",
-                price = 179000,
-                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến"
-                )
-            ),
-            PackageModel(
-                id = 3,
-                name = "Gói Premium",
-                price = 199000,
-                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến",
-                    "Hỗ trợ định giá",
-                    "Hỗ trợ quản lý phòng và liên lạc"
-                )
-            ),
-            PackageModel(
-                id = 4,
-                name = "Gói Ủy Quyền",
-                price = 599000,
-                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                )
-            ),
-        )
-        val exchangePackageList = listOf(
-            PackageModel(
-                id = 1,
-                name = "Gói Cơ Bản",
-                price = 149000,
-                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
-                duration = 1,
-                type = "Basic",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                )
-            ),
-            PackageModel(
-                id = 2,
-                name = "Gói Nâng Cao",
-                price = 199000,
-                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
-                duration = 1,
-                type = "Standard",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến"
-                )
-            )
-        )
+        fun mapRoomAmenitiesToAmenitiesModel(
+            inputList: List<RoomDetailResponse.RoomAmenity>,
+            amenityType: AmenityType
+        ): List<AmenitiesModel> {
+            return inputList
+                .filter { it.type == amenityType.name } // Lọc theo AmenityType
+                .map { amenity ->
+                    AmenitiesModel(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isChecked = false // Mặc định isChecked = false
+                    )
+                }
+        }
+
 
 
     }

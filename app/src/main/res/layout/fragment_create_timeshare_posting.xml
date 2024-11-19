@@ -247,7 +247,7 @@
                             android:layout_height="wrap_content"
                             android:text="Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi"/>
                         <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_option_no"
+                            android:id="@+id/btn_change_option"
                             android:layout_width="0dp"
                             android:layout_weight="3"
                             android:layout_height="40dp"
@@ -632,7 +632,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="17dp"
                 app:cardElevation="4dp">
 
@@ -764,7 +764,7 @@
                         <!--// Description-->
                         <LinearLayout
                             android:id="@+id/ll_description"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -777,24 +777,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:text="Mô tả phòng"
+                                android:fontFamily="@font/inter_light"
+                                android:text="Nếu bạn bỏ tr"
                                 android:textColor="@color/black"
-                                android:textSize="16sp" />
-
-                            <!-- Rounded EditText -->
-                            <EditText
-                                android:id="@+id/descriptionEditText"
-                                android:layout_width="match_parent"
-                                android:layout_height="150dp"
-                                android:background="@drawable/background_stroke_around"
-                                android:gravity="top|start"
-                                android:hint="Nhập mô tả phòng..."
-                                android:inputType="textMultiLine"
-                                android:maxLines="5"
-                                android:padding="12dp"
-                                android:scrollbars="vertical"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 

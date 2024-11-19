@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyE
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -360,6 +361,21 @@ class CustomerAPIRepository @Inject constructor(
     suspend fun updateCustomerProfile(token: String, profileDTO: ProfileDTO): Resource<CustomerProfileResponse> {
         return try {
             val response = customerAPIService.updateCustomerProfile("Bearer $token", profileDTO)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get Room Detail By ID
+    suspend fun getRoomDetailById(token: String, roomId: Int): Resource<RoomDetailResponse> {
+        return try {
+            val response = customerAPIService.getRoomDetailById("Bearer $token", roomId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

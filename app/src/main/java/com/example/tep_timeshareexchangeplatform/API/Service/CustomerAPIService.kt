@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyE
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -174,6 +175,15 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Body profileDTO: ProfileDTO
     ) : Response<CustomerProfileResponse>
+
+
+    // Get Room Detail Info
+    @GET("customer/room/{roomId}")
+    suspend fun getRoomDetailById(
+        @Header ("Authorization") token: String,
+        @Path ("roomId") roomId: Int
+    ): Response<RoomDetailResponse>
+
 
 
 

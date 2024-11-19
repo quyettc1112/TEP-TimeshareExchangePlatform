@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.databinding.ItemAmenitiesBinding
 
 class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesViewHolder>() {
@@ -15,6 +16,13 @@ class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesVi
         override fun bind(item: AmenitiesModel) {
             binding.checkBoxItem.text = item.name
 
+            // Reset listener trước khi cập nhật trạng thái để tránh lỗi không mong muốn
+            binding.checkBoxItem.setOnCheckedChangeListener(null)
+
+            // Thiết lập trạng thái checkbox từ thuộc tính isChecked
+            binding.checkBoxItem.isChecked = item.isChecked
+
+            // Gán lại listener sau khi trạng thái được thiết lập
             binding.checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
                 item.isChecked = isChecked
                 onItemChecked(item)
@@ -44,4 +52,22 @@ class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesVi
     fun getCheckedItems(): List<AmenitiesModel> {
         return differ.currentList.filter { it.isChecked }
     }
+    fun updateCheckedItemsFromList(inputList: List<AmenitiesModel>) {
+        // Lấy danh sách hiện tại trong Adapter
+        val currentList = differ.currentList
+
+        // Cập nhật trạng thái isChecked cho các mục trong Adapter
+        val updatedList = currentList.map { currentItem ->
+            if (inputList.any { it.name == currentItem.name }) {
+                currentItem.copy(isChecked = true) // Đặt isChecked = true nếu có trong inputList
+            } else {
+                currentItem
+            }
+        }
+
+        // Cập nhật danh sách mới cho Adapter
+        differ.submitList(updatedList)
+    }
+
+
 }

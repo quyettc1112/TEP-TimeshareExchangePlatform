@@ -29,7 +29,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimesh
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -141,6 +143,7 @@ class PostingFlowViewModel @Inject constructor(
     fun getTimeshareDateRange(): Pair<String, String> {
         return Pair(_startDateTimeshare.value ?: "", _endDateTimeshare.value ?: "")
     }
+
 
     private val _numberOfNightsTimeShare = MutableLiveData<Int>()
     val numberOfNightsTimeshare: LiveData<Int> get() = _numberOfNightsTimeShare
@@ -296,7 +299,7 @@ class PostingFlowViewModel @Inject constructor(
     private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
     val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
 
-    // Function to get resort list
+    // Function to get Room List By Resort ID
     fun getRoomListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
             _roomList.postValue(Resource.loading(null))
@@ -304,6 +307,20 @@ class PostingFlowViewModel @Inject constructor(
                 _roomList.postValue(it)
             }
         }
+    }
+
+    private val _roomDetailResponse = MutableLiveData<Resource<RoomDetailResponse>?>()
+    val roomDetailResponse: MutableLiveData<Resource<RoomDetailResponse>?> = _roomDetailResponse
+    fun getRoomDetailById(token: String, roomId: Int) {
+        viewModelScope.launch {
+            _roomDetailResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getRoomDetailById(token, roomId).let {
+                _roomDetailResponse.postValue(it)
+            }
+        }
+    }
+    fun clearRoomDetailResponse() {
+        _roomDetailResponse.value = null
     }
 
 
@@ -328,6 +345,9 @@ class PostingFlowViewModel @Inject constructor(
     private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>>()
     val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>> = _unitTypeList
 
+    fun cleanUnitTypeList() {
+        _unitTypeList.value = null
+    }
     // Function to get unit type list
     fun getUnitTypeListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
@@ -392,7 +412,14 @@ class PostingFlowViewModel @Inject constructor(
 
     fun checkEachTypeHasMinTwoSelected(): Boolean {
         val currentMap = _selectedAmenities.value ?: return false
-        return currentMap.all { (_, amenities) -> amenities.count { it.isChecked } >= 2 }
+
+        return currentMap.all { (type, amenities) ->
+            if (type == AmenityType.POLICY) {
+                true // Bỏ qua kiểm tra với POLICY
+            } else {
+                amenities.count { it.isChecked } >= 2 // Kiểm tra phải có ít nhất 2 mục được chọn
+            }
+        }
     }
     fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
         return _selectedAmenities.value
@@ -405,6 +432,7 @@ class PostingFlowViewModel @Inject constructor(
     fun clearAllAmenities() {
         _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
     }
+
 
 
 

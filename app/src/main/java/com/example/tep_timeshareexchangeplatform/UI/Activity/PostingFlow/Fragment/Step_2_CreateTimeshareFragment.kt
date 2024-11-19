@@ -32,6 +32,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.Resort
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapRoomAmenitiesToAmenitiesModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdapter
@@ -102,29 +103,30 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun initAdapter() {
         unitTypeAdapterPosting.submitList(listOf())
+
+
         kitchenAmenitiesAdapter.apply {
             submitList(Constant.listAmenities)
             onItemChecked = {
                 postingFlowViewModel.updateAmenitiesForType(AmenityType.KITCHEN, getCheckedItems())
             }
         }
-
         entertainmentAmenitiesAdapter.apply {
             submitList(Constant.listEntertament)
             onItemChecked = {
-                postingFlowViewModel.updateAmenitiesForType(AmenityType.ENTERTAINMENT, getCheckedItems())
+                postingFlowViewModel.updateAmenitiesForType(
+                    AmenityType.ENTERTAINMENT,
+                    getCheckedItems()
+                )
 
             }
         }
-
         policyAmenitiesAdapter.apply {
             submitList(Constant.listPolicy)
             onItemChecked = {
                 postingFlowViewModel.updateAmenitiesForType(AmenityType.POLICY, getCheckedItems())
-
             }
         }
-
         featuresAmenitiesAdapter.apply {
             submitList(Constant.listFeatures)
             onItemChecked = {
@@ -213,6 +215,34 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
         }
+        postingFlowViewModel.roomDetailResponse.observe(viewLifecycleOwner) { roomDetail ->
+            when (roomDetail?.status) {
+                Status.LOADING -> {
+                    binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
+                }
+
+                Status.SUCCESS -> {
+                    roomDetail?.data?.roomAmenities?.let { amenitiesList ->
+                        Log.d("RoomDetailLis", "RoomDetail: $amenitiesList")
+                        val featuresList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.FEATURES)
+                        val entertainmentList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.ENTERTAINMENT)
+                        val policyList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.POLICY)
+                        val kitchenList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.KITCHEN)
+
+                        kitchenAmenitiesAdapter.updateCheckedItemsFromList(kitchenList)
+                        entertainmentAmenitiesAdapter.updateCheckedItemsFromList(entertainmentList)
+                        policyAmenitiesAdapter.updateCheckedItemsFromList(policyList)
+                        featuresAmenitiesAdapter.updateCheckedItemsFromList(featuresList)
+                    }
+                }
+
+                Status.ERROR -> {
+                    showErrorToast("${roomDetail?.message}")
+                }
+
+                else -> {}
+            }
+        }
         // No - Create Room
         postingFlowViewModel.roomModel.observe(viewLifecycleOwner) { roomModel ->
             when (roomModel.status) {
@@ -265,10 +295,11 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     showSuccessToast("Create Timeshare Success")
-                    postingFlowViewModel.updateTaskProgress(1)
+                    postingFlowViewModel.updateTaskProgress(0)
                     postingFlowViewModel.resetTimeshareDateRange()
                     postingFlowViewModel.resetData()
                     postingFlowViewModel.updateStep(3)
+
                 }
 
                 Status.ERROR -> {
@@ -289,7 +320,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
 
-
     }
 
     /**
@@ -306,6 +336,16 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
      */
     private fun changeUIBaseOnStep(currentTask: Int) {
         when (currentTask) {
+            0 -> {
+                binding.llSelectResortLocationContainer.visibility = View.VISIBLE
+                postingFlowViewModel.apply {
+                    clearAllAmenities()
+                    clearCurrentMyTimeshareList()
+                    cleanCheckInDay()
+                }
+            }
+
+
             1 -> {
                 // Off UI Resort Selection
                 binding.llSelectResortLocationContainer.visibility = View.GONE
@@ -438,17 +478,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             } else {
                 // Call API to create Room
                 senRequestOptionNO()
-
             }
         }
     }
 
     private fun eventCLickChangeToOptionNo() {
-        binding.btnOptionNo.setOnClickListener {
+        binding.btnChangeOption.setOnClickListener {
+            cleanAmenities()
+            cleanCheckInDay()
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
             }
             if (postingFlowViewModel.isYesOrNoSelected.value == true) {
+
                 postingFlowViewModel.updateIsYesOrNo(false)
                 postingFlowViewModel.updateTaskProgress(1)
                 postingFlowViewModel.resetTimeshareDateRange()
@@ -456,7 +498,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.includeUnitTypeNo.root.visibility = View.VISIBLE
 
                 binding.tvOptionNo.text = "Chọn Mã Phòng Có Sẵn Từ Resort"
-                binding.btnOptionNo.text = "Chọn Mã Phòng"
+                binding.btnChangeOption.text = "Chọn Mã Phòng"
             } else {
                 postingFlowViewModel.updateIsYesOrNo(true)
                 postingFlowViewModel.updateTaskProgress(1)
@@ -466,7 +508,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 binding.tvOptionNo.text =
                     "Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi"
-                binding.btnOptionNo.text = "Khai Báo"
+                binding.btnChangeOption.text = "Khai Báo"
             }
 
         }
@@ -546,6 +588,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     // Lấy thông tin id của RoomModel tương ứng
                     val unitTypeID = selectedRoom?.unitTypeId
                     callGetUnitTypeDetailByID(unitTypeID!!)
+
+                    // Lấy Room Detail Amenities
+                    callGetRoomDetailById(selectedRoom.id)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -962,6 +1007,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         postingFlowViewModel.postRoom(tokenManager.getAccessToken().toString(), roomDTO)
     }
 
+    private fun callGetRoomDetailById(roomId: Int) {
+        postingFlowViewModel.getRoomDetailById(tokenManager.getAccessToken().toString(), roomId)
+    }
 
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
@@ -997,6 +1045,26 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             MotionToast.LONG_DURATION,
             ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
+    }
+
+    private fun cleanAmenities() {
+        kitchenAmenitiesAdapter.submitList(Constant.listAmenities)
+        entertainmentAmenitiesAdapter.submitList(Constant.listEntertament)
+        policyAmenitiesAdapter.submitList(Constant.listPolicy)
+        featuresAmenitiesAdapter.submitList(Constant.listFeatures)
+        postingFlowViewModel.clearAllAmenities()
+    }
+
+    private fun cleanCheckInDay() {
+        binding.apply {
+            tvCheckinDate.text = ""
+            tvCheckinDayOfWeek.text = ""
+            tvCheckoutDate.text = ""
+            tvCheckoutDayOfWeek.text = ""
+            etNightsCount.setText("0")
+        }
+        postingFlowViewModel.resetTimeshareDateRange()
+
     }
 
 
