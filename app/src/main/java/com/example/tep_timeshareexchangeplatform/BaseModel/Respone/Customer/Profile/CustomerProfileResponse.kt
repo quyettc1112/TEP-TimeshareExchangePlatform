@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName
 data class CustomerProfileResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("fullName") val fullName: String,
-    @SerializedName("avatar") val avatar: String,
+    @SerializedName("avatar") val avatar: String?,
     @SerializedName("dob") val dob: String,
     @SerializedName("address") val address: String,
     @SerializedName("gender") val gender: String,

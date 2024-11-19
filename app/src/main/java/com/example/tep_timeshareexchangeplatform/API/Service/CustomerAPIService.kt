@@ -6,6 +6,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshare
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
@@ -26,6 +27,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -165,6 +167,12 @@ interface CustomerAPIService {
     @GET("customer/profile")
     suspend fun getCustomerProfile(
         @Header ("Authorization") token: String
+    ) : Response<CustomerProfileResponse>
+
+    @PUT("customer/profile")
+    suspend fun updateCustomerProfile(
+        @Header ("Authorization") token: String,
+        @Body profileDTO: ProfileDTO
     ) : Response<CustomerProfileResponse>
 
 

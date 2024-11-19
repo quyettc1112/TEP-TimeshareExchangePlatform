@@ -1,17 +1,21 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CreateCustomerDialog.DialogUpdateCustomer
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
@@ -30,6 +34,8 @@ class MyInfoActivity : BaseActivity() {
     private lateinit var binding: ActivityMyInfoBinding
     private val viewModel: MyInfoViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
+    private var dialogUpdateCustomer: DialogUpdateCustomer? = null
+    private var image: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +86,69 @@ class MyInfoActivity : BaseActivity() {
                 }
             }
         })
+
+        // Call Update Profile
+        viewModel.updateCustomerProfile.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessToast("Cập nhật thông tin thành công")
+                    val response = it.data
+                    binding.apply {
+                        tvEmail.text = response!!.userEmail
+                        tvFullNameOut.text = response!!.fullName
+                        tvUserName.text = response!!.userUserName
+                        tvFullNameIn.text = response!!.fullName
+                        tvDob.text = Constant.formatDateByLocale(response.dob, this@MyInfoActivity)
+                        tvAddress.text = response.address
+                        tvGender.text = response.gender
+                        tvPhone.text = response.phone
+                        Glide.with(this@MyInfoActivity)
+                            .load(response.avatar)
+                            .error(R.drawable.ic_image_placeholder)
+                            .into(ivUserAvt)
+                        btnEditButton.visibility = View.VISIBLE
+                        btnEditButton.text = "Cập nhật thông tin !"
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast(it.message!!)
+                    Log.d("CheckValue", it.message!!)
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        })
+
+        // Get Image Response
+        viewModel.uploadImageResponse.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val response = it.data
+                    if (response != null) {
+                        image = response[0]
+                        Log.d("CheckValue", image)
+                        showSuccessToast("Upload ảnh thành công")
+                    }
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast(it.message!!)
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        })
+
+
     }
 
     private fun bindDataBaseOnUserLogState(userLogState: UserLogState) {
@@ -146,15 +215,11 @@ class MyInfoActivity : BaseActivity() {
 
         // Clear Customer Info
         clearCustomerInfo()
-
-        // Bind User Info
-        val userJWTPayloadModel =
-            JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
         val userProfileResponse = viewModel.customerProfile.value!!.data
         binding.apply {
-            tvEmail.text = userJWTPayloadModel!!.email
-            tvFullNameOut.text = userJWTPayloadModel!!.email
-            tvUserName.text = userJWTPayloadModel!!.sub
+            tvEmail.text = userProfileResponse!!.userEmail
+            tvFullNameOut.text = userProfileResponse!!.fullName
+            tvUserName.text = userProfileResponse!!.userUserName
             tvFullNameIn.text = userProfileResponse!!.fullName
             tvDob.text = Constant.formatDateByLocale(userProfileResponse.dob, this@MyInfoActivity)
             tvAddress.text = userProfileResponse.address
@@ -184,7 +249,7 @@ class MyInfoActivity : BaseActivity() {
         val userProfileResponse = viewModel.customerProfile.value!!.data
         binding.apply {
             tvEmail.text = userProfileResponse!!.userEmail
-            tvFullNameOut.text = userProfileResponse!!.userEmail
+            tvFullNameOut.text = userProfileResponse!!.fullName
             tvUserName.text = userProfileResponse!!.userUserName
             tvFullNameIn.text = userProfileResponse!!.fullName
             tvDob.text = Constant.formatDateByLocale(userProfileResponse.dob, this@MyInfoActivity)
@@ -218,18 +283,28 @@ class MyInfoActivity : BaseActivity() {
 
     private fun eventClickUpdateCustomerInfo() {
         binding.btnEditButton.setOnClickListener {
-            val dialog = DialogUpdateCustomer(this,
-                object : DialogUpdateCustomer.ConfirmCallback {
-                    override fun positiveAction() {
-                        Toast.makeText(
-                            this@MyInfoActivity,
-                            "Cập nhật thông tin thành công",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }, "Cập nhật thông tin"
+            val currentProfileDTo = ProfileDTO(
+                fullName = viewModel.customerProfile.value?.data?.fullName ?: "",
+                avatar = viewModel.customerProfile.value?.data?.avatar ?: "",
+                dob = viewModel.customerProfile.value?.data?.dob ?: "",
+                address = viewModel.customerProfile.value?.data?.address ?: "",
+                gender = viewModel.customerProfile.value?.data?.gender ?: "",
+                phone = viewModel.customerProfile.value?.data?.phone ?: ""
             )
-            dialog.show()
+            dialogUpdateCustomer = DialogUpdateCustomer(this,
+                pickSingleImageLauncherDialog,
+                object : DialogUpdateCustomer.ConfirmCallback {
+                    override fun positiveAction(profileDTO: ProfileDTO) {
+                        if (profileDTO != null) {
+                            profileDTO.avatar = image
+                            callUpdateCustomerProfile(profileDTO)
+                            Log.d("CheckValue", profileDTO.toString())
+                        }
+                    }
+                },
+                currentProfileDTo
+            )
+            dialogUpdateCustomer!!.show()
 
         }
     }
@@ -253,6 +328,13 @@ class MyInfoActivity : BaseActivity() {
             return
         }
         viewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
+    }
+
+    private fun callUpdateCustomerProfile(profileDTO: ProfileDTO) {
+        if (tokenManager.getAccessToken() == null && !tokenManager.isLoggedIn()) {
+            return
+        }
+        viewModel.updateCustomerProfile(tokenManager.getAccessToken().toString(), profileDTO)
     }
 
     private fun showErrorToast(message: String) {
@@ -286,5 +368,13 @@ class MyInfoActivity : BaseActivity() {
         callGetCustomerProfile()
     }
 
+    private val pickSingleImageLauncherDialog =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                dialogUpdateCustomer?.setAvatar(it) // Cập nhật ảnh avatar trong Dialog
+                viewModel.setMainImage(ImageUploadModel.create(uri))
+                viewModel.callUploadImages(tokenManager.getAccessToken().toString())
+            }
+        }
 
 }

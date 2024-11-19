@@ -173,6 +173,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
 
 
     <string-array name="spinner_gender_items">
+        <item>Chọn giới tính</item>
         <item>Nam</item>
         <item>Nữ</item>
         <item>Khác</item>
