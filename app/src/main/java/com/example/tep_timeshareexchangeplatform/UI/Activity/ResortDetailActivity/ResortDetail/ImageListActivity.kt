@@ -7,6 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ImageDetailAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ImageViewPagerAdapter
@@ -18,8 +19,8 @@ class ImageListActivity : BaseActivity() {
     private lateinit var binding: ActivityImageListBinding
     private  lateinit var recycler : ImageDetailAdapter
     private lateinit var viewPager: ImageViewPagerAdapter
-
     private var imagePosition: Int = 0
+    private var listImage : List<String> = listOf()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,30 +35,29 @@ class ImageListActivity : BaseActivity() {
         }
         // Get IntentValue
         // Retrieve data from the intent bundle
-        imagePosition = intent.extras?.getInt("imagePosition", 0) ?: 0
-
+        imagePosition = intent.extras?.getInt(Constant.IMAGE_POSITION, 0) ?: 0
+        listImage = intent.extras?.getStringArrayList(Constant.IMAGE_LIST) ?: listOf()
 
         // Set up RecyclerView with LinearLayoutManager
-        setUpImageList(imagePosition)
+        setUpImageList(imagePosition, listImage)
         setToolbarEvent()
         setAutoScroll()
 
     }
 
-    private fun setUpImageList(startPosition : Int) {
-
+    private fun setUpImageList(startPosition : Int, imageList : List<String>) {
         binding.viewPager.apply {
             viewPager = ImageViewPagerAdapter()
-            viewPager.submitList(listOf())
+            viewPager.submitList(imageList)
             adapter = viewPager
             setCurrentItem(startPosition, false)
-            binding.tvImageCount.text = "${startPosition + 1}"
+            binding.tvImageCount.text = "${startPosition + 1 } / ${imageList.size}"
 
         }
 
         binding.thumbnailRecyclerView.apply {
             recycler = ImageDetailAdapter(binding.thumbnailRecyclerView)
-            recycler.submitList(listOf())
+            recycler.submitList(imageList)
             recycler.onItemClick = {
                 binding.viewPager.setCurrentItem(it, true)
             }
@@ -73,7 +73,7 @@ class ImageListActivity : BaseActivity() {
                 super.onPageSelected(position)
                 recycler.setSelectedPosition(position)
                 recycler.smoothScrollToSelectedPosition(position)
-                binding.tvImageCount.text = "${position + 1}"
+                binding.tvImageCount.text = "${position + 1} / ${imageList.size}"
             }
         })
 

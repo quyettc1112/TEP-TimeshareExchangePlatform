@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +26,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapTo
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
@@ -45,7 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangDetailBinding
-    private lateinit var imagePostingAdapter: ImagePostingAdapter
+    private var imagePostingAdapter = ImagePostingAdapter()
     private var facilityAdapter = AmenitiesAdapter()
     private val viewModel: MyExchangeDetailViewModel by viewModels()
 
@@ -74,7 +76,9 @@ class MyExchangeDetailActivity : BaseActivity() {
     }
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
-        imagePostingAdapter = ImagePostingAdapter()
+        imagePostingAdapter.apply {
+            submitList(listOf())
+        }
 
         featuresAdapter.submitOriginalList(listOf())
         entertainmentAdapter.submitOriginalList(listOf())
@@ -443,6 +447,15 @@ class MyExchangeDetailActivity : BaseActivity() {
             }
         }
 
+        imagePostingAdapter.onItemClickListener = { position ->
+            val intent = Intent(this@MyExchangeDetailActivity, ImageListActivity::class.java)
+            intent.putExtra(Constant.IMAGE_POSITION, position)
+            intent.putStringArrayListExtra(
+                Constant.IMAGE_LIST,
+                ArrayList(imageList)
+            )
+            startActivity(intent)
+        }
 
     }
 

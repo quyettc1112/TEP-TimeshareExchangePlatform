@@ -17,7 +17,6 @@ class ImageViewPagerAdapter: BaseAdapter<String, ImageViewPagerAdapter.ImageView
                     Glide.with(imResortImage.context)
                         .load(item)
                         .into(imResortImage)
-                    // Thiết lập sự kiện click cho root view của item
                 }
             }
         }

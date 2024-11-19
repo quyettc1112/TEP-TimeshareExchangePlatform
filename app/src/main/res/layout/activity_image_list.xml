@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".UI.Activity.CommonActivity.ResortDetailActivity.ResortDetail.ImageListActivity">
-
+    android:background="@color/white">
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/customToolbar"
@@ -22,8 +21,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:background="#1B2A2F"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
@@ -33,10 +31,9 @@
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
-            android:layout_marginBottom="80dp"
             tools:listitem="@layout/item_resort"
             android:layout_width="match_parent"
-            android:layout_height="500dp" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 
@@ -47,7 +44,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@drawable/background_image_botom_list"
+        android:background="#0F1E23"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

@@ -53,6 +53,8 @@ class Constant {
         const val FRAGMENT_HOME_CODE = "FH"
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 
+        const val IMAGE_POSITION = "imagePosition"
+        const val IMAGE_LIST = "imageList"
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 

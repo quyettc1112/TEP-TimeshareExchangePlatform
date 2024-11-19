@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareImageB
 
 class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePostingViewHolder>() {
 
+    var onItemClickListener: ((Int) -> Unit)? = null
 
     inner class ImagePostingViewHolder(binding: ItemTimeshareImageBinding) : BaseItemViewHolderCF<String, ItemTimeshareImageBinding>(binding) {
         override fun bind(item: String) {
@@ -61,6 +62,12 @@ class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePosting
                 } else {
                     binding.llNumImageContainer.visibility = View.GONE
                 }
+
+
+            }
+
+            binding.root.setOnClickListener {
+                onItemClickListener?.invoke(bindingAdapterPosition)
             }
         }
     }
