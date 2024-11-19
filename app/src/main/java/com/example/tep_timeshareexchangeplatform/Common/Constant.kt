@@ -6,10 +6,11 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Bl
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
@@ -219,8 +220,44 @@ class Constant {
             return dayFormat.format(date)
         }
 
-        fun mapToUnitTypeModel(unitType: MyExchangePostingDetailResponse.UnitType): UnitTypeModel {
-            return UnitTypeModel(
+        fun mapExchangeToUnitTypeBase(
+            exchangeDetail: MyExchangePostingDetailResponse
+        ): UnitTypeBase {
+            return UnitTypeBase(
+                id = exchangeDetail.unitType.id,
+                title = exchangeDetail.unitType.title,
+                area = exchangeDetail.unitType.area,
+                bathrooms = exchangeDetail.unitType.bathrooms,
+                bedrooms = exchangeDetail.unitType.bedrooms,
+                bedsFull = exchangeDetail.unitType.bedsFull,
+                bedsKing = exchangeDetail.unitType.bedsKing,
+                bedsSofa = exchangeDetail.unitType.bedsSofa,
+                bedsMurphy = exchangeDetail.unitType.bedsMurphy,
+                bedsQueen = exchangeDetail.unitType.bedsQueen,
+                bedsTwin = exchangeDetail.unitType.bedsTwin,
+                buildingsOption = exchangeDetail.unitType.buildingsOption,
+                price = 0, // Giá chưa được định nghĩa trong API này, có thể điều chỉnh tùy logic
+                description = exchangeDetail.unitType.description,
+                kitchen = exchangeDetail.unitType.kitchen,
+                photos = exchangeDetail.unitType.photos,
+                resortId = exchangeDetail.resortId,
+                sleeps = exchangeDetail.unitType.sleeps,
+                view = exchangeDetail.unitType.view,
+                isActive = exchangeDetail.active,
+                unitTypeAmenitiesDTOS = exchangeDetail.unitTypeAmenities.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = true // Giả sử tất cả tiện ích đều active
+                    )
+                }
+            )
+        }
+        fun mapToUnitTypeBase(
+            unitType: MyRentalPostingDetailResponse.UnitType,
+            unitTypeAmenities: List<MyRentalPostingDetailResponse.UnitTypeAmenity>
+        ): UnitTypeBase {
+            return UnitTypeBase(
                 id = unitType.id,
                 title = unitType.title,
                 area = unitType.area,
@@ -232,18 +269,57 @@ class Constant {
                 bedsMurphy = unitType.bedsMurphy,
                 bedsQueen = unitType.bedsQueen,
                 bedsTwin = unitType.bedsTwin,
-                buildingsOption = unitType.buildingsOption, // Assuming this can be Any?
-                price = 0, // Default or calculated value, adjust as necessary
+                buildingsOption = unitType.buildingsOption,
+                price = 0, // Giá truyền vào
                 description = unitType.description,
                 kitchen = unitType.kitchen,
                 photos = unitType.photos,
-                resortId = null, // Assuming this is not in UnitType and can be Any?
+                resortId = null, // Nếu resortId không có trong dữ liệu UnitType
                 sleeps = unitType.sleeps,
                 view = unitType.view,
-                isActive = true, // Assuming a default value
-                unitTypeAmenitiesDTOS = unitTypeAmenities(unitType) // Map amenities
+                isActive = false, // Trạng thái hoạt động
+                unitTypeAmenitiesDTOS = unitTypeAmenities.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = null // Đặt giá trị nếu cần xử lý theo logic cụ thể
+                    )
+                }
             )
         }
+        fun mapUnitTypeModelToUnitTypeBase(unitTypeModel: UnitTypeModel): UnitTypeBase {
+            return UnitTypeBase(
+                id = unitTypeModel.id,
+                title = unitTypeModel.title,
+                area = unitTypeModel.area,
+                bathrooms = unitTypeModel.bathrooms,
+                bedrooms = unitTypeModel.bedrooms,
+                bedsFull = unitTypeModel.bedsFull,
+                bedsKing = unitTypeModel.bedsKing,
+                bedsSofa = unitTypeModel.bedsSofa,
+                bedsMurphy = unitTypeModel.bedsMurphy,
+                bedsQueen = unitTypeModel.bedsQueen,
+                bedsTwin = unitTypeModel.bedsTwin,
+                buildingsOption = unitTypeModel.buildingsOption,
+                price = unitTypeModel.price,
+                description = unitTypeModel.description,
+                kitchen = unitTypeModel.kitchen,
+                photos = unitTypeModel.photos,
+                resortId = unitTypeModel.resortId,
+                sleeps = unitTypeModel.sleeps,
+                view = unitTypeModel.view,
+                isActive = unitTypeModel.isActive,
+                unitTypeAmenitiesDTOS = unitTypeModel.unitTypeAmenitiesDTOS.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = amenity.isActive
+                    )
+                }
+            )
+        }
+
+
 
         private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {
             // Assuming you're mapping from unitType details for amenities; adjust based on source data

@@ -35,6 +35,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapRoomAmenitiesToAmenitiesModel
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapUnitTypeModelToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.LocationActivity.LocationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdapter
@@ -720,7 +721,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         binding.includeItemUnitType.llAmennities.visibility = View.GONE
         binding.includeItemUnitType.tvPrice.visibility = View.GONE
         binding.includeItemUnitType.btnViewRoom.setOnClickListener {
-            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitType)
+            val unitTypeBase = mapUnitTypeModelToUnitTypeBase(unitType)
+            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
             unitTypeDataDialog.show(parentFragmentManager, "UnitTypeDataDialog")
         }
 
@@ -810,7 +812,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
         unitTypeAdapterPosting.onButtonBookClick = {
-            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(it)
+            val unitTypeBase = mapUnitTypeModelToUnitTypeBase(it)
+            val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
             unitTypeDataDialog.show(parentFragmentManager, "UnitTypeDataDialog")
         }
 

@@ -11,27 +11,20 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.RoomSelectionDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.ImageAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeModel
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
-import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -161,7 +154,6 @@ class MyExchangeDetailActivity : BaseActivity() {
                     }
                 }
             }
-
 
         }
 
@@ -347,8 +339,8 @@ class MyExchangeDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                val unitTypeModel = mapToUnitTypeModel(data.unitType)
-                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeModel)
+                val unitTypeBase = mapExchangeToUnitTypeBase(data)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
                 unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
         }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.displayBedsInfo
 import com.example.tep_timeshareexchangeplatform.R
@@ -16,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class UnitTypeDataDialog (
-   private val unitTypeModel: UnitTypeModel
+   private val unitTypeModel: UnitTypeBase
 ) : BottomSheetDialogFragment() {
 
     private var _binding: DialogUnitTypeBinding? = null
@@ -86,7 +87,7 @@ class UnitTypeDataDialog (
     }
 
     companion object {
-        fun newInstance(unitTypeModel: UnitTypeModel): UnitTypeDataDialog {
+        fun newInstance(unitTypeModel: UnitTypeBase): UnitTypeDataDialog {
             return UnitTypeDataDialog(unitTypeModel)
         }
     }
