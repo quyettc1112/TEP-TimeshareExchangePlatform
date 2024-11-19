@@ -7,36 +7,37 @@ import com.google.gson.annotations.SerializedName
 
 /**
 {
-  "timeShareId": 1,
-  "resortName": "Khách sạn Cương Quyết Ngầu Nhất An Giang",
-  "roomCode": "123",
-  "roomName": "cc",
-  "roomId": 2,
-  "resortAddress": "Premier Pearl Hotel Vung Tau toa lac tai khu vuc / thanh pho Phuong 2. /n",
-  "resortId": 1,
-  "startDate": "24-08-2019",
-  "endDate": "24-08-2019",
-  "unitType": {
-    "id": 1,
-    "title": "Phòng Queen",
-    "area": "string",
-    "bathrooms": 0,
-    "bedrooms": 0,
-    "bedsFull": 0,
-    "bedsKing": 0,
-    "bedsSofa": 0,
-    "bedsMurphy": 0,
-    "bedsQueen": 0,
-    "bedsTwin": 0,
-    "buildingsOption": "string",
-    "description": "string",
-    "kitchen": "string",
-    "photos": "string",
-    "sleeps": 0,
-    "view": "string"
-  }
+"timeShareId": 1,
+"resortName": "Khách sạn Cương Quyết Ngầu Nhất An Giang",
+"roomCode": "123",
+"roomName": "cc",
+"roomId": 2,
+"resortAddress": "Premier Pearl Hotel Vung Tau toa lac tai khu vuc / thanh pho Phuong 2. /n",
+"resortId": 1,
+"startDate": "24-08-2019",
+"endDate": "24-08-2019",
+"unitType": {
+"id": 1,
+"title": "Phòng Queen",
+"area": "string",
+"bathrooms": 0,
+"bedrooms": 0,
+"bedsFull": 0,
+"bedsKing": 0,
+"bedsSofa": 0,
+"bedsMurphy": 0,
+"bedsQueen": 0,
+"bedsTwin": 0,
+"buildingsOption": "string",
+"description": "string",
+"kitchen": "string",
+"photos": "string",
+"sleeps": 0,
+"view": "string"
 }
-*/
+}
+ */
+
 data class MyTimeshareDetailResponse(
     @SerializedName("timeShareId") val timeShareId: Int,
     @SerializedName("resortName") val resortName: String,
@@ -48,8 +49,9 @@ data class MyTimeshareDetailResponse(
     @SerializedName("resortImage") val resortImage: String,
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
-    @SerializedName("unitType") val unitType: UnitType
-) : Parcelable{
+    @SerializedName("unitType") val unitType: UnitType,
+    @SerializedName("roomAmenities") val roomAmenities: List<RoomAmenity>
+): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString().toString(),
@@ -61,7 +63,8 @@ data class MyTimeshareDetailResponse(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
-        TODO("unitType")
+        TODO("unitType"),
+        TODO("roomAmenities")
     ) {
     }
 
@@ -77,12 +80,18 @@ data class MyTimeshareDetailResponse(
         @SerializedName("bedsMurphy") val bedsMurphy: Int,
         @SerializedName("bedsQueen") val bedsQueen: Int,
         @SerializedName("bedsTwin") val bedsTwin: Int,
-        @SerializedName("buildingsOption") val buildingsOption: String,
+        @SerializedName("buildingsOption") val buildingsOption: Any?,
         @SerializedName("description") val description: String,
         @SerializedName("kitchen") val kitchen: String,
         @SerializedName("photos") val photos: String,
         @SerializedName("sleeps") val sleeps: Int,
         @SerializedName("view") val view: String
+    )
+
+    data class RoomAmenity(
+        @SerializedName("id") val id: Int,
+        @SerializedName("name") val name: String,
+        @SerializedName("type") val type: String
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -91,9 +100,9 @@ data class MyTimeshareDetailResponse(
         parcel.writeString(roomCode)
         parcel.writeString(roomName)
         parcel.writeInt(roomId)
-        parcel.writeString(resortImage)
         parcel.writeString(resortAddress)
         parcel.writeInt(resortId)
+        parcel.writeString(resortImage)
         parcel.writeString(startDate)
         parcel.writeString(endDate)
     }

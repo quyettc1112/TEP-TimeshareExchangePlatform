@@ -50,7 +50,7 @@
             android:maxLines="2"
             android:text="Flamingo Đại Lải "
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +79,7 @@
                     android:fontFamily="@font/inter_extrabold"
                     android:gravity="center|left"
                     android:text="Mã Phòng: "
-                    android:textSize="12dp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_room_type"
@@ -90,7 +90,7 @@
                     android:fontFamily="@font/inter_extrabold"
                     android:gravity="center|left"
                     android:text="Phòng Studio King "
-                    android:textSize="12dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <!-- // Check In Day-->

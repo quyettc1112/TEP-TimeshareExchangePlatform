@@ -22,8 +22,9 @@
         android:layout_height="wrap_content"
         android:text="Điều hoà nhiệt độ"
         android:textColor="@color/black"
+        android:textSize="12dp"
         android:layout_marginStart="10dp"
-        android:fontFamily="@font/inter_medium"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/im_facilitie"
         app:layout_constraintTop_toTopOf="parent" />
