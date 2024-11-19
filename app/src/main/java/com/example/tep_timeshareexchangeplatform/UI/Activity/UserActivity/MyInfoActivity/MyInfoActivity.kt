@@ -131,9 +131,8 @@ class MyInfoActivity : BaseActivity() {
                     hideLoadingWaiting()
                     val response = it.data
                     if (response != null) {
-                        image = response[0]
+                        dialogUpdateCustomer?.saveImageResponse(response[0])
                         Log.d("CheckValue", image)
-                        showSuccessToast("Upload ảnh thành công")
                     }
                 }
 
@@ -217,16 +216,16 @@ class MyInfoActivity : BaseActivity() {
         clearCustomerInfo()
         val userProfileResponse = viewModel.customerProfile.value!!.data
         binding.apply {
-            tvEmail.text = userProfileResponse!!.userEmail
-            tvFullNameOut.text = userProfileResponse!!.fullName
-            tvUserName.text = userProfileResponse!!.userUserName
-            tvFullNameIn.text = userProfileResponse!!.fullName
-            tvDob.text = Constant.formatDateByLocale(userProfileResponse.dob, this@MyInfoActivity)
-            tvAddress.text = userProfileResponse.address
-            tvGender.text = userProfileResponse.gender
-            tvPhone.text = userProfileResponse.phone
+            tvEmail.text = userProfileResponse?.userEmail
+            tvFullNameOut.text = userProfileResponse?.fullName
+            tvUserName.text = userProfileResponse?.userUserName
+            tvFullNameIn.text = userProfileResponse?.fullName
+            tvDob.text = userProfileResponse?.let { Constant.formatDateByLocale(it.dob, this@MyInfoActivity) }
+            tvAddress.text = userProfileResponse?.address
+            tvGender.text = userProfileResponse?.gender
+            tvPhone.text = userProfileResponse?.phone
             Glide.with(this@MyInfoActivity)
-                .load(userProfileResponse.avatar)
+                .load(userProfileResponse?.avatar)
                 .error(R.drawable.ic_image_placeholder)
                 .into(ivUserAvt)
             btnEditButton.visibility = View.VISIBLE
@@ -296,7 +295,6 @@ class MyInfoActivity : BaseActivity() {
                 object : DialogUpdateCustomer.ConfirmCallback {
                     override fun positiveAction(profileDTO: ProfileDTO) {
                         if (profileDTO != null) {
-                            profileDTO.avatar = image
                             callUpdateCustomerProfile(profileDTO)
                             Log.d("CheckValue", profileDTO.toString())
                         }

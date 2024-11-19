@@ -15,8 +15,10 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatDateByLocale
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.DialogUpdateCustomerBinding
@@ -57,11 +59,23 @@ class DialogUpdateCustomer constructor(
         binding.tvFullNameIn.setText(currentProfile.fullName)
         binding.tvPhone.setText(currentProfile.phone)
         binding.tvAddress.setText(currentProfile.address)
-        binding.tvDob.setText(currentProfile.dob)
+        binding.tvDob.setText(Constant.formatDateByLocale(currentProfile.dob, context))
+        val formattedDob = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+            SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(currentProfile.dob)!!
+        )
+        dob = formattedDob
 
         // Cập nhật avatar
         avatarUri = if (currentProfile.avatar.isNotBlank()) Uri.parse(currentProfile.avatar) else null
-        binding.ivUserAvt.setImageURI(avatarUri)
+        Glide.with(context)
+            .load(avatarUri)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_image_placeholder)
+            .into(binding.ivUserAvt)
+        if(currentProfile.avatar != null){
+            avatar = currentProfile.avatar!!
+        }
+
 
 
     }
@@ -99,6 +113,9 @@ class DialogUpdateCustomer constructor(
     fun setAvatar(uri: Uri) {
         avatarUri = uri
         binding.ivUserAvt.setImageURI(uri) // Cập nhật ImageView với URI mới
+    }
+    fun saveImageResponse(image: String){
+        avatar = image
     }
 
     private fun setListSpinner(currentGender: String) {
