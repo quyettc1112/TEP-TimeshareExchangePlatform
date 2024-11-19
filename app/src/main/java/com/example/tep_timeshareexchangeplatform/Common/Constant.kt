@@ -569,7 +569,7 @@ class Constant {
                     AmenitiesModel(
                         name = amenity.name,
                         type = amenity.type,
-                        isChecked = false // Mặc định isChecked = false
+                        isChecked = true
                     )
                 }
         }

@@ -20,7 +20,6 @@ class AmenitiesAdapter :
             binding.apply {
                 tvFacilitieName.text = item.name
                 Glide.with(itemView).load(R.drawable.ic_air_conditioner).into(imFacilitie)
-
             }
         }
 

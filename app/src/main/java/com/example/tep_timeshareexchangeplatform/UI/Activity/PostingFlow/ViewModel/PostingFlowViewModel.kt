@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -140,6 +141,7 @@ class PostingFlowViewModel @Inject constructor(
             _numberOfNightsTimeShare.value = 0
         }
     }
+
     fun getTimeshareDateRange(): Pair<String, String> {
         return Pair(_startDateTimeshare.value ?: "", _endDateTimeshare.value ?: "")
     }
@@ -150,6 +152,7 @@ class PostingFlowViewModel @Inject constructor(
     fun getNumberOfNightsTimeshare(): Int {
         return _numberOfNightsTimeShare.value ?: 0
     }
+
     fun resetTimeshareDateRange() {
         _startDateTimeshare.value = ""
         _endDateTimeshare.value = ""
@@ -168,8 +171,9 @@ class PostingFlowViewModel @Inject constructor(
     fun getYearRange(): Pair<Int, Int> {
         return (_yearRange.value ?: Pair(0, 0)) as Pair<Int, Int>
     }
+
     fun resetTimeshareYearRange() {
-        _yearRange.value =  Pair(0, 0)
+        _yearRange.value = Pair(0, 0)
     }
 
 
@@ -319,6 +323,7 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+
     fun clearRoomDetailResponse() {
         _roomDetailResponse.value = null
     }
@@ -342,12 +347,13 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call List Unit Type of Resort API Selected
     // Init MutableLiveData for List Unit Type
-    private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>>()
-    val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>> = _unitTypeList
+    private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>?>()
+    val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>?> = _unitTypeList
 
     fun cleanUnitTypeList() {
         _unitTypeList.value = null
     }
+
     // Function to get unit type list
     fun getUnitTypeListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
@@ -362,7 +368,8 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Tracking Timeshare DTO
     private val _timeshareDTO = MutableLiveData<Resource<MyPostingTimeshareResponse>>()
-    val createTimeshareResponse: MutableLiveData<Resource<MyPostingTimeshareResponse>> = _timeshareDTO
+    val createTimeshareResponse: MutableLiveData<Resource<MyPostingTimeshareResponse>> =
+        _timeshareDTO
 
     // Function to post Timeshare DTO
     fun postTimeshareDTO(token: String, timeshareDTO: TimeshareDTO) {
@@ -398,29 +405,38 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+
     // Lưu trạng thái tiện ích theo từng loại (type)
-    // Lưu trạng thái tiện ích theo từng loại (Enum)
     private val _selectedAmenities = MutableLiveData<Map<AmenityType, List<AmenitiesModel>>>()
     val selectedAmenities: LiveData<Map<AmenityType, List<AmenitiesModel>>> get() = _selectedAmenities
 
 
     fun updateAmenitiesForType(type: AmenityType, selectedAmenities: List<AmenitiesModel>) {
         val currentMap = _selectedAmenities.value?.toMutableMap() ?: mutableMapOf()
-        currentMap[type] = selectedAmenities
+        currentMap[type] = selectedAmenities // Lưu toàn bộ danh sách, không chỉ các mục được chọn
         _selectedAmenities.value = currentMap
+        Log.d("ViewModelUpdate", "Updated Type: $type, Data: ${currentMap[type]}")
+    }
+
+    fun getSelectedAmenitiesALl(): List<AmenitiesModel> {
+        return _selectedAmenities.value?.flatMap { it.value } ?: emptyList()
     }
 
     fun checkEachTypeHasMinTwoSelected(): Boolean {
-        val currentMap = _selectedAmenities.value ?: return false
-
+        val currentMap = _selectedAmenities.value?.mapValues { (_, amenities) ->
+            // Chuyển tất cả isChecked thành true để kiểm tra
+            amenities.map { it.copy(isChecked = true) }
+        } ?: return false
+        Log.d("CheckGetRoomDetailViewModel", "RoomDetail with all selected: $currentMap")
         return currentMap.all { (type, amenities) ->
             if (type == AmenityType.POLICY) {
-                true // Bỏ qua kiểm tra với POLICY
+                true // Bỏ qua POLICY
             } else {
-                amenities.count { it.isChecked } >= 2 // Kiểm tra phải có ít nhất 2 mục được chọn
+                amenities.count { it.isChecked } >= 2
             }
         }
     }
+
     fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
         return _selectedAmenities.value
             ?.flatMap { (type, amenities) ->
@@ -432,8 +448,6 @@ class PostingFlowViewModel @Inject constructor(
     fun clearAllAmenities() {
         _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
     }
-
-
 
 
     // ----------------------------------------------------------//

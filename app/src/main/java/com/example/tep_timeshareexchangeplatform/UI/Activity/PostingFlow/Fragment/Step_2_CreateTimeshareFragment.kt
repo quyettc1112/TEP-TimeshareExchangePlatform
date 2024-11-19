@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.AmenitiesBottomSheetFragment.AmenitiesBottomSheetFragment
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
@@ -183,7 +185,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
         }
         postingFlowViewModel.unitTypeList.observe(viewLifecycleOwner) { listUnitType ->
-            when (listUnitType.status) {
+            when (listUnitType?.status) {
                 Status.LOADING -> {
                     binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
                 }
@@ -196,6 +198,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.ERROR -> {
                     showErrorToast("${listUnitType.message}")
                 }
+
+                else -> {}
             }
         }
         postingFlowViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
@@ -224,15 +228,39 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.SUCCESS -> {
                     roomDetail?.data?.roomAmenities?.let { amenitiesList ->
                         Log.d("RoomDetailLis", "RoomDetail: $amenitiesList")
-                        val featuresList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.FEATURES)
-                        val entertainmentList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.ENTERTAINMENT)
-                        val policyList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.POLICY)
-                        val kitchenList = mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.KITCHEN)
+                        val featuresList =
+                            mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.FEATURES)
+                        val entertainmentList = mapRoomAmenitiesToAmenitiesModel(
+                            amenitiesList,
+                            AmenityType.ENTERTAINMENT
+                        )
+                        val policyList =
+                            mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.POLICY)
+                        val kitchenList =
+                            mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.KITCHEN)
+
+
 
                         kitchenAmenitiesAdapter.updateCheckedItemsFromList(kitchenList)
                         entertainmentAmenitiesAdapter.updateCheckedItemsFromList(entertainmentList)
                         policyAmenitiesAdapter.updateCheckedItemsFromList(policyList)
                         featuresAmenitiesAdapter.updateCheckedItemsFromList(featuresList)
+
+                        postingFlowViewModel.updateAmenitiesForType(
+                            AmenityType.FEATURES,
+                            featuresList
+                        )
+                        postingFlowViewModel.updateAmenitiesForType(
+                            AmenityType.ENTERTAINMENT,
+                            entertainmentList
+                        )
+                        postingFlowViewModel.updateAmenitiesForType(AmenityType.POLICY, policyList)
+                        postingFlowViewModel.updateAmenitiesForType(
+                            AmenityType.KITCHEN,
+                            kitchenList
+                        )
+
+
                     }
                 }
 
@@ -459,8 +487,23 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun eventClickSaveAmenities() {
         binding.btnSaveAmenities.setOnClickListener {
             if (postingFlowViewModel.checkEachTypeHasMinTwoSelected()) {
-                postingFlowViewModel.updateTaskProgress(5)
-                showSuccessToast("Lưu Thành Công")
+                (activity as PostingFlowActivity).showConfirmDialog(
+                    "Lưu Tiện Ích",
+                    "Bạn có chắc chắn muốn lưu tiện ích này?",
+                    "Đồng Ý",
+                    "Hủy",
+                    "",
+                    object : ConfirmDialog.ConfirmCallback {
+                        override fun negativeAction() {
+
+                        }
+
+                        override fun positiveAction() {
+                            postingFlowViewModel.updateTaskProgress(5)
+                        }
+
+                    }
+                )
             } else {
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlContentAmenities.top)
@@ -772,6 +815,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         unitTypeAdapterPosting.onItemClick = { it ->
             postingFlowViewModel.updateUnitTypeSelectionOptionNo(it)
+            binding.includeUnitTypeNo.edtRoomCode.clearFocus()
+            binding.includeUnitTypeNo.edtRoomName.clearFocus()
         }
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
