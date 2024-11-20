@@ -28,6 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent">
                 <!--// List Fearure-->
                 <TextView
+                    android:id="@+id/title_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -47,7 +48,7 @@
 
                 <!--// List of Amenities Entertaemnt-->
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/title_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -67,7 +68,7 @@
 
                 <!--// List of Amenities Kichen-->
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/title_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -78,6 +79,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--// List of Policy-->
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvKitchen"
                     android:layout_width="match_parent"
@@ -85,9 +88,8 @@
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-                <!--// List of Policy-->
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/title_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"

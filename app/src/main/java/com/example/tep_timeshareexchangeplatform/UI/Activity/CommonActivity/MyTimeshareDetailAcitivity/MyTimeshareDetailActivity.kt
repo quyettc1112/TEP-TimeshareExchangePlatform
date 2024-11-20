@@ -15,11 +15,9 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelect
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.ImageAmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
@@ -36,10 +34,6 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Locale
 
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
@@ -49,10 +43,10 @@ class MyTimeshareDetailActivity : BaseActivity() {
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val myTimeshareDetailViewModel: MyTimeshareDetailViewModel by viewModels()
 
-    private var featuresAdapter = ImageAmenitiesAdapter()
-    private var entertainmentAdapter = ImageAmenitiesAdapter()
-    private var kitchenAdapter = ImageAmenitiesAdapter()
-    private var policyAdapter = ImageAmenitiesAdapter()
+    private var featuresAdapter = RoomAmenitiesAdapter()
+    private var entertainmentAdapter = RoomAmenitiesAdapter()
+    private var kitchenAdapter = RoomAmenitiesAdapter()
+    private var policyAdapter = RoomAmenitiesAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

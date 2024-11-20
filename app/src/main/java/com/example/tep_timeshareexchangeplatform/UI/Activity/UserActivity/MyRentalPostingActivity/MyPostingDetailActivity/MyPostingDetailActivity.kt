@@ -15,9 +15,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelect
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.ImageAmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -28,7 +26,6 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivit
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
@@ -52,10 +49,10 @@ class MyPostingDetailActivity : BaseActivity() {
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val viewModel: MyPostingDetailViewModel by viewModels()
 
-    private var featuresAdapter = ImageAmenitiesAdapter()
-    private var entertainmentAdapter = ImageAmenitiesAdapter()
-    private var kitchenAdapter = ImageAmenitiesAdapter()
-    private var policyAdapter = ImageAmenitiesAdapter()
+    private var featuresAdapter = RoomAmenitiesAdapter()
+    private var entertainmentAdapter = RoomAmenitiesAdapter()
+    private var kitchenAdapter = RoomAmenitiesAdapter()
+    private var policyAdapter = RoomAmenitiesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,7 +3,7 @@ package com.example.tep_timeshareexchangeplatform.Until.EmumClass
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.R
 
-enum class AmenityDB(val model: AmenitiesModel, val imageResId: Int) {
+enum class RoomAmenityDB(val model: AmenitiesModel, val imageResId: Int) {
     // KITCHEN
     COFFEE_MACHINE(AmenitiesModel("Máy pha cà phê", "Bếp", false), R.drawable.ic_coffe_machine),
     MICROWAVE(AmenitiesModel("Lò vi sóng", "Bếp", false), R.drawable.ic_microwave),

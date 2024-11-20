@@ -22,7 +22,7 @@ class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesVi
             // Thiết lập trạng thái checkbox từ thuộc tính isChecked
             binding.checkBoxItem.isChecked = item.isChecked
 
-            // Gán lại listener sau khi trạng thái được ImageAmenitiesAdapter lập
+            // Gán lại listener sau khi trạng thái được RoomAmenitiesAdapter lập
             binding.checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
                 item.isChecked = isChecked
                 onItemChecked(item)

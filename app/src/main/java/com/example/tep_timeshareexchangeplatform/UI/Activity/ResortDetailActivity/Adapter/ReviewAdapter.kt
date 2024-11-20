@@ -16,7 +16,18 @@ class ReviewAdapter: BaseAdapter<ResortDetailModelResponse.Feedback, ReviewAdapt
             binding.tvComment.text = item.comment
             binding.tvDateReview.text = item.createdDate
             binding.ratingBar.rating = item.ratingPoint.toFloat()
-            binding.tvUserName.text = "User Name: ${item.user.fullName}"
+            binding.tvUserName.text = "Khách hàng: ${maskUserName(item.user.fullName)}"
+        }
+
+        fun maskUserName(fullName: String): String {
+            val words = fullName.split(" ")
+            return words.joinToString(" ") { word ->
+                if (word.length <= 2) {
+                    word // Nếu từ có ít hơn hoặc bằng 2 ký tự, giữ nguyên
+                } else {
+                    word.first() + "*".repeat(word.length - 2) + word.last()
+                }
+            }
         }
     }
 

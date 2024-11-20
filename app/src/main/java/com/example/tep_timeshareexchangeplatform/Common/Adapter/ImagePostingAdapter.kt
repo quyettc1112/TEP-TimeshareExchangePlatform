@@ -53,6 +53,7 @@ class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePosting
                         }
 
                     })
+                    .error(R.drawable.ic_image_tmp_holder)
                     .into(imageView)
 
                 // Kiểm tra nếu đây là item thứ 6 và còn item sau đó

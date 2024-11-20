@@ -22,7 +22,9 @@ data class ResortDetailModelResponse(
 ) {
     data class ResortAmenity(
         @SerializedName("name") val name: String,
-        @SerializedName("type") val type: String
+        @SerializedName("type") val type: String,
+        @SerializedName("free") val free: Boolean,
+
     )
 
     data class UnitTypeDto(

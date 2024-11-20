@@ -2,26 +2,39 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.paging.LOGGER
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortImageListAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortAmenityAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeResortAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityResortDetailBinding
+import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,11 +43,15 @@ import java.text.DecimalFormat
 @AndroidEntryPoint
 class ResortDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityResortDetailBinding
-    private lateinit var resortImageListAdapter: ResortImageListAdapter
-    private var unitTypeAdapter = UnitTypeAdapter(true)
+    private var imagePostingAdapter = ImagePostingAdapter()
+    private var unitTypeAdapter = UnitTypeResortAdapter()
     private var amenitiesAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
     private val resortDetailViewModel: ResortDetailViewModel by viewModels()
+
+    private var featuresAdapter = ResortAmenityAdapter()
+    private var policyAdapter = ResortAmenityAdapter()
+    private var nearbyAdapter = ResortAmenityAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,17 +95,16 @@ class ResortDetailActivity : BaseActivity() {
                         // Set Resort Detail Info
                         bindDataResortInfo(resortDetailViewModel.resortDetail.value?.data!!)
 
-                        bindDataImage(resortDetail.imageUrls)
+                        bindDataListImage(resortDetail.imageUrls)
 
-                        setListImageResort()
                         bindDataUnitType(resortDetail.unitTypeDtoList)
-                        bindDataAmenities()
                         bindDataReviewResort(resortDetail.feedbackList)
+                        bindDataAmenities(resortDetail)
 
                         // Action Event
                         setTypeRoomClickAction()
                         setButtonSelectRoomClick()
-                        actionCustomToolbar()
+                        bindDataCustomToolBar(resortDetail.resortName)
                     }
                     hideLoadingWaiting()
                 }
@@ -101,9 +117,13 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
-    private fun actionCustomToolbar() {
+    private fun bindDataCustomToolBar(resortName: String? = null) {
         binding.customToolbar.onStartIconClick = {
             onBackPressed()
+        }
+        binding.customToolbar.apply {
+            setTitle(resortName ?: "")
+            isShowStartText(false)
         }
     }
 
@@ -116,11 +136,15 @@ class ResortDetailActivity : BaseActivity() {
     private fun setTypeRoomClickAction() {
         unitTypeAdapter.apply {
             onItemClick = {
-                bindDataUnitTypeDetailDialog(resortDetailViewModel.resortDetail.value?.data!!)
+                val unitTypeBase = mapToUnitTypeBase(it)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
+                unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
 
-            onButtonBookClick = {
-                bindDataUnitTypeDetailDialog(resortDetailViewModel.resortDetail.value?.data!!)
+            onViewDetailClick = {
+                val unitTypeBase = mapToUnitTypeBase(it)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
+                unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
         }
 
@@ -156,43 +180,9 @@ class ResortDetailActivity : BaseActivity() {
 
         }
     }
-    private fun bindDataImage(listResortImage: List<String>){
-        // Not yet Implemented
-        resortImageListAdapter = ResortImageListAdapter(listResortImage) {
-            val intent = Intent(this, ImageListActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putInt("imagePosition", it)
-            })
-            startActivity(intent)
-        }
-    }
-
-    fun formatPrice(price: Int): String {
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(price)
-    }
-    private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
-        unitTypeAdapter.submitList(resorts)
-        binding.rvResortRoomType.apply {
-            adapter = unitTypeAdapter
-            layoutManager = LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
-        }
-    }
-    private fun bindDataAmenities() {
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
-        flexboxLayoutManager.flexDirection = FlexDirection.ROW
-        flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
-        binding.rvResortFacilities.let {
-            it.layoutManager = flexboxLayoutManager
-            it.adapter = amenitiesAdapter
-        }
-    }
-
-    private fun bindDataUnitTypeDetailDialog(resortDetailModelResponse: ResortDetailModelResponse) {
-
-    }
-    private fun setListImageResort() {
+    private fun bindDataListImage(imageList: List<String>) {
         // List Destination
+
         val manager = SpannedGridLayoutManager(
             object : SpannedGridLayoutManager.GridSpanLookup {
                 override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
@@ -213,13 +203,97 @@ class ResortDetailActivity : BaseActivity() {
             4,  // number of columns
             1f // how big is default item
         )
-        binding.recyclerViewResortImage.apply {
-            adapter = resortImageListAdapter
-            layoutManager = manager
 
+        imagePostingAdapter.submitList(imageList)
+        if (imageList.size == 1) {
+            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.recyclerViewResortImage.apply {
+                adapter = imagePostingAdapter
+                layoutManager = layoutManagerCheck
+            }
+        } else {
+            binding.recyclerViewResortImage.apply {
+                adapter = imagePostingAdapter
+                layoutManager = manager
+            }
+        }
+
+        imagePostingAdapter.onItemClickListener = { position ->
+            val intent = Intent(this@ResortDetailActivity, ImageListActivity::class.java)
+            intent.putExtra(Constant.IMAGE_POSITION, position)
+            intent.putStringArrayListExtra(
+                Constant.IMAGE_LIST,
+                ArrayList(imageList)
+            )
+            startActivity(intent)
         }
 
     }
+
+    fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
+    }
+    private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
+        unitTypeAdapter.submitList(resorts)
+        binding.rvResortRoomType.apply {
+            adapter = unitTypeAdapter
+            layoutManager = LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    private fun bindDataAmenities(data: ResortDetailModelResponse) {
+        featuresAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
+        policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
+        nearbyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
+
+        Log.d("Checklasasdasda", "bindDataAmenities: ${data.resortAmenityList.find { it.free == true }}")
+        val binding = binding.includeAmenities
+
+        binding.title3.visibility = View.GONE
+        binding.rvKitchen.visibility = View.GONE
+
+        binding.title1.text = "Tiện Nghi"
+        binding.title2.text = "Điểm Tham Quan Gần Đây"
+        binding.title4.text = "Chính Sách"
+
+
+        binding.rvFeatures.apply {
+            featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES_RESORT)
+            Log.d("Checklasasdasda", "bindDataAmenities: ${featuresAdapter.differ.currentList}")
+            layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = featuresAdapter
+        }
+
+        binding.rvAmenitiesEntertainment.apply {
+            nearbyAdapter.filterByAmenityTypes(AmenityType.NEARBY_ATTRACTIONS)
+            layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP            // Cho phép các mục xuống dòng nếu không đủ chỗ
+            }
+            adapter = nearbyAdapter
+        }
+
+
+        binding.rvPolicy.apply {
+            policyAdapter.filterByAmenityTypes(AmenityType.POLICY_RESORT)
+            layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = policyAdapter
+        }
+    }
+
     private fun setButtonSelectRoomClick() {
         binding.btnSelectRoom.setOnClickListener {
             val intent = Intent(this, PostingOfResortActivity::class.java)
@@ -240,7 +314,46 @@ class ResortDetailActivity : BaseActivity() {
         super.onBackPressed()
         finish()
     }
-
+    fun mapToUnitTypeBase(unitTypeDto: ResortDetailModelResponse.UnitTypeDto): UnitTypeBase {
+        return UnitTypeBase(
+            id = unitTypeDto.id,
+            title = unitTypeDto.title,
+            area = unitTypeDto.area,
+            bathrooms = unitTypeDto.bathrooms,
+            bedrooms = unitTypeDto.bedrooms,
+            bedsFull = unitTypeDto.bedsFull,
+            bedsKing = unitTypeDto.bedsKing,
+            bedsSofa = unitTypeDto.bedsSofa,
+            bedsMurphy = unitTypeDto.bedsMurphy,
+            bedsQueen = unitTypeDto.bedsQueen,
+            bedsTwin = unitTypeDto.bedsTwin,
+            buildingsOption = unitTypeDto.buildingsOption,
+            price = unitTypeDto.price,
+            description = unitTypeDto.description,
+            kitchen = unitTypeDto.kitchen,
+            photos = unitTypeDto.photos,
+            resortId = unitTypeDto.resortId,
+            sleeps = unitTypeDto.sleeps,
+            view = unitTypeDto.view,
+            isActive = unitTypeDto.isActive,
+            unitTypeAmenitiesDTOS = unitTypeDto.unitTypeAmenitiesList.map { amenity ->
+                UnitTypeBase.UnitTypeAmenitiesDTOS(
+                    name = amenity.name,
+                    type = amenity.type,
+                    isActive = amenity.isActive
+                )
+            }
+        )
+    }
+    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ResortDetailModelResponse.ResortAmenity>): List<AmenitiesModel> {
+        return roomAmenities.map { roomAmenity ->
+            AmenitiesModel(
+                name = roomAmenity.name,
+                type = roomAmenity.type,
+                isChecked = roomAmenity.free
+            )
+        }
+    }
 
 
 

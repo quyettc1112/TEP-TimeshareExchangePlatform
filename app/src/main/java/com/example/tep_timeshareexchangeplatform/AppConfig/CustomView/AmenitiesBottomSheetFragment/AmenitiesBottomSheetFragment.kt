@@ -1,6 +1,5 @@
 package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.AmenitiesBottomSheetFragment
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,8 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.ImageAmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.databinding.DialogAmenitiesBinding
 import com.google.android.flexbox.AlignItems
@@ -25,10 +23,10 @@ class AmenitiesBottomSheetFragment(
     private val amenitiesList: List<AmenitiesModel>
 ) : BottomSheetDialogFragment() {
 
-    private var featuresAdapter = ImageAmenitiesAdapter()
-    private var entertainmentAdapter = ImageAmenitiesAdapter()
-    private var kitchenAdapter = ImageAmenitiesAdapter()
-    private var policyAdapter = ImageAmenitiesAdapter()
+    private var featuresAdapter = RoomAmenitiesAdapter()
+    private var entertainmentAdapter = RoomAmenitiesAdapter()
+    private var kitchenAdapter = RoomAmenitiesAdapter()
+    private var policyAdapter = RoomAmenitiesAdapter()
     private lateinit var binding: DialogAmenitiesBinding
 
     override fun onCreateView(

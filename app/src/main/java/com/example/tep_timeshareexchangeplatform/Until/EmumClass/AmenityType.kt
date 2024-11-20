@@ -4,5 +4,10 @@ enum class AmenityType(val displayName: String) {
     FEATURES("Tiện Nghi"),
     ENTERTAINMENT("Giải Trí"),
     POLICY("Chính Sách"),
-    KITCHEN("Bếp")
+    KITCHEN("Bếp"),
+    NEARBY_ATTRACTIONS("Điểm Tham Quan Resort"),
+    FEATURES_RESORT("Tiện Nghi Resort"),
+    POLICY_RESORT("Chính Sách Resort")
+
+
 }

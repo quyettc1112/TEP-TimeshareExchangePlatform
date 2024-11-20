@@ -8,12 +8,11 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapte
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityDB
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RoomAmenityDB
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.databinding.ItemFacilitieBinding
-import com.fasterxml.jackson.databind.ser.Serializers.Base
 
-class ImageAmenitiesAdapter : BaseAdapter<AmenitiesModel, ImageAmenitiesAdapter.ImageAmenitiesAdapter>() {
+class RoomAmenitiesAdapter : BaseAdapter<AmenitiesModel, RoomAmenitiesAdapter.ImageAmenitiesAdapter>() {
     private var originalList = listOf<AmenitiesModel>() // Dữ liệu gốc
     private var filteredList = listOf<AmenitiesModel>() // Dữ liệu đã lọc
 
@@ -21,8 +20,8 @@ class ImageAmenitiesAdapter : BaseAdapter<AmenitiesModel, ImageAmenitiesAdapter.
         override fun bind(item: AmenitiesModel) {
             binding.apply {
                 tvFacilitieName.text = item.name
-                // Lấy hình ảnh từ AmenityDB dựa trên tên
-                val amenityIcon = AmenityDB.values().find { it.model.name == item.name }?.imageResId
+                // Lấy hình ảnh từ RoomAmenityDB dựa trên tên
+                val amenityIcon = RoomAmenityDB.values().find { it.model.name == item.name }?.imageResId
                     ?: R.drawable.border // Dùng icon mặc định nếu không tìm thấy
                 Glide.with(itemView).load(amenityIcon).into(imFacilitie)
             }
