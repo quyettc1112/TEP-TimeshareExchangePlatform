@@ -15,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareReposit
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
@@ -313,6 +314,7 @@ class PostingFlowViewModel @Inject constructor(
         }
     }
 
+    // Get Room Detail
     private val _roomDetailResponse = MutableLiveData<Resource<RoomDetailResponse>?>()
     val roomDetailResponse: MutableLiveData<Resource<RoomDetailResponse>?> = _roomDetailResponse
     fun getRoomDetailById(token: String, roomId: Int) {
@@ -323,10 +325,26 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
-
+    fun getRoomDetailID(): Int {
+        return _roomDetailResponse.value?.data?.roomId ?: 0
+    }
     fun clearRoomDetailResponse() {
         _roomDetailResponse.value = null
     }
+
+    // Update Room Amenities By RoomId
+    private val _updateRoomAmenitiesResponse = MutableLiveData<Resource<RoomDetailResponse>?>()
+    val updateRoomAmenitiesResponse: MutableLiveData<Resource<RoomDetailResponse>?> =
+        _updateRoomAmenitiesResponse
+    fun updateRoomAmenitiesByRoomId(token: String, roomId: Int, amenities: RoomAmenitiesDTO) {
+        viewModelScope.launch {
+            _updateRoomAmenitiesResponse.postValue(Resource.loading(null))
+            customerAPIRepository.updateRoomAmenitiesByRoomId(token, roomId, amenities).let {
+                _updateRoomAmenitiesResponse.postValue(it)
+            }
+        }
+    }
+
 
 
     // ----------------------------------------------------------//
@@ -423,11 +441,6 @@ class PostingFlowViewModel @Inject constructor(
         _selectedAmenities.value = currentMap
         Log.d("ViewModelUpdate", "Updated Type: $type, Data: ${currentMap[type]}")
     }
-
-    fun getSelectedAmenitiesALl(): List<AmenitiesModel> {
-        return _selectedAmenities.value?.flatMap { it.value } ?: emptyList()
-    }
-
 
     fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
         return _selectedAmenities.value

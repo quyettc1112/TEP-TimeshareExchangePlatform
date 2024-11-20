@@ -2,22 +2,56 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="20dp"
     android:background="@drawable/ripple_effect"
     android:backgroundTint="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!--// List Amenities-->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/crl_content_amenities"
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--// List Amenities-->
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:cardCornerRadius="17dp"
+        app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
+            <!--// Title Text-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crl_amenities_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect_white"
+                android:backgroundTint="@color/blue_header_section"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/inter_medium"
+                    android:maxWidth="300dp"
+                    android:padding="5dp"
+                    android:text="Tiện ích phòng của bạn"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!--// Content Amenti Type-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,7 +60,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/crl_amenities_info">
                 <!--// List Fearure-->
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,7 +80,6 @@
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    tools:listitem="@layout/item_facilitie"
                     app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
                 <!--// List of Amenities Entertaemnt-->
@@ -55,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/inter_medium"
                     android:text="Giải trí"
                     android:textSize="14dp"
@@ -77,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/inter_medium"
                     android:text="Bếp"
                     android:textSize="14dp"
@@ -100,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/inter_medium"
                     android:text="Chính sách"
                     android:textSize="14dp"
@@ -116,50 +149,53 @@
                     android:paddingEnd="10dp"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-                <!--// Description-->
-                <LinearLayout
-                    android:id="@+id/ll_description"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:visibility="visible"
-                    app:layout_constraintTop_toBottomOf="@+id/rvPolicy">
+                    android:layout_margin="20dp">
 
-                    <!-- Label -->
-                    <TextView
-                        android:id="@+id/labelDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/inter_light"
-                        android:text="Nếu bạn bỏ tr"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
+                    <!--// Edit  Button-->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_edit_amenities"
+                        android:layout_width="130dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/ripple_effect"
+                        android:drawableStart="@drawable/baseline_mode_edit_24_white"
+                        android:paddingStart="15dp"
+                        android:text="Chỉnh Sửa"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
-                <!--// Save Button-->
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_save_amenities"
-                    android:layout_width="150dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="@color/blue_btn_search"
-                    android:text="Lưu thông tin tiện ích"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12dp"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_description" />
+                    <!--// Save Button-->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_save_amenities"
+                        android:layout_width="130dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ripple_effect"
+                        android:backgroundTint="@color/blue_btn_search"
+                        android:drawableStart="@drawable/baseline_save_24"
+                        android:paddingStart="15dp"
+                        android:text="Lưu thông tin"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </FrameLayout>
 

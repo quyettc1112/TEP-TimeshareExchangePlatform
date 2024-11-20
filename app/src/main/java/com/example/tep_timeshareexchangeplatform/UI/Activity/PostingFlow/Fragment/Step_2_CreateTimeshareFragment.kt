@@ -28,9 +28,11 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.AmenitiesBottomSheetFragment.AmenitiesBottomSheetFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -313,7 +315,74 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
         // Step 3- Amennities
+        // Update Amenities
+        postingFlowViewModel.updateRoomAmenitiesResponse.observe(viewLifecycleOwner) { roomAmenities ->
+            when (roomAmenities?.status) {
+                Status.LOADING -> {
+                    (activity as PostingFlowActivity).showLoadingWaiting(true)
+                }
 
+                Status.SUCCESS -> {
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                    showSuccessToast("Update Amenities Success")
+                    postingFlowViewModel.clearAllAmenities()
+                    uncheckAllAmenities()
+
+                    val amenitiesList = roomAmenities.data!!.roomAmenities
+                    val featuresList =
+                        mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.FEATURES)
+                    val entertainmentList = mapRoomAmenitiesToAmenitiesModel(
+                        amenitiesList,
+                        AmenityType.ENTERTAINMENT
+                    )
+                    val policyList =
+                        mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.POLICY)
+                    val kitchenList =
+                        mapRoomAmenitiesToAmenitiesModel(amenitiesList, AmenityType.KITCHEN)
+
+
+                    kitchenAmenitiesAdapter.updateCheckedItemsFromList(kitchenList)
+                    entertainmentAmenitiesAdapter.updateCheckedItemsFromList(entertainmentList)
+                    policyAmenitiesAdapter.updateCheckedItemsFromList(policyList)
+                    featuresAmenitiesAdapter.updateCheckedItemsFromList(featuresList)
+
+                    postingFlowViewModel.updateAmenitiesForType(
+                        AmenityType.FEATURES,
+                        featuresList
+                    )
+                    postingFlowViewModel.updateAmenitiesForType(
+                        AmenityType.ENTERTAINMENT,
+                        entertainmentList
+                    )
+                    postingFlowViewModel.updateAmenitiesForType(AmenityType.POLICY, policyList)
+                    postingFlowViewModel.updateAmenitiesForType(
+                        AmenityType.KITCHEN,
+                        kitchenList
+                    )
+
+
+                    postingFlowViewModel.updateTaskProgress(5)
+                }
+
+                Status.ERROR -> {
+                    (activity as PostingFlowActivity).showFailedDialog(
+                        requireContext(),
+                        "${roomAmenities.message}",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                postingFlowViewModel.updateTaskProgress(3)
+                                binding.scrollView.post {
+                                    binding.scrollView.smoothScrollTo(0, binding.crlContentAmenities.top)
+                                }
+                            }
+                        }
+                    )
+                    (activity as PostingFlowActivity).hideLoadingWaiting()
+                }
+
+                else -> {}
+            }
+        }
 
         // Final Step - Create Timeshare
         postingFlowViewModel.createTimeshareResponse.observe(viewLifecycleOwner) { timeshareDTO ->
@@ -363,7 +432,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         binding.etNightsCount.setText("")
         binding.includeUnitTypeYes.spUnitType.setSelection(0)
         binding.includeUnitTypeNo.customSpinnerBed.setSelection(0)
-        cleanAmenities()
         clearFocusEditText()
         cleanCheckInDay()
         uncheckAllAmenities()
@@ -388,6 +456,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.llDoNothing.visibility = View.VISIBLE
                 binding.llSelectRoomContainer.visibility = View.GONE
                 binding.llResortLocation.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
+                binding.btnSelectResortLocation.visibility = View.VISIBLE
             }
 
 
@@ -398,7 +468,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.includeUnitTypeNo.root.visibility = View.GONE
                 binding.crlDayCheckIn.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.GONE
-                binding.btnNext.visibility = View.GONE
 
                 // Show UI Step 1
                 binding.includeUnitTypeYes.root.visibility = View.VISIBLE
@@ -520,11 +589,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 showWarningToast("Mỗi loại tiện ích cần chọn ít nhất 2 mục")
                 return@setOnClickListener
             }
-            setEnableAllAmenities(false)
+
 
             if (postingFlowViewModel.getIsYesOrNoSelected()) {
                 if(isEditAmenities) {
-                    Toast.makeText(requireContext(), "Call APi Update Roonm Amenities", Toast.LENGTH_SHORT).show()
+                    setEnableAllAmenities(false)
+                    isEditAmenities = false
+                    val roomId = postingFlowViewModel.getRoomDetailID()
+                    val roomAmenitiesDTO = mapToRoomAmenitiesDTO(postingFlowViewModel.getSelectedAmenitiesForPost())
+                    callUpdateRoomAmenities(roomId, roomAmenitiesDTO)
                 } else {
                     postingFlowViewModel.updateTaskProgress(5)
                 }
@@ -550,6 +623,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         binding.btnChangeOption.setOnClickListener {
             cleanCheckInDay()
             uncheckAllAmenities()
+            postingFlowViewModel.clearAllAmenities()
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
             }
@@ -601,7 +675,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     .placeholder(R.drawable.ripple_effect)
                     .into(it.ivResortImage)
                 binding.llResortLocation.visibility = View.VISIBLE
-                binding.btnSelectResortLocation.visibility = View.GONE
             }
         } else {
             binding.llResortLocation.visibility = View.GONE
@@ -644,15 +717,16 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     binding.scrollView.post {
                         binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeYes.root.top)
                     }
+
                     postingFlowViewModel.updateTaskProgress(2)
                     postingFlowViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
                     spinnerBinding.etRoomSearch.setText("")
                     spinnerBinding.etRoomSearch.clearFocus()
-
+                    postingFlowViewModel.clearAllAmenities()
+                    uncheckAllAmenities()
 
                     // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
                     val selectedRoom = roomList?.get(position - 1)
-                    cleanAmenities()
 
 
                     binding.includeUnitTypeYes.tvRoomName.text =
@@ -698,13 +772,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
         adapter.onItemClick = {
             postingFlowViewModel.updateCurrentRoomInfo(it.id)
+            postingFlowViewModel.clearAllAmenities()
+            uncheckAllAmenities()
             callGetUnitTypeDetailByID(it.unitTypeId)
             bindingInclude.llRoomSearchResults.visibility = View.GONE
             bindingInclude.tvRoomName.text = it?.roomInfoName ?: "Unknown Name"
             bindingInclude.tvRoomCode.text = it?.roomInfoCode ?: "Unknown Code"
             bindingInclude.etRoomSearch.clearFocus()
-            cleanAmenities()
-            uncheckAllAmenities()
 
             postingFlowViewModel.updateTaskProgress(2)
 
@@ -1107,6 +1181,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         postingFlowViewModel.getRoomDetailById(tokenManager.getAccessToken().toString(), roomId)
     }
 
+    private fun callUpdateRoomAmenities(roomId: Int, amenitiesList: RoomAmenitiesDTO) {
+        Log.d("CheckAmenitiesDTO", "callUpdateRoomAmenities: $amenitiesList")
+        postingFlowViewModel.updateRoomAmenitiesByRoomId(
+            tokenManager.getAccessToken().toString(),
+            roomId,
+            amenitiesList
+        )
+    }
+
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
@@ -1183,6 +1266,16 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         featuresAmenitiesAdapter.setEnableCheckBoxClick(isEnable)
     }
 
+
+    fun mapToRoomAmenitiesDTO(selectedAmenities: List<RoomDTO.RoomAmenity>): RoomAmenitiesDTO {
+        val roomInfoAmenities = selectedAmenities.map { amenity ->
+            RoomAmenitiesDTO.RoomInfoAmenity(
+                name = amenity.name,
+                type = amenity.type
+            )
+        }
+        return RoomAmenitiesDTO(roomInfoAmenities)
+    }
 
     fun showRangeDayPickerDialog(
         context: Context,

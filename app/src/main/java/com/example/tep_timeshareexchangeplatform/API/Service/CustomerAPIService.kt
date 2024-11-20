@@ -7,6 +7,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
@@ -182,6 +184,15 @@ interface CustomerAPIService {
     suspend fun getRoomDetailById(
         @Header ("Authorization") token: String,
         @Path ("roomId") roomId: Int
+    ): Response<RoomDetailResponse>
+
+
+    // Update Room Amenities By TimeShareId
+    @PUT("customer/room/room-amenity/{roomId}")
+    suspend fun updateRoomAmenitiesByRoomId(
+        @Header ("Authorization") token: String,
+        @Path ("roomId") roomId: Int,
+        @Body roomInfoAmenities: RoomAmenitiesDTO
     ): Response<RoomDetailResponse>
 
 

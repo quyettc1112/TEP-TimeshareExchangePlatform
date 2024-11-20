@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.AmenitiesBottomSheetFragment.AmenitiesBottomSheetFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
@@ -38,7 +39,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyTimeshareDetailBinding
-    private var imageAdapter = ImageAdapter(listOf())
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val myTimeshareDetailViewModel: MyTimeshareDetailViewModel by viewModels()
@@ -166,6 +166,9 @@ class MyTimeshareDetailActivity : BaseActivity() {
         bindDataAmenities(myTimeshareDetailResponse)
 
         binding.cvRequestContaner.visibility = View.GONE
+
+
+
     }
 
 
@@ -237,6 +240,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
         policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
 
 
+
         val binding = binding.includeAmenities
         binding.rvFeatures.apply {
             featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES)
@@ -281,6 +285,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
             }
             adapter = policyAdapter
         }
+
 
 
 

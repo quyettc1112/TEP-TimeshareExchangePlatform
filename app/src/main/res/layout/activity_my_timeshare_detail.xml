@@ -46,7 +46,7 @@
                 <ImageView
                     android:id="@+id/ivTimeshareDetail"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -403,9 +403,6 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
             <!--// Do Nothing-->
