@@ -203,18 +203,41 @@
 
     </LinearLayout>
 
-    <!--// Button Next-->
-    <androidx.appcompat.widget.AppCompatButton
+
+    <LinearLayout
         android:id="@+id/btn_save_room_info"
-        android:background="@drawable/ripple_effect_white"
-        android:backgroundTint="@color/blue_btn_search"
-        android:textColor="@color/white"
-        android:textSize="12dp"
-        android:textAllCaps="false"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:text="Lưu Thông Tin Phòng" />
+        android:background="@drawable/ripple_effect"
+        android:backgroundTint="@color/blue_btn_search"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/baseline_save_24"
+            android:contentDescription="Icon chọn ngày"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="Lưu Thông Tin Phòng"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
+
+
 
 
 

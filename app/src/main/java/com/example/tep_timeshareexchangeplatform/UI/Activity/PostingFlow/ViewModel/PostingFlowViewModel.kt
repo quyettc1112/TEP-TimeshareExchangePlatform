@@ -383,12 +383,18 @@ class PostingFlowViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Tracking unit type selection option no
-    private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel>()
-    val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel>
+    private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel?>()
+    val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel?>
         get() = _unitTypeSelectionOptionNo
 
     fun updateUnitTypeSelectionOptionNo(unitTypeModel: UnitTypeModel) {
         _unitTypeSelectionOptionNo.value = unitTypeModel
+    }
+    fun getUnitTypeSelectionOptionNo(): UnitTypeModel? {
+        return _unitTypeSelectionOptionNo.value ?: null
+    }
+    fun resetUnitTypeSelectionOptionNo() {
+        _unitTypeSelectionOptionNo.value  = null
     }
 
     // ----------------------------------------------------------//
@@ -422,20 +428,6 @@ class PostingFlowViewModel @Inject constructor(
         return _selectedAmenities.value?.flatMap { it.value } ?: emptyList()
     }
 
-    fun checkEachTypeHasMinTwoSelected(): Boolean {
-        val currentMap = _selectedAmenities.value?.mapValues { (_, amenities) ->
-            // Chuyển tất cả isChecked thành true để kiểm tra
-            amenities.map { it.copy(isChecked = true) }
-        } ?: return false
-        Log.d("CheckGetRoomDetailViewModel", "RoomDetail with all selected: $currentMap")
-        return currentMap.all { (type, amenities) ->
-            if (type == AmenityType.POLICY) {
-                true // Bỏ qua POLICY
-            } else {
-                amenities.count { it.isChecked } >= 2
-            }
-        }
-    }
 
     fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
         return _selectedAmenities.value
@@ -443,6 +435,19 @@ class PostingFlowViewModel @Inject constructor(
                 amenities.filter { it.isChecked }.map { RoomDTO.RoomAmenity(it.name, type.name) }
             }
             ?: emptyList()
+    }
+    fun isValidSelection(): Boolean {
+        // Nhóm danh sách các mục đã chọn theo `type`
+        val selectedAmenities: List<RoomDTO.RoomAmenity> = getSelectedAmenitiesForPost()
+        val groupedAmenities = selectedAmenities.groupBy { it.type }
+
+        // Kiểm tra từng loại (FEATURES, ENTERTAINMENT, KITCHEN)
+        val isFeaturesValid = groupedAmenities["FEATURES"]?.size ?: 0 >= 2
+        val isEntertainmentValid = groupedAmenities["ENTERTAINMENT"]?.size ?: 0 >= 2
+        val isKitchenValid = groupedAmenities["KITCHEN"]?.size ?: 0 >= 2
+
+        // Không cần kiểm tra POLICY
+        return isFeaturesValid && isEntertainmentValid && isKitchenValid
     }
 
     fun clearAllAmenities() {
@@ -670,6 +675,9 @@ class PostingFlowViewModel @Inject constructor(
     val isYesOrNoSelected: MutableLiveData<Boolean>
         get() = isYesOrNo
 
+    fun getIsYesOrNoSelected(): Boolean {
+        return isYesOrNo.value ?: false
+    }
     fun updateIsYesOrNo(isYesOrNo: Boolean) {
         this.isYesOrNo.value = isYesOrNo
     }

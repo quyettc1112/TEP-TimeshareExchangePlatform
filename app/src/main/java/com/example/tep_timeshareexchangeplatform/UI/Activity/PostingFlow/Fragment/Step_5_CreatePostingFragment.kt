@@ -22,6 +22,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.DateRangePickerDialog.DateRangeDialogFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
@@ -173,7 +174,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
                 tvCheckOutDate.text =
                     Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
-                /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                Glide.with(binding.root.context).load(myTimeshareResponse.resortImage).into(imResortImage)
             }
         }
     }

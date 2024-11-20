@@ -69,7 +69,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private var policyAmenitiesAdapter = AmenitiesAdapter()
     private var featuresAmenitiesAdapter = AmenitiesAdapter()
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
-
+    private var isEditAmenities = false
     private lateinit var tokenManager: TokenManager
 
 
@@ -100,6 +100,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         eventClickSaveAmenities()
         eventClickCreateTimeshare()
         eventCLickChangeToOptionNo()
+        eventClickEditAmenities()
 
         return binding.root
     }
@@ -324,12 +325,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     showSuccessToast("Create Timeshare Success")
-                    postingFlowViewModel.updateTaskProgress(1)
-                    postingFlowViewModel.updateTaskProgress(0)
-                    postingFlowViewModel.resetTimeshareDateRange()
-                    postingFlowViewModel.resetData()
-                    postingFlowViewModel.updateStep(3)
+                    resetAllData()
 
+                    // Reload My Timeshare List
+                    postingFlowViewModel.currentMyTimesharePage.value = 0
                 }
 
                 Status.ERROR -> {
@@ -338,6 +337,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         "${timeshareDTO.message}",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
+                                postingFlowViewModel.updateTaskProgress(2)
                                 binding.scrollView.post {
                                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
                                 }
@@ -350,6 +350,23 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
 
 
+    }
+
+    private fun resetAllData() {
+        postingFlowViewModel.updateTaskProgress(1)
+        postingFlowViewModel.updateTaskProgress(0)
+        postingFlowViewModel.resetTimeshareDateRange()
+        postingFlowViewModel.resetData()
+        postingFlowViewModel.updateStep(3)
+        binding.spValidEndYear.setSelection(0)
+        binding.spValidStarYear.setSelection(0)
+        binding.etNightsCount.setText("")
+        binding.includeUnitTypeYes.spUnitType.setSelection(0)
+        binding.includeUnitTypeNo.customSpinnerBed.setSelection(0)
+        cleanAmenities()
+        clearFocusEditText()
+        cleanCheckInDay()
+        uncheckAllAmenities()
     }
 
     /**
@@ -368,16 +385,15 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         when (currentTask) {
             0 -> {
                 binding.llSelectResortLocationContainer.visibility = View.VISIBLE
-                postingFlowViewModel.apply {
-                    clearAllAmenities()
-                    clearCurrentMyTimeshareList()
-                    cleanCheckInDay()
-                }
+                binding.llDoNothing.visibility = View.VISIBLE
+                binding.llSelectRoomContainer.visibility = View.GONE
+                binding.llResortLocation.visibility = View.GONE
             }
 
 
             1 -> {
                 // Off UI Resort Selection
+                binding.llDoNothing.visibility = View.VISIBLE
                 binding.llSelectResortLocationContainer.visibility = View.GONE
                 binding.includeUnitTypeNo.root.visibility = View.GONE
                 binding.crlDayCheckIn.visibility = View.GONE
@@ -392,6 +408,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             2 -> {
+                clearFocusEditText()
                 binding.crlDayCheckIn.visibility = View.VISIBLE
                 binding.crlContentAmenities.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
@@ -400,12 +417,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
             3 -> {
                 binding.crlContentAmenities.visibility = View.VISIBLE
+                if (postingFlowViewModel.getIsYesOrNoSelected()) {
+                    binding.btnEditAmenities.visibility = View.VISIBLE
+                    setEnableAllAmenities(false)
+                } else {
+                    setEnableAllAmenities(true)
+                    binding.btnEditAmenities.visibility = View.GONE
+                }
             }
 
             4 -> {
+                binding.llDoNothing.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.VISIBLE
-                val checkYN: Boolean = postingFlowViewModel.isYesOrNoSelected.value!!
-                if (checkYN) {
+                if (postingFlowViewModel.getIsYesOrNoSelected()) {
                     binding.btnSaveAmenities.visibility = View.VISIBLE
                 } else {
                     binding.btnSaveAmenities.visibility = View.GONE
@@ -416,8 +440,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
             5 -> {
                 binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.btnNext.bottom)
+                    binding.scrollView.scrollTo(0, binding.btnNext.bottom)
                 }
+                binding.llDoNothing.visibility = View.GONE
                 binding.btnNext.visibility = View.VISIBLE
             }
         }
@@ -488,29 +513,23 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun eventClickSaveAmenities() {
         binding.btnSaveAmenities.setOnClickListener {
-            if (postingFlowViewModel.checkEachTypeHasMinTwoSelected()) {
-                (activity as PostingFlowActivity).showConfirmDialog(
-                    "Lưu Tiện Ích",
-                    "Bạn có chắc chắn muốn lưu tiện ích này?",
-                    "Đồng Ý",
-                    "Hủy",
-                    "",
-                    object : ConfirmDialog.ConfirmCallback {
-                        override fun negativeAction() {
-
-                        }
-
-                        override fun positiveAction() {
-                            postingFlowViewModel.updateTaskProgress(5)
-                        }
-
-                    }
-                )
-            } else {
+            if(!postingFlowViewModel.isValidSelection()) {
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlContentAmenities.top)
                 }
                 showWarningToast("Mỗi loại tiện ích cần chọn ít nhất 2 mục")
+                return@setOnClickListener
+            }
+            setEnableAllAmenities(false)
+
+            if (postingFlowViewModel.getIsYesOrNoSelected()) {
+                if(isEditAmenities) {
+                    Toast.makeText(requireContext(), "Call APi Update Roonm Amenities", Toast.LENGTH_SHORT).show()
+                } else {
+                    postingFlowViewModel.updateTaskProgress(5)
+                }
+            } else {
+                postingFlowViewModel.updateTaskProgress(5)
             }
         }
     }
@@ -529,8 +548,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun eventCLickChangeToOptionNo() {
         binding.btnChangeOption.setOnClickListener {
-            cleanAmenities()
             cleanCheckInDay()
+            uncheckAllAmenities()
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
             }
@@ -559,6 +578,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
     }
 
+    private fun eventClickEditAmenities() {
+        binding.btnEditAmenities.setOnClickListener {
+            setEnableAllAmenities(true)
+            isEditAmenities = true
+        }
+    }
 
     /**
      * BINDING DATA FUNTION
@@ -622,8 +647,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     postingFlowViewModel.updateTaskProgress(2)
                     postingFlowViewModel.updateCurrentRoomInfo(roomList?.get(position - 1)!!.id)
                     spinnerBinding.etRoomSearch.setText("")
+                    spinnerBinding.etRoomSearch.clearFocus()
+
+
                     // Lấy RoomModel tương ứng từ roomList dựa trên position đã chọn
                     val selectedRoom = roomList?.get(position - 1)
+                    cleanAmenities()
+
 
                     binding.includeUnitTypeYes.tvRoomName.text =
                         selectedRoom?.roomInfoName ?: "Unknown Name"
@@ -648,8 +678,9 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         val bindingInclude = binding.includeUnitTypeYes
         bindingInclude.etRoomSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                Log.d("RoomSearch", "Focus")
                 binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
+                    binding.scrollView.scrollTo(0, binding.llSelectRoomContainer.top)
                 }
             }
         }
@@ -672,18 +703,24 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             bindingInclude.tvRoomName.text = it?.roomInfoName ?: "Unknown Name"
             bindingInclude.tvRoomCode.text = it?.roomInfoCode ?: "Unknown Code"
             bindingInclude.etRoomSearch.clearFocus()
+            cleanAmenities()
+            uncheckAllAmenities()
+
             postingFlowViewModel.updateTaskProgress(2)
 
             val imm =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(bindingInclude.etRoomSearch.windowToken, 0)
+            bindingInclude.etRoomSearch.clearFocus()
         }
 
 
         bindingInclude.llRoomSearchResults.visibility = View.GONE
         bindingInclude.etRoomSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Không cần xử lý ở đây
+                binding.scrollView.post {
+                    binding.scrollView.scrollTo(0, binding.llSelectRoomContainer.top)
+                }
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -779,6 +816,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     id: Long
                 ) {
                     filterUnitTypes(listUnitType)
+                    postingFlowViewModel.resetUnitTypeSelectionOptionNo()
+                    unitTypeAdapterPosting.clearSelection()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -795,7 +834,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     id: Long
                 ) {
                     filterUnitTypes(listUnitType)
+                    postingFlowViewModel.resetUnitTypeSelectionOptionNo()
+                    unitTypeAdapterPosting.clearSelection()
                 }
+
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Không làm gì nếu không có gì được chọn
@@ -923,7 +965,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         etNightsCount.setText("0")
                     }
 
-                    val validEndYearList = yearList.filter { it >= selectedStartYear }
+                    val validEndYearList = yearList.filter { it > selectedStartYear }
                     val endYearAdapter = ArrayAdapter(
                         requireContext(),
                         android.R.layout.simple_spinner_item,
@@ -933,14 +975,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                     binding.spValidEndYear.adapter = endYearAdapter
 
-                    val currentEndYearPosition = validEndYearList.indexOf(
+                    /*val currentEndYearPosition = validEndYearList.indexOf(
                         binding.spValidEndYear.selectedItem ?: selectedStartYear
                     )
-                    binding.spValidEndYear.setSelection(if (currentEndYearPosition >= 0) currentEndYearPosition else 0)
+                    binding.spValidEndYear.setSelection(if (currentEndYearPosition >= 0) currentEndYearPosition else 0)*/
+                    binding.spValidEndYear.adapter = endYearAdapter
 
-                    // Lưu cặp giá trị năm Start và End
+                    // Set the default selection to the first item in the validEndYearList
+                    binding.spValidEndYear.setSelection(0)
+
+                    /*// Lưu cặp giá trị năm Start và End
                     val selectedEndYear =
-                        validEndYearList.getOrNull(currentEndYearPosition) ?: selectedStartYear
+                        validEndYearList.getOrNull(currentEndYearPosition) ?: selectedStartYear*/
+                    val selectedEndYear = validEndYearList.firstOrNull() ?: (selectedStartYear + 1)
                     postingFlowViewModel.setYearRange(selectedStartYear, selectedEndYear)
                 }
 
@@ -1114,6 +1161,26 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         }
         postingFlowViewModel.resetTimeshareDateRange()
 
+    }
+
+    private fun clearFocusEditText() {
+        binding.includeUnitTypeNo.edtRoomCode.clearFocus()
+        binding.includeUnitTypeNo.edtRoomName.clearFocus()
+    }
+
+    private fun uncheckAllAmenities() {
+        postingFlowViewModel.clearAllAmenities()
+        kitchenAmenitiesAdapter.unchekAllItem()
+        entertainmentAmenitiesAdapter.unchekAllItem()
+        policyAmenitiesAdapter.unchekAllItem()
+        featuresAmenitiesAdapter.unchekAllItem()
+    }
+
+    private fun setEnableAllAmenities(isEnable: Boolean) {
+        kitchenAmenitiesAdapter.setEnableCheckBoxClick(isEnable)
+        entertainmentAmenitiesAdapter.setEnableCheckBoxClick(isEnable)
+        policyAmenitiesAdapter.setEnableCheckBoxClick(isEnable)
+        featuresAmenitiesAdapter.setEnableCheckBoxClick(isEnable)
     }
 
 

@@ -16,6 +16,7 @@ class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.
     var isExchange = isExchange
     var onItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     var onSelectExchangeItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
+    var onSelectItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
         BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareBinding>(binding) {
         override fun bind(item: MyTimeshareResponse.Content) {
@@ -32,15 +33,14 @@ class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.
 
             binding.btnSelect.setOnClickListener {
                 onItemClick?.invoke(item)
-            }
-            if(isExchange) {
-                binding.btnSelect.visibility = View.VISIBLE
-                binding.btnSelect.setOnClickListener {
+                if (isExchange) {
                     onSelectExchangeItemClick?.invoke(item)
                 }
-            } else {
-                binding.btnSelect.visibility = View.GONE
             }
+            binding.btnSelect.visibility = if (isExchange) View.VISIBLE else View.GONE
+
+
+
         }
 
     }

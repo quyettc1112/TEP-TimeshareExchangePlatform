@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.databinding.ItemAmenitiesBinding
 
 class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesViewHolder>() {
     var onItemChecked: (AmenitiesModel) -> Unit = {}
+    var isCheckEnableClick = false
 
     inner class AmenitiesViewHolder(binding: ItemAmenitiesBinding) : BaseItemViewHolderCF<AmenitiesModel, ItemAmenitiesBinding>(binding) {
         override fun bind(item: AmenitiesModel) {
@@ -21,6 +21,8 @@ class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesVi
 
             // Thiết lập trạng thái checkbox từ thuộc tính isChecked
             binding.checkBoxItem.isChecked = item.isChecked
+
+            binding.checkBoxItem.isEnabled = isCheckEnableClick
 
             // Gán lại listener sau khi trạng thái được RoomAmenitiesAdapter lập
             binding.checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
@@ -67,6 +69,18 @@ class AmenitiesAdapter: BaseAdapter<AmenitiesModel, AmenitiesAdapter.AmenitiesVi
 
         // Cập nhật danh sách mới cho Adapter
         differ.submitList(updatedList)
+    }
+
+    fun unchekAllItem() {
+        val currentList = differ.currentList
+        val updatedList = currentList.map { it.copy(isChecked = false) }
+        differ.submitList(updatedList)
+        notifyDataSetChanged()
+    }
+
+    fun setEnableCheckBoxClick(isEnable: Boolean) {
+        isCheckEnableClick = isEnable
+        notifyDataSetChanged()
     }
 
 
