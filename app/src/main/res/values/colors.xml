@@ -252,5 +252,9 @@
         <item>Yên Bái</item>
     </string-array>
 
+    <color name="color_selected_text">#FF5722</color> <!-- Màu chữ khi tab được chọn -->
+    <color name="color_unselected_text">#808080</color> <!-- Màu chữ khi tab không được chọn -->
+    <color name="color_selected_indicator">#FF5722</color> <!-- Màu chỉ báo -->
+
 
 </resources>
