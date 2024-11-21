@@ -566,7 +566,7 @@ class PostingDetailActivity : BaseActivity() {
                             }
 
                             UserLogState.LOGGED_IN_AS_USER -> {
-                                val dialogFragment = MemberInfoDialog.newInstance()
+                                /*val dialogFragment = MemberInfoDialog.newInstance()
                                 dialogFragment.show(supportFragmentManager, dialogFragment.tag)
                                 dialogFragment.setOnClickRequestButton(object :
                                     MemberInfoDialog.OnClickRequestButton {
@@ -577,7 +577,7 @@ class PostingDetailActivity : BaseActivity() {
                                                 .toString(), customerDTO
                                         )
                                     }
-                                })
+                                })*/
                                 // startActivity(Intent(this, MainActivity::class.java))
                             }
 

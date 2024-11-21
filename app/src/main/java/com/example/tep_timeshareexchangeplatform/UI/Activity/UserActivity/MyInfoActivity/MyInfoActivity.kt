@@ -204,7 +204,7 @@ class MyInfoActivity : BaseActivity() {
             JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
         binding.apply {
             tvEmail.text = userJWTPayloadModel!!.email
-            tvFullNameOut.text = userJWTPayloadModel!!.email
+            tvFullNameOut.text = userJWTPayloadModel!!.sub
             tvUserName.text = userJWTPayloadModel!!.sub
             btnEditButton.visibility = View.GONE
             btnEditButton.text = "Cập nhật thông tin !"
@@ -224,7 +224,7 @@ class MyInfoActivity : BaseActivity() {
         val userProfileResponse = viewModel.customerProfile.value!!.data
         binding.apply {
             tvEmail.text = userProfileResponse?.userEmail
-            tvFullNameOut.text = userProfileResponse?.fullName
+            tvFullNameOut.text = userProfileResponse?.userUserName
             tvUserName.text = userProfileResponse?.userUserName
             tvFullNameIn.text = userProfileResponse?.fullName
             tvDob.text = userProfileResponse?.let { Constant.formatDateByLocale(it.dob, this@MyInfoActivity) }
@@ -255,7 +255,7 @@ class MyInfoActivity : BaseActivity() {
         val userProfileResponse = viewModel.customerProfile.value!!.data
         binding.apply {
             tvEmail.text = userProfileResponse!!.userEmail
-            tvFullNameOut.text = userProfileResponse!!.fullName
+            tvFullNameOut.text = userProfileResponse!!.userUserName
             tvUserName.text = userProfileResponse!!.userUserName
             tvFullNameIn.text = userProfileResponse!!.fullName
             tvDob.text = Constant.formatDateByLocale(userProfileResponse.dob, this@MyInfoActivity)
