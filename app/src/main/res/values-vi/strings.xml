@@ -143,6 +143,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="waiting_confirmation">Đang chờ xác nhận giá</string>
     <string name="processing">Đang xử lý</string>
     <string name="completed">Đã hoàn thành</string>
+    <string name="accepted">Đã được chấp nhận</string>
     <string name="rejected">Bị từ chối</string>
     <string name="reject_price">Từ chối chấp nhận giá</string>
     <string name="pending_pricing">Đang chờ định giá</string>

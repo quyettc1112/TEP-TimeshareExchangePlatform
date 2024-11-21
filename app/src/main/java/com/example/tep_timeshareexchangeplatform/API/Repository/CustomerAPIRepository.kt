@@ -311,7 +311,10 @@ class CustomerAPIRepository @Inject constructor(
     }
 
     // Get Timeshare Detail of Customer
-    suspend fun getTimeShareDetail(token: String, timeShareId: Int): Resource<MyTimeshareDetailResponse> {
+    suspend fun getTimeShareDetail(
+        token: String,
+        timeShareId: Int
+    ): Resource<MyTimeshareDetailResponse> {
         return try {
             val response = customerAPIService.getMyTimeshareDetail("Bearer $token", timeShareId)
             if (response.isSuccessful) {
@@ -332,7 +335,11 @@ class CustomerAPIRepository @Inject constructor(
         exchangeRequestDTO: ExchangeRequestDTO
     ): Resource<ExchangeRequestResponse> {
         return try {
-            val response = customerAPIService.sendExchangeRequest("Bearer $token", postingId, exchangeRequestDTO)
+            val response = customerAPIService.sendExchangeRequest(
+                "Bearer $token",
+                postingId,
+                exchangeRequestDTO
+            )
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -360,7 +367,10 @@ class CustomerAPIRepository @Inject constructor(
     }
 
     // Update Customer Profile
-    suspend fun updateCustomerProfile(token: String, profileDTO: ProfileDTO): Resource<CustomerProfileResponse> {
+    suspend fun updateCustomerProfile(
+        token: String,
+        profileDTO: ProfileDTO
+    ): Resource<CustomerProfileResponse> {
         return try {
             val response = customerAPIService.updateCustomerProfile("Bearer $token", profileDTO)
             if (response.isSuccessful) {
@@ -391,9 +401,50 @@ class CustomerAPIRepository @Inject constructor(
 
 
     // Update Room Amenities By Room ID
-    suspend fun updateRoomAmenitiesByRoomId(token: String, roomId: Int, amenities: RoomAmenitiesDTO): Resource<RoomDetailResponse> {
+    suspend fun updateRoomAmenitiesByRoomId(
+        token: String,
+        roomId: Int,
+        amenities: RoomAmenitiesDTO
+    ): Resource<RoomDetailResponse> {
         return try {
-            val response = customerAPIService.updateRoomAmenitiesByRoomId("Bearer $token", roomId, amenities)
+            val response =
+                customerAPIService.updateRoomAmenitiesByRoomId("Bearer $token", roomId, amenities)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Deactivate Rental Posting
+    suspend fun deactivateRentalPosting(
+        token: String,
+        postingId: Int
+    ): Resource<MyRentalPostingsResponse> {
+        return try {
+            val response = customerAPIService.deactivateRentalPosting("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Deactivate Exchange Posting
+    suspend fun deactivateExchangePosting(
+        token: String,
+        postingId: Int
+    ): Resource<MyExchangePostingsResponse> {
+        return try {
+            val response = customerAPIService.deactivateExchangePosting("Bearer $token", postingId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

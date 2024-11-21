@@ -195,6 +195,20 @@ interface CustomerAPIService {
         @Body roomInfoAmenities: RoomAmenitiesDTO
     ): Response<RoomDetailResponse>
 
+    // Deactivate Rental Posting
+    @PUT("customer/deactivate/{postingId}")
+    suspend fun deactivateRentalPosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int
+    ): Response<MyRentalPostingsResponse>
+
+    // Deactivate Exchange Posting
+    @PUT("customer/deactivate/exchange/{postingId}")
+    suspend fun deactivateExchangePosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int
+    ): Response<MyExchangePostingsResponse>
+
 
 
 

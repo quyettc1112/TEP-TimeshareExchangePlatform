@@ -144,6 +144,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="waiting_confirmation">Awaiting Confirmation</string>
     <string name="processing">Processing</string>
     <string name="completed">Completed</string>
+    <string name="accepted">Accepted</string>
     <string name="rejected">Rejected</string>
     <string name="reject_price">Reject Price</string>
     <string name="pending_pricing">Pending Pricing</string>

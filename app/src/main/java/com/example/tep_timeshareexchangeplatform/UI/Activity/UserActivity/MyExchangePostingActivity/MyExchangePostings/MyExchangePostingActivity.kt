@@ -2,18 +2,22 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExc
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.Adapter.MyExchangePostingAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -26,8 +30,10 @@ class MyExchangePostingActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangePostingBinding
     private lateinit var exchangeAdapter: MyExchangePostingAdapter
     private val viewModel: MyExchangePostingViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
+    private var itemPosition = 0
 
-    companion object{
+    companion object {
         const val POSTING_PAGE_SIZE = 10
     }
 
@@ -37,6 +43,7 @@ class MyExchangePostingActivity : BaseActivity() {
         binding = ActivityMyExchangePostingBinding.inflate(layoutInflater)
         exchangeAdapter = MyExchangePostingAdapter(this)
         setContentView(binding.root)
+        tokenManager = TokenManager(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -61,13 +68,42 @@ class MyExchangePostingActivity : BaseActivity() {
 
 
     }
+
     private fun initAdapter() {
         exchangeAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.exchangePostingId)
             startActivity(intent)
         }
+
+        exchangeAdapter.onHidePostingClick = {
+            showConfirmDialog(
+                "Ẩn bài đăng",
+                "Bạn có chắc chắn muốn ẩn bài đăng này không?",
+                "Đồng ý",
+                "Hủy",
+                "",
+                object : ConfirmDialog.ConfirmCallback {
+                    override fun negativeAction() {
+                        // Do nothing
+                    }
+
+                    override fun positiveAction() {
+                        viewModel.deActiveExchangePosting(
+                            tokenManager.getAccessToken().toString(),
+                            it.exchangePostingId
+                        )
+                    }
+                }
+            )
+        }
+
+        exchangeAdapter.onHidePostingPositionClick = {
+            Log.d("MyExchangePostingActivity_did", "initAdapter: $it")
+            itemPosition = it
+        }
     }
+
     private fun observeData() {
         viewModel.myExchangePostingList.observe(this) {
             when (it.status) {
@@ -96,13 +132,47 @@ class MyExchangePostingActivity : BaseActivity() {
                 }
             }
         }
-
         viewModel.currentPage.observe(this) {
             viewModel.getMyExchangePostingList(
                 TokenManager(this).getAccessToken().toString(),
                 it,
                 POSTING_PAGE_SIZE
             )
+        }
+        viewModel.deactivateExchangePosting.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Thành công",
+                        "Ẩn bài đăng thành công",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
+                    )
+                    exchangeAdapter.updateItemStatus(itemPosition, MyPostingStatus.CLOSED.name)
+
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Lỗi",
+                        it.message ?: "Có lỗi xảy ra",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
+                    )
+                }
+            }
         }
     }
 
@@ -112,7 +182,11 @@ class MyExchangePostingActivity : BaseActivity() {
             adapter = exchangeAdapter
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@MyExchangePostingActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(
+                    this@MyExchangePostingActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
         }
 
         // Scroll Listener
