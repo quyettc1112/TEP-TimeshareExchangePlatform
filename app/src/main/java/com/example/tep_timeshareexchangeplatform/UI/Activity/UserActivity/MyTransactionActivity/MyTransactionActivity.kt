@@ -8,7 +8,8 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionAllFragment.TransactionAllFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionPaymentFragment.TransactionPaymentFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionReceivedFragment.TransactionReceivedFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.Fragment.TransactionSpentFragment.TransactionSpentFragment
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTranscationBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,8 @@ class MyTransactionActivity : BaseActivity() {
     private fun setUpTabLayoutViewPager() {
         val listFragment: ArrayList<Fragment> = ArrayList()
         listFragment.add(TransactionAllFragment())
-        listFragment.add(TransactionPaymentFragment())
+        listFragment.add(TransactionSpentFragment())
+        listFragment.add(TransactionReceivedFragment())
         // Set up TabLayout
         binding.tblTopResort.let {
             // Add 2 tab

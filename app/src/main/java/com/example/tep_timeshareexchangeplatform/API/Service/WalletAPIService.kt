@@ -116,6 +116,23 @@ interface WalletAPIService {
     ) : Response<WalletPurchaseResponse>
 
 
+    // Get Spent Transaction
+    @GET("wallet/customer/wallet-transaction/money-spent")
+    suspend fun getSpentTransaction(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<WalletListResponse>
+
+    // Get Received Transaction
+    @GET("wallet/customer/wallet-transaction/money-received")
+    suspend fun getReceivedTransaction(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<WalletListResponse>
+
+
 
 
 
