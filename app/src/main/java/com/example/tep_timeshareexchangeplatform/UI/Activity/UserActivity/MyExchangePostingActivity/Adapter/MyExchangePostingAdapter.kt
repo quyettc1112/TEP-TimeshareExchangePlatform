@@ -65,7 +65,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                     applyStatusStyle(
                         context,
                         R.color.white,
-                        R.color.green_verify
+                        R.color.success_bg_color
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
                     binding.btnHidePosting.visibility = View.VISIBLE

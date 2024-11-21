@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -23,6 +24,8 @@ class MyPostingAdapter(var context: MyPostingActivity) :
 
     var onItemClick: ((MyRentalPostingsResponse.Content) -> Unit)? = null
     var onItemPricingClick: ((MyRentalPostingsResponse.Content) -> Unit)? = null
+    var onHidePostingClick: ((MyRentalPostingsResponse.Content) -> Unit)? = null
+    var onHidePostingPositionClick: ((Int) -> Unit)? = null
 
     inner class MyPostingViewHolder(binding: ItemMyPostingBinding) :
         BaseItemViewHolderCF<MyRentalPostingsResponse.Content, ItemMyPostingBinding>(binding) {
@@ -30,6 +33,13 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
+
+
+            binding.btnHidePosting.setOnClickListener {
+                val position = adapterPosition
+                onHidePostingClick?.invoke(item)  // Callback với item
+                onHidePostingPositionClick?.invoke(position)  // Callback với position
+            }
 
             // Show Status
             when (MyPostingStatus.fromApiStatus(item.status)) {
@@ -40,6 +50,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_pending_approval_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.AWAITING_CONFIRMATION -> {
@@ -49,15 +60,17 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_awaiting_confirmation_text
                     )
                     binding.btnAcceptPrice.visibility = View.VISIBLE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.PROCESSING -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
-                        R.color.green_verify
+                        R.color.success_bg_color
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.VISIBLE
                 }
 
                 MyPostingStatus.COMPLETED -> {
@@ -67,6 +80,17 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.blue_full
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
+                }
+
+                MyPostingStatus.ACCEPTED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.green_verify
+                    )
+                    binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.REJECTED -> {
@@ -76,6 +100,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_rejected_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.PENDING_PRICING -> {
@@ -85,6 +110,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_awaiting_confirmation_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.CLOSED -> {
@@ -94,14 +120,17 @@ class MyPostingAdapter(var context: MyPostingActivity) :
                         R.color.status_closed_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.REJECT_PRICE -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
-                        R.color.status_rejected_text)
+                        R.color.status_rejected_text
+                    )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 else -> {
@@ -184,6 +213,16 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
         }
 
+    }
+
+    fun updateItemStatus(position: Int, newStatus: String) {
+        val currentList = differ.currentList.toMutableList()
+
+        if (position >= 0 && position < currentList.size) {
+            val updatedItem = currentList[position].copy(status = newStatus) // Cập nhật trạng thái
+            currentList[position] = updatedItem // Thay thế item trong danh sách
+            submitList(currentList) // Cập nhật danh sách trong Adapter
+        }
     }
 
     override fun differCallBack(): DiffUtil.ItemCallback<MyRentalPostingsResponse.Content> {

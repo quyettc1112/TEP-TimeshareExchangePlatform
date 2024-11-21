@@ -99,7 +99,6 @@ class MyExchangePostingActivity : BaseActivity() {
         }
 
         exchangeAdapter.onHidePostingPositionClick = {
-            Log.d("MyExchangePostingActivity_did", "initAdapter: $it")
             itemPosition = it
         }
     }

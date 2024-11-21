@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,6 +59,17 @@ class MyPostingViewModel @Inject constructor(
     init {
         _currentPostingPage.value = 0
 
+    }
+    // Hide Posting Function
+    private val _hidePostingResponse = MutableLiveData<Resource<MyRentalPostingsResponse>>()
+    val deactivateRentalPosting: MutableLiveData<Resource<MyRentalPostingsResponse>> =
+        _hidePostingResponse
+    fun deActiveRentalPosting(token: String, postingId: Int) {
+        viewModelScope.launch {
+            _hidePostingResponse.postValue(Resource.loading(null))
+            val response = customerAPIRepository.deactivateRentalPosting(token, postingId)
+            _hidePostingResponse.postValue(response)
+        }
     }
 
 }
