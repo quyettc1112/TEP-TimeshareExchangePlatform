@@ -94,6 +94,7 @@ class Constant {
 
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
+        const val PROFILE_INFO = "profileInfo"
 
         const val POSTING_TYPE_FLOW = "postingTypeFlow"
         const val RENTAL_POSTING_FLOW = "rentalPostingFlow"

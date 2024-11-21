@@ -1,11 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -29,12 +34,13 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     private lateinit var binding: FragmentAccountBinding
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tokenManager = TokenManager(requireContext())
-
+        initActivityLauncher()
     }
 
     override fun onCreateView(
@@ -67,9 +73,14 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             setUserLoginState(it)
         }
 
-        mainViewModel.customerInfo.observe(viewLifecycleOwner) {
+        mainViewModel.customerProfileInfo.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvBalance.text = Constant.formatPrice(it.walletAvailableMoney) + " đ"
+                Glide.with(requireContext())
+                    .load(it.avatar)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_placeholder)
+                    .into(binding.ivUserAvt)
             }
         }
     }
@@ -134,20 +145,18 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     // Change Button Text
                     btnLogout.text = getString(R.string.login)
                     btnLogout.setTextColor(resources.getColor(R.color.white))
-                    btnLogout.backgroundTintList = resources.getColorStateList(R.color.blue_btn_search)
+                    btnLogout.backgroundTintList =
+                        resources.getColorStateList(R.color.blue_btn_search)
 
                     // Hide Customer Container
                     llCustomerContainer.visibility = View.GONE
                 }
             }
-            else -> { /* nothing to do */ }
+
+            else -> { /* nothing to do */
+            }
         }
     }
-
-
-
-
-
 
 
     private fun setUserActivitiesEvent() {
@@ -215,12 +224,8 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
             // My Profile
             llMyProfileInfo.setOnClickListener {
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        MyInfoActivity::class.java
-                    )
-                )
+                val intent = Intent(requireContext(), MyInfoActivity::class.java)
+                resultLauncher.launch(intent)
             }
         }
 
@@ -243,6 +248,18 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             tokenManager.clearAllToken()
         }
+    }
+
+    private fun initActivityLauncher() {
+        // Initialize the result launcher
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+
+                }
+            }
+
+
     }
 
 

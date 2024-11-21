@@ -52,12 +52,14 @@
 
 
                 <!--// User Avatar-->
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_user_avt"
+                    app:riv_corner_radius="100dp"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/ic_user_default_avt"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_image_placeholder"
                     android:translationZ="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

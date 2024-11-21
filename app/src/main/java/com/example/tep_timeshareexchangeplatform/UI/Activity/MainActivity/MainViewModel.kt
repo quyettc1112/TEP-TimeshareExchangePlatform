@@ -4,16 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -59,10 +56,10 @@ class MainViewModel @Inject constructor(
     }
 
     // Tracking Customer Info
-    private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
-    val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
-    fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
-        _customerInfo.value = customerInfoResponse
+    private val _customerProfileInfo = MutableLiveData<CustomerProfileResponse>()
+    val customerProfileInfo: LiveData<CustomerProfileResponse> = _customerProfileInfo
+    fun setCustomerInfo(customerProfileResponse: CustomerProfileResponse) {
+        _customerProfileInfo.value = customerProfileResponse
     }
 
 

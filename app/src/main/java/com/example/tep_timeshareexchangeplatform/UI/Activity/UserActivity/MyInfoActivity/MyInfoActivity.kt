@@ -1,14 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -18,7 +20,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.ViewModel.MyInfoViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
@@ -37,6 +38,7 @@ class MyInfoActivity : BaseActivity() {
     private var dialogUpdateCustomer: DialogUpdateCustomer? = null
     private var image: String = ""
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,6 +52,10 @@ class MyInfoActivity : BaseActivity() {
         tokenManager = TokenManager(this)
         observeViewModel()
         eventClickUpdateCustomerInfo()
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
+
     }
 
     private fun observeViewModel() {
@@ -93,10 +99,11 @@ class MyInfoActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     showSuccessToast("Cập nhật thông tin thành công")
+                    it.data?.let { it1 -> tokenManager.saveProfileInfo(it1) }
                     val response = it.data
                     binding.apply {
                         tvEmail.text = response!!.userEmail
-                        tvFullNameOut.text = response!!.fullName
+                        tvFullNameOut.text = response!!.userUserName
                         tvUserName.text = response!!.userUserName
                         tvFullNameIn.text = response!!.fullName
                         tvDob.text = Constant.formatDateByLocale(response.dob, this@MyInfoActivity)
@@ -360,6 +367,8 @@ class MyInfoActivity : BaseActivity() {
             null
         )
     }
+
+
 
     override fun onResume() {
         super.onResume()

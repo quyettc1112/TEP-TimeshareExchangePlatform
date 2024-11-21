@@ -36,10 +36,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
-    companion object {
-        const val PAGE_SIZE_POSTING = 16
-        const val PAGE_SIZE_RESORT = 16
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,19 +68,19 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
      */
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
-        val customerInfo = tokenManager.getCustomerInfo()
+        val customerProfileInfo = tokenManager.getProfileInfo()
         when (userLogState) {
             UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                if (customerInfo != null) {
-                    mainViewModel.setCustomerInfo(customerInfo)
+                if (customerProfileInfo != null) {
+                    mainViewModel.setCustomerInfo(customerProfileInfo)
                 }
             }
 
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                if (customerInfo != null) {
-                    mainViewModel.setCustomerInfo(customerInfo)
+                if (customerProfileInfo != null) {
+                    mainViewModel.setCustomerInfo(customerProfileInfo)
                 }
             }
 

@@ -9,7 +9,7 @@
     android:background="@color/primary_background_F9">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolbar7"
+        android:id="@+id/customToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"

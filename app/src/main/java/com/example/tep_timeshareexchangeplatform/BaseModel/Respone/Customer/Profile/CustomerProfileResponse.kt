@@ -1,6 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile
 
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -39,5 +41,65 @@ data class CustomerProfileResponse(
     @SerializedName("isActive") val isActive: Boolean,
     @SerializedName("memberPurchaseDate") val memberPurchaseDate: String,
     @SerializedName("memberExpiryDate") val memberExpiryDate: String,
-    @SerializedName("isMember") val isMember: Boolean
-)
+    @SerializedName("isMember") val isMember: Boolean,
+    @SerializedName("walletId") val walletId: Int,
+    @SerializedName("walletAvailableMoney") val walletAvailableMoney: Int,
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt(),
+        parcel.readInt()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(fullName)
+        parcel.writeString(avatar)
+        parcel.writeString(dob)
+        parcel.writeString(address)
+        parcel.writeString(gender)
+        parcel.writeString(phone)
+        parcel.writeInt(membershipId)
+        parcel.writeString(membershipName)
+        parcel.writeInt(userId)
+        parcel.writeString(userUserName)
+        parcel.writeString(userEmail)
+        parcel.writeByte(if (isActive) 1 else 0)
+        parcel.writeString(memberPurchaseDate)
+        parcel.writeString(memberExpiryDate)
+        parcel.writeByte(if (isMember) 1 else 0)
+        parcel.writeInt(walletId)
+        parcel.writeInt(walletAvailableMoney)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<CustomerProfileResponse> {
+        override fun createFromParcel(parcel: Parcel): CustomerProfileResponse {
+            return CustomerProfileResponse(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CustomerProfileResponse?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+}
