@@ -95,6 +95,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     btnLogout.backgroundTintList = null
                     llCustomerContainer.visibility = View.VISIBLE
 
+                    llMyTimeshare.visibility = View.VISIBLE
+                    llMyPosting.visibility = View.VISIBLE
+                    llMyExchangePosting.visibility = View.VISIBLE
+                    llMyTransaction.visibility = View.VISIBLE
+
                     // Un Hide Wallet
                     cardWalletContainer.visibility = View.VISIBLE
 
@@ -120,6 +125,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     tvIsMembership.visibility = View.GONE
                     animMembership.visibility = View.GONE
 
+                    llMyTimeshare.visibility = View.VISIBLE
+                    llMyPosting.visibility = View.VISIBLE
+                    llMyExchangePosting.visibility = View.VISIBLE
+                    llMyTransaction.visibility = View.VISIBLE
+
                 }
             }
 
@@ -136,6 +146,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     // Hide is Member
                     tvIsMembership.visibility = View.GONE
                     animMembership.visibility = View.GONE
+
+                    llMyTimeshare.visibility = View.GONE
+                    llMyPosting.visibility = View.GONE
+                    llMyExchangePosting.visibility = View.GONE
+                    llMyTransaction.visibility = View.GONE
 
                 }
             }

@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRent
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.PricingSupportActivity.PricingSupportActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -52,20 +53,8 @@ class MyPostingActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val token = TokenManager(this)
-        if (token.isLoggedIn() && token.getAccessToken() != null) {
-            observeMyPostingList()
-        } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
-        }
+        checkUserStage()
+
         initActivityLauncher()
         innitAdapter()
         bindDataMyPostingList()
@@ -74,6 +63,32 @@ class MyPostingActivity : BaseActivity() {
             onBackPressed()
         }
 
+    }
+
+    private fun checkUserStage() {
+        val token = TokenManager(this)
+        if (!token.isLoggedIn() || token.getAccessToken() == null) {
+            showErrorToast("Bạn chưa đăng nhập")
+            finish()
+        }
+
+        when (token.getUserLogState()) {
+            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                observeMyPostingList()
+            }
+
+            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
+                observeMyPostingList()
+            }
+
+            UserLogState.LOGGED_IN_AS_USER -> {
+                showInfoDialog()
+            }
+
+            UserLogState.LOGGED_OUT -> {
+                finish()
+            }
+        }
     }
 
     private fun observeMyPostingList() {
@@ -85,6 +100,10 @@ class MyPostingActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     binding.animLoadingMore.visibility = View.GONE
+                    if (it.data?.totalElements == 0) {
+                        showInfoDialog()
+                        return@observe
+                    }
                     viewModel.loadMorePostingList(it.data?.content ?: listOf())
                     myPostingAdapter.submitList(viewModel.getCurrentPostingList())
                 }
@@ -207,6 +226,46 @@ class MyPostingActivity : BaseActivity() {
         super.onBackPressed()
         finish()
     }
+
+    private fun showErrorToast(message: String) {
+        // Show Error Toast
+        MotionToast.createColorToast(
+            this,
+            "Error",
+            message,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            null
+        )
+    }
+
+    private fun showSuccessToast(message: String) {
+        // Show Success Toast
+        MotionToast.createColorToast(
+            this,
+            "Success",
+            message,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            null
+        )
+    }
+
+    private fun showInfoDialog() {
+        showInfoDialog(
+            this,
+            "Bạn chưa có bài đăng nào",
+            object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    finish()
+                }
+            }
+        )
+    }
+
+
 
 
 }
