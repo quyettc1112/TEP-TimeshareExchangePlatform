@@ -1,5 +1,8 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogDetailActivity
 
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
@@ -19,6 +22,8 @@ import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBlogDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.InputStream
+import java.net.URL
 
 @AndroidEntryPoint
 class BlogDetailActivity : BaseActivity() {
@@ -75,24 +80,41 @@ class BlogDetailActivity : BaseActivity() {
     }
 
     private fun bindData(blogDetail: BlogDetailResponse) {
-        // Blog Info
         binding.apply {
-            tvBlogDetailTitle.text =
-                blogDetail.title
-            tvBlogDetailContent.text = blogDetail.content.toHtmlSpanned()
-            tvBlogDetailDate.text =
-                blogDetail.createdAt
+            tvBlogDetailTitle.text = blogDetail.title
+            tvBlogDetailContent.text = blogDetail.content.toHtmlSpannedWithImages(this@BlogDetailActivity)
+            tvBlogDetailDate.text = blogDetail.createdAt
             Glide.with(this@BlogDetailActivity)
                 .load(blogDetail.image)
                 .into(imgBlogDetail)
         }
     }
 
-    private fun String.toHtmlSpanned(): Spanned {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) // For API 24 and above
+    private fun String.toHtmlSpannedWithImages(context: Context): Spanned {
+        val imageGetter = Html.ImageGetter { source ->
+            try {
+                // Use Glide to fetch the image (asynchronously) and return a placeholder drawable
+                val drawable = Glide.with(context)
+                    .asDrawable()
+                    .load(source)
+                    .submit()
+                    .get()
+
+                drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+                drawable
+            } catch (e: Exception) {
+                // Return a placeholder if the image fails to load
+                val placeholder = context.getDrawable(R.drawable.placeholder_image)
+                placeholder?.setBounds(0, 0, placeholder.intrinsicWidth, placeholder.intrinsicHeight)
+                placeholder
+            }
+        }
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY, imageGetter, null)
         } else {
-            Html.fromHtml(this) // For API 23 and below
+            Html.fromHtml(this, imageGetter, null)
         }
     }
+
 }
