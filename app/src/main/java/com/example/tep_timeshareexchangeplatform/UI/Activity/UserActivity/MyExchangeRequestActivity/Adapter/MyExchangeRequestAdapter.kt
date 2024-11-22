@@ -73,10 +73,12 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
             // Posting Info
             binding.apply {
                 resortName.text = "${item.exchangePosting.roomInfoResortResortName}"
-//                checkInDate.text =
-//                    Constant.formatDateByLocale(item.startDate, binding.root.context)
-//                checkOutDate.text =
-//                    Constant.formatDateByLocale(item.endDate, binding.root.context)
+                if(item.startDate != null && item.endDate != null) {
+                    checkInDate.text =
+                        Constant.formatDateByLocale(item.startDate, binding.root.context)
+                    checkOutDate.text =
+                        Constant.formatDateByLocale(item.endDate, binding.root.context)
+                }
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.exchangePosting.roomInfoResortLogo)

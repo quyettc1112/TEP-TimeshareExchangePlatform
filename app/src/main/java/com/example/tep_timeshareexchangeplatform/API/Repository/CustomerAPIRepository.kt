@@ -519,4 +519,23 @@ class CustomerAPIRepository @Inject constructor(
             Resource.error("Network Error: ${e.message}", null)
         }
     }
+
+    // Approve Exchange Request
+    suspend fun approveExchangeRequest(
+        token: String,
+        requestId: Int
+    ): Resource<Void> {
+        return try {
+            val response =
+                customerAPIService.approveExchangeRequest("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

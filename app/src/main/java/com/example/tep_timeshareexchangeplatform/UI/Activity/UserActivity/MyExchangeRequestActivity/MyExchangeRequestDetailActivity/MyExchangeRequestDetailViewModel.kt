@@ -15,8 +15,8 @@ import javax.inject.Inject
 class MyExchangeRequestDetailViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ): ViewModel() {
-
     // Get My Exchange Detail
+
     private val _myExchangeRequestDetail = MutableLiveData<Resource<MyExchangeRequestDetailResponse>>()
     val myExchangeRequestDetail: MutableLiveData<Resource<MyExchangeRequestDetailResponse>> = _myExchangeRequestDetail
     fun getCustomerExchangeDetail(token: String, id: Int) {
@@ -26,6 +26,17 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
                 _myExchangeRequestDetail.postValue(it)
             }
         }
+    }
 
+    // Approve Exchange Request
+    private val _approveExchangeRequest = MutableLiveData<Resource<Void>>()
+    val approveExchangeRequest: MutableLiveData<Resource<Void>> = _approveExchangeRequest
+    fun approveExchangeRequest(token: String, id: Int) {
+        viewModelScope.launch {
+            _approveExchangeRequest.postValue(Resource.loading(null))
+            customerAPIRepository.approveExchangeRequest(token, id).let {
+                _approveExchangeRequest.postValue(it)
+            }
+        }
     }
 }

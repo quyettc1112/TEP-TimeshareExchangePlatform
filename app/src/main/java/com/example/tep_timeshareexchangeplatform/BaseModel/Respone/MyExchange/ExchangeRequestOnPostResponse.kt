@@ -133,7 +133,7 @@ data class ExchangeRequestOnPostResponse(
                 @SerializedName("id") val id: Int,
                 @SerializedName("isActive") val isActive: Boolean,
                 @SerializedName("kitchen") val kitchen: String,
-                @SerializedName("photos") val photos: String,
+                @SerializedName("photos") val photos: String?,
                 @SerializedName("price") val price: Int,
                 @SerializedName("resortId") val resortId: Int,
                 @SerializedName("sleeps") val sleeps: Int,

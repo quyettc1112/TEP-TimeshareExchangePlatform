@@ -1,11 +1,14 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.paging.LOGGER
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
@@ -13,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.My
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -25,7 +29,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangeRequestDetailBinding
     private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val viewModel: MyExchangeRequestDetailViewModel by viewModels()
-
+    private lateinit var tokenManager: TokenManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,13 +47,16 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             finish()
         }
         binding.shimmerViewContainer.startShimmer()
+        evenClickApproveExchangeRequest()
+
+
     }
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
-        val token = TokenManager(this)
-        if (token.isLoggedIn() && token.getAccessToken() != null) {
-            viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
+        tokenManager = TokenManager(this)
+        if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
+            viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
             observeMyExchangeRequestDetail()
         } else {
             MotionToast.Companion.createColorToast(
@@ -63,6 +70,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             )
         }
     }
+
     private fun observeMyExchangeRequestDetail() {
         viewModel.myExchangeRequestDetail.observe(this) {
             when (it.status) {
@@ -70,6 +78,15 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     bindData(it.data!!)
                     binding.shimmerViewContainer.hideShimmer()
+
+                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
+                        binding.btnAccept.visibility = View.GONE
+
+                    } else {
+                        binding.btnAccept.visibility = View.VISIBLE
+                    }
+
+
                 }
 
                 Status.ERROR -> {
@@ -90,7 +107,51 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 }
             }
         }
+
+        viewModel.approveExchangeRequest.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this,
+                        "Duyệt yêu cầu trao đổi thành công",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                val requestId =
+                                    intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+                                val intent = Intent(
+                                    this@MyExchangeRequestDetailActivity,
+                                    MyExchangeDetailActivity::class.java
+                                )
+                                intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, requestId)
+                                startActivity(intent)
+                            }
+
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Lỗi",
+                        it.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+
     }
+
     private fun bindData(myExchangeRequestDetail: MyExchangeRequestDetailResponse) {
 
 
@@ -106,7 +167,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myExchangeRequestDetail.exchangePosting.roomInfoResortResortName+ " | " + myExchangeRequestDetail.roomInfo.unitType.title
+                myExchangeRequestDetail.exchangePosting.roomInfoResortResortName + " | " + myExchangeRequestDetail.roomInfo.unitType.title
             Glide.with(this@MyExchangeRequestDetailActivity)
                 .load(myExchangeRequestDetail.roomInfo.unitType.photos)
                 .into(imageView)
@@ -125,7 +186,10 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 this@MyExchangeRequestDetailActivity
             )
             tvCheckinDayOfWeek.text =
-                Constant.getDayOfWeek(myExchangeRequestDetail.startDate, this@MyExchangeRequestDetailActivity)
+                Constant.getDayOfWeek(
+                    myExchangeRequestDetail.startDate,
+                    this@MyExchangeRequestDetailActivity
+                )
 
 
             tvCheckoutDate.text = Constant.getFormattedDate(
@@ -133,14 +197,28 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 this@MyExchangeRequestDetailActivity
             )
             tvCheckoutDayOfWeek.text =
-                Constant.getDayOfWeek(myExchangeRequestDetail.endDate, this@MyExchangeRequestDetailActivity)
+                Constant.getDayOfWeek(
+                    myExchangeRequestDetail.endDate,
+                    this@MyExchangeRequestDetailActivity
+                )
         }
     }
 
-    private fun bindDataUnitType(data : MyExchangeRequestDetailResponse) {
+    private fun evenClickApproveExchangeRequest() {
+        binding.btnAccept.setOnClickListener {
+            callApproveExchangeRequest()
+        }
+    }
+
+    private fun callApproveExchangeRequest() {
+        val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+        viewModel.approveExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
+    }
+
+    private fun bindDataUnitType(data: MyExchangeRequestDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
-            tvRoomType.text ="Loại Phòng: " + data.roomInfo.unitType.title
+            tvRoomType.text = "Loại Phòng: " + data.roomInfo.unitType.title
 
             // Bath
             tvNumBath.text = data.roomInfo.unitType.bathrooms.toString()
@@ -171,10 +249,11 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-               // UnitTypeDetailBottomSheet(this@MyExchangeRequestDetailActivity, data.roomInfo.unitType).show()
+                // UnitTypeDetailBottomSheet(this@MyExchangeRequestDetailActivity, data.roomInfo.unitType).show()
             }
         }
     }
+
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
     }

@@ -230,6 +230,7 @@ interface CustomerAPIService {
         @Path ("requestId") requestId: Int
     ) : Response<MyExchangeRequestDetailResponse>
 
+    // Get Customer Exchange Request On Post
     @GET("customer/exchange/request/posting/{postingId}")
     suspend fun getCustomerExchangeRequestOnPost(
         @Header ("Authorization") token: String,
@@ -237,5 +238,13 @@ interface CustomerAPIService {
         @Query ("pageNo") pageNo: Int,
         @Query ("pageSize") pageSize: Int,
     ) : Response<ExchangeRequestOnPostResponse>
+
+    @POST("customer/exchange/request/approval/{requestId}")
+    suspend fun approveExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int
+    ) : Response<Void>
+
+
 
 }

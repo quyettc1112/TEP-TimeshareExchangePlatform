@@ -303,12 +303,12 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="5dp"
             android:backgroundTint="@color/white">
 
             <!-- Accept Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/button_accept_background"

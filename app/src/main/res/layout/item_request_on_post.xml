@@ -58,13 +58,16 @@
                 android:padding="5dp"
                 android:gravity="center_vertical">
 
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_ownerAvatar"
+                    app:riv_corner_radius="50dp"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/placeholder_image"
                     android:scaleType="centerCrop"
-                    android:layout_marginEnd="10dp" />
+                    android:layout_marginEnd="10dp"/>
+
+
 
                 <TextView
                     android:id="@+id/tv_ownerFullName"
@@ -119,7 +122,7 @@
                         android:paddingEnd="10dp"
                         android:text="Thứ 7, 19 tháng 8, 2024"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -154,7 +157,7 @@
                         android:paddingEnd="10dp"
                         android:text="Thứ 3, 23 tháng 8, 2024"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 

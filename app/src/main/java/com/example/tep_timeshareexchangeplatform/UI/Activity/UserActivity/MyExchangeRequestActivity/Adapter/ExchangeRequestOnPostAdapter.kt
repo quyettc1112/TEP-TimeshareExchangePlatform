@@ -20,7 +20,9 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
 
 
     inner class ExchangeRequestOnPostViewHolder(binding: ItemRequestOnPostBinding) :
-        BaseItemViewHolderCF<ExchangeRequestOnPostResponse.Content, ItemRequestOnPostBinding>(binding) {
+        BaseItemViewHolderCF<ExchangeRequestOnPostResponse.Content, ItemRequestOnPostBinding>(
+            binding
+        ) {
         override fun bind(item: ExchangeRequestOnPostResponse.Content) {
 
             // Posting Info
@@ -33,13 +35,17 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.ownerAvatar)
+                    .error(R.drawable.ic_image_placeholder)
                     .placeholder(R.drawable.ripple_effect_white)
                     .into(binding.ivOwnerAvatar)
                 //Resort photo
-//                Glide.with(binding.root.context)
-//                    .load(item.roomInfo.unitType.photos)
-//                    .placeholder(R.drawable.ripple_effect_white)
-//                    .into(binding.ivRoomImage)
+                item.roomInfo.unitType?.photos?.let {
+                    Glide.with(binding.root.context)
+                        .load(item.roomInfo.unitType.photos ?: "")
+                        .error(R.drawable.placeholder_image)
+                        .placeholder(R.drawable.ripple_effect_white)
+                        .into(binding.ivRoomImage)
+                }
             }
 
             binding.root.setOnClickListener {
@@ -66,7 +72,10 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeRequestOnPostViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ExchangeRequestOnPostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemRequestOnPostBinding.inflate(layoutInflater, parent, false)
         return ExchangeRequestOnPostViewHolder(binding)
