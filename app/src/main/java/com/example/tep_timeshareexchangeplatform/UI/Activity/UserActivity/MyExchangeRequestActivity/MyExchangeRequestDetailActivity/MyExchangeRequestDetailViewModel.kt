@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -29,8 +30,8 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
     }
 
     // Approve Exchange Request
-    private val _approveExchangeRequest = MutableLiveData<Resource<Void>>()
-    val approveExchangeRequest: MutableLiveData<Resource<Void>> = _approveExchangeRequest
+    private val _approveExchangeRequest = MutableLiveData<Resource<ApproveExchangeResponse>>()
+    val approveExchangeRequest: MutableLiveData<Resource<ApproveExchangeResponse>> = _approveExchangeRequest
     fun approveExchangeRequest(token: String, id: Int) {
         viewModelScope.launch {
             _approveExchangeRequest.postValue(Resource.loading(null))

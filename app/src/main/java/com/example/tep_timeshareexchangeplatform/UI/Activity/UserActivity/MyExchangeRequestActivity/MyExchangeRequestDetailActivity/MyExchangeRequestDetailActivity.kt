@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -86,6 +87,21 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         binding.btnAccept.visibility = View.VISIBLE
                     }
 
+                    when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
+                        MyExchangeRequestStatus.PENDING_APPROVAL -> {
+                            binding.btnAccept.visibility = View.GONE
+                        }
+                        MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+                            binding.btnAccept.visibility = View.VISIBLE
+                        }
+                        MyExchangeRequestStatus.COMPLETED -> {
+                            binding.btnAccept.visibility = View.GONE
+                        }
+                        MyExchangeRequestStatus.REJECTED -> {
+                            binding.btnAccept.visibility = View.GONE
+                        }
+                    }
+
 
                 }
 
@@ -117,19 +133,16 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Duyệt yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                val requestId =
-                                    intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
                                 val intent = Intent(
                                     this@MyExchangeRequestDetailActivity,
                                     MyExchangeDetailActivity::class.java
                                 )
-                                intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, requestId)
+                                intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.data?.exchangePosting?.id)
                                 startActivity(intent)
                             }
 
                         })
                 }
-
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     MotionToast.Companion.createColorToast(
@@ -148,12 +161,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 }
             }
         }
-
-
     }
 
     private fun bindData(myExchangeRequestDetail: MyExchangeRequestDetailResponse) {
-
 
         // Unit Type
         bindDataUnitType(myExchangeRequestDetail)

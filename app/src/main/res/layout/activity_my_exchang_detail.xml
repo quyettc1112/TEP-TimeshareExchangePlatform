@@ -7,65 +7,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background_F9">
+
+    <!--// Custom Toolbar-->
+    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
+        android:id="@+id/customToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showStartText="false"
+        app:showTitleDetail="true" />
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--// Custom Toolbar-->
-        <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-            android:id="@+id/customToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:title="Chi Tiết Bài Đăng"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:showStartText="false"
-            app:showTitleDetail="true"
-            app:titleDetail="Flamingo Dai Lai | Studio King" />
-        <!--// Resort Status-->
-    <LinearLayout
-        android:id="@+id/ll_status_container"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/ripple_effect"
-        android:backgroundTint="@color/white"
-        android:padding="5dp"
-        android:translationZ="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_status"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:background="@color/white"
-            android:saveEnabled="false"
-            app:cardCornerRadius="100dp"
-            app:strokeColor="@color/red_light"
-            app:strokeWidth="8dp" />
-
-
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="Đã xác nhận"
-            android:textColor="@color/red_light"
-            android:textSize="12dp" />
-    </LinearLayout>
         <!--// Timeshare Detail-->
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:visibility="visible"
@@ -86,6 +51,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewResortImage"
                         android:layout_width="match_parent"
@@ -109,6 +75,42 @@
                     android:paddingBottom="5dp">
 
 
+                    <!--// Resort Status-->
+                    <LinearLayout
+                        android:id="@+id/ll_status_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ripple_effect"
+                        android:backgroundTint="@color/white"
+                        android:padding="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_status"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:saveEnabled="false"
+                            app:cardCornerRadius="100dp"
+                            app:strokeColor="@color/red_light"
+                            app:strokeWidth="8dp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Đã xác nhận"
+                            android:textColor="@color/red_light"
+                            android:textSize="12dp" />
+                    </LinearLayout>
 
                     <!--// Resort Name-->
                     <TextView
@@ -120,8 +122,7 @@
                         android:textSize="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
+                        app:layout_constraintTop_toBottomOf="@+id/ll_status_container" />
 
 
                     <!--// Location-->
@@ -193,45 +194,47 @@
 
                 <!--// Ngày nhận phòng-->
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:background="@color/white"
                     android:gravity="center"
-                    android:weightSum="10"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="5dp"
+                    android:weightSum="10">
 
                     <!-- Check-in Date Section -->
                     <LinearLayout
-                        android:layout_weight="4.5"
                         android:layout_width="0dp"
-                        android:background="@drawable/ripple_effect_white"
                         android:layout_height="match_parent"
+                        android:layout_weight="4.5"
+                        android:background="@drawable/ripple_effect_white"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <!-- Label for Check-in Date -->
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
                                 android:fontFamily="@font/inter_regular"
+                                android:maxLines="1"
                                 android:text="Ngày Nhận Phòng"
                                 android:textColor="@color/gray_text"
                                 android:textSize="12sp" />
+
                             <ImageView
-                                android:src="@drawable/ic_check_in"
                                 android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_check_in" />
 
 
                         </LinearLayout>
@@ -243,8 +246,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -262,40 +265,42 @@
 
                     <!-- Arrow Icon -->
                     <ImageView
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
 
                     <!-- Check-out Date Section -->
                     <LinearLayout
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_weight="4.5"
                         android:layout_width="0dp"
-                        android:background="@drawable/ripple_effect_white"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_marginStart="10dp"
+                        android:layout_weight="4.5"
+                        android:background="@drawable/ripple_effect_white"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <!-- Label for Check-in Date -->
                         <LinearLayout
-                            android:gravity="center"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
                                 android:fontFamily="@font/inter_regular"
+                                android:maxLines="1"
                                 android:text="Ngày Trả Phòng"
                                 android:textColor="@color/gray_text"
                                 android:textSize="12sp" />
+
                             <ImageView
-                                android:src="@drawable/ic_check_out"
                                 android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_check_out" />
 
                         </LinearLayout>
 
@@ -305,8 +310,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -337,9 +342,10 @@
 
                 <!--// Unit Type-->
                 <LinearLayout
-                    android:layout_marginTop="2dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp">
+
                     <include
                         android:id="@+id/include_unit_type"
                         layout="@layout/include_unit_type"
@@ -383,6 +389,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
                         <include
                             android:id="@+id/include_amenities"
                             layout="@layout/include_amenities" />
@@ -500,10 +507,44 @@
         </ScrollView>
 
 
-
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <!--// Bottom Button-->
+    <LinearLayout
+        android:id="@+id/cv_request_contaner"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_view_container">
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icon chọn ngày"
+            android:src="@drawable/baseline_checklist_24" />
+
+        <!-- Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:text="Danh sách yêu cầu"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+   <!--
+    &lt;!&ndash;// Bottom Button&ndash;&gt;
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_request_contaner"
         android:layout_width="match_parent"
@@ -515,70 +556,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/primary_background"
         app:strokeWidth="1dp">
-<!--        &lt;!&ndash;// Resort Status&ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_status_container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@drawable/ripple_effect"-->
-<!--            android:backgroundTint="@color/white"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="5dp"-->
-<!--            android:translationZ="10dp"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-<!--            <com.google.android.material.card.MaterialCardView-->
-<!--                android:id="@+id/card_status"-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@color/white"-->
-<!--                android:saveEnabled="false"-->
-<!--                app:cardCornerRadius="100dp"-->
-<!--                app:strokeColor="@color/red_light"-->
-<!--                app:strokeWidth="8dp" />-->
-
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_status"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                android:fontFamily="@font/inter_bold"-->
-<!--                android:text="Đã xác nhận"-->
-<!--                android:textColor="@color/red_light"-->
-<!--                android:textSize="18dp" />-->
-<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:backgroundTint="@color/white"
             android:gravity="center"
-            android:padding="5dp"
-            android:backgroundTint="@color/white">
+            android:orientation="horizontal">
 
-            <!-- Request list Button -->
+            &lt;!&ndash; Request list Button &ndash;&gt;
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_list_request"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/background_cta_button"
+                android:paddingStart=""
+                android:textAllCaps="false"
+                android:drawableStart="@drawable/baseline_checklist_24"
+                android:background="@drawable/ripple_effect"
+                android:fontFamily="@font/inter_bold"
                 android:text="Danh sách yêu cầu"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_bold" />
+                android:textSize="16sp" />
         </LinearLayout>
 
 
-    </com.google.android.material.card.MaterialCardView>
-
-
+    </com.google.android.material.card.MaterialCardView>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

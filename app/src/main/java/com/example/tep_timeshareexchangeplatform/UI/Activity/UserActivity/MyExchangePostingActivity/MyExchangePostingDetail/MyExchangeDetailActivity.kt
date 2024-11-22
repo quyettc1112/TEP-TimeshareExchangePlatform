@@ -48,7 +48,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private var imagePostingAdapter = ImagePostingAdapter()
     private var facilityAdapter = AmenitiesAdapter()
     private val viewModel: MyExchangeDetailViewModel by viewModels()
-private var postingId: Int =0
+    private var postingId: Int = 0
 
     private var featuresAdapter = RoomAmenitiesAdapter()
     private var entertainmentAdapter = RoomAmenitiesAdapter()
@@ -73,6 +73,7 @@ private var postingId: Int =0
         }
         binding.shimmerViewContainer.startShimmer()
     }
+
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
         imagePostingAdapter.apply {
@@ -88,7 +89,7 @@ private var postingId: Int =0
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
-         postingId = intent;
+        postingId = intent;
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
@@ -134,10 +135,11 @@ private var postingId: Int =0
             }
         }
     }
+
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
         // BindDAta Package
-       /* bindPackageData(myExchangePostingDetail.exchangePackageName)
-*/
+        /* bindPackageData(myExchangePostingDetail.exchangePackageName)
+ */
         // List Image
         bindDataListImage(myExchangePostingDetail.imageUrls)
 
@@ -210,15 +212,15 @@ private var postingId: Int =0
 
         //Request List
         binding.apply {
-            btnListRequest.setOnClickListener {
-                val intent = Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
-                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,postingId)
+            cvRequestContaner.setOnClickListener {
+                val intent =
+                    Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
+                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, postingId)
                 startActivity(
                     intent
                 )
             }
         }
-
 
 
         // UI DTB
@@ -251,6 +253,7 @@ private var postingId: Int =0
         facilityAdapter.submitList(listOf())
 
 
+        // Show Status
         when (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)) {
             MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
@@ -272,7 +275,7 @@ private var postingId: Int =0
                 applyStatusStyle(
                     this,
                     R.color.white,
-                    R.color.green_verify
+                    R.color.success_bg_color
                 )
             }
 
@@ -281,6 +284,14 @@ private var postingId: Int =0
                     this,
                     R.color.blue_header_section,
                     R.color.blue_full
+                )
+            }
+
+            MyPostingStatus.ACCEPTED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.green_verify
                 )
             }
 
@@ -305,6 +316,14 @@ private var postingId: Int =0
                     this,
                     R.color.status_closed_bg,
                     R.color.status_closed_text
+                )
+            }
+
+            MyPostingStatus.REJECT_PRICE -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_rejected_text
                 )
             }
 
@@ -447,7 +466,8 @@ private var postingId: Int =0
 
         imagePostingAdapter.submitList(imageList)
         if (imageList.size == 1) {
-            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManagerCheck =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerViewResortImage.apply {
                 adapter = imagePostingAdapter
                 layoutManager = layoutManagerCheck

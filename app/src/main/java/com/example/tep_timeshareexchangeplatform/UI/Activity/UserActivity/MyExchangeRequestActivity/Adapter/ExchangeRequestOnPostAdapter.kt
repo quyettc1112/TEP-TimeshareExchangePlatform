@@ -28,10 +28,12 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
             // Posting Info
             binding.apply {
                 tvOwnerFullName.text = "${item.ownerFullName}"
-                tvCheckInDate.text =
-                    Constant.formatDateByLocale(item.startDate, binding.root.context)
-                tvCheckOutDate.text =
-                    Constant.formatDateByLocale(item.endDate, binding.root.context)
+                if(item.startDate != null && item.endDate != null){
+                    tvCheckInDate.text =
+                        Constant.formatDateByLocale(item.startDate, binding.root.context)
+                    tvCheckOutDate.text =
+                        Constant.formatDateByLocale(item.endDate, binding.root.context)
+                }
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.ownerAvatar)
