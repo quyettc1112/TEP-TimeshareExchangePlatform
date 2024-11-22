@@ -15,6 +15,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
@@ -52,6 +53,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     ): View {
         binding = FragmentBookingBinding.inflate(inflater, container, false)
         tokenManager = TokenManager(requireContext())
+        eventClickNotification()
         checkLogin()
 
 
@@ -181,6 +183,12 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             }
 
             feedbackDialog.show()
+        }
+    }
+
+    private fun eventClickNotification() {
+        binding.imNotification.setOnClickListener {
+            startActivity(Intent(requireContext(), NotificationActivity::class.java))
         }
     }
 
