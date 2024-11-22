@@ -169,7 +169,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             // Do IT Later
             // Unit Type Detail
             btnViewDetail.setOnClickListener {
-                UnitTypeDetailBottomSheet(this@MyExchangeRequestDetailActivity, data.roomInfo.unitType).show()
+               // UnitTypeDetailBottomSheet(this@MyExchangeRequestDetailActivity, data.roomInfo.unitType).show()
             }
         }
     }
