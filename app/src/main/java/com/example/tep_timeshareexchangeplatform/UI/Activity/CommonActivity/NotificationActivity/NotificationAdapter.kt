@@ -20,10 +20,17 @@ class NotificationAdapter :
         BaseItemViewHolderCF<NotificationModel, ItemNotificationBinding>(binding) {
         override fun bind(item: NotificationModel) {
             // Is Read
-            if (item.isRead) binding.notificationItem.backgroundTintList =
-                ContextCompat.getColorStateList(binding.root.context, R.color.primary_background_F9)
-            else binding.notificationItem.backgroundTintList =
-                ContextCompat.getColorStateList(binding.root.context, R.color.white)
+            if (item.isRead){
+                binding.notificationItem.backgroundTintList =
+                    ContextCompat.getColorStateList(binding.root.context, R.color.primary_background_F9)
+                binding.optionNotification.setImageResource(R.drawable.baseline_more_horiz_24)
+            }
+            else {
+                binding.notificationItem.backgroundTintList =
+                    ContextCompat.getColorStateList(binding.root.context, R.color.white)
+                binding.optionNotification.setImageResource(R.drawable.ic_seen)
+
+            }
 
             // Time
             binding.timeNotification.text = item.timestamp
@@ -36,6 +43,9 @@ class NotificationAdapter :
 
             // Type Notification
             bindDataTypeNotification(item)
+
+
+
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)

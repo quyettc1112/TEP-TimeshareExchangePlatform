@@ -21,8 +21,8 @@
         <!--// Option Notification-->
         <ImageView
             android:id="@+id/optionNotification"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
             android:src="@drawable/baseline_more_horiz_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,8 +30,8 @@
         <!--// Type Nofitications-->
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animType"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"

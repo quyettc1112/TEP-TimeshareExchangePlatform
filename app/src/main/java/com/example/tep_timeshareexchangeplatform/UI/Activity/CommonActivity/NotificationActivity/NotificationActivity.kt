@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ class NotificationActivity : BaseActivity() {
         }
         initAdapter()
         setNotificationAdapter()
+        eventClickOptionNotificationSetting()
     }
 
 
@@ -45,5 +47,22 @@ class NotificationActivity : BaseActivity() {
             adapter = notificationAdapter
         }
 
+    }
+
+    private fun eventClickOptionNotificationSetting() {
+        binding.ivClose.setOnClickListener {
+            isShowNotificationSetting(false)
+        }
+
+
+    }
+
+
+    private fun isShowNotificationSetting(isNotification: Boolean){
+        if (isNotification) {
+            binding.optionOpenNotification.visibility = View.VISIBLE
+        } else {
+            binding.optionOpenNotification.visibility = View.GONE
+        }
     }
 }
