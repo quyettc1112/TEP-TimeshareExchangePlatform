@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.Until.TokenManager
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.google.gson.Gson
@@ -83,12 +84,46 @@ class TokenManager(private val context: Context) {
         editor.apply()
     }
 
+
+    // Lưu đối tượng CustomerInfoResponse vào SharedPreferences
+    fun saveProfileInfo(profileInfo: CustomerProfileResponse) {
+        val editor = sharedPreferences.edit()
+        val profileCustomerInfoJson = gson.toJson(profileInfo) // Chuyển đối tượng thành chuỗi JSON
+        editor.putString(Constant.PROFILE_INFO, profileCustomerInfoJson)
+        editor.apply()
+    }
+
+    // Lấy đối tượng CustomerInfoResponse từ SharedPreferences
+    fun getProfileInfo(): CustomerProfileResponse? {
+        val profileCustomerInfoJson = sharedPreferences.getString(Constant.PROFILE_INFO, null)
+        return if (profileCustomerInfoJson != null) {
+            gson.fromJson(profileCustomerInfoJson, CustomerProfileResponse::class.java) // Chuyển chuỗi JSON thành đối tượng
+        } else {
+            null
+        }
+    }
+
+    // Xoá thông tin khách hàng khỏi SharedPreferences
+    fun clearProfileInfo() {
+        val editor = sharedPreferences.edit()
+        editor.remove(Constant.PROFILE_INFO)
+        editor.apply()
+    }
+
+
     fun clearAllToken() {
         clearTokens()
         clearUserLogState()
         clearCustomerInfo()
         clearCustomerInfo()
+        clearProfileInfo()
     }
+
+
+
+
+
+
 
 
 

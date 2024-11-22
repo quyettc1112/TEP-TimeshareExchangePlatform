@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,10 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareReposit
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
@@ -28,12 +31,18 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimesh
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,13 +62,14 @@ class PostingFlowViewModel @Inject constructor(
     private val _typeOfPostingFlow = MutableLiveData<String>()
     val typeOfPostingFlow: MutableLiveData<String>
         get() = _typeOfPostingFlow
+
     fun updateTypeOfPostingFlow(type: String) {
         _typeOfPostingFlow.value = type
     }
+
     fun getTypeOfPostingFlow(): String {
         return _typeOfPostingFlow.value ?: ""
     }
-
 
 
     // ----------------------------------------------------------//
@@ -113,6 +123,59 @@ class PostingFlowViewModel @Inject constructor(
         }
     }
 
+    // ----------------------------------------------------------//
+    private val _startDateTimeshare = MutableLiveData<String>()
+    val startDateTimeshare: LiveData<String> get() = _startDateTimeshare
+
+    private val _endDateTimeshare = MutableLiveData<String>()
+    val endDateTimeshare: LiveData<String> get() = _endDateTimeshare
+
+    fun setTimeshareDateRange(start: Long?, end: Long?) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        _startDateTimeshare.value = start?.let { dateFormat.format(Date(it)) }
+        _endDateTimeshare.value = end?.let { dateFormat.format(Date(it)) }
+
+        if (start != null && end != null) {
+            val numberOfDays = ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            _numberOfNightsTimeShare.value = numberOfDays
+        } else {
+            _numberOfNightsTimeShare.value = 0
+        }
+    }
+
+    fun getTimeshareDateRange(): Pair<String, String> {
+        return Pair(_startDateTimeshare.value ?: "", _endDateTimeshare.value ?: "")
+    }
+
+
+    private val _numberOfNightsTimeShare = MutableLiveData<Int>()
+    val numberOfNightsTimeshare: LiveData<Int> get() = _numberOfNightsTimeShare
+    fun getNumberOfNightsTimeshare(): Int {
+        return _numberOfNightsTimeShare.value ?: 0
+    }
+
+    fun resetTimeshareDateRange() {
+        _startDateTimeshare.value = ""
+        _endDateTimeshare.value = ""
+        _numberOfNightsTimeShare.value = 0
+    }
+
+    // ----------------------------------------------------------//
+
+    private val _yearRange = MutableLiveData<Pair<Int, Int>>()
+    val yearRange: LiveData<Pair<Int, Int>> get() = _yearRange
+
+    fun setYearRange(startYear: Int, endYear: Int) {
+        _yearRange.value = Pair(startYear, endYear)
+    }
+
+    fun getYearRange(): Pair<Int, Int> {
+        return (_yearRange.value ?: Pair(0, 0)) as Pair<Int, Int>
+    }
+
+    fun resetTimeshareYearRange() {
+        _yearRange.value = Pair(0, 0)
+    }
 
 
     // ----------------------------------------------------------//
@@ -123,6 +186,7 @@ class PostingFlowViewModel @Inject constructor(
     fun setExchangeDateRange(startDate: Long, endDate: Long) {
         _exchangeDateRange.value = Pair(startDate, endDate)
     }
+
     fun getExchangeDateRange(): Pair<Long, Long> {
         return (_exchangeDateRange.value ?: Pair(null, null)) as Pair<Long, Long>
     }
@@ -145,9 +209,11 @@ class PostingFlowViewModel @Inject constructor(
     private var _currentProvinceSelected = MutableLiveData<Int>()
     val currentProvinceSelected: MutableLiveData<Int>
         get() = _currentProvinceSelected
+
     fun updateCurrentProvinceSelected(currentProvince: Int) {
         _currentProvinceSelected.value = currentProvince
     }
+
     fun getCurrentProvinceSelected(): Int {
         return _currentProvinceSelected.value ?: 0
     }
@@ -157,11 +223,10 @@ class PostingFlowViewModel @Inject constructor(
     private val _note = MutableLiveData<String?>()
     val note: MutableLiveData<String?>
         get() = _note
+
     fun updateNoteContent(note: String?) {
         _note.value = note
     }
-
-
 
 
     // ----------------------------------------------------------//
@@ -239,7 +304,7 @@ class PostingFlowViewModel @Inject constructor(
     private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
     val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
 
-    // Function to get resort list
+    // Function to get Room List By Resort ID
     fun getRoomListByResortId(token: String, resortID: Int) {
         viewModelScope.launch {
             _roomList.postValue(Resource.loading(null))
@@ -249,13 +314,45 @@ class PostingFlowViewModel @Inject constructor(
         }
     }
 
+    // Get Room Detail
+    private val _roomDetailResponse = MutableLiveData<Resource<RoomDetailResponse>?>()
+    val roomDetailResponse: MutableLiveData<Resource<RoomDetailResponse>?> = _roomDetailResponse
+    fun getRoomDetailById(token: String, roomId: Int) {
+        viewModelScope.launch {
+            _roomDetailResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getRoomDetailById(token, roomId).let {
+                _roomDetailResponse.postValue(it)
+            }
+        }
+    }
+    fun getRoomDetailID(): Int {
+        return _roomDetailResponse.value?.data?.roomId ?: 0
+    }
+    fun clearRoomDetailResponse() {
+        _roomDetailResponse.value = null
+    }
+
+    // Update Room Amenities By RoomId
+    private val _updateRoomAmenitiesResponse = MutableLiveData<Resource<RoomDetailResponse>?>()
+    val updateRoomAmenitiesResponse: MutableLiveData<Resource<RoomDetailResponse>?> =
+        _updateRoomAmenitiesResponse
+    fun updateRoomAmenitiesByRoomId(token: String, roomId: Int, amenities: RoomAmenitiesDTO) {
+        viewModelScope.launch {
+            _updateRoomAmenitiesResponse.postValue(Resource.loading(null))
+            customerAPIRepository.updateRoomAmenitiesByRoomId(token, roomId, amenities).let {
+                _updateRoomAmenitiesResponse.postValue(it)
+            }
+        }
+    }
+
+
 
     // ----------------------------------------------------------//
     // Call Unit Type Detail
     // Init MutableLiveData for Unit Type Detail
     private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>>()
     val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>> = _unitTypeDetail
-    fun getUnitTypeDetail(token: String, unitTypeID: Int) {
+    fun getUnitTypeDetailByID(token: String, unitTypeID: Int) {
         viewModelScope.launch {
             _unitTypeDetail.postValue(Resource.loading(null))
             publicResortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {
@@ -268,8 +365,12 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call List Unit Type of Resort API Selected
     // Init MutableLiveData for List Unit Type
-    private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>>()
-    val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>> = _unitTypeList
+    private val _unitTypeList = MutableLiveData<Resource<List<UnitTypeModel>>?>()
+    val unitTypeList: MutableLiveData<Resource<List<UnitTypeModel>>?> = _unitTypeList
+
+    fun cleanUnitTypeList() {
+        _unitTypeList.value = null
+    }
 
     // Function to get unit type list
     fun getUnitTypeListByResortId(token: String, resortID: Int) {
@@ -285,7 +386,8 @@ class PostingFlowViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Tracking Timeshare DTO
     private val _timeshareDTO = MutableLiveData<Resource<MyPostingTimeshareResponse>>()
-    val timeshareDTO: MutableLiveData<Resource<MyPostingTimeshareResponse>> = _timeshareDTO
+    val createTimeshareResponse: MutableLiveData<Resource<MyPostingTimeshareResponse>> =
+        _timeshareDTO
 
     // Function to post Timeshare DTO
     fun postTimeshareDTO(token: String, timeshareDTO: TimeshareDTO) {
@@ -299,18 +401,26 @@ class PostingFlowViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Tracking unit type selection option no
-    private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel>()
-    val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel>
+    private val _unitTypeSelectionOptionNo = MutableLiveData<UnitTypeModel?>()
+    val unitTypeSelectionOptionNo: MutableLiveData<UnitTypeModel?>
         get() = _unitTypeSelectionOptionNo
 
     fun updateUnitTypeSelectionOptionNo(unitTypeModel: UnitTypeModel) {
         _unitTypeSelectionOptionNo.value = unitTypeModel
+    }
+    fun getUnitTypeSelectionOptionNo(): UnitTypeModel? {
+        return _unitTypeSelectionOptionNo.value ?: null
+    }
+    fun resetUnitTypeSelectionOptionNo() {
+        _unitTypeSelectionOptionNo.value  = null
     }
 
     // ----------------------------------------------------------//
     // Call API create room
     private val _roomModel = MutableLiveData<Resource<PostRoomRespone>>()
     val roomModel: MutableLiveData<Resource<PostRoomRespone>> = _roomModel
+
+
     fun postRoom(token: String, roomDTO: RoomDTO) {
         viewModelScope.launch {
             _roomModel.postValue(Resource.loading(null))
@@ -318,6 +428,43 @@ class PostingFlowViewModel @Inject constructor(
                 _roomModel.postValue(it)
             }
         }
+    }
+
+    // Lưu trạng thái tiện ích theo từng loại (type)
+    private val _selectedAmenities = MutableLiveData<Map<AmenityType, List<AmenitiesModel>>>()
+    val selectedAmenities: LiveData<Map<AmenityType, List<AmenitiesModel>>> get() = _selectedAmenities
+
+
+    fun updateAmenitiesForType(type: AmenityType, selectedAmenities: List<AmenitiesModel>) {
+        val currentMap = _selectedAmenities.value?.toMutableMap() ?: mutableMapOf()
+        currentMap[type] = selectedAmenities // Lưu toàn bộ danh sách, không chỉ các mục được chọn
+        _selectedAmenities.value = currentMap
+        Log.d("ViewModelUpdate", "Updated Type: $type, Data: ${currentMap[type]}")
+    }
+
+    fun getSelectedAmenitiesForPost(): List<RoomDTO.RoomAmenity> {
+        return _selectedAmenities.value
+            ?.flatMap { (type, amenities) ->
+                amenities.filter { it.isChecked }.map { RoomDTO.RoomAmenity(it.name, type.name) }
+            }
+            ?: emptyList()
+    }
+    fun isValidSelection(): Boolean {
+        // Nhóm danh sách các mục đã chọn theo `type`
+        val selectedAmenities: List<RoomDTO.RoomAmenity> = getSelectedAmenitiesForPost()
+        val groupedAmenities = selectedAmenities.groupBy { it.type }
+
+        // Kiểm tra từng loại (FEATURES, ENTERTAINMENT, KITCHEN)
+        val isFeaturesValid = groupedAmenities["FEATURES"]?.size ?: 0 >= 2
+        val isEntertainmentValid = groupedAmenities["ENTERTAINMENT"]?.size ?: 0 >= 2
+        val isKitchenValid = groupedAmenities["KITCHEN"]?.size ?: 0 >= 2
+
+        // Không cần kiểm tra POLICY
+        return isFeaturesValid && isEntertainmentValid && isKitchenValid
+    }
+
+    fun clearAllAmenities() {
+        _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
     }
 
 
@@ -364,8 +511,6 @@ class PostingFlowViewModel @Inject constructor(
     fun updateStep3Visibility(isVisible: Boolean) {
         _isStep3Visible.value = isVisible
     }
-
-
 
 
     // ----------------------------------------------------------//
@@ -441,6 +586,7 @@ class PostingFlowViewModel @Inject constructor(
     fun selectPaymentMethod(method: PaymentMethod) {
         _selectedPaymentMethod.value = method
     }
+
     fun getSelectedPaymentMethod(): PaymentMethod {
         return _selectedPaymentMethod.value ?: PaymentMethod.VNPAY
     }
@@ -459,6 +605,7 @@ class PostingFlowViewModel @Inject constructor(
             }
         }
     }
+
     fun getVNPAYUrl(): String {
         return _responseVNPAYUrl.value?.data?.url ?: ""
     }
@@ -481,6 +628,7 @@ class PostingFlowViewModel @Inject constructor(
     private val _createExchangePostingByWallet = MutableLiveData<Resource<WalletPurchaseResponse>>()
     val createExchangePostingTransactionByWallet: MutableLiveData<Resource<WalletPurchaseResponse>> =
         _createExchangePostingByWallet
+
     fun createExchangePostingTransactionByWallet(token: String, exchangePackageId: Int) {
         viewModelScope.launch {
             _createExchangePostingByWallet.postValue(Resource.loading(null))
@@ -524,6 +672,7 @@ class PostingFlowViewModel @Inject constructor(
     private val _createExchangePosting = MutableLiveData<Resource<PostingTimeshareResponse>>()
     val createExchangePosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _createExchangePosting
+
     fun createExchangePosting(token: String, exchangeTimeshareDTO: ExchangeTimeshareDTO) {
         viewModelScope.launch {
             _createExchangePosting.postValue(Resource.loading(null))
@@ -534,12 +683,14 @@ class PostingFlowViewModel @Inject constructor(
     }
 
 
-
     // Tracking Yes or No for Step 2
     private val isYesOrNo = MutableLiveData<Boolean>()
     val isYesOrNoSelected: MutableLiveData<Boolean>
         get() = isYesOrNo
 
+    fun getIsYesOrNoSelected(): Boolean {
+        return isYesOrNo.value ?: false
+    }
     fun updateIsYesOrNo(isYesOrNo: Boolean) {
         this.isYesOrNo.value = isYesOrNo
     }
@@ -548,12 +699,13 @@ class PostingFlowViewModel @Inject constructor(
     private val _currentRoomInfo = MutableLiveData<Int>()
     val currentRoomInfo: MutableLiveData<Int>
         get() = _currentRoomInfo
+
     fun updateCurrentRoomInfo(currentRoomInfo: Int) {
         _currentRoomInfo.value = currentRoomInfo
     }
 
     fun resetData() {
-        // Reset tất cả các LiveData hoặc MutableLiveData trong ViewModel
+        // Reset tất cả các LiveData hoặc MutableLiveData trong ExchangeOfResortViewModel
         _currentMyTimesharePage.value = 0
         _currentMyTimeshareList.clear()
         step.value = 1 // hoặc giá trị mặc định ban đầu
@@ -564,6 +716,7 @@ class PostingFlowViewModel @Inject constructor(
     // Image URI, Bind To MutiplePart
     private val _imageList = MutableLiveData<List<ImageUploadModel>>(emptyList())
     val imageList: LiveData<List<ImageUploadModel>> get() = _imageList
+
     // Đặt ảnh chính
     fun setMainImage(mainImage: ImageUploadModel) {
         _imageList.value = _imageList.value?.toMutableList()?.apply {
@@ -579,11 +732,13 @@ class PostingFlowViewModel @Inject constructor(
             addAll(newImages)
         }
     }
+
     fun deleteImage(image: ImageUploadModel) {
         _imageList.value = _imageList.value?.toMutableList()?.apply {
             remove(image)
         }
     }
+
     fun getMultipartBodies(): List<MultipartBody.Part> {
         return _imageList.value?.map { it.part } ?: emptyList()
     }
@@ -598,6 +753,7 @@ class PostingFlowViewModel @Inject constructor(
             _listImageResponse.postValue(response)
         }
     }
+
     fun getUploadedImageUrls(): List<String> {
         return _listImageResponse.value?.data ?: emptyList()
     }
@@ -612,6 +768,8 @@ class PostingFlowViewModel @Inject constructor(
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
         _currentRoomInfo.value = 0
 
+        // Khởi tạo map rỗng cho từng loại
+        _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
     }
 
 

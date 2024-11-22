@@ -109,7 +109,6 @@ class PostingFlowActivity : BaseActivity() {
         binding.viewPager.apply {
             adapter = FragmentAdapter
             isUserInputEnabled = false
-            offscreenPageLimit = 6
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

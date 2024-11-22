@@ -99,6 +99,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="my_timeshare">Danh sách Timeshare của tôi</string>
     <string name="my_rental_posting">Bài đăng thuê phòng của tôi</string>
     <string name="my_exchange_posting">Bài đăng trao đổi của tôi</string>
+    <string name="my_exchange_request">Yêu cầu trao đổi của tôi</string>
     <string name="my_order">Đặt phòng của tôi</string>
     <string name="my_favorite">Sở thích du lịch</string>
     <string name="my_account_security">Tài Khoản &amp; Bảo mật</string>
@@ -143,10 +144,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="waiting_confirmation">Đang chờ xác nhận giá</string>
     <string name="processing">Đang xử lý</string>
     <string name="completed">Đã hoàn thành</string>
+    <string name="accepted">Đã được chấp nhận</string>
     <string name="rejected">Bị từ chối</string>
     <string name="reject_price">Từ chối chấp nhận giá</string>
     <string name="pending_pricing">Đang chờ định giá</string>
     <string name="closed">Đã đóng</string>
+
+    <!--// Posting Status-->
+    <string name="pending_customer">Đang chờ đồng ý</string>
+
 
     <!--// My Booking Status-->
     <string name="booked">Đã Đặt Phòng</string>

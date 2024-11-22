@@ -6,38 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.PostingFlow.Fragment.Step_3_SelectTimeshareFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout15"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:weightSum="10"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/search_input"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="9.5"
-            android:background="@drawable/background_stroke_around"
-            android:drawablePadding="8dp"
-            android:hint="Search"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textSize="16sp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_marginStart="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="90 Ngày qua"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <ImageView
+            android:id="@+id/btn_refresh"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
             android:layout_weight="0.5"
-            android:src="@drawable/ic_filter" />
-    </LinearLayout>
+            android:src="@drawable/baseline_restart_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -49,7 +54,7 @@
         android:paddingBottom="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10"
         tools:listitem="@layout/item_my_timeshare">
 
     </androidx.recyclerview.widget.RecyclerView>

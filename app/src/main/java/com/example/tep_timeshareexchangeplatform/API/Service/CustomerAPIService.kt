@@ -6,25 +6,36 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshare
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -39,7 +50,7 @@ interface CustomerAPIService {
 
     // Get check Customer Exist
     @GET("customer/initialize")
-    suspend fun getIsCustomerInit(
+    suspend fun getInitCustomer(
         @Header ("Authorization") token: String,
     ) : Response<CustomerInfoResponse>
 
@@ -153,12 +164,87 @@ interface CustomerAPIService {
     //
 
     // Send Exchange Request
-    @POST("customer/exchange/booking/{postingId}")
+    @POST("customer/exchange/request/{postingId}")
     suspend fun sendExchangeRequest(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int,
         @Body exchangeRequestDTO: ExchangeRequestDTO
     ) : Response<ExchangeRequestResponse>
+
+    // Call Get User Profile
+    @GET("customer/profile")
+    suspend fun getCustomerProfile(
+        @Header ("Authorization") token: String
+    ) : Response<CustomerProfileResponse>
+
+    @PUT("customer/profile")
+    suspend fun updateCustomerProfile(
+        @Header ("Authorization") token: String,
+        @Body profileDTO: ProfileDTO
+    ) : Response<CustomerProfileResponse>
+
+
+    // Get Room Detail Info
+    @GET("customer/room/{roomId}")
+    suspend fun getRoomDetailById(
+        @Header ("Authorization") token: String,
+        @Path ("roomId") roomId: Int
+    ): Response<RoomDetailResponse>
+
+
+    // Update Room Amenities By TimeShareId
+    @PUT("customer/room/room-amenity/{roomId}")
+    suspend fun updateRoomAmenitiesByRoomId(
+        @Header ("Authorization") token: String,
+        @Path ("roomId") roomId: Int,
+        @Body roomInfoAmenities: RoomAmenitiesDTO
+    ): Response<RoomDetailResponse>
+
+    // Deactivate Rental Posting
+    @PUT("customer/deactivate/{postingId}")
+    suspend fun deactivateRentalPosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int
+    ): Response<MyRentalPostingsResponse>
+
+    // Deactivate Exchange Posting
+    @PUT("customer/deactivate/exchange/{postingId}")
+    suspend fun deactivateExchangePosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int
+    ): Response<MyExchangePostingsResponse>
+
+
+    // Get Customer Exchange Request
+    @GET("customer/exchange/request")
+    suspend fun getCustomerExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Query ("page") page: Int,
+        @Query ("size") size: Int
+    ) : Response<MyExchangeRequestResponse>
+
+
+    // Get Customer Exchange Request Detail
+    @GET("customer/exchange/request/{requestId}")
+    suspend fun getCustomerExchangeRequestDetail(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int
+    ) : Response<MyExchangeRequestDetailResponse>
+
+    // Get Customer Exchange Request On Post
+    @GET("customer/exchange/request/posting/{postingId}")
+    suspend fun getCustomerExchangeRequestOnPost(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Query ("pageNo") pageNo: Int,
+        @Query ("pageSize") pageSize: Int,
+    ) : Response<ExchangeRequestOnPostResponse>
+
+    @POST("customer/exchange/request/approval/{requestId}")
+    suspend fun approveExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int
+    ) : Response<ApproveExchangeResponse>
 
 
 

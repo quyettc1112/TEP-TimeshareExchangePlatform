@@ -16,10 +16,14 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareImageBinding
 
 class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePostingViewHolder>() {
+
+    var onItemClickListener: ((Int) -> Unit)? = null
+
     inner class ImagePostingViewHolder(binding: ItemTimeshareImageBinding) : BaseItemViewHolderCF<String, ItemTimeshareImageBinding>(binding) {
         override fun bind(item: String) {
             binding.apply {
                 // Load image using Glide
+                val position = bindingAdapterPosition
                 Glide.with(itemView.context)
                     .load(item)
                     .listener(object : RequestListener<Drawable> {
@@ -49,7 +53,22 @@ class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePosting
                         }
 
                     })
+                    .error(R.drawable.ic_image_tmp_holder)
                     .into(imageView)
+
+                // Kiểm tra nếu đây là item thứ 6 và còn item sau đó
+                if (position == 5 && itemCount > 6) {
+                    binding.llNumImageContainer.visibility = View.VISIBLE
+                    binding.tvNumImageLeft.text = "+${itemCount - 5}"
+                } else {
+                    binding.llNumImageContainer.visibility = View.GONE
+                }
+
+
+            }
+
+            binding.root.setOnClickListener {
+                onItemClickListener?.invoke(bindingAdapterPosition)
             }
         }
     }

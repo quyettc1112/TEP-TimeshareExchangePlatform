@@ -9,20 +9,30 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshare
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import javax.inject.Inject
@@ -56,7 +66,7 @@ class CustomerAPIRepository @Inject constructor(
     // Check if customer exist
     suspend fun getIsCustomerExist(token: String): Resource<CustomerInfoResponse> {
         return try {
-            val response = customerAPIService.getIsCustomerInit("Bearer $token")
+            val response = customerAPIService.getInitCustomer("Bearer $token")
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -306,7 +316,10 @@ class CustomerAPIRepository @Inject constructor(
     }
 
     // Get Timeshare Detail of Customer
-    suspend fun getTimeShareDetail(token: String, timeShareId: Int): Resource<MyTimeshareDetailResponse> {
+    suspend fun getTimeShareDetail(
+        token: String,
+        timeShareId: Int
+    ): Resource<MyTimeshareDetailResponse> {
         return try {
             val response = customerAPIService.getMyTimeshareDetail("Bearer $token", timeShareId)
             if (response.isSuccessful) {
@@ -327,7 +340,11 @@ class CustomerAPIRepository @Inject constructor(
         exchangeRequestDTO: ExchangeRequestDTO
     ): Resource<ExchangeRequestResponse> {
         return try {
-            val response = customerAPIService.sendExchangeRequest("Bearer $token", postingId, exchangeRequestDTO)
+            val response = customerAPIService.sendExchangeRequest(
+                "Bearer $token",
+                postingId,
+                exchangeRequestDTO
+            )
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -339,4 +356,187 @@ class CustomerAPIRepository @Inject constructor(
         }
     }
 
+    // Get Customer Profile
+    suspend fun getCustomerProfile(token: String): Resource<CustomerProfileResponse> {
+        return try {
+            val response = customerAPIService.getCustomerProfile("Bearer $token")
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Update Customer Profile
+    suspend fun updateCustomerProfile(
+        token: String,
+        profileDTO: ProfileDTO
+    ): Resource<CustomerProfileResponse> {
+        return try {
+            val response = customerAPIService.updateCustomerProfile("Bearer $token", profileDTO)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get Room Detail By ID
+    suspend fun getRoomDetailById(token: String, roomId: Int): Resource<RoomDetailResponse> {
+        return try {
+            val response = customerAPIService.getRoomDetailById("Bearer $token", roomId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Update Room Amenities By Room ID
+    suspend fun updateRoomAmenitiesByRoomId(
+        token: String,
+        roomId: Int,
+        amenities: RoomAmenitiesDTO
+    ): Resource<RoomDetailResponse> {
+        return try {
+            val response =
+                customerAPIService.updateRoomAmenitiesByRoomId("Bearer $token", roomId, amenities)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Deactivate Rental Posting
+    suspend fun deactivateRentalPosting(
+        token: String,
+        postingId: Int
+    ): Resource<MyRentalPostingsResponse> {
+        return try {
+            val response = customerAPIService.deactivateRentalPosting("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Deactivate Exchange Posting
+    suspend fun deactivateExchangePosting(
+        token: String,
+        postingId: Int
+    ): Resource<MyExchangePostingsResponse> {
+        return try {
+            val response = customerAPIService.deactivateExchangePosting("Bearer $token", postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get Customer Exchange Request
+    suspend fun getCustomerExchangeRequest(
+        token: String,
+        page: Int,
+        size: Int
+    ): Resource<MyExchangeRequestResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequest("Bearer $token", page, size)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get My Exchange Request Detail
+    suspend fun getCustomerExchangeRequestDetail(
+        token: String,
+        requestId: Int
+    ): Resource<MyExchangeRequestDetailResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequestDetail("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    suspend fun getCustomerExchangeRequestOnPost(
+        token: String,
+        postingId: Int,
+        pageNo: Int,
+        pageSize: Int,
+    ): Resource<ExchangeRequestOnPostResponse> {
+        return try {
+            val response =
+                customerAPIService.getCustomerExchangeRequestOnPost("Bearer $token", postingId, pageNo, pageSize)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Approve Exchange Request
+    suspend fun approveExchangeRequest(
+        token: String,
+        requestId: Int
+    ): Resource<ApproveExchangeResponse> {
+        return try {
+            val response =
+                customerAPIService.approveExchangeRequest("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

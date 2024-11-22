@@ -2,8 +2,6 @@ package com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelec
 
 import android.app.Dialog
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class RoomSelectionDialog : BottomSheetDialogFragment() {
-
-
-    // Sử dụng activityViewModels để chia sẻ ViewModel với Activity hoặc Fragment khác
-    private val roomSelectionViewModel: MainViewModel by activityViewModels()
+    // Sử dụng activityViewModels để chia sẻ ExchangeOfResortViewModel với Activity hoặc Fragment khác
+    private val roomSelectionExchangeOfResortViewModel: MainViewModel by activityViewModels()
 
     // Khai báo binding
     private var _binding: DialogBottomSheetBinding? = null
@@ -41,50 +37,50 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Quan sát dữ liệu từ ViewModel
-        roomSelectionViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
+        // Quan sát dữ liệu từ ExchangeOfResortViewModel
+        roomSelectionExchangeOfResortViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
             binding.tvRoomCount.text = count.toString()
         })
 
-        roomSelectionViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
+        roomSelectionExchangeOfResortViewModel.adultCount.observe(viewLifecycleOwner, Observer { count ->
             binding.tvAdultCount.text = count.toString()
         })
 
-        roomSelectionViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
+        roomSelectionExchangeOfResortViewModel.childrenCount.observe(viewLifecycleOwner, Observer { count ->
             binding.tvChildCount.text = count.toString()
         })
 
         // Xử lý tăng giảm số phòng
         binding.imRemoveRoom.setOnClickListener {
-            val newRoomCount = (roomSelectionViewModel.roomCount.value ?: 1) - 1
+            val newRoomCount = (roomSelectionExchangeOfResortViewModel.roomCount.value ?: 1) - 1
             if (newRoomCount >= 1) {
-                roomSelectionViewModel.updateRoomCount(newRoomCount)
+                roomSelectionExchangeOfResortViewModel.updateRoomCount(newRoomCount)
             }
         }
 
         binding.imAddRoom.setOnClickListener {
-            val newRoomCount = (roomSelectionViewModel.roomCount.value ?: 1) + 1
-            roomSelectionViewModel.updateRoomCount(newRoomCount)
+            val newRoomCount = (roomSelectionExchangeOfResortViewModel.roomCount.value ?: 1) + 1
+            roomSelectionExchangeOfResortViewModel.updateRoomCount(newRoomCount)
         }
 
         // Xử lý tăng giảm số người lớn
         binding.imRemoveAdult.setOnClickListener {
-            val newAdultCount = (roomSelectionViewModel.adultCount.value ?: 1) - 1
+            val newAdultCount = (roomSelectionExchangeOfResortViewModel.adultCount.value ?: 1) - 1
             if (newAdultCount >= 1) {
-                roomSelectionViewModel.updateAdultCount(newAdultCount)
+                roomSelectionExchangeOfResortViewModel.updateAdultCount(newAdultCount)
             }
         }
 
         binding.imAddAdult.setOnClickListener {
-            val newAdultCount = (roomSelectionViewModel.adultCount.value ?: 1) + 1
-            roomSelectionViewModel.updateAdultCount(newAdultCount)
+            val newAdultCount = (roomSelectionExchangeOfResortViewModel.adultCount.value ?: 1) + 1
+            roomSelectionExchangeOfResortViewModel.updateAdultCount(newAdultCount)
         }
 
         // Xử lý tăng giảm số trẻ em
         binding.imRemoveChild.setOnClickListener {
-            val newChildrenCount = (roomSelectionViewModel.childrenCount.value ?: 0) - 1
+            val newChildrenCount = (roomSelectionExchangeOfResortViewModel.childrenCount.value ?: 0) - 1
             if (newChildrenCount >= 0) {
-                roomSelectionViewModel.updateChildrenCount(newChildrenCount)
+                roomSelectionExchangeOfResortViewModel.updateChildrenCount(newChildrenCount)
             }
 
             if (newChildrenCount == 0) {
@@ -94,8 +90,8 @@ class RoomSelectionDialog : BottomSheetDialogFragment() {
         }
 
         binding.imAddChild.setOnClickListener {
-            val newChildrenCount = (roomSelectionViewModel.childrenCount.value ?: 0) + 1
-            roomSelectionViewModel.updateChildrenCount(newChildrenCount)
+            val newChildrenCount = (roomSelectionExchangeOfResortViewModel.childrenCount.value ?: 0) + 1
+            roomSelectionExchangeOfResortViewModel.updateChildrenCount(newChildrenCount)
         }
 
         binding.btnCancel.setOnClickListener {

@@ -20,7 +20,9 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
     BaseAdapter<MyExchangePostingsResponse.Content, MyExchangePostingAdapter.MyExchangePostingViewHolder>() {
 
     var onItemClick: ((MyExchangePostingsResponse.Content) -> Unit)? = null
-
+    var onHidePostingClick: ((MyExchangePostingsResponse.Content) -> Unit)? = null
+    var onHidePostingPositionClick: ((Int) -> Unit)? = null
+    var status: String = ""
 
     inner class MyExchangePostingViewHolder(binding: ItemMyPostingBinding) :
         BaseItemViewHolderCF<MyExchangePostingsResponse.Content, ItemMyPostingBinding>(binding) {
@@ -28,6 +30,14 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
             // check Verify
             if (item.isVerify) binding.llVerify.visibility = View.VISIBLE
             else binding.llVerify.visibility = View.GONE
+
+            binding.tvStatus.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
+
+            binding.btnHidePosting.setOnClickListener {
+                val position = adapterPosition
+                onHidePostingClick?.invoke(item)  // Callback với item
+                onHidePostingPositionClick?.invoke(position)  // Callback với position
+            }
 
             // Show Status
             when (MyPostingStatus.fromApiStatus(item.status)) {
@@ -38,6 +48,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_pending_approval_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.AWAITING_CONFIRMATION -> {
@@ -47,15 +58,17 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_awaiting_confirmation_text
                     )
                     binding.btnAcceptPrice.visibility = View.VISIBLE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.PROCESSING -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
-                        R.color.green_verify
+                        R.color.success_bg_color
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.VISIBLE
                 }
 
                 MyPostingStatus.COMPLETED -> {
@@ -65,6 +78,17 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.blue_full
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
+                }
+
+                MyPostingStatus.ACCEPTED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.green_verify
+                    )
+                    binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.REJECTED -> {
@@ -74,6 +98,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_rejected_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.PENDING_PRICING -> {
@@ -83,6 +108,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_awaiting_confirmation_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.CLOSED -> {
@@ -92,6 +118,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_closed_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 MyPostingStatus.REJECT_PRICE -> {
@@ -101,6 +128,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         R.color.status_rejected_text
                     )
                     binding.btnAcceptPrice.visibility = View.GONE
+                    binding.btnHidePosting.visibility = View.GONE
                 }
 
                 else -> {
@@ -147,10 +175,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                         }
                     }
                 }
-
-
             }
-
             // Hide Price
             binding.llRoomPricePerNight.visibility = View.GONE
 
@@ -168,6 +193,15 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
         }
     }
 
+    fun updateItemStatus(position: Int, newStatus: String) {
+        val currentList = differ.currentList.toMutableList()
+
+        if (position >= 0 && position < currentList.size) {
+            val updatedItem = currentList[position].copy(status = newStatus) // Cập nhật trạng thái
+            currentList[position] = updatedItem // Thay thế item trong danh sách
+            submitList(currentList) // Cập nhật danh sách trong Adapter
+        }
+    }
     override fun differCallBack(): DiffUtil.ItemCallback<MyExchangePostingsResponse.Content> {
         return object : DiffUtil.ItemCallback<MyExchangePostingsResponse.Content>() {
             override fun areItemsTheSame(

@@ -1,22 +1,31 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
@@ -25,7 +34,9 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingDetailBinding
+import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,11 +44,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPostingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyPostingDetailBinding
-    private lateinit var imagePostingAdapter: ImagePostingAdapter
+    private var imagePostingAdapter = ImagePostingAdapter()
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val viewModel: MyPostingDetailViewModel by viewModels()
 
+    private var featuresAdapter = RoomAmenitiesAdapter()
+    private var entertainmentAdapter = RoomAmenitiesAdapter()
+    private var kitchenAdapter = RoomAmenitiesAdapter()
+    private var policyAdapter = RoomAmenitiesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +67,23 @@ class MyPostingDetailActivity : BaseActivity() {
             insets
         }
         initAdapter()
-        setAmenitiesListTimeshare()
+
 
         binding.customToolbar.onStartIconClick = {
             finish()
         }
         binding.shimmerViewContainer.startShimmer()
 
+    }
+
+    private fun initAdapter() {
+        facilityAdapter.submitList(listOf())
+        imagePostingAdapter.submitList(listOf())
+
+        featuresAdapter.submitOriginalList(listOf())
+        entertainmentAdapter.submitOriginalList(listOf())
+        kitchenAdapter.submitOriginalList(listOf())
+        policyAdapter.submitOriginalList(listOf())
     }
 
     private fun getIntentValue() {
@@ -110,11 +135,6 @@ class MyPostingDetailActivity : BaseActivity() {
     }
 
     private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
-        // Hide Unessary View
-
-        binding.includePackagePosting.apply {
-            tvPackageDescription.visibility = View.GONE
-        }
         // Image List
         bindDataListImage(myRentalPostingDetailResponse.imageUrls)
 
@@ -140,55 +160,48 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Checkin Date, Check out Date
         binding.apply {
-            tvCheckInDate.text = Constant.formatDateByLocale(
+            tvCheckinDate.text = Constant.getFormattedDate(
                 myRentalPostingDetailResponse.checkinDate,
                 this@MyPostingDetailActivity
             )
-            tvCheckOutDate.text = Constant.formatDateByLocale(
+            tvCheckinDayOfWeek.text =
+                Constant.getDayOfWeek(
+                    myRentalPostingDetailResponse.checkinDate,
+                    this@MyPostingDetailActivity
+                )
+
+
+            tvCheckoutDate.text = Constant.getFormattedDate(
                 myRentalPostingDetailResponse.checkoutDate,
                 this@MyPostingDetailActivity
             )
-            tvNights.text = "${myRentalPostingDetailResponse.nights} đêm"
+            tvCheckoutDayOfWeek.text =
+                Constant.getDayOfWeek(
+                    myRentalPostingDetailResponse.checkoutDate,
+                    this@MyPostingDetailActivity
+                )
         }
 
         // BindDAta Package
-        bindPackageData(myRentalPostingDetailResponse.rentalPackageName)
-
-        // Set Unit Type Of Posting
+        // Package Info
         binding.apply {
-            tvRoomName.text =
-                "Chi Tiết Phòng | ${myRentalPostingDetailResponse.unitType.title} #${myRentalPostingDetailResponse.roomName}"
-
-            // Bath
-            tvNumBath.text = myRentalPostingDetailResponse.unitType.bathrooms.toString()
-            tvBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
-
-            // Beds
-            val unitTypeMap = mapOf(
-                "bedsFull" to myRentalPostingDetailResponse.unitType.bedsFull,
-                "bedsKing" to myRentalPostingDetailResponse.unitType.bedsKing,
-                "bedsSofa" to myRentalPostingDetailResponse.unitType.bedsSofa,
-                "bedsMurphy" to myRentalPostingDetailResponse.unitType.bedsMurphy,
-                "bedsQueen" to myRentalPostingDetailResponse.unitType.bedsQueen,
-                "bedsTwin" to myRentalPostingDetailResponse.unitType.bedsTwin
-            )
-            tvNumBed.text = myRentalPostingDetailResponse.unitType.bedrooms.toString()
-            tvBed.text = displayBedsInfo(unitTypeMap)
-
-            // Kitchen
-            tvKitchen.text = myRentalPostingDetailResponse.unitType.kitchen
-            tvNumKitchen.text = 1.toString()
-
-            // Max Guest
-            tvNumPerson.text = myRentalPostingDetailResponse.unitType.sleeps.toString()
-            tvPerson.text =
-                "${myRentalPostingDetailResponse.unitType.sleeps.toString()} người lớn tối đa"
-
-            // Room Policy
-            // Do IT Later
-
+            if (myRentalPostingDetailResponse.rentalPackageName != null) {
+                val rentalPackageEnum =
+                    RentalPackageEnum.getPackageByName(myRentalPostingDetailResponse.rentalPackageName)
+                if (rentalPackageEnum != null) {
+                    tvPackageName.text = rentalPackageEnum?.name
+                    if (myRentalPostingDetailResponse.expiredDate != null) {
+                        tvExpiredDay.text = Constant.formatDateByLocale(
+                            myRentalPostingDetailResponse.expiredDate ?: "2024-12-31",
+                            binding.root.context
+                        )
+                    }
+                }
+            }
         }
 
+        // Set Unit Type Of Posting
+        bindDataUnitType(myRentalPostingDetailResponse)
         // Cancel Policy
         binding.apply {
             if (myRentalPostingDetailResponse.cancelType.toString() == "null") {
@@ -319,87 +332,153 @@ class MyPostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindPackageData(packageName: String) {
-        val rentalPackageEnum = RentalPackageEnum.getPackageByName(packageName)
 
+    private fun bindDataUnitType(data: MyRentalPostingDetailResponse) {
+        // Set Unit Type Of Posting
+        binding.includeUnitType.apply {
+            tvRoomName.text = data.roomName
+            tvRoomType.text = data.unitType.title
 
-        when (rentalPackageEnum) {
+            // Bath
+            tvNumBath.text = data.unitType.bathrooms.toString()
+            tvBed.text = data.unitType.bedrooms.toString()
 
-            RentalPackageEnum.BASIC_SERVICE.packageModel -> {
-                binding.includePackagePosting.apply {
-                    tvPackageName.text = rentalPackageEnum.name
-                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
-                }
+            // Beds
+            val unitTypeMap = mapOf(
+                "bedsFull" to data.unitType.bedsFull,
+                "bedsKing" to data.unitType.bedsKing,
+                "bedsSofa" to data.unitType.bedsSofa,
+                "bedsMurphy" to data.unitType.bedsMurphy,
+                "bedsQueen" to data.unitType.bedsQueen,
+                "bedsTwin" to data.unitType.bedsTwin
+            )
+            tvNumBed.text = data.unitType.bedrooms.toString()
+            tvBed.text = displayBedsInfo(unitTypeMap)
+
+            // Kitchen
+            tvKitchen.text = data.unitType.kitchen
+            tvNumKitchen.text = 1.toString()
+
+            // Max Guest
+            tvNumPerson.text = data.unitType.sleeps.toString()
+            tvPerson.text =
+                "${data.unitType.sleeps.toString()} người lớn tối đa"
+
+            // Room Policy
+            // Do IT Later
+            // Unit Type Detail
+            btnViewDetail.setOnClickListener {
+                val unitTypeBase = mapToUnitTypeBase(data.unitType, data.unitTypeAmenities)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
+                unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
-
-            RentalPackageEnum.ADVANCED_SERVICE.packageModel -> {
-                binding.includePackagePosting.apply {
-                    tvPackageName.text = rentalPackageEnum.name
-                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
-                }
-            }
-
-            RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
-                binding.includePackagePosting.apply {
-                    tvPackageName.text = rentalPackageEnum.name
-                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
-                }
-            }
-
-            RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
-                binding.includePackagePosting.apply {
-                    tvPackageName.text = rentalPackageEnum.name
-                    tvPackagePrice.text = "${formatPrice(rentalPackageEnum.price)} VND"
-                }
-            }
-
-        }
-        binding.includePackagePosting.root.visibility = View.VISIBLE
-
-
-    }
-
-    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
-        binding.apply {
-            llStatusContainer.visibility = View.VISIBLE
-            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
-            tvStatus.setTextColor(context.getColor(textColorRes))
-            cardStatus.setStrokeColor(context.getColor(textColorRes))
         }
     }
 
-    private fun initAdapter() {
-        facilityAdapter.submitList(listOf())
-        imagePostingAdapter = ImagePostingAdapter()
+    private fun bindDataAmenities(data: MyExchangePostingDetailResponse) {
+        featuresAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
+        entertainmentAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
+        kitchenAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
+        policyAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
+
+
+        val binding = binding.includeAmenities
+        binding.rvFeatures.apply {
+            featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES)
+            layoutManager = FlexboxLayoutManager(this@MyPostingDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = featuresAdapter
+        }
+
+        binding.rvAmenitiesEntertainment.apply {
+            entertainmentAdapter.filterByAmenityTypes(AmenityType.ENTERTAINMENT)
+            layoutManager = FlexboxLayoutManager(this@MyPostingDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP            // Cho phép các mục xuống dòng nếu không đủ chỗ
+            }
+            adapter = entertainmentAdapter
+        }
+
+        binding.rvKitchen.apply {
+            kitchenAdapter.filterByAmenityTypes(AmenityType.KITCHEN)
+            layoutManager = FlexboxLayoutManager(this@MyPostingDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = kitchenAdapter
+        }
+
+        binding.rvPolicy.apply {
+            policyAdapter.filterByAmenityTypes(AmenityType.POLICY)
+            layoutManager = FlexboxLayoutManager(this@MyPostingDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = policyAdapter
+        }
+
+
     }
+
 
     private fun bindDataListImage(imageList: List<String>) {
+        // List Destination
+
+        val manager = SpannedGridLayoutManager(
+            object : SpannedGridLayoutManager.GridSpanLookup {
+                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                    // Conditions for 2x2 items
+                    return when (position) {
+                        0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                        1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                        else -> {
+                            SpannedGridLayoutManager.SpanInfo(1, 1)
+                        }
+                    }
+                }
+            },
+            4,  // number of columns
+            1f // how big is default item
+        )
+
         imagePostingAdapter.submitList(imageList)
-        binding.viewPager.apply {
-            adapter = imagePostingAdapter
+        if (imageList.size == 1) {
+            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.recyclerViewResortImage.apply {
+                adapter = imagePostingAdapter
+                layoutManager = layoutManagerCheck
+            }
+        } else {
+            binding.recyclerViewResortImage.apply {
+                adapter = imagePostingAdapter
+                layoutManager = manager
+            }
         }
-        binding.indicator.setViewPager(binding.viewPager)
 
-        // Set Image Auto Scroll, Auto Scroll Time = 3s
-        autoScrollHelper.setupAutoScroll(binding.viewPager)
+        imagePostingAdapter.onItemClickListener = { position ->
+            val intent = Intent(this@MyPostingDetailActivity, ImageListActivity::class.java)
+            intent.putExtra(Constant.IMAGE_POSITION, position)
+            intent.putStringArrayListExtra(
+                Constant.IMAGE_LIST,
+                ArrayList(imageList)
+            )
+            startActivity(intent)
+        }
 
-        // Set Action for Button Next Page and Back To
-        binding.ivNextPage.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
-        }
-        binding.icBackTo.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
-        }
-    }
-
-    private fun setAmenitiesListTimeshare() {
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
-        flexboxLayoutManager.flexDirection = FlexDirection.ROW
-        flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
-        binding.rvResortFacilities.let {
-            it.layoutManager = flexboxLayoutManager
-            it.adapter = facilityAdapter
-        }
     }
 
     override fun onDestroy() {
@@ -423,6 +502,25 @@ class MyPostingDetailActivity : BaseActivity() {
         }.joinToString(", ")
 
         return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+
+    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+        binding.apply {
+            llStatusContainer.visibility = View.VISIBLE
+            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            tvStatus.setTextColor(context.getColor(textColorRes))
+            cardStatus.setStrokeColor(context.getColor(textColorRes))
+        }
+    }
+
+    fun mapToAmenitiesModel(amenities: List<MyExchangePostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+        return amenities.map { amenity ->
+            AmenitiesModel(
+                name = amenity.name,
+                type = amenity.type,
+                isChecked = false // Mặc định là chưa được chọn
+            )
+        }
     }
 
     override fun onBackPressed() {

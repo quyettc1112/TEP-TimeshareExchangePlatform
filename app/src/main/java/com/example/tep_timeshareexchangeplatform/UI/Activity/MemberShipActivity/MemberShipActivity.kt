@@ -3,14 +3,18 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CreateCustomerDialog.DialogUpdateCustomer
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
@@ -60,7 +64,6 @@ class MemberShipActivity : BaseActivity() {
     }
 
     private fun observeData() {
-
         // Check Call Create Customer
         memberShipViewModel.createCustomerResponse.observe(this) {
             when (it.status) {
@@ -70,15 +73,7 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    MotionToast.createColorToast(
-                        this,
-                        "Success",
-                        "Create Customer Success",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showSuccessToast("Tạo tài khoản thành công")
                     memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
                 }
 
@@ -122,27 +117,11 @@ class MemberShipActivity : BaseActivity() {
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     if (it.message.toString().contains("404")) {
-                        val dialogFragment = MemberInfoDialog.newInstance()
-                        dialogFragment.show(supportFragmentManager, dialogFragment.tag)
-                        dialogFragment.setOnClickRequestButton(object :
-                            MemberInfoDialog.OnClickRequestButton {
-                            override fun onClickRequestButton(customerDTO: CustomerDTO) {
-                                // Call API Create Customer
-                                memberShipViewModel.callCreateCustomer(tokenManager.getAccessToken()
-                                    .toString(), customerDTO)
-                            }
-                        })
+                        val dialogUpdateCustomer = showCustomerDialog()
+                        dialogUpdateCustomer.show()
                     } else {
                         Log.d("CheckError", it.message.toString() + " " + it.message.toString())
-                        MotionToast.createColorToast(
-                            this,
-                            "Error",
-                            it.message.toString(),
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
+                        showErrorToast(it.message.toString())
                     }
                 }
             }
@@ -180,26 +159,56 @@ class MemberShipActivity : BaseActivity() {
         })
     }
 
+    private fun callCreateCustomer(customerDTO: CustomerDTO){
+        memberShipViewModel.callCreateCustomer(tokenManager.getAccessToken().toString(), customerDTO)
+    }
+    private fun callGetCustomerInfo() {
+        memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+    }
+
+    private fun showCustomerDialog(): MemberInfoDialog {
+        val dialogUpdateCustomer =
+            MemberInfoDialog(this, object : MemberInfoDialog.ConfirmCallback {
+                override fun positiveAction(customerDTO: CustomerDTO) {
+                   callCreateCustomer(customerDTO)
+                }
+            })
+        return dialogUpdateCustomer
+    }
+
     private fun clickRequestPaymentButton() {
         binding.ctrRequestButton.setOnClickListener {
             val user = JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken()!!)
             if (tokenManager.getAccessToken() != null && user != null) {
-                memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
+                callGetCustomerInfo()
             } else {
-                MotionToast.createColorToast(
-                    this,
-                    "Error",
-                    "Token is null",
-                    MotionToastStyle.ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
+                showErrorToast("Token không hợp lệ ")
             }
         }
     }
 
-
+    private fun showSuccessToast(message: String) {
+        MotionToast.createColorToast(
+            this,
+            "Thành Công",
+            message,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_bold)
+        )
+    }
+    private fun showErrorToast(message: String) {
+        MotionToast.createColorToast(
+            this,
+            "Error",
+            message,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_bold)
+        )
+    }
 
 
 }

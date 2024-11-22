@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -49,5 +50,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private val _blogList = MutableLiveData<Resource<BlogResponse>>()
+    val blogList: MutableLiveData<Resource<BlogResponse>> =
+        _blogList
+
+    fun getBlogList( page: Int, size: Int, title: String) {
+        viewModelScope.launch {
+            _blogList.postValue(Resource.loading(null))
+            val response =
+                publicPostingAPIRepository.getBlog(page, size, title)
+            _blogList.postValue(response)
+        }
+    }
 
 }

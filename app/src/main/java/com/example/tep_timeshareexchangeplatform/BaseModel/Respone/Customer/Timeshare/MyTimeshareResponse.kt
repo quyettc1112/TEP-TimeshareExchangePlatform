@@ -32,7 +32,8 @@ data class MyTimeshareResponse(
     data class Content(
         @SerializedName("timeShareId") val timeShareId: Int,
         @SerializedName("resortName") val resortName: String,
-        @SerializedName("roomName") val roomName: String,
+        @SerializedName("resortImage") val resortImage: String,
+        @SerializedName("roomCode") val roomCode: String,
         @SerializedName("bathRoom") val bathRoom: Int,
         @SerializedName("bedRooms") val bedRooms: Int,
         @SerializedName("startDate") val startDate: String,
@@ -40,6 +41,7 @@ data class MyTimeshareResponse(
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
             parcel.readInt(),
+            parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readInt(),
@@ -52,7 +54,8 @@ data class MyTimeshareResponse(
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             parcel.writeInt(timeShareId)
             parcel.writeString(resortName)
-            parcel.writeString(roomName)
+            parcel.writeString(resortImage)
+            parcel.writeString(roomCode)
             parcel.writeInt(bathRoom)
             parcel.writeInt(bedRooms)
             parcel.writeString(startDate)
@@ -72,6 +75,7 @@ data class MyTimeshareResponse(
                 return arrayOfNulls(size)
             }
         }
+
 
     }
 

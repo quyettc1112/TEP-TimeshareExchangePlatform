@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -62,6 +63,9 @@ class MyTimeshareActivity : BaseActivity() {
         observeData()
         setEventItemClick()
 
+        binding.toolbar.onStartIconClick = {
+            finish()
+        }
     }
 
     private fun getIntentValue() {
@@ -79,19 +83,33 @@ class MyTimeshareActivity : BaseActivity() {
             it.adapter = myTimeshareAdapter
             it.layoutManager = LinearLayoutManager(this)
         }
+        // Scroll Listener
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastCompletelyVisibleItem =
+                    layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                val totalPages = myTimeshareViewModel.myTimeshareList.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 1) && myTimeshareViewModel.currentPage.value!! < totalPages - 1) {
+                    myTimeshareViewModel.incrementCurrentPage()
+                }
+            }
+        })
     }
 
     private fun observeData() {
         myTimeshareViewModel.myTimeshareList.observe(this) { resources ->
             when (resources.status) {
                 Status.LOADING -> {
-                    showLoadingWaiting(true)
+                    binding.animationView.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
-                    hideLoadingWaiting()
+                    binding.animationView.visibility = View.GONE
                     resources.data?.let {
-                        if (it.content.isEmpty()) {
+                        if (it.totalPages == 0) {
                             showInfoDialog(
                                 this,
                                 "Bạn chưa có Timeshare nào",
@@ -102,14 +120,15 @@ class MyTimeshareActivity : BaseActivity() {
                                 }
                             )
                         } else {
-                            myTimeshareAdapter.submitList(it.content)
+                            myTimeshareViewModel.loadMoreMyTimeshareList(it.content)
+                            myTimeshareAdapter.submitList(myTimeshareViewModel.getCurrentMyTimeshareList())
                         }
 
                     }
                 }
 
                 Status.ERROR -> {
-                    hideLoadingWaiting()
+                    binding.animationView.visibility = View.GONE
                     if (resources.message!!.contains("404")) {
                         showInfoDialog(
                             this,
@@ -135,6 +154,10 @@ class MyTimeshareActivity : BaseActivity() {
             }
         }
 
+        myTimeshareViewModel.currentPage.observe(this) {
+            myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), it, 15)
+        }
+
 
     }
 
@@ -145,7 +168,6 @@ class MyTimeshareActivity : BaseActivity() {
             intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, it.timeShareId)
             startActivity(intent)
         }
-
         myTimeshareAdapter.onSelectExchangeItemClick = {
             returnSelectedTimeshare(it.timeShareId)
         }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <size android:height="2dp" /> <!-- Độ dày của chỉ báo -->
+    <solid android:color="@color/blue_btn_search" /> <!-- Màu sắc của chỉ báo -->
+</shape>

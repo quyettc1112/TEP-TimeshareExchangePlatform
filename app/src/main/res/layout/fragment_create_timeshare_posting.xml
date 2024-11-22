@@ -1,0 +1,911 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_background_F9"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
+
+        <!--// Content-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--//Step 0. Timeshare Resort Location -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:id="@+id/llResortLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <!-- Title Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn đang cho thuê Timeshare tại:"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <!-- Text Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <!-- Location Title -->
+                            <TextView
+                                android:id="@+id/tvResortName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="Hyatt Hig Sierra Lodge asda asdasdas"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <!-- Location Subtitle -->
+                            <TextView
+                                android:id="@+id/tvLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="Incline Village, Nevadadasdasd"
+                                android:textColor="@color/gray_400"
+                                android:textSize="14sp" />
+
+                            <!-- Change Button -->
+                            <TextView
+                                android:id="@+id/tvChangeLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="✏️ Thay đổi"
+                                android:textColor="@color/teal_700" />
+                        </LinearLayout>
+
+                        <!-- Image Section -->
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            app:cardCornerRadius="12dp">
+
+                            <ImageView
+                                android:id="@+id/ivResortImage"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/im_meterial_da_nang" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_select_resort_location_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/anim_select_resort" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_select_resort_location"
+                        android:layout_width="160dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="15dp"
+                        android:drawableStart="@drawable/baseline_search_24_white"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/blue_see_more"
+                        android:fontFamily="@font/inter_bold"
+                        android:padding="5dp"
+                        android:text="Tìm Kiếm Resort"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Chọn Resort có Timeshare của bạn để Trao Đổi hoặc Cho Thuê"
+                        android:textAlignment="center" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--//Step 1. Select Your Room-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ll_select_room_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:visibility="invisible"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!--// Title Text-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/crl_unit_type_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/i_blue_light"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/titleTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxWidth="300dp"
+                            android:padding="5dp"
+                            android:text="1. Thông tin phòng của bạn"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Yes Distribution-->
+                    <include
+                        android:id="@+id/include_unit_type_yes"
+                        layout="@layout/include_yes_distribution"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="visible" />
+
+                    <!--// No Distribution-->
+                    <include
+                        android:id="@+id/include_unit_type_no"
+                        layout="@layout/include_no_distribution"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone" />
+
+                    <!--// Option NO Button-->
+                    <LinearLayout
+                        android:id="@+id/ll_option_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
+
+                        <TextView
+                            android:id="@+id/tv_option_no"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="7"
+                            android:text="Không có phòng của bạn?\nKhai báo thông tin phòng với chúng tôi" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_change_option"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="3"
+                            android:text="Khai báo"
+                            android:textAllCaps="false"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!--// Select Check in and Check out date-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/crl_day_check_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:visibility="gone"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--// Title Text-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/crl_day_check_in_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/blue_header_section"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxWidth="300dp"
+                            android:padding="5dp"
+                            android:text="2. Ngày nhận phòng, trả phòng"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Content Unit Type-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/crl_day_check_in_info">
+
+                        <!-- Available Start Year -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="Năm bắt đầu cho thuê &amp; trao đổi"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_light"
+                                    android:text="Thời điểm bắt đầu hiệu lực giao dịch cho thuê hoặc trao đổi Timeshare của bạn"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="3"
+                                app:strokeColor="@color/blue_btn_search"
+                                app:strokeWidth="1dp">
+
+                                <Spinner
+                                    android:id="@+id/sp_valid_star_year"
+                                    style="@style/CustomSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:spinnerMode="dialog" />
+
+                            </com.google.android.material.card.MaterialCardView>
+
+
+                        </LinearLayout>
+
+                        <!-- Available Year -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="Năm kết thúc hiệu lực Timeshare"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_light"
+                                    android:text="Thời điểm hết hạn sử dụng Timeshare."
+                                    android:textColor="@android:color/black"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="3"
+                                app:strokeColor="@color/blue_btn_search"
+                                app:strokeWidth="1dp">
+
+                                <Spinner
+                                    android:id="@+id/sp_valid_end_year"
+                                    style="@style/CustomSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:spinnerMode="dialog" />
+
+                            </com.google.android.material.card.MaterialCardView>
+
+
+                        </LinearLayout>
+
+
+                        <!--// Ngày nhận phòng-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Ngày nhận phòng, trả phòng của bạn"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_light"
+                            android:text="Ngày nhận phòng, trả phòng của bạn sẽ được cố định trong suốt thời gian sử dụng Timeshare còn hiệu lưc."
+                            android:textColor="@android:color/black"
+                            android:textSize="10sp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_check_in_out_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <!-- Check-in Date Section -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="4.5"
+                                android:background="@drawable/ripple_effect_white"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <!-- Label for Check-in Date -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:maxLines="1"
+                                        android:text="Ngày Nhận Phòng"
+                                        android:textColor="@color/gray_text"
+                                        android:textSize="12sp" />
+
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/ic_check_in" />
+
+
+                                </LinearLayout>
+
+
+                                <!-- Check-in Date -->
+                                <TextView
+                                    android:id="@+id/tv_checkin_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <!-- Check-in Day -->
+
+                                <TextView
+                                    android:id="@+id/tv_checkin_dayOfWeek"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/inter_light"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <!-- Arrow Icon -->
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
+
+                            <!-- Check-out Date Section -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="4.5"
+                                android:background="@drawable/ripple_effect_white"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <!-- Label for Check-in Date -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:maxLines="1"
+                                        android:text="Ngày Trả Phòng"
+                                        android:textColor="@color/gray_text"
+                                        android:textSize="12sp" />
+
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/ic_check_out" />
+
+                                </LinearLayout>
+
+                                <!-- Check-out Date -->
+                                <TextView
+                                    android:id="@+id/tv_checkout_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/inter_bold"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <!-- Check-out Day -->
+                                <TextView
+                                    android:id="@+id/tv_checkout_dayOfWeek"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/inter_light"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Select Date Button -->
+                        <LinearLayout
+                            android:id="@+id/btn_select_check_in_out_date"
+                            android:clickable="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="@drawable/ripple_effect"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp">
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/baseline_date_range_24"
+                                android:contentDescription="Icon chọn ngày"
+                                android:layout_marginEnd="8dp" />
+
+                            <!-- Text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Chọn Ngày"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                        <!-- Nights Count Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Nights Label -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Số đêm"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp" />
+
+                            <!-- Nights Count Field -->
+                            <TextView
+                                android:id="@+id/etNightsCount"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:background="@color/primary_background_F9"
+                                android:enabled="false"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="0"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_save_day"
+                            android:layout_width="130dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/ripple_effect"
+                            android:backgroundTint="@color/blue_btn_search"
+                            android:drawableStart="@drawable/baseline_save_24"
+                            android:paddingStart="15dp"
+                            android:text="Lưu thông tin"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12dp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!--// List Amenities-->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/crl_content_amenities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:visibility="gone"
+                app:cardCornerRadius="17dp"
+                app:cardElevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--// Title Text-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/crl_amenities_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/blue_header_section"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxWidth="300dp"
+                            android:padding="5dp"
+                            android:text="4. Tiện ích phòng của bạn"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--// Content Amenti Type-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/crl_amenities_info">
+                        <!--// List Fearure-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Tiện Nghi"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvAmenities" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFeatures"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+                        <!--// List of Amenities Entertaemnt-->
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Giải trí"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvAmenities" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvAmenities_entertainment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+                        <!--// List of Amenities Kichen-->
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Bếp"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvKitchen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+
+                        <!--// List of Policy-->
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Chính sách"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvAmenities_entertainment" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPolicy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp">
+
+                            <!--// Edit  Button-->
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_edit_amenities"
+                                android:layout_width="130dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/ripple_effect"
+                                android:drawableStart="@drawable/baseline_mode_edit_24_white"
+                                android:paddingStart="15dp"
+                                android:text="Chỉnh Sửa"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <!--// Save Button-->
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_save_amenities"
+                                android:layout_width="130dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/ripple_effect"
+                                android:backgroundTint="@color/blue_btn_search"
+                                android:drawableStart="@drawable/baseline_save_24"
+                                android:paddingStart="15dp"
+                                android:text="Lưu thông tin"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <LinearLayout
+                android:id="@+id/btn_next"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/blue_btn_search"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <!-- Icon -->
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_sent"
+                    android:contentDescription="Icon chọn ngày"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Gửi yêu cầu tạo Timeshare"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+
+
+            <!--// Do Nothing-->
+            <LinearLayout
+                android:id="@+id/ll_do_nothing"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:orientation="vertical" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

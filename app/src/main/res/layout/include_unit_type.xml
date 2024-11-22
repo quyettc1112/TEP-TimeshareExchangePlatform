@@ -38,21 +38,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tv_title_unit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:fontFamily="@font/inter_bold"
-                    android:maxLines="1"
-                    android:text="Chi Tiết Phòng"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- Room Name -->
+                <!-- Room Type -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,12 +47,18 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/tv_title_unit"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:text="Tên Phòng"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
+
+                        android:fontFamily="@font/inter_bold"
+                        android:maxLines="1"
+                        android:text="Chi Tiết Phòng"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_room_name"
@@ -78,6 +70,8 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+
 
                 <!-- Room Type -->
                 <LinearLayout

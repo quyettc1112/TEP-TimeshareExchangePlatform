@@ -6,9 +6,16 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Bl
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.DestinationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FAQModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.NotificationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.text.DecimalFormat
@@ -39,6 +46,9 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val RESORT_NAME = "resortName"
+        const val RESORT_ID = "resortId"
+
         const val SEARCH_LOCATION = "searchLocation"
         const val SEARCH_DATE = "searchDate"
         const val SEARCH_ROOM = "searchRoom"
@@ -46,6 +56,8 @@ class Constant {
         const val FRAGMENT_HOME_CODE = "FH"
         const val ACTIVITY_RENTAL_POSTING_CODE = "ARP"
 
+        const val IMAGE_POSITION = "imagePosition"
+        const val IMAGE_LIST = "imageList"
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
@@ -54,6 +66,9 @@ class Constant {
         const val PAYMENT_URL = "paymentUrl"
 
         const val PAYMENT_SUCCESS = "paymentSuccess"
+
+        const val AVG_RATING = "avgRating"
+        const val TOTAL_RATING = "totalRating"
 
         const val PAYMENT_SUCCESS_PACKAGE = "paymentSuccessPackage"
 
@@ -65,6 +80,9 @@ class Constant {
 
         const val DEFAULT_POSTING_ID = "postingId"
         const val DEFAULT_MY_POSTING_ID = "myPostingId"
+        const val DEFAULT_MY_EXCHANGE_REQUEST_ID = "id"
+        const val DEFAULT_BLOG_ID= "postingId"
+        const val DEFAULT_EXCHANGE_REQUEST_ON_POST= "postingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
         const val REQUEST_GET_MY_TIMESHARE = "requestGetMyTimeshare"
 
@@ -81,6 +99,7 @@ class Constant {
 
         const val USER_LOGIN_STATE = "userLoginState"
         const val CUSTOMER_INFO = "customerInfo"
+        const val PROFILE_INFO = "profileInfo"
 
         const val POSTING_TYPE_FLOW = "postingTypeFlow"
         const val RENTAL_POSTING_FLOW = "rentalPostingFlow"
@@ -143,6 +162,7 @@ class Constant {
             return dayFormat.format(date)
         }
 
+
         fun getFormattedDate(dateString: String, context: Context): String {
             // Input date format
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
@@ -163,6 +183,160 @@ class Constant {
         }
 
 
+        fun getFormattedDateString(dateString: String, context: Context): String {
+            return try {
+                // Input format từ ExchangeOfResortViewModel (yyyy-MM-dd)
+                val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+                val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+                // Lấy ngôn ngữ người dùng từ PreferenceHelper
+                val preferenceHelper = PreferenceHelper(context)
+                val languageCode = preferenceHelper.getLanguage()
+
+                // Output format dựa trên ngôn ngữ
+                val outputDateFormat = if (languageCode == "vi") {
+                    SimpleDateFormat("dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+                } else {
+                    SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH)
+                }
+
+                outputDateFormat.format(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ""
+            }
+        }
+
+        fun getDayOfWeekString(dateString: String, context: Context): String {
+            // Input date format
+            val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Get saved language preference
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Format for day of the week
+            val dayFormat = if (languageCode == "vi") {
+                SimpleDateFormat("EEEE", Locale.forLanguageTag("vi"))
+            } else {
+                SimpleDateFormat("EEEE", Locale.ENGLISH)
+            }
+
+            return dayFormat.format(date)
+        }
+
+        fun mapExchangeToUnitTypeBase(
+            exchangeDetail: MyExchangePostingDetailResponse
+        ): UnitTypeBase {
+            return UnitTypeBase(
+                id = exchangeDetail.unitType.id,
+                title = exchangeDetail.unitType.title,
+                area = exchangeDetail.unitType.area,
+                bathrooms = exchangeDetail.unitType.bathrooms,
+                bedrooms = exchangeDetail.unitType.bedrooms,
+                bedsFull = exchangeDetail.unitType.bedsFull,
+                bedsKing = exchangeDetail.unitType.bedsKing,
+                bedsSofa = exchangeDetail.unitType.bedsSofa,
+                bedsMurphy = exchangeDetail.unitType.bedsMurphy,
+                bedsQueen = exchangeDetail.unitType.bedsQueen,
+                bedsTwin = exchangeDetail.unitType.bedsTwin,
+                buildingsOption = exchangeDetail.unitType.buildingsOption,
+                price = 0, // Giá chưa được định nghĩa trong API này, có thể điều chỉnh tùy logic
+                description = exchangeDetail.unitType.description,
+                kitchen = exchangeDetail.unitType.kitchen,
+                photos = exchangeDetail.unitType.photos,
+                resortId = exchangeDetail.resortId,
+                sleeps = exchangeDetail.unitType.sleeps,
+                view = exchangeDetail.unitType.view,
+                isActive = exchangeDetail.active,
+                unitTypeAmenitiesDTOS = exchangeDetail.unitTypeAmenities.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = true // Giả sử tất cả tiện ích đều active
+                    )
+                }
+            )
+        }
+        fun mapToUnitTypeBase(
+            unitType: MyRentalPostingDetailResponse.UnitType,
+            unitTypeAmenities: List<MyRentalPostingDetailResponse.UnitTypeAmenity>
+        ): UnitTypeBase {
+            return UnitTypeBase(
+                id = unitType.id,
+                title = unitType.title,
+                area = unitType.area,
+                bathrooms = unitType.bathrooms,
+                bedrooms = unitType.bedrooms,
+                bedsFull = unitType.bedsFull,
+                bedsKing = unitType.bedsKing,
+                bedsSofa = unitType.bedsSofa,
+                bedsMurphy = unitType.bedsMurphy,
+                bedsQueen = unitType.bedsQueen,
+                bedsTwin = unitType.bedsTwin,
+                buildingsOption = unitType.buildingsOption,
+                price = 0, // Giá truyền vào
+                description = unitType.description,
+                kitchen = unitType.kitchen,
+                photos = unitType.photos,
+                resortId = null, // Nếu resortId không có trong dữ liệu UnitType
+                sleeps = unitType.sleeps,
+                view = unitType.view,
+                isActive = false, // Trạng thái hoạt động
+                unitTypeAmenitiesDTOS = unitTypeAmenities.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = null // Đặt giá trị nếu cần xử lý theo logic cụ thể
+                    )
+                }
+            )
+        }
+        fun mapUnitTypeModelToUnitTypeBase(unitTypeModel: UnitTypeModel): UnitTypeBase {
+            return UnitTypeBase(
+                id = unitTypeModel.id,
+                title = unitTypeModel.title,
+                area = unitTypeModel.area,
+                bathrooms = unitTypeModel.bathrooms,
+                bedrooms = unitTypeModel.bedrooms,
+                bedsFull = unitTypeModel.bedsFull,
+                bedsKing = unitTypeModel.bedsKing,
+                bedsSofa = unitTypeModel.bedsSofa,
+                bedsMurphy = unitTypeModel.bedsMurphy,
+                bedsQueen = unitTypeModel.bedsQueen,
+                bedsTwin = unitTypeModel.bedsTwin,
+                buildingsOption = unitTypeModel.buildingsOption,
+                price = unitTypeModel.price,
+                description = unitTypeModel.description,
+                kitchen = unitTypeModel.kitchen,
+                photos = unitTypeModel.photos,
+                resortId = unitTypeModel.resortId,
+                sleeps = unitTypeModel.sleeps,
+                view = unitTypeModel.view,
+                isActive = unitTypeModel.isActive,
+                unitTypeAmenitiesDTOS = unitTypeModel.unitTypeAmenitiesDTOS.map { amenity ->
+                    UnitTypeBase.UnitTypeAmenitiesDTOS(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isActive = amenity.isActive
+                    )
+                }
+            )
+        }
+
+
+
+        private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {
+            // Assuming you're mapping from unitType details for amenities; adjust based on source data
+            return listOf(
+                UnitTypeModel.UnitTypeAmenitiesDTOS(
+                    name = "Sample Amenity", // Replace with actual logic if needed
+                    type = null,
+                    isActive = null
+                )
+            )
+        }
 
 
         val destiantionList = listOf(
@@ -216,6 +390,7 @@ class Constant {
             BlogModel(4, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh"),
             BlogModel(5, R.drawable.im_material_mn, "Flamingo Đại Lải  co rat nhieu gai xinh")
         )
+
         fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
             val bedTypes = listOf(
                 "bedsFull" to "Full",
@@ -233,8 +408,6 @@ class Constant {
 
             return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
         }
-
-
 
 
         // Get list Review
@@ -288,8 +461,6 @@ class Constant {
             "https://storage.googleapis.com/youth-media/post-thumbnails/cPfglgEi3sEmtPwlq1EC1yn6VuxtHJ5NCG5JldFk.png",
             "https://th.bing.com/th/id/OIP.EAKmwEAsPqNb2dvIL6b63AAAAA?rs=1&pid=ImgDetMain",
             "https://everland.vn/upload/projects/original/crystal-holidays-heritage-ly-son-avartar-1666754442.png",
-            "https://media.discordapp.net/attachments/1257221915135840267/1291317831580909568/ic_flc_holiday.png?ex=66ffa8f2&is=66fe5772&hm=68d8deee0a8fc5314bccedc3cc1b965a43f3f21fe7e90516f008983ecc336b7e&=&format=webp&quality=lossless&width=390&height=46"
-
         )
 
         val listFaq = listOf(
@@ -328,26 +499,37 @@ class Constant {
         val listAmenities = listOf(
             AmenitiesModel(
                 name = "Máy pha cà phê",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Lò vi sóng",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Máy rửa chén",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Máy nướng bánh mì",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Tủ lạnh (lớn)",
+                type = "Bếp",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Tủ lạnh (nhỏ)",
+                type = "Bếp",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bếp lò",
+                type = "Bếp",
                 isChecked = false,
             ),
         )
@@ -355,134 +537,233 @@ class Constant {
         val listEntertament = listOf(
             AmenitiesModel(
                 name = "Máy phát DVD",
+                type = "Giải Trí",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Quầy Bar",
+                type = "Giải Trí",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy Chiếu Phim",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Mạng Internet",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Radio",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "TV thông minh",
+                type = "Giải Trí",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Điện thoại bàn",
+                type = "Giải Trí",
                 isChecked = false,
             ),
 
 
             )
+
+        val listFeatures = listOf(
+            AmenitiesModel(
+                name = "Máy Điều Hòa",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Wifi",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Nước nóng/lạnh",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Nước uống miễn phí",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Sân hiên hoặc Ban Công",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bàn ăn",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Bàn làm việc",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+            AmenitiesModel(
+                name = "Máy giặt và máy sấy (trong căn hộ)",
+                type = "Tiện Nghi",
+                isChecked = false,
+            ),
+
+        )
 
         val listPolicy = listOf(
             AmenitiesModel(
                 name = "Không hút thuốc",
+                type = "Chính Sách",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Không thú cưng",
+                type = "Chính Sách",
                 isChecked = false,
             ),
             AmenitiesModel(
                 name = "Không tổ chức tiệc",
+                type = "Chính Sách",
                 isChecked = false,
             ),
-
-
+            AmenitiesModel(
+                name = "Độ tuổi tối thiểu để nhận phòng: 18",
+                type = "Chính Sách",
+                isChecked = false,
             )
 
-        val rentalPackageList = listOf(
-            PackageModel(
-                id = 1,
-                name = "Gói Cơ Bản",
-                price = 149000,
-                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                )
-            ),
-            PackageModel(
-                id = 2,
-                name = "Gói Nâng Cao",
-                price = 179000,
-                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến"
-                )
-            ),
-            PackageModel(
-                id = 3,
-                name = "Gói Premium",
-                price = 199000,
-                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến",
-                    "Hỗ trợ định giá",
-                    "Hỗ trợ quản lý phòng và liên lạc"
-                )
-            ),
-            PackageModel(
-                id = 4,
-                name = "Gói Ủy Quyền",
-                price = 599000,
-                description = "Unwind sẽ hỗ trợ từng bước - từ đăng bài, quảng cáo đến thỏa thuận cho thuê và thanh toán.",
-                duration = 1,
-                type = "Gói Tháng",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                )
-            ),
-        )
-        val exchangePackageList = listOf(
-            PackageModel(
-                id = 1,
-                name = "Gói Cơ Bản",
-                price = 149000,
-                description = "(DIY) Unwind sẽ hỗ trợ quảng cáo và đưa người thuê đến với bạn. Cá nhân bạn sẽ hoàn thiện các hợp đồng và chi tiết.",
-                duration = 1,
-                type = "Basic",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                )
-            ),
-            PackageModel(
-                id = 2,
-                name = "Gói Nâng Cao",
-                price = 199000,
-                description = "(DIY) Sử dụng hệ thống đặt chỗ trực tuyến của Unwind để tăng khả năng tiếp cận người thuê.",
-                duration = 1,
-                type = "Standard",
-                listBenefit = listOf(
-                    "Thông báo qua mail khi có người thuê",
-                    "Gắn thẻ “Bài mới” trong 30 ngày",
-                    "Gán cờ “Được xác minh” của Unwind",
-                    "Được xác minh bới nhân viên của Resort, Khách sạn",
-                    "Cho thuê trực tuyến"
-                )
-            )
+
         )
 
+        fun mapRoomAmenitiesToAmenitiesModel(
+            inputList: List<RoomDetailResponse.RoomAmenity>,
+            amenityType: AmenityType
+        ): List<AmenitiesModel> {
+            return inputList
+                .filter { it.type == amenityType.name } // Lọc theo AmenityType
+                .map { amenity ->
+                    AmenitiesModel(
+                        name = amenity.name,
+                        type = amenity.type,
+                        isChecked = true
+                    )
+                }
+        }
+
+        val notificationList = listOf(
+            NotificationModel(
+                title = "Unwind Thông Báo",
+                typeNotification = NotificationType.NOTIFICATION, // Loại thông báo
+                description = "Chào mừng bạn đến với Unwind! Hãy khám phá và tận hưởng những trải nghiệm tuyệt vời cùng các dịch vụ đẳng cấp mà chúng tôi mang đến.",
+                iconResId = R.raw.anim_notification, // Thay thế bằng icon thực tế của bạn
+                timestamp = "5 phút trước",
+                isRead = false
+            ),
+            NotificationModel(
+                title = "Bạn đã nạp tiền vào ví Unwind",
+                typeNotification = NotificationType.DEPOSIT, // Loại thông báo
+                description = "Bạn đã nạp thành công 1.470.000 VNĐ vào ví Unwind. Nhấn để kiểm tra chi tiết giao dịch của bạn ngay bây giờ.",
+                iconResId = R.raw.anim_deposit, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 phút trước",
+                isRead = false
+            ),
+
+            NotificationModel(
+                title = "Bài Đăng Được Chấp Nhận",
+                typeNotification = NotificationType.ACCEPT_POSTING, // Loại thông báo
+                description = "Bài đăng của bạn đã được duyệt thành công bởi hệ thống. Hãy truy cập ngay để theo dõi lượng quan tâm và quản lý bài viết hiệu quả hơn.",
+                iconResId = R.raw.anim_accept_posting, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 giờ trước",
+                isRead = false
+            ),
+
+            NotificationModel(
+                title = "Bài Đăng Bị Từ Chối",
+                typeNotification = NotificationType.REJECT_POSTING, // Loại thông báo
+                description = "Rất tiếc, bài viết của bạn đã bị từ chối bởi hệ thống. Hãy kiểm tra kỹ nội dung bài viết, chỉnh sửa theo hướng dẫn và gửi lại để được xem xét.",
+                iconResId = R.raw.anim_reject_posting, // Thay thế bằng icon thực tế của bạn
+                timestamp = "20/08/2024",
+                isRead = false
+            ),
+
+            NotificationModel(
+                title = "Đặt Phòng Thành Công",
+                typeNotification = NotificationType.DONE_BOOKING, // Loại thông báo
+                description = "Chúc mừng bạn đã đặt phòng thành công tại Resort Vinpearl. Nhấn vào đây để xem thông tin đầy đủ.",
+                iconResId = R.raw.anim_done_booking, // Thay thế bằng icon thực tế của bạn
+                timestamp = "20/08/2024",
+                isRead = false
+            ),
+
+            NotificationModel(
+                title = "Gia Hạn Gói Thành Viên Thành Công",
+                typeNotification = NotificationType.MEMBERSHIP, // Loại thông báo
+                description = "Bạn đã gia hạn thành công gói Membership của mình. Nhấn để xem thông tin chi tiết về gói thành viên của bạn.",
+                iconResId = R.raw.anim_membership, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 ngày trước",
+                isRead = false
+            ),
+            NotificationModel(
+                title = "Unwind Thông Báo",
+                typeNotification = NotificationType.NOTIFICATION, // Loại thông báo
+                description = "Chào mừng bạn đến với Unwind!! Hãy khám phá và tận hưởng những trải nghiệm tuyệt vời cùng các dịch vụ đẳng cấp mà chúng tôi mang đến.",
+                iconResId = R.raw.anim_notification, // Thay thế bằng icon thực tế của bạn
+                timestamp = "5 phút trước",
+                isRead = true
+            ),
+            NotificationModel(
+                title = "Bạn đã nạp tiền vào ví Unwind",
+                typeNotification = NotificationType.DEPOSIT, // Loại thông báo
+                description = "Bạn đã nạp thành công 1.470.000 VNĐ vào ví Unwind. Nhấn để kiểm tra chi tiết giao dịch của bạn ngay bây giờ.",
+                iconResId = R.raw.anim_deposit, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 phút trước",
+                isRead = true
+            ),
+
+            NotificationModel(
+                title = "Bài Đăng Được Chấp Nhận",
+                typeNotification = NotificationType.ACCEPT_POSTING, // Loại thông báo
+                description = "Bài đăng của bạn đã được duyệt thành công bởi hệ thống. Hãy truy cập ngay để theo dõi lượng quan tâm và quản lý bài viết hiệu quả hơn.",
+                iconResId = R.raw.anim_accept_posting, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 giờ trước",
+                isRead = true
+            ),
+
+            NotificationModel(
+                title = "Bài Đăng Bị Từ Chối",
+                typeNotification = NotificationType.REJECT_POSTING, // Loại thông báo
+                description = "Rất tiếc, bài viết của bạn đã bị từ chối bởi hệ thống. Hãy kiểm tra kỹ nội dung bài viết, chỉnh sửa theo hướng dẫn và gửi lại để được xem xét.",
+                iconResId = R.raw.anim_reject_posting, // Thay thế bằng icon thực tế của bạn
+                timestamp = "20/08/2024",
+                isRead = true
+            ),
+
+            NotificationModel(
+                title = "Đặt Phòng Thành Công",
+                typeNotification = NotificationType.DONE_BOOKING, // Loại thông báo
+                description = "Chúc mừng bạn đã đặt phòng thành công tại Resort Vinpearl. Đừng quên kiểm tra các chi tiết đặt phòng để có trải nghiệm lưu trú tốt nhất. Nhấn vào đây để xem thông tin đầy đủ.",
+                iconResId = R.raw.anim_done_booking, // Thay thế bằng icon thực tế của bạn
+                timestamp = "20/08/2024",
+                isRead = true
+            ),
+
+            NotificationModel(
+                title = "Gia Hạn Gói Thành Viên Thành Công",
+                typeNotification = NotificationType.MEMBERSHIP, // Loại thông báo
+                description = "Bạn đã gia hạn thành công gói Membership của mình. Những quyền lợi ưu đãi sẽ được áp dụng ngay lập tức. Nhấn để xem thông tin chi tiết về gói thành viên của bạn.",
+                iconResId = R.raw.anim_membership, // Thay thế bằng icon thực tế của bạn
+                timestamp = "1 ngày trước",
+                isRead = true
+            )
+        )
 
     }
 }

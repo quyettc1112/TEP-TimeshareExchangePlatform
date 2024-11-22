@@ -4,38 +4,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBinding
 
 class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.Content, MyTimeshareAdapter.MyTimeshareViewHolder>() {
     var isExchange = isExchange
     var onItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     var onSelectExchangeItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
+    var onSelectItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
         BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareBinding>(binding) {
         override fun bind(item: MyTimeshareResponse.Content) {
             // Hide Unessary View
 
             binding.tvResortName.text = item.resortName
-            binding.tvRoomType.text =  item.roomName
+            binding.tvRoomType.text =  item.roomCode
             binding.tvCheckinDate.text = Constant.formatDateByLocale(item.startDate, binding.root.context)
             binding.tvCheckOutDate.text =Constant.formatDateByLocale(item.endDate, binding.root.context)
-           /* Glide.with(binding.root.context).load(item.image).into(binding.imResortImage)*/
+            Glide.with(binding.root.context)
+                .load(item.resortImage)
+                .error(R.drawable.backgroud_earth)
+                .into(binding.imResortImage)
 
             binding.btnSelect.setOnClickListener {
                 onItemClick?.invoke(item)
-            }
-            if(isExchange) {
-                binding.btnSelect.visibility = View.VISIBLE
-                binding.btnSelect.setOnClickListener {
+                if (isExchange) {
                     onSelectExchangeItemClick?.invoke(item)
                 }
-            } else {
-                binding.btnSelect.visibility = View.GONE
             }
+            binding.btnSelect.visibility = if (isExchange) View.VISIBLE else View.GONE
+
+
+
         }
 
     }

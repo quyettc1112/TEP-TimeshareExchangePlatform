@@ -4,16 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.UserJWTPayloadModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -23,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authAPIRepository: AuthAPIRepository,
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
     private val publicResortAPIRepository: PublicResortAPIRepository,
     private val customerAPIRepository: CustomerAPIRepository
@@ -60,10 +56,10 @@ class MainViewModel @Inject constructor(
     }
 
     // Tracking Customer Info
-    private val _customerInfo = MutableLiveData<CustomerInfoResponse>()
-    val customerInfo: LiveData<CustomerInfoResponse> = _customerInfo
-    fun setCustomerInfo(customerInfoResponse: CustomerInfoResponse) {
-        _customerInfo.value = customerInfoResponse
+    private val _customerProfileInfo = MutableLiveData<CustomerProfileResponse>()
+    val customerProfileInfo: LiveData<CustomerProfileResponse> = _customerProfileInfo
+    fun setCustomerInfo(customerProfileResponse: CustomerProfileResponse) {
+        _customerProfileInfo.value = customerProfileResponse
     }
 
 
@@ -119,110 +115,9 @@ class MainViewModel @Inject constructor(
     }
 
 
-    /**
-     * Call API To GET Public Posting and Resort
-     *
-     * This function is responsible for Public Posting API For Top Resort.
-     * Get Paging Public Posting
-     * @param pageNo
-     * @param pageSize
-     * @param resortName
-     * @return
-     *
-     * Check Add Loading More
-     * Current Page Tracking
-     */
-    // Call API ALL Postings In Top Resort Fragment
-    private val _posting_TopResort = MutableLiveData<Resource<PublicPostingResponse>>()
-    val posting_TopResort: MutableLiveData<Resource<PublicPostingResponse>> get() = _posting_TopResort
-    fun getPostingOnTopResort(pageNo: Int, pageSize: Int, resortName: String) {
-        viewModelScope.launch {
-            _posting_TopResort.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getPublicPostings(pageNo, pageSize, resortName).let {
-                _posting_TopResort.postValue(it)
-            }
-        }
-    }
-
-    private val _currentPostingList = MutableLiveData<List<PublicPostingResponse.Content>>()
-    fun loadMorePostings(list: List<PublicPostingResponse.Content>) {
-        val currentList = _currentPostingList.value ?: emptyList()
-        val updatedList = currentList + list
-        _currentPostingList.value = updatedList
-    }
-
-    fun getCurrentPostingList(): List<PublicPostingResponse.Content>? {
-        return _currentPostingList.value
-    }
-
-    private val _currentPostingsPage = MutableLiveData<Int>()
-    var currentPostingsPage: LiveData<Int> = _currentPostingsPage
-    fun getCurrentPostingsPage(): Int {
-        return _currentPostingsPage.value ?: 0
-    }
-
-    fun incrementCurrentPostingsPage() {
-        val currentValue = _currentPostingsPage.value ?: 0
-        _currentPostingsPage.value = currentValue + 1
-    }
-
-    val _isNewPostinglist = MutableLiveData<Boolean>()
-    fun updateIsPostingNewList(isNew: Boolean) {
-        _isNewPostinglist.value = isNew
-    }
-
-    fun resetCurrentPostingPage() {
-        updateIsPostingNewList(true)
-        _currentPostingsPage.value = 0
-        _currentPostingList.value = emptyList()
-    }
 
 
-    // Call API ALL Resort In Top Resort Fragment
-    private val _resort_TopResort = MutableLiveData<Resource<ResortModelResponse>>()
-    val resort_TopResort: MutableLiveData<Resource<ResortModelResponse>> get() = _resort_TopResort
-    fun getResortONTopResort(pageNo: Int, pageSize: Int, resortName: String) {
-        viewModelScope.launch {
-            _resort_TopResort.postValue(Resource.loading(null))
-            publicResortAPIRepository.getResortList(pageNo, pageSize, resortName).let {
-                _resort_TopResort.postValue(it)
-            }
-        }
-    }
 
-    val _currentResortList = MutableLiveData<List<ResortModelResponse.Content>>()
-
-    fun loadMoreResorts(list: List<ResortModelResponse.Content>) {
-        val currentList = _currentResortList.value ?: emptyList()
-        val updatedList = currentList + list
-        _currentResortList.value = updatedList
-    }
-
-    fun getCurrentResortList(): List<ResortModelResponse.Content>? {
-        return _currentResortList.value
-    }
-
-    private val _currentResortPage = MutableLiveData<Int>()
-    var currentResortPage: LiveData<Int> = _currentResortPage
-    fun getCurrentResortPage(): Int {
-        return _currentResortPage.value ?: 0
-    }
-
-    fun incrementCurrentResortPage() {
-        val currentValue = _currentResortPage.value ?: 0
-        _currentResortPage.value = currentValue + 1
-    }
-
-    val _isNewResortlist = MutableLiveData<Boolean>()
-    fun updateIsResortNewList(isNew: Boolean) {
-        _isNewResortlist.value = isNew
-    }
-
-    fun resetCurrentResortPage() {
-        updateIsResortNewList(true)
-        _currentResortPage.value = 0
-        _currentResortList.value = emptyList()
-    }
 
 
     /**

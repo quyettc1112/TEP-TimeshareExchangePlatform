@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -80,7 +81,7 @@ class LoginActivity : BaseActivity() {
                     resource.data?.let { loginResponse ->
                         handleLoginSuccess(loginResponse)
                         // Check if customer exist
-                        authViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString())
+                        callGetCustomerInfo()
                     }
                 }
 
@@ -100,8 +101,7 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-
-        authViewModel.customerInfoResponse.observe(this) { resource ->
+        authViewModel.profileCustomerInfoResponse.observe(this) { resource ->
             when (resource.status) {
                 Status.LOADING -> {
                     // Show a loading spinner
@@ -115,7 +115,6 @@ class LoginActivity : BaseActivity() {
                         handleCheckCustomerExist(customerInfoResponse)
                     }
                 }
-
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     // SAve user log state, Intent to main
@@ -125,6 +124,11 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
+
+    private fun callGetCustomerInfo() {
+        authViewModel.getProfileCustomerInfo(tokenManager.getAccessToken().toString())
+    }
+
 
     // Handle login success
     private fun handleLoginSuccess(loginResponse: LoginResponse) {
@@ -138,7 +142,7 @@ class LoginActivity : BaseActivity() {
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, R.font.inter_thin)
+            ResourcesCompat.getFont(this, R.font.inter_bold)
         );
 
         // Save tokens
@@ -147,18 +151,15 @@ class LoginActivity : BaseActivity() {
 
     }
 
-    private fun handleCheckCustomerExist(customerInfoResponse : CustomerInfoResponse) {
-        // Check is member or not
+    private fun handleCheckCustomerExist(customerInfoResponse : CustomerProfileResponse) {
+        tokenManager.saveProfileInfo(customerInfoResponse)
         if (customerInfoResponse.isMember) {
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-            tokenManager.saveCustomerInfo(customerInfoResponse)
         } else {
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-            tokenManager.saveCustomerInfo(customerInfoResponse)
         }
         intentToMain()
     }
-
     // Call loginProcess() function when user click on login button
     private fun handleLoginInput() {
         val email = binding.edtEmail.text.toString()

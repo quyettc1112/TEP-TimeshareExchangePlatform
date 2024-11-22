@@ -43,6 +43,9 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         super.onCreate(savedInstanceState)
         initAdapter()
         tokenManager = TokenManager(requireContext())
+        myTimeshareAdapter.submitList(listOf())
+        postingFlowViewModel.clearCurrentMyTimeshareList()
+        postingFlowViewModel.currentMyTimesharePage.value = 0
 
     }
 
@@ -56,6 +59,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         observeData()
         initActivityResultLauncher()
         setEventItemClick()
+        eventClickReload()
         return binding.root
     }
 
@@ -111,6 +115,11 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         }
 
         postingFlowViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
+            if(it == 0) {
+                postingFlowViewModel.clearCurrentMyTimeshareList()
+                myTimeshareAdapter.submitList(listOf())
+            }
+
             postingFlowViewModel.getMyTimeshareList(
                 tokenManager.getAccessToken().toString(),
                 it,
@@ -145,13 +154,18 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                     override fun negativeAction() {
 
                     }
-
                     override fun positiveAction() {
                         postingFlowViewModel.updateMyTimeshareModel(it)
                         postingFlowViewModel.updateStep(4)
                     }
                 }
             )
+        }
+    }
+
+    private fun eventClickReload() {
+        binding.btnRefresh.setOnClickListener {
+            postingFlowViewModel.currentMyTimesharePage.value = 0
         }
     }
 
@@ -173,9 +187,7 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     override fun onResume() {
         super.onResume()
-        myTimeshareAdapter.submitList(listOf())
-        postingFlowViewModel.clearCurrentMyTimeshareList()
-        postingFlowViewModel.currentMyTimesharePage.value = 0
+
 
     }
 

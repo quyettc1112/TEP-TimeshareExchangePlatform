@@ -36,16 +36,11 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
-    companion object {
-        const val PAGE_SIZE_POSTING = 16
-        const val PAGE_SIZE_RESORT = 16
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
-        callGetAPI()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -65,19 +60,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onNewIntent(intent)
     }
 
-    /**
-     * Call API
-     */
-    private fun callGetAPI() {
-
-        // Call API Resort for Top Resort
-        mainViewModel.getResortONTopResort(0, PAGE_SIZE_RESORT, "")
-
-        // Call API Public Posting for Top Resort
-        mainViewModel.getPostingOnTopResort(0, PAGE_SIZE_POSTING, "")
-
-
-    }
 
 
     /**
@@ -86,19 +68,19 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
      */
     private fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
-        val customerInfo = tokenManager.getCustomerInfo()
+        val customerProfileInfo = tokenManager.getProfileInfo()
         when (userLogState) {
             UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                if (customerInfo != null) {
-                    mainViewModel.setCustomerInfo(customerInfo)
+                if (customerProfileInfo != null) {
+                    mainViewModel.setCustomerInfo(customerProfileInfo)
                 }
             }
 
             UserLogState.LOGGED_IN_AS_CUSTOMER -> {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                if (customerInfo != null) {
-                    mainViewModel.setCustomerInfo(customerInfo)
+                if (customerProfileInfo != null) {
+                    mainViewModel.setCustomerInfo(customerProfileInfo)
                 }
             }
 
@@ -152,6 +134,17 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             setBadge(4)
             onItemSelected = { idFragemnt ->
                 binding.vp2Main.setCurrentItem(idFragemnt, true)
+            }
+        }
+        binding.vp2Main.setPageTransformer { page, position ->
+            val absPos = Math.abs(position)
+            page.apply {
+                // Fade effect
+                alpha = 1 - absPos
+
+                // Scale effect
+                scaleX = 0.85f + (1 - absPos) * 0.15f
+                scaleY = 0.85f + (1 - absPos) * 0.15f
             }
         }
     }

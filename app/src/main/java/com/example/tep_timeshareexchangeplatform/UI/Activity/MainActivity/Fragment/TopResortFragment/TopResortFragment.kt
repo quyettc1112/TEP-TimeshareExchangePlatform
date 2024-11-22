@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.Adapter.ResortAdapterRV
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -29,6 +32,11 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         resortAdapter.submitList(emptyList())
+        resortAdapter.onItemClick = {
+           val intent = Intent(requireContext(), ResortDetailActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_RESORT_ID, it.id)
+            startActivity(intent)
+        }
 
     }
 
@@ -82,6 +90,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
         binding.rvTopResort.apply {
             adapter = resortAdapter
         }
+
 
         binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             val view = binding.nestedScrollView.getChildAt(binding.nestedScrollView.childCount - 1)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class MyExchangePostingViewModel @Inject constructor(
     private var _currentPage = MutableLiveData<Int>()
     val currentPage: MutableLiveData<Int>
         get() = _currentPage
+
     // Increment Current Page
     fun incrementCurrentPage() {
         val currentValue = _currentPage.value ?: 0
@@ -43,6 +45,7 @@ class MyExchangePostingViewModel @Inject constructor(
     fun loadMorePostingList(list: List<MyExchangePostingsResponse.Content>) {
         _currentPostingList.addAll(list)
     }
+
     fun getCurrentPostingList(): List<MyExchangePostingsResponse.Content> {
         return _currentPostingList
     }
@@ -56,6 +59,17 @@ class MyExchangePostingViewModel @Inject constructor(
     }
 
 
+    // Hide Posting Function
+    private val _hidePostingResponse = MutableLiveData<Resource<MyExchangePostingsResponse>>()
+    val deactivateExchangePosting: MutableLiveData<Resource<MyExchangePostingsResponse>> =
+        _hidePostingResponse
+    fun deActiveExchangePosting(token: String, postingId: Int) {
+        viewModelScope.launch {
+            _hidePostingResponse.postValue(Resource.loading(null))
+            val response = customerAPIRepository.deactivateExchangePosting(token, postingId)
+            _hidePostingResponse.postValue(response)
+        }
+    }
 
 
 }

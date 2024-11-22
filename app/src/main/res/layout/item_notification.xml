@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+
+    android:paddingTop="5dp"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/i_blue_light"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notificationItem"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <!--// Type Nofitications-->
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/animType"
+            app:riv_border_width="1dp"
+            app:riv_border_color="@color/gray_600"
+            app:riv_corner_radius="50dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_logo_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_reject_posting" />
+
+        <TextView
+            android:id="@+id/timeNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:maxLines="1"
+            android:text="1 phút trước"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--// Title Notification-->
+        <TextView
+            android:id="@+id/titleNotification"
+            android:layout_width="0dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:maxLines="1"
+            android:text="Đặt Phòng Thành Công"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@+id/timeNotification"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/animType"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--// Description-->
+        <TextView
+            android:id="@+id/descriptionNotification"
+            android:layout_marginStart="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_light"
+            android:textColor="@color/black"
+            android:text="Bạn đã thực hiện thanh toán đăt phòng thành công cho Resort Vinperl với số tiền 1.470.000 VNĐ. Nhấn để kiểm tra giao dịch ngay bạn nhé."
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/animType"
+            app:layout_constraintTop_toBottomOf="@+id/titleNotification" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnViewDetail"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:text="Xem Chi Tiết"
+            android:textSize="10dp"
+            android:textAllCaps="false"
+            android:layout_marginStart="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/blue_btn_search"
+            android:paddingBottom="5dp"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:background="@drawable/background_strock_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toEndOf="@+id/animType"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionNotification" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <View
+        android:visibility="visible"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"/>
+
+</LinearLayout>

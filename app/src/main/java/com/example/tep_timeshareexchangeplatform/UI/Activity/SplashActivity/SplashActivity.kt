@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -45,7 +46,6 @@ class SplashActivity : BaseActivity() {
 
         // Load the animations
         val logoAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_scale)
-        val textAnimation = AnimationUtils.loadAnimation(this, R.anim.text_fade_in)
 
         bindind.logoImageView.startAnimation(logoAnimation)
         checkJwtUserValid()
@@ -53,7 +53,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun observeViewModel() {
-        splashViewModel.customerInfoResponse.observe(this) { response ->
+        splashViewModel.customerProfileResponse.observe(this) { response ->
             when (response.status) {
                 Status.LOADING -> {
                     // Do Nothing
@@ -61,13 +61,14 @@ class SplashActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     if (response.data!!.isMember) {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                        tokenManager.saveCustomerInfo(response.data)
+                        tokenManager.saveProfileInfo(response.data)
                     }
                     else {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                        tokenManager.saveCustomerInfo(response.data)
+                        tokenManager.saveProfileInfo(response.data)
                     }
                     handlerLooper()
+                    Log.d("CheckJwtUserValid", "observeViewModel: ${response.data}")
                 }
 
                 Status.ERROR -> {
@@ -75,6 +76,7 @@ class SplashActivity : BaseActivity() {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
                         handlerLooper()
                     }
+                    Log.d("CheckJwtUserValid", "observeViewModel: ${response.message}")
                 }
             }
         }
@@ -93,11 +95,8 @@ class SplashActivity : BaseActivity() {
 
     private fun checkJwtUserValid() {
         if (tokenManager.isLoggedIn()) {
-            val userJWTPayloadModel =
-                JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
-            // Call check customer exist API
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
-            splashViewModel.getIsCustomerExist(tokenManager.getAccessToken().toString())
+            splashViewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
 
         } else {
             tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)

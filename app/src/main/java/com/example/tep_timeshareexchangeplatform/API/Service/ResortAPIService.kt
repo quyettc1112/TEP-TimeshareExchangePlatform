@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Feedback.FeedbacksResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -38,6 +39,14 @@ interface ResortAPIService {
         @Header("Authorization") token: String,
         @Path("unitTypeId") unitTypeId: Int
     ): Response<UnitTypeModel>
+
+    // Get List Feedback Of Resort
+    @GET("public/feedback/resort/{resortId}")
+    suspend fun getFeedbackListByResortId(
+        @Path("resortId") resortId: Int,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int
+    ): Response<FeedbacksResponse>
 
 
 }

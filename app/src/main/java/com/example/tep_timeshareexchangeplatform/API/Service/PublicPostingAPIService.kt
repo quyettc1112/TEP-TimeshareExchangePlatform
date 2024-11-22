@@ -1,5 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangesResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
@@ -39,6 +41,25 @@ interface PublicPostingAPIService {
     suspend fun getExchangePostingDetail(
         @Path("postingId") postingId: Int
     ): Response<ExchangeDetailResponse>
+
+    @GET("public/posting/{resortId}")
+    suspend fun getRentalPostingOfResortByID(
+        @Path("resortId") resortId: Int,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+    ) : Response<PublicPostingResponse>
+
+    @GET("public/blog/postings")
+    suspend fun getBlog(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("title") title: String,
+    ): Response<BlogResponse>
+
+    @GET("public/blog/{postingId}")
+    suspend fun getBlogDetail(
+        @Path("postingId") postingId: Int
+    ): Response<BlogDetailResponse>
 
 
 }

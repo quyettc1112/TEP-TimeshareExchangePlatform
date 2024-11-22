@@ -20,6 +20,8 @@ class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.
             binding.tvResortName.text = item.resortName
             binding.tvLocation.text = item.address
 
+            binding.tvAvgRating.text = item.averageRating.toString()
+            binding.tvRatingCount.text = "Rất Tốt (${item.totalRating})"
 
             binding.btnPrice.text = "Chỉ Từ ${formatPrice(item.minPrice)} VND"
 

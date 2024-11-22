@@ -9,6 +9,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepos
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RegisterDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.RegisterResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -22,7 +23,7 @@ class AuthViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository
 ): ViewModel() {
 
-    // Login ViewModel Tracking
+    // Login ExchangeOfResortViewModel Tracking
     private val _loginResponse = MutableLiveData<Resource<LoginResponse>>()
     val loginResponse: LiveData<Resource<LoginResponse>> get() = _loginResponse
     // Login Function
@@ -34,7 +35,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    // Register ViewModel Tracking
+    // Register ExchangeOfResortViewModel Tracking
     private val _registerResponse = MutableLiveData<Resource<RegisterResponse>>()
     val registerResponse: LiveData<Resource<RegisterResponse>> get() = _registerResponse
     // Call Register Function
@@ -58,6 +59,16 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+
+    private val _profileCustomerInfoResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val profileCustomerInfoResponse: LiveData<Resource<CustomerProfileResponse>> get() = _profileCustomerInfoResponse
+    fun getProfileCustomerInfo(token: String) {
+        viewModelScope.launch {
+            _profileCustomerInfoResponse.postValue(Resource.loading(null))
+            val result = customerAPIRepository.getCustomerProfile(token)
+            _profileCustomerInfoResponse.postValue(result)
+        }
+    }
 
 
 }

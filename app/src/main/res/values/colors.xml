@@ -44,10 +44,14 @@
     <color name="light_blue_400">#FF29B6F6</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray500">#9E9E9E</color>
     <color name="gray_600">#FF757575</color>
+
 
     <color name="zxing_transparent">#00000000</color>
 
+    <color name="yellow200">#FFF9C4</color>
+    <color name="yellow600">#FBC02D</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -72,8 +76,11 @@
     <color name="gray_text">#666666</color>
     <color name="gray_bg">#F6F6F6</color>
 
-
-
+    <color name="red200">#EF9A9A</color>
+    <color name="green200">#A5D6A7</color>
+    <color name="blue200">#90CAF9</color>
+    <color name="green">#4CAF50</color>
+    <color name="light_green">#C8E6C9</color>
 
 
     <color name="primary_background">#C9C9C9</color>
@@ -112,7 +119,7 @@
     <!--    Background Transparent Colors-->
     <color name="warning_bg_color">#33FBC02D</color>
     <color name="error_bg_color">#33D32F2F</color>
-    <color name="success_bg_color">#3317B978</color>
+    <color name="success_bg_color">#17B978</color>
     <color name="info_bg_color">#330340DA</color>
     <color name="delete_bg_color">#330288D1</color>
 
@@ -251,6 +258,10 @@
         <item>Vĩnh Phúc</item>
         <item>Yên Bái</item>
     </string-array>
+
+    <color name="color_selected_text">#FF5722</color> <!-- Màu chữ khi tab được chọn -->
+    <color name="color_unselected_text">#808080</color> <!-- Màu chữ khi tab không được chọn -->
+    <color name="color_selected_indicator">#FF5722</color> <!-- Màu chỉ báo -->
 
 
 </resources>

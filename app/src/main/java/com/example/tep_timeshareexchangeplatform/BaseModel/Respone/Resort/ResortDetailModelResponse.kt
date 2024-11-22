@@ -16,11 +16,15 @@ data class ResortDetailModelResponse(
     @SerializedName("isActive") val isActive: Boolean,
     @SerializedName("unitTypeDtoList") val unitTypeDtoList: List<UnitTypeDto>,
     @SerializedName("feedbackList") val feedbackList: List<Feedback>,
+    @SerializedName("averageRating") val averageRating: Float,
+    @SerializedName("totalRating") val totalRating: Int,
     @SerializedName("imageUrls") val imageUrls: List<String>
 ) {
     data class ResortAmenity(
         @SerializedName("name") val name: String,
-        @SerializedName("type") val type: String
+        @SerializedName("type") val type: String,
+        @SerializedName("free") val free: Boolean,
+
     )
 
     data class UnitTypeDto(

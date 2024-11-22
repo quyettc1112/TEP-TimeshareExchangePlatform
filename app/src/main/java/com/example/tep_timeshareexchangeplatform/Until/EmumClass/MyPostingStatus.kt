@@ -8,6 +8,7 @@ enum class MyPostingStatus(val apiStatus: String, val statusResId: Int) {
     AWAITING_CONFIRMATION("AwaitingConfirmation", R.string.waiting_confirmation),
     PROCESSING("Processing", R.string.processing),
     COMPLETED("Completed", R.string.completed),
+    ACCEPTED("Accepted", R.string.accepted),
     REJECTED("Reject", R.string.rejected),
     REJECT_PRICE("RejectPrice", R.string.reject_price),
     PENDING_PRICING("PendingPricing", R.string.pending_pricing),

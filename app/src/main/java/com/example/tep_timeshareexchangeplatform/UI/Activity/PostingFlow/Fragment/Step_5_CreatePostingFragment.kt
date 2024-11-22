@@ -22,6 +22,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.DateRangePickerDialog.DateRangeDialogFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
@@ -168,12 +169,12 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.includeMyTimeshare.root.visibility = View.VISIBLE
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomName
+                tvRoomType.text = myTimeshareResponse.roomCode
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
                 tvCheckOutDate.text =
                     Constant.formatDateByLocale(myTimeshareResponse.endDate, requireContext())
-                /*Glide.with(binding.root.context).load(myTimeshareModel.image).into(imResortImage)*/
+                Glide.with(binding.root.context).load(myTimeshareResponse.resortImage).into(imResortImage)
             }
         }
     }
@@ -242,7 +243,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     // Lấy năm được chọn từ Spinner
                     val selectedYear = parent.getItemAtPosition(position).toString().toInt()
 
-                    // Lấy startDateString và endDateString từ ViewModel
+                    // Lấy startDateString và endDateString từ ExchangeOfResortViewModel
                     val startDateString =
                         postingFlowViewModel.myTimeshareModelSelected.value?.startDate
                     val endDateString =
@@ -569,7 +570,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 // Load ảnh chính vào ImageView
                 binding.ivMainImage.setImageURI(uri)
 
-                // Optionally, update ViewModel or perform other actions
+                // Optionally, update ExchangeOfResortViewModel or perform other actions
                 postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
             }
         }

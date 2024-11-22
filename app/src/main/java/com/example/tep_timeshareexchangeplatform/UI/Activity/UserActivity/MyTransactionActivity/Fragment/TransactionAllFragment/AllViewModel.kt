@@ -47,4 +47,8 @@ class AllViewModel @Inject constructor(
     fun clearCurrentWalletList() {
         _currentWalletList.clear()
     }
+
+    init {
+        _currentWalletPage.value = 0
+    }
 }

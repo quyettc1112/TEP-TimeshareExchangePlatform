@@ -27,14 +27,11 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_POSTING
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity.Companion.PAGE_SIZE_RESORT
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -73,7 +70,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         publicsPostingAdapter.submitList(listOf())
         resortAdapterMB.submitList(listOf())
-        blogAdapter.submitList(Constant.blogList)
+        blogAdapter.submitList(listOf())
 
         // Khởi tạo ActivityResultLauncher
         initActivityResultLauncher()
@@ -179,6 +176,34 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 }
             }
         }
+
+        homeViewModel.blogList.observe(viewLifecycleOwner, { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    (activity as MainActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as MainActivity).hideLoadingWaiting()
+                    resource.data?.let { blogModel ->
+                        blogAdapter.submitList(blogModel.content)
+                    }
+
+                }
+
+                Status.ERROR -> {
+                    MotionToast.Companion.createToast(
+                        requireActivity(),
+                        "Error",
+                        "Error ${resource.message}",
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        })
     }
 
 
@@ -188,6 +213,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun callAPIGetData() {
         homeViewModel.getResortList(0, 10, "")
         homeViewModel.getPublicPostingsHome(0, 10, "")
+        homeViewModel.getBlogList(0, 10, "")
     }
 
 
@@ -298,6 +324,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.tvBlogSeeMore.setOnClickListener {
+            val intent = Intent(requireContext(), BlogListActivity::class.java)
+            startActivity(intent)
         }
     }
 

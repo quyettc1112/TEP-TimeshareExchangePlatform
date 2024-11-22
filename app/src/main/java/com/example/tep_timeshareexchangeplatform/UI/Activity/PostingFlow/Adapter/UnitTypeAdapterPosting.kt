@@ -15,6 +15,7 @@ class UnitTypeAdapterPosting(private val showFullInfo: Boolean): BaseAdapter<Uni
     var onItemClick: ((UnitTypeModel) -> Unit)? = null
     var onButtonBookClick: ((UnitTypeModel) -> Unit)? = null
 
+
     // Lưu trữ vị trí của item đã chọn
     private var selectedPosition: Int = -1
 
@@ -108,6 +109,14 @@ class UnitTypeAdapterPosting(private val showFullInfo: Boolean): BaseAdapter<Uni
         val layoutInflater= LayoutInflater.from(parent.context)
         val binding = ItemResortRoomTypeBinding.inflate(layoutInflater, parent, false)
         return RoomTypeViewHolder(binding)
+    }
+    // Hàm tắt viền của item đã chọn
+    fun clearSelection() {
+        val previousPosition = selectedPosition
+        selectedPosition = -1
+        if (previousPosition != -1) {
+            notifyItemChanged(previousPosition)
+        }
     }
 
 }

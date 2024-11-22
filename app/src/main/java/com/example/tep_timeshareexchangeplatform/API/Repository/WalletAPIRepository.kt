@@ -219,4 +219,44 @@ class WalletAPIRepository @Inject constructor(
             Resource.error("Network Error: ${e.message}", null)
         }
     }
+
+
+    // Get Spent Transaction
+    suspend fun getSpentTransaction(
+        token: String,
+        page: Int,
+        size: Int
+    ): Resource<WalletListResponse> {
+        return try {
+            val response = walletAPIService.getSpentTransaction("Bearer $token", page, size)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get Received Transaction
+    suspend fun getReceivedTransaction(
+        token: String,
+        page: Int,
+        size: Int
+    ): Resource<WalletListResponse> {
+        return try {
+            val response = walletAPIService.getReceivedTransaction("Bearer $token", page, size)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+
 }

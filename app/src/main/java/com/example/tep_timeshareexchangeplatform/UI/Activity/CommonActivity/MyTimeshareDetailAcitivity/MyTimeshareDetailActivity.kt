@@ -8,36 +8,46 @@ import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.AmenitiesBottomSheetFragment.AmenitiesBottomSheetFragment
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
+import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyTimeshareDetailBinding
+import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Locale
 
 @AndroidEntryPoint
 class MyTimeshareDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyTimeshareDetailBinding
-    private var imageAdapter = ImageAdapter(listOf())
     private var facilityAdapter = AmenitiesAdapter()
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val myTimeshareDetailViewModel: MyTimeshareDetailViewModel by viewModels()
+
+    private var featuresAdapter = RoomAmenitiesAdapter()
+    private var entertainmentAdapter = RoomAmenitiesAdapter()
+    private var kitchenAdapter = RoomAmenitiesAdapter()
+    private var policyAdapter = RoomAmenitiesAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +65,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
         initAdapter()
         observeViewModel()
-        setListImageTimeshare()
-        setAmenitiesListTimeshare()
         setEventButtonRequestClick()
     }
 
@@ -113,8 +121,38 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
     // Bind Data
     private fun bindDataTimeshareDetail(myTimeshareDetailResponse: MyTimeshareDetailResponse) {
+        // Check in Date, Check out Date
         binding.apply {
+            tvCheckinDate.text = Constant.getFormattedDate(
+                myTimeshareDetailResponse.startDate,
+                this@MyTimeshareDetailActivity
+            )
+            tvCheckinDayOfWeek.text =
+                Constant.getDayOfWeek(
+                    myTimeshareDetailResponse.startDate,
+                    this@MyTimeshareDetailActivity
+                )
 
+
+            tvCheckoutDate.text = Constant.getFormattedDate(
+                myTimeshareDetailResponse.endDate,
+                this@MyTimeshareDetailActivity
+            )
+            tvCheckoutDayOfWeek.text =
+                Constant.getDayOfWeek(
+                    myTimeshareDetailResponse.endDate,
+                    this@MyTimeshareDetailActivity
+                )
+        }
+
+        // Image
+        Glide.with(this)
+            .load(myTimeshareDetailResponse.resortImage)
+            .error(R.drawable.im_material_mn)
+            .placeholder(R.drawable.ripple_effect_white)
+            .into(binding.ivTimeshareDetail)
+
+        binding.apply {
             binding.customToolbar.apply {
                 setTitle("${myTimeshareDetailResponse.unitType.title}")
                 setTitleDetail("${myTimeshareDetailResponse.startDate} đến ${myTimeshareDetailResponse.endDate}")
@@ -123,64 +161,134 @@ class MyTimeshareDetailActivity : BaseActivity() {
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
             tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
+        }
+        bindDataUnitType(myTimeshareDetailResponse)
+        bindDataAmenities(myTimeshareDetailResponse)
 
-            // Check In Date, Check Out Date
-            tvCheckIn.text = Constant.formatDateByLocale(
-                myTimeshareDetailResponse.startDate,
-                binding.root.context
+        binding.cvRequestContaner.visibility = View.GONE
+
+
+
+    }
+
+
+    private fun bindDataUnitType(data: MyTimeshareDetailResponse) {
+        // Set Unit Type Of Posting
+        binding.includeUnitType.apply {
+            tvRoomName.text = data.roomName
+            tvRoomType.text = data.unitType.title
+
+            // Bath
+            tvNumBath.text = data.unitType.bathrooms.toString()
+            tvBed.text = data.unitType.bedrooms.toString()
+
+            // Beds
+            val unitTypeMap = mapOf(
+                "bedsFull" to data.unitType.bedsFull,
+                "bedsKing" to data.unitType.bedsKing,
+                "bedsSofa" to data.unitType.bedsSofa,
+                "bedsMurphy" to data.unitType.bedsMurphy,
+                "bedsQueen" to data.unitType.bedsQueen,
+                "bedsTwin" to data.unitType.bedsTwin
             )
-            tvCheckOut.text =
-                Constant.formatDateByLocale(myTimeshareDetailResponse.endDate, binding.root.context)
+            tvNumBed.text = data.unitType.bedrooms.toString()
+            tvBed.text = displayBedsInfo(unitTypeMap)
 
-            val dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault())
+            // Kitchen
+            tvKitchen.text = data.unitType.kitchen
+            tvNumKitchen.text = 1.toString()
 
-            val startDate = LocalDate.parse(myTimeshareDetailResponse.startDate, dateFormat)
-            val endDate = LocalDate.parse(myTimeshareDetailResponse.endDate, dateFormat)
+            // Max Guest
+            tvNumPerson.text = data.unitType.sleeps.toString()
+            tvPerson.text =
+                "${data.unitType.sleeps.toString()} người lớn tối đa"
 
-// Tính số đêm
-            val nights = ChronoUnit.DAYS.between(startDate, endDate).toInt()
-
-            tvNights.text = "$nights đêm"
-
+            // Room Policy
+            // Do IT Later
             // Unit Type Detail
-            tvRoomName.text = "Chi tiết phòng | ${myTimeshareDetailResponse.roomName.toString()}"
-            tvNumBathroom.text = myTimeshareDetailResponse.unitType.bathrooms.toString()
-            tvNumBed.text = myTimeshareDetailResponse.unitType.bedrooms.toString()
-            tvNumPerson.text = myTimeshareDetailResponse.unitType.sleeps.toString()
-
-
-        }
-
-
-    }
-
-    private fun setListImageTimeshare() {
-        // Set List Image Timeshare
-        binding.viewPager.apply {
-            adapter = imageAdapter
-        }
-        binding.indicator.setViewPager(binding.viewPager)
-
-        // Set Image Auto Scroll, Auto Scroll Time = 3s
-        autoScrollHelper.setupAutoScroll(binding.viewPager)
-
-        // Set Action for Button Next Page and Back To
-        binding.ivNextPage.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
-        }
-        binding.icBackTo.setOnClickListener {
-            binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true)
+            btnViewDetail.setOnClickListener {
+                val unitTypeBase = mapToUnitTypeBase(data.unitType, data.resortId, isActive = true)
+                val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
+                unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
+            }
         }
     }
 
-    private fun setAmenitiesListTimeshare() {
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
-        flexboxLayoutManager.flexDirection = FlexDirection.ROW
-        flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START
-        binding.rvResortFacilities.let {
-            it.layoutManager = flexboxLayoutManager
-            it.adapter = facilityAdapter
+    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+        val bedTypes = listOf(
+            "bedsFull" to "Full",
+            "bedsKing" to "King",
+            "bedsSofa" to "Sofa",
+            "bedsMurphy" to "Murphy",
+            "bedsQueen" to "Queen",
+            "bedsTwin" to "Twin"
+        )
+
+        val bedsList = bedTypes.mapNotNull { (key, label) ->
+            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
+            if (count > 0) "$count giường $label" else null
+        }.joinToString(", ")
+
+        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+
+
+    private fun bindDataAmenities(data: MyTimeshareDetailResponse) {
+        featuresAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
+        entertainmentAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
+        kitchenAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
+        policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
+
+
+
+        val binding = binding.includeAmenities
+        binding.rvFeatures.apply {
+            featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES)
+            layoutManager = FlexboxLayoutManager(this@MyTimeshareDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = featuresAdapter
         }
+
+        binding.rvAmenitiesEntertainment.apply {
+            entertainmentAdapter.filterByAmenityTypes(AmenityType.ENTERTAINMENT)
+            layoutManager = FlexboxLayoutManager(this@MyTimeshareDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP            // Cho phép các mục xuống dòng nếu không đủ chỗ
+            }
+            adapter = entertainmentAdapter
+        }
+
+        binding.rvKitchen.apply {
+            kitchenAdapter.filterByAmenityTypes(AmenityType.KITCHEN)
+            layoutManager = FlexboxLayoutManager(this@MyTimeshareDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = kitchenAdapter
+        }
+
+        binding.rvPolicy.apply {
+            policyAdapter.filterByAmenityTypes(AmenityType.POLICY)
+            layoutManager = FlexboxLayoutManager(this@MyTimeshareDetailActivity).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+                alignItems = AlignItems.FLEX_START  // Đảm bảo các mục căn đều theo chiều dọc
+                flexWrap = FlexWrap.WRAP
+            }
+            adapter = policyAdapter
+        }
+
+
+
+
     }
 
     private fun setEventButtonRequestClick() {
@@ -202,12 +310,13 @@ class MyTimeshareDetailActivity : BaseActivity() {
                         val myTimeshareResponse = timeshareDetail?.let { it1 ->
                             MyTimeshareResponse.Content(
                                 timeShareId = it1.timeShareId,
-                                resortName = timeshareDetail.resortName,
-                                roomName = timeshareDetail.roomName,
-                                bathRoom = timeshareDetail.unitType.bathrooms,
-                                bedRooms = timeshareDetail.unitType.bedrooms,
-                                startDate = timeshareDetail.startDate,
-                                endDate = timeshareDetail.endDate
+                                resortName = it1.resortName,
+                                resortImage = it1.resortImage,
+                                roomCode = it1.roomCode,
+                                bathRoom = it1.unitType.bathrooms,
+                                bedRooms = it1.unitType.bedrooms,
+                                startDate = it1.startDate,
+                                endDate = it1.endDate
                             )
                         }
                         intentValueToPostingFlow(myTimeshareResponse!!)
@@ -226,12 +335,50 @@ class MyTimeshareDetailActivity : BaseActivity() {
         finish()
     }
 
+    fun mapToUnitTypeBase(
+        unitType: MyTimeshareDetailResponse.UnitType,
+        resortId: Int,
+        isActive: Boolean
+    ): UnitTypeBase {
+        return UnitTypeBase(
+            id = unitType.id,
+            title = unitType.title,
+            area = unitType.area,
+            bathrooms = unitType.bathrooms,
+            bedrooms = unitType.bedrooms,
+            bedsFull = unitType.bedsFull,
+            bedsKing = unitType.bedsKing,
+            bedsSofa = unitType.bedsSofa,
+            bedsMurphy = unitType.bedsMurphy,
+            bedsQueen = unitType.bedsQueen,
+            bedsTwin = unitType.bedsTwin,
+            buildingsOption = unitType.buildingsOption,
+            price = 0, // Nếu cần lấy giá, thay thế giá trị phù hợp
+            description = unitType.description,
+            kitchen = unitType.kitchen,
+            photos = unitType.photos,
+            resortId = resortId,
+            sleeps = unitType.sleeps,
+            view = unitType.view,
+            isActive = isActive,
+            unitTypeAmenitiesDTOS = emptyList() // Nếu có danh sách tiện ích, hãy thay thế
+        )
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         autoScrollHelper.pauseAutoScroll()
     }
 
+    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+        return roomAmenities.map { roomAmenity ->
+            AmenitiesModel(
+                name = roomAmenity.name,
+                type = roomAmenity.type,
+                isChecked = false // Mặc định là chưa được chọn
+            )
+        }
+    }
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

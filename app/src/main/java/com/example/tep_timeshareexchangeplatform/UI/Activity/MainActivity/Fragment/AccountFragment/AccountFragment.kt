@@ -1,16 +1,23 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
@@ -29,12 +36,13 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     private lateinit var binding: FragmentAccountBinding
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tokenManager = TokenManager(requireContext())
-
+        initActivityLauncher()
     }
 
     override fun onCreateView(
@@ -67,9 +75,14 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             setUserLoginState(it)
         }
 
-        mainViewModel.customerInfo.observe(viewLifecycleOwner) {
+        mainViewModel.customerProfileInfo.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvBalance.text = Constant.formatPrice(it.walletAvailableMoney) + " đ"
+                Glide.with(requireContext())
+                    .load(it.avatar)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_placeholder)
+                    .into(binding.ivUserAvt)
             }
         }
     }
@@ -83,6 +96,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     btnLogout.setTextColor(resources.getColor(R.color.black))
                     btnLogout.backgroundTintList = null
                     llCustomerContainer.visibility = View.VISIBLE
+
+                    llMyTimeshare.visibility = View.VISIBLE
+                    llMyPosting.visibility = View.VISIBLE
+                    llMyExchangePosting.visibility = View.VISIBLE
+                    llMyTransaction.visibility = View.VISIBLE
 
                     // Un Hide Wallet
                     cardWalletContainer.visibility = View.VISIBLE
@@ -109,6 +127,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     tvIsMembership.visibility = View.GONE
                     animMembership.visibility = View.GONE
 
+                    llMyTimeshare.visibility = View.VISIBLE
+                    llMyPosting.visibility = View.VISIBLE
+                    llMyExchangePosting.visibility = View.VISIBLE
+                    llMyTransaction.visibility = View.VISIBLE
+
                 }
             }
 
@@ -126,6 +149,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     tvIsMembership.visibility = View.GONE
                     animMembership.visibility = View.GONE
 
+                    llMyTimeshare.visibility = View.GONE
+                    llMyPosting.visibility = View.GONE
+                    llMyExchangePosting.visibility = View.GONE
+                    llMyTransaction.visibility = View.GONE
+
                 }
             }
 
@@ -134,13 +162,16 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     // Change Button Text
                     btnLogout.text = getString(R.string.login)
                     btnLogout.setTextColor(resources.getColor(R.color.white))
-                    btnLogout.backgroundTintList = resources.getColorStateList(R.color.blue_btn_search)
+                    btnLogout.backgroundTintList =
+                        resources.getColorStateList(R.color.blue_btn_search)
 
                     // Hide Customer Container
                     llCustomerContainer.visibility = View.GONE
                 }
             }
-            else -> { /* nothing to do */ }
+
+            else -> { /* nothing to do */
+            }
         }
     }
 
@@ -175,6 +206,10 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 )
             }
 
+            binding.toolblarCustome.onEndIconClick =  {
+                startActivity(Intent(requireContext(), NotificationActivity::class.java))
+            }
+
             // Bài Đăng của tôi
             llMyPosting.setOnClickListener {
                 startActivity(
@@ -189,6 +224,15 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     Intent(
                         requireContext(),
                         MyExchangePostingActivity::class.java
+                    )
+                )
+            }
+
+            llMyExchangeRequest.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyExchangeRequestActivity::class.java
                     )
                 )
             }
@@ -215,12 +259,8 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
             // My Profile
             llMyProfileInfo.setOnClickListener {
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        MyInfoActivity::class.java
-                    )
-                )
+                val intent = Intent(requireContext(), MyInfoActivity::class.java)
+                resultLauncher.launch(intent)
             }
         }
 
@@ -243,6 +283,18 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             tokenManager.clearAllToken()
         }
+    }
+
+    private fun initActivityLauncher() {
+        // Initialize the result launcher
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+
+                }
+            }
+
+
     }
 
 
