@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.BlogModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemBlogBinding
 
-class BlogAdapter : BaseAdapter<BlogModel, BlogAdapter.BlogViewHolder> (){
+class BlogAdapter : BaseAdapter<BlogResponse.Content, BlogAdapter.BlogViewHolder> (){
 
-    inner class BlogViewHolder(binding: ItemBlogBinding) : BaseItemViewHolderCF<BlogModel, ItemBlogBinding> (binding) {
-        override fun bind(item: BlogModel) {
+    inner class BlogViewHolder(binding: ItemBlogBinding) : BaseItemViewHolderCF<BlogResponse.Content, ItemBlogBinding> (binding) {
+        override fun bind(item: BlogResponse.Content) {
             binding.tvBlogTitle.text = item.title
             Glide.with(binding.root.context)
                 .load(item.image)
@@ -22,12 +22,12 @@ class BlogAdapter : BaseAdapter<BlogModel, BlogAdapter.BlogViewHolder> (){
 
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<BlogModel> {
-        return object : DiffUtil.ItemCallback<BlogModel>() {
-            override fun areItemsTheSame(oldItem: BlogModel, newItem: BlogModel): Boolean {
+    override fun differCallBack(): DiffUtil.ItemCallback<BlogResponse.Content> {
+        return object : DiffUtil.ItemCallback<BlogResponse.Content>() {
+            override fun areItemsTheSame(oldItem: BlogResponse.Content, newItem: BlogResponse.Content): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: BlogModel, newItem: BlogModel): Boolean {
+            override fun areContentsTheSame(oldItem: BlogResponse.Content, newItem: BlogResponse.Content): Boolean {
                 return oldItem == newItem
             }
         }

@@ -18,7 +18,9 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangeRequestDetailBinding
     private lateinit var imagePostingAdapter: ImagePostingAdapter
@@ -44,7 +46,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     }
 
     private fun getIntentValue() {
-        val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID_1, 0)
+        val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)

@@ -42,7 +42,6 @@ interface PublicPostingAPIService {
         @Path("postingId") postingId: Int
     ): Response<ExchangeDetailResponse>
 
-    // Get List Posting of Resort By Id ()
     @GET("public/posting/{resortId}")
     suspend fun getRentalPostingOfResortByID(
         @Path("resortId") resortId: Int,
@@ -50,7 +49,7 @@ interface PublicPostingAPIService {
         @Query("pageSize") pageSize: Int,
     ) : Response<PublicPostingResponse>
 
-    @GET("public/exchange/postings")
+    @GET("public/blog/postings")
     suspend fun getBlog(
         @Query("page") page: Int,
         @Query("size") size: Int,

@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,11 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:title="Yêu cầu trao đổi của tôi"
+        android:title="Blog"
         app:showStartText="false" />
 
     <ScrollView
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/pro_gradient" />
+                    android:src="@drawable/placeholder_image" />
 
                 <!-- Blog Title -->
                 <TextView
@@ -46,8 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:drawable="@drawable/placeholder_text"
                     android:fontFamily="@font/inter_bold"
-                    android:text="Full Blog Title"
                     android:textColor="@color/black"
                     android:textSize="22sp" />
 
@@ -57,8 +57,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:drawable="@drawable/placeholder_text"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Published: 16 Nov 2024"
                     android:textColor="@color/gray_400"
                     android:textSize="14sp" />
 
@@ -68,8 +68,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:drawable="@drawable/placeholder_text"
                     android:fontFamily="@font/inter_regular"
-                    android:text="This is the full content of the blog post. It contains all the information that the user wants to read about this specific topic. Add paragraphs, images, or other elements as needed."
                     android:textColor="@color/gray_600"
                     android:textSize="16sp" />
             </LinearLayout>

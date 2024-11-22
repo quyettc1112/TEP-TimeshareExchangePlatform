@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExc
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -28,6 +29,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -46,6 +48,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private var imagePostingAdapter = ImagePostingAdapter()
     private var facilityAdapter = AmenitiesAdapter()
     private val viewModel: MyExchangeDetailViewModel by viewModels()
+private var postingId: Int =0
 
     private var featuresAdapter = RoomAmenitiesAdapter()
     private var entertainmentAdapter = RoomAmenitiesAdapter()
@@ -85,6 +88,7 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+         postingId = intent;
         val token = TokenManager(this)
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
@@ -130,7 +134,6 @@ class MyExchangeDetailActivity : BaseActivity() {
             }
         }
     }
-
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
         // BindDAta Package
        /* bindPackageData(myExchangePostingDetail.exchangePackageName)
@@ -209,7 +212,6 @@ class MyExchangeDetailActivity : BaseActivity() {
         binding.apply {
             btnListRequest.setOnClickListener {
                 val intent = Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
-                val postingId = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
                 intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,postingId)
                 startActivity(
                     intent

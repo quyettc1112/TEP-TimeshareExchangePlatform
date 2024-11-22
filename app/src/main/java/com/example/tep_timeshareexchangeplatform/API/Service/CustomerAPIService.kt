@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Pric
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
@@ -232,9 +233,9 @@ interface CustomerAPIService {
     @GET("customer/exchange/request/posting/{postingId}")
     suspend fun getCustomerExchangeRequestOnPost(
         @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
         @Query ("pageNo") pageNo: Int,
         @Query ("pageSize") pageSize: Int,
-        @Path ("postingId") postingId: Int
-    ) : Response<ExchangeRequestPostingResponse>
+    ) : Response<ExchangeRequestOnPostResponse>
 
 }

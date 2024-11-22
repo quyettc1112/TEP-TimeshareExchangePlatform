@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Pric
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
@@ -499,15 +500,15 @@ class CustomerAPIRepository @Inject constructor(
         }
     }
 
-    suspend fun getCustomerExchangeRequestPost(
+    suspend fun getCustomerExchangeRequestOnPost(
         token: String,
+        postingId: Int,
         pageNo: Int,
         pageSize: Int,
-        postingId: Int
-    ): Resource<ExchangeRequestPostingResponse> {
+    ): Resource<ExchangeRequestOnPostResponse> {
         return try {
             val response =
-                customerAPIService.getCustomerExchangeRequestOnPost("Bearer $token", pageNo, pageSize, postingId)
+                customerAPIService.getCustomerExchangeRequestOnPost("Bearer $token", postingId, pageNo, pageSize)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
