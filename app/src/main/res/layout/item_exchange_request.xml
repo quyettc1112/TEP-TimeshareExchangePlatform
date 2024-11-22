@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@drawable/border_background"
+    android:layout_margin="8dp">
+
+    <!-- Room Info Logo -->
+    <ImageView
+        android:id="@+id/resortLogo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/rounded_background"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Room Info Text -->
+    <LinearLayout
+        android:id="@+id/textContainer"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <!-- Room Info Code Resort Name -->
+        <TextView
+            android:id="@+id/resortName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Info Resort Name"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Room Info Code -->
+        <TextView
+            android:id="@+id/roomInfoCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="roomInfoRoomInfoCode"
+            android:textSize="14sp"
+            android:textColor="@color/gray500" />
+
+        <!-- Room Details -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <!-- Check-In Date Label -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/checkInLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày nhận phòng:"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Check-In Date Value -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/checkInDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20/20/2024"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <!-- Check-Out Date Label -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/checkOutLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày trả phòng:"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Check-Out Date Value -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/checkOutDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20/20/2024"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <!-- Status -->
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Đang chờ duyệt"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Icon in Top-Right Corner -->
+    <ImageView
+        android:id="@+id/infoIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_info"
+    android:layout_gravity="top"
+    android:contentDescription="Info Icon" />
+</LinearLayout>

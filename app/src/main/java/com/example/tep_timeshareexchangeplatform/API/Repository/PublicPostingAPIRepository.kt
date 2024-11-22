@@ -3,6 +3,8 @@ package com.example.tep_timeshareexchangeplatform.API.Repository
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.PublicPostingAPIService
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangesResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
@@ -97,6 +99,38 @@ class PublicPostingAPIRepository @Inject constructor(
     ): Resource<PublicPostingResponse> {
         return try {
             val response = publicPostingAPIService.getRentalPostingOfResortByID(resortId, pageNo, pageSize)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+    suspend fun getBlog(
+        page: Int,
+        size: Int,
+        title: String
+    ): Resource<BlogResponse> {
+        return try {
+            val response = publicPostingAPIService.getBlog(page, size, title)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // function to call API to get posting detail
+    suspend fun getBlogDetail(postingId: Int): Resource<BlogDetailResponse> {
+        return try {
+            val response = publicPostingAPIService.getBlogDetail(postingId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

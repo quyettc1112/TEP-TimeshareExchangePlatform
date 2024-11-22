@@ -28,11 +28,26 @@
             android:name=".UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity"
             android:exported="false" />
         <activity
+            android:name=".UI.Activity.CommonActivity.BlogListActivity.BlogDetailActivity.BlogDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.CommonActivity.BlogListActivity.BlogListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity.MyExchangeRequestDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity"
             android:exported="false" />

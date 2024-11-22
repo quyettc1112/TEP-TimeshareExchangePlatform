@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
@@ -175,6 +176,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     }
 
 
+
+
+
+
+
     private fun setUserActivitiesEvent() {
         binding.apply {
             // Chỉnh Ngôn ngữ
@@ -218,6 +224,15 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     Intent(
                         requireContext(),
                         MyExchangePostingActivity::class.java
+                    )
+                )
+            }
+
+            llMyExchangeRequest.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyExchangeRequestActivity::class.java
                     )
                 )
             }

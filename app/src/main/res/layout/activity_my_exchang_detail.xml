@@ -73,6 +73,47 @@
                     android:paddingEnd="20dp"
                     android:paddingBottom="5dp">
 
+                    <!--// Resort Status-->
+                    <LinearLayout
+                        android:id="@+id/ll_status_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ripple_effect"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:translationZ="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_status"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:saveEnabled="false"
+                            app:cardCornerRadius="100dp"
+                            app:strokeColor="@color/red_light"
+                            app:strokeWidth="8dp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="Đã xác nhận"
+                            android:textColor="@color/red_light"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+
                     <!--// Resort Name-->
                     <TextView
                         android:id="@+id/tvResortName"
@@ -478,45 +519,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/primary_background"
         app:strokeWidth="1dp">
-        <!--// Resort Status-->
+<!--        &lt;!&ndash;// Resort Status&ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_status_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/ripple_effect"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="5dp"-->
+<!--            android:translationZ="10dp"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:id="@+id/card_status"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:background="@color/white"-->
+<!--                android:saveEnabled="false"-->
+<!--                app:cardCornerRadius="100dp"-->
+<!--                app:strokeColor="@color/red_light"-->
+<!--                app:strokeWidth="8dp" />-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_status"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:fontFamily="@font/inter_bold"-->
+<!--                android:text="Đã xác nhận"-->
+<!--                android:textColor="@color/red_light"-->
+<!--                android:textSize="18dp" />-->
+<!--        </LinearLayout>-->
         <LinearLayout
-            android:id="@+id/ll_status_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ripple_effect"
-            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
             android:gravity="center"
             android:padding="5dp"
-            android:translationZ="10dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:backgroundTint="@color/white">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_status"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:saveEnabled="false"
-                app:cardCornerRadius="100dp"
-                app:strokeColor="@color/red_light"
-                app:strokeWidth="8dp" />
-
-
-            <TextView
-                android:id="@+id/tv_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="Đã xác nhận"
-                android:textColor="@color/red_light"
-                android:textSize="18dp" />
+            <!-- Request list Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_list_request"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/background_cta_button"
+                android:text="Danh sách yêu cầu"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_bold" />
         </LinearLayout>
 
 

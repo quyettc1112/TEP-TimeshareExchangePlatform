@@ -24,6 +24,10 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivit
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
+import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -129,7 +133,9 @@ class MyExchangeDetailActivity : BaseActivity() {
     }
 
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
-
+        // BindDAta Package
+       /* bindPackageData(myExchangePostingDetail.exchangePackageName)
+*/
         // List Image
         bindDataListImage(myExchangePostingDetail.imageUrls)
 
@@ -199,6 +205,19 @@ class MyExchangeDetailActivity : BaseActivity() {
                     this@MyExchangeDetailActivity
                 )
         }
+
+        //Request List
+        binding.apply {
+            btnListRequest.setOnClickListener {
+                val intent = Intent(this@MyExchangeDetailActivity, ExchangeRequestOnPostActivity::class.java)
+                val postingId = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,postingId)
+                startActivity(
+                    intent
+                )
+            }
+        }
+
 
 
         // UI DTB

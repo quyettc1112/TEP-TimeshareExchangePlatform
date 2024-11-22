@@ -27,6 +27,8 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.ResortDetailActivity.ResortDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -92,13 +94,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     /**
-     * Observer ExchangeOfResortViewModel
+     * Observer ViewModel
      *
      * Observer Search Component
-     * Observer ExchangeOfResortViewModel
+     * Observer ViewModel
      */
     private fun observerSearchComponent() {
-        // Quan sát các giá trị từ ExchangeOfResortViewModel
+        // Quan sát các giá trị từ ViewModel
         mainViewModel.roomCount.observe(viewLifecycleOwner, Observer { count ->
             // Cập nhật giao diện với số phòng
             binding.tvTourist.text = mainViewModel.getRoomCount()
@@ -113,6 +115,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             // Cập nhật giao diện với số trẻ em
             binding.tvTourist.text = mainViewModel.getRoomCount()
         })
+
 
         mainViewModel.location.observe(viewLifecycleOwner, Observer { location ->
             binding.tvLocation.text = location
@@ -293,6 +296,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.tvBlogSeeMore.setOnClickListener {
+            val intent = Intent(requireContext(), BlogListActivity::class.java)
+            startActivity(intent)
         }
     }
 

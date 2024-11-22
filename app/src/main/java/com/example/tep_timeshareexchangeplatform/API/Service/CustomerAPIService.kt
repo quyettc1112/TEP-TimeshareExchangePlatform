@@ -19,6 +19,9 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Pric
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
@@ -210,6 +213,28 @@ interface CustomerAPIService {
     ): Response<MyExchangePostingsResponse>
 
 
+    // Get Customer Exchange Request
+    @GET("customer/exchange/request")
+    suspend fun getCustomerExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Query ("page") page: Int,
+        @Query ("size") size: Int
+    ) : Response<MyExchangeRequestResponse>
 
+
+    // Get Customer Exchange Request Detail
+    @GET("customer/exchange/request/{requestId}")
+    suspend fun getCustomerExchangeRequestDetail(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int
+    ) : Response<MyExchangeRequestDetailResponse>
+
+    @GET("customer/exchange/request/posting/{postingId}")
+    suspend fun getCustomerExchangeRequestOnPost(
+        @Header ("Authorization") token: String,
+        @Query ("pageNo") pageNo: Int,
+        @Query ("pageSize") pageSize: Int,
+        @Path ("postingId") postingId: Int
+    ) : Response<ExchangeRequestPostingResponse>
 
 }
