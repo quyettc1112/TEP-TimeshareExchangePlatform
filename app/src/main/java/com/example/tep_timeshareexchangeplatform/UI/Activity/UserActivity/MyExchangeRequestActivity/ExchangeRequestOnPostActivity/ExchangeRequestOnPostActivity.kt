@@ -26,7 +26,9 @@ import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityExchangePostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityExchangeRequestOnPostBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExchangeRequestOnPostActivity : BaseActivity() {
     private lateinit var binding: ActivityExchangeRequestOnPostBinding
     private lateinit var exchangeAdapter: ExchangeRequestOnPostAdapter
