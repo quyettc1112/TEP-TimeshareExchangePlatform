@@ -2,15 +2,17 @@ package com.example.tep_timeshareexchangeplatform.Until
 
 import android.Manifest
 import android.app.Activity
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.tep_timeshareexchangeplatform.R
+
 
 class NotificationHelper(private val context: Context) {
 
@@ -18,7 +20,7 @@ class NotificationHelper(private val context: Context) {
         private const val CHANNEL_ID = "default_channel_id"
         private const val CHANNEL_NAME = "Default Channel"
         private const val CHANNEL_DESCRIPTION = "This is the default notification channel"
-        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
+        const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     }
 
     init {
@@ -55,7 +57,7 @@ class NotificationHelper(private val context: Context) {
         }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_unwind_logo_25)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -63,6 +65,54 @@ class NotificationHelper(private val context: Context) {
             .build()
 
         NotificationManagerCompat.from(context).notify(notificationId, notification)
+    }
+
+    fun makeNotification(context: Context, title: String, message: String) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Nếu quyền chưa được cấp, yêu cầu quyền
+            if (context is Activity) {
+                ActivityCompat.requestPermissions(
+                    context,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
+            }
+            return
+        }
+
+
+
+        val channelID = "CHANNEL_ID_NOTIFICATION"
+        val builder = NotificationCompat.Builder(context, channelID)
+            .setSmallIcon(R.drawable.ic_unwind_logo_25)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            var notificationChannel = notificationManager.getNotificationChannel(channelID)
+            if (notificationChannel == null) {
+                val importance = NotificationManager.IMPORTANCE_HIGH
+                notificationChannel = NotificationChannel(channelID, "Some description", importance).apply {
+                    lightColor = Color.GREEN
+                    enableVibration(true)
+                }
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+        }
+
+        notificationManager.notify(getNotificationId(), builder.build())
+    }
+
+    private fun getNotificationId(): Int {
+        return System.currentTimeMillis().toInt()
     }
 
 
