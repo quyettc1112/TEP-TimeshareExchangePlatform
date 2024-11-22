@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -20,9 +21,9 @@ class NotificationAdapter :
         BaseItemViewHolderCF<NotificationModel, ItemNotificationBinding>(binding) {
         override fun bind(item: NotificationModel) {
             // Is Read
-            if (item.isRead){
+           /* if (item.isRead){
                 binding.notificationItem.backgroundTintList =
-                    ContextCompat.getColorStateList(binding.root.context, R.color.primary_background_F9)
+                    ContextCompat.getColorStateList(binding.root.context, R.color.gray_400)
                 binding.optionNotification.setImageResource(R.drawable.baseline_more_horiz_24)
             }
             else {
@@ -30,6 +31,18 @@ class NotificationAdapter :
                     ContextCompat.getColorStateList(binding.root.context, R.color.white)
                 binding.optionNotification.setImageResource(R.drawable.ic_seen)
 
+            }*/
+
+            if (item.isRead) {
+                binding.main.backgroundTintList = ContextCompat.getColorStateList(
+                    binding.root.context,
+                    R.color.white
+                )
+            } else {
+                binding.main.backgroundTintList = ContextCompat.getColorStateList(
+                    binding.root.context,
+                    R.color.i_blue_light
+                )
             }
 
             // Time
@@ -57,34 +70,35 @@ class NotificationAdapter :
         private fun bindDataTypeNotification(item: NotificationModel) {
             when (item.typeNotification) {
                 NotificationType.NOTIFICATION -> {
-                    binding.typeNotification.text = NotificationType.NOTIFICATION.notificationType
+                    binding.titleNotification.text = NotificationType.NOTIFICATION.notificationType
+                    binding.btnViewDetail.visibility = View.GONE
                 }
 
                 NotificationType.DEPOSIT -> {
-                    binding.typeNotification.text = NotificationType.DEPOSIT.notificationType
+                    binding.titleNotification.text = NotificationType.DEPOSIT.notificationType
+                    binding.btnViewDetail.visibility = View.VISIBLE
+
                 }
 
                 NotificationType.REJECT_POSTING -> {
-                    binding.typeNotification.text = NotificationType.REJECT_POSTING.notificationType
+                    binding.titleNotification.text = NotificationType.REJECT_POSTING.notificationType
+                    binding.btnViewDetail.visibility = View.GONE
                 }
 
                 NotificationType.ACCEPT_POSTING -> {
-                    binding.typeNotification.text = NotificationType.ACCEPT_POSTING.notificationType
+                    binding.titleNotification.text = NotificationType.ACCEPT_POSTING.notificationType
+                    binding.btnViewDetail.visibility = View.VISIBLE
                 }
 
                 NotificationType.DONE_BOOKING -> {
-                    binding.typeNotification.text = NotificationType.DONE_BOOKING.notificationType
+                    binding.titleNotification.text = NotificationType.DONE_BOOKING.notificationType
+                    binding.btnViewDetail.visibility = View.VISIBLE
                 }
 
                 NotificationType.MEMBERSHIP -> {
-                    binding.typeNotification.text = NotificationType.MEMBERSHIP.notificationType
+                    binding.titleNotification.text = NotificationType.MEMBERSHIP.notificationType
+                    binding.btnViewDetail.visibility = View.GONE
                 }
-            }
-            binding.animType.apply {
-                setAnimation(item.iconResId)
-                if(item.isRead) pauseAnimation()
-                else playAnimation()
-                repeatCount = LottieDrawable.INFINITE // Lặp lại animation
             }
         }
     }
