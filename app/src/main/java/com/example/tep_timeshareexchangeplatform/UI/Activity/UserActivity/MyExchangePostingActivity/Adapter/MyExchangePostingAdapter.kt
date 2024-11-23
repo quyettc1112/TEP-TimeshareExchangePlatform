@@ -202,6 +202,14 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
             submitList(currentList) // Cập nhật danh sách trong Adapter
         }
     }
+
+    fun getItemIdFromPosition(position: Int): Int? {
+        return if (position >= 0 && position < differ.currentList.size) { // `items` là danh sách dữ liệu của adapter
+            differ.currentList[position].exchangePostingId // Giả sử mỗi item có thuộc tính `id`
+        } else {
+            null
+        }
+    }
     override fun differCallBack(): DiffUtil.ItemCallback<MyExchangePostingsResponse.Content> {
         return object : DiffUtil.ItemCallback<MyExchangePostingsResponse.Content>() {
             override fun areItemsTheSame(

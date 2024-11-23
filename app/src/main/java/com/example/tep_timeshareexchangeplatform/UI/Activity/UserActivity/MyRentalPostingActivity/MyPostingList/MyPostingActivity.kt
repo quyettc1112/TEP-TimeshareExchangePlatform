@@ -114,7 +114,7 @@ class MyPostingActivity : BaseActivity() {
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
                     showErrorToast(it.message ?: "Có lỗi xảy ra")
-                    Log.e("MyPostingActivasdasdity", it.message ?: "Có lỗi xảy ra")
+                    Log.e("MyPostingActivity", it.message ?: "Có lỗi xảy ra")
                 }
             }
         }
@@ -145,7 +145,8 @@ class MyPostingActivity : BaseActivity() {
                         ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                     myPostingAdapter.updateItemStatus(itemPosition, MyPostingStatus.CLOSED.name)
-
+                    val id = myPostingAdapter.getItemIdFromPosition(itemPosition) ?: 0
+                    viewModel.updatePostingItem(id, MyPostingStatus.CLOSED.name)
                 }
 
                 Status.ERROR -> {

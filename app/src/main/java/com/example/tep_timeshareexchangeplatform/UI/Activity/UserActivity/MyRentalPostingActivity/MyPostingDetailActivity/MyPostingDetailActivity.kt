@@ -20,6 +20,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
@@ -235,14 +236,14 @@ class MyPostingDetailActivity : BaseActivity() {
             )
             tvNumberNight.text = "${myRentalPostingDetailResponse.nights} đêm"
 
-            if (myRentalPostingDetailResponse.pricePerNights == 0) {
+            if (myRentalPostingDetailResponse.pricePerNights == 0L) {
                 tvRoomPricePerNight.text = "Đang Chờ Xác Nhận"
                 tvEstimatedTotalPrice.text = "Đang Chờ Xác Nhận"
             } else {
                 tvRoomPricePerNight.text =
-                    "${formatPrice(myRentalPostingDetailResponse.pricePerNights)} đ"
+                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} đ"
                 tvEstimatedTotalPrice.text =
-                    "${formatPrice(myRentalPostingDetailResponse.totalPrice)} đ"
+                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} đ"
             }
             tvLocation.text = myRentalPostingDetailResponse.address
 

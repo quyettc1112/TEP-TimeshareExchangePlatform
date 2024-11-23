@@ -156,7 +156,8 @@ class MyExchangePostingActivity : BaseActivity() {
                         ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                     exchangeAdapter.updateItemStatus(itemPosition, MyPostingStatus.CLOSED.name)
-
+                    val id = exchangeAdapter.getItemIdFromPosition(itemPosition) ?: 0
+                    viewModel.updatePostingItem(id, MyPostingStatus.CLOSED.name)
                 }
 
                 Status.ERROR -> {

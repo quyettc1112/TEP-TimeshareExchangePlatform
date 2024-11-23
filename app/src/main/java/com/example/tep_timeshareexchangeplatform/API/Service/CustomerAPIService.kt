@@ -205,7 +205,7 @@ interface CustomerAPIService {
     suspend fun deactivateRentalPosting(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int
-    ): Response<MyRentalPostingsResponse>
+    ): Response<MyRentalPostingDetailResponse>
 
     // Deactivate Exchange Posting
     @PUT("customer/deactivate/exchange/{postingId}")

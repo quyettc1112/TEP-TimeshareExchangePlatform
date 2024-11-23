@@ -225,6 +225,14 @@ class MyPostingAdapter(var context: MyPostingActivity) :
         }
     }
 
+    fun getItemIdFromPosition(position: Int): Int? {
+        return if (position >= 0 && position < differ.currentList.size) { // `items` là danh sách dữ liệu của adapter
+            differ.currentList[position].rentalPostingId // Giả sử mỗi item có thuộc tính `id`
+        } else {
+            null
+        }
+    }
+
     override fun differCallBack(): DiffUtil.ItemCallback<MyRentalPostingsResponse.Content> {
         return object : DiffUtil.ItemCallback<MyRentalPostingsResponse.Content>() {
             override fun areItemsTheSame(

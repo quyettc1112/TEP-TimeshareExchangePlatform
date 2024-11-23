@@ -429,7 +429,7 @@ class CustomerAPIRepository @Inject constructor(
     suspend fun deactivateRentalPosting(
         token: String,
         postingId: Int
-    ): Resource<MyRentalPostingsResponse> {
+    ): Resource<MyRentalPostingDetailResponse> {
         return try {
             val response = customerAPIService.deactivateRentalPosting("Bearer $token", postingId)
             if (response.isSuccessful) {
