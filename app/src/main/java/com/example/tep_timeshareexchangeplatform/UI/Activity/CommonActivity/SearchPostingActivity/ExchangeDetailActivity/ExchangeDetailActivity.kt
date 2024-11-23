@@ -130,7 +130,7 @@ class ExchangeDetailActivity : BaseActivity() {
     private fun bindDataPostingDetail(postingDetail: ExchangeDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
 
         }

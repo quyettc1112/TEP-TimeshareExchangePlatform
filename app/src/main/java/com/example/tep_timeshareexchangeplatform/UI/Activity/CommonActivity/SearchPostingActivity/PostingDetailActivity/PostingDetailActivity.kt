@@ -194,7 +194,7 @@ class PostingDetailActivity : BaseActivity() {
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
 
         }
@@ -260,9 +260,9 @@ class PostingDetailActivity : BaseActivity() {
                 Constant.formatDateByLocale(postingDetail.checkoutDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPriceLong(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} VNĐ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
         }
@@ -518,7 +518,6 @@ class PostingDetailActivity : BaseActivity() {
 
 
     }
-
 
     private fun setRequestButtonAction() {
         binding.ctrRequestButton.setOnClickListener {

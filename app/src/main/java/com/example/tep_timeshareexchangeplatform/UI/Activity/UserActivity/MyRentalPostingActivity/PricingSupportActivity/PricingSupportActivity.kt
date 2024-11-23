@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -112,16 +113,17 @@ class PricingSupportActivity : BaseActivity() {
         binding.tvRoomName.text = postingData.roomName
         binding.tvCheckInDate.text = postingData.checkInDate
         binding.tvCheckOutDate.text = postingData.checkOutDate
+        binding.tvNights.text = postingData.nights.toString() + " đêm"
 
         val rentalPackageEnum = RentalPackageEnum.getPackageByName(postingData.packageSelection)
         when (rentalPackageEnum) {
             RentalPackageEnum.PREMIUM_SERVICE.packageModel -> {
-                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + "VND")
+                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + "VNĐ")
                 binding.btnChangePrice.text = "Thay Đổi Mức Giá"
             }
 
             RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
-                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.priceValuation!!) + "VND")
+                binding.etPriceInput.setText(Constant.formatPriceLong(postingData.priceValuation!!) + "VNĐ")
                 binding.btnChangePrice.text = "Từ Chối Mức Giá"
             }
         }
@@ -194,7 +196,7 @@ class PricingSupportActivity : BaseActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_price_input, null)
         val binding = DialogPriceInputBinding.bind(dialogView)
 
-        binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + " đ")
+        binding.etPriceInput.setText(Constant.formatPriceLong(postingData.staffRefinementPrice!!) + " VNĐ")
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -206,7 +208,7 @@ class PricingSupportActivity : BaseActivity() {
         )
         setMoneyInputLogic(binding)
         binding.btnAcceptPrice.setOnClickListener {
-            val priceString = binding.etPriceInput.text.toString().replace(" đ", "").replace(".", "").replace(",", "")
+            val priceString = binding.etPriceInput.text.toString().replace(" VNĐ", "").replace(".", "").replace(",", "")
             if (priceString.isNotEmpty() && binding.moneyContainer.helperText.isNullOrEmpty()) {
                 viewModel.acceptPricingSupport(
                     tokenManager.getAccessToken().toString(),
@@ -219,11 +221,11 @@ class PricingSupportActivity : BaseActivity() {
                 MotionToast.createColorToast(
                     this,
                     "Error",
-                    "Vui lòng nhập giá",
-                    MotionToastStyle.ERROR,
+                    "Vui lòng nhập giá tiền hợp lệ",
+                    MotionToastStyle.WARNING,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
-                    null
+                    ResourcesCompat.getFont(this, R.font.inter_bold)
                 )
             }
         }
@@ -244,6 +246,12 @@ class PricingSupportActivity : BaseActivity() {
                 val input = editable.toString()
                     .replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
 
+                if(input.isNotEmpty()) {
+                    binding.moneyContainer.helperText = null
+                    binding.etTotalPrice.setText("${postingData.nights} đêm")
+
+                }
+
                 if (input.isNotEmpty()) {
                     // Loại bỏ số 0 đầu tiên nếu có
                     var cleanedInput = input
@@ -253,19 +261,28 @@ class PricingSupportActivity : BaseActivity() {
 
                     // Kiểm tra số tiền tối thiểu 10.000
                     val numericValue = cleanedInput.toLongOrNull() ?: 0
-                    if (numericValue < 10000) {
-                        // Hiển thị helper text nếu số tiền nhỏ hơn 10.000
-                        binding.moneyContainer.helperText = "Số tiền tối thiểu là 10.000"
-                    } else {
-                        // Ẩn helper text khi số tiền đạt yêu cầu
-                        binding.moneyContainer.helperText = null
+
+                    when {
+                        numericValue < 10000 -> {
+                            binding.moneyContainer.helperText = "Số tiền tối thiểu là 10.000 VNĐ"
+                        }
+                        numericValue > 100000000 -> {
+                            binding.moneyContainer.helperText = "Số tiền tối đa là 100.000.000 VNĐ"
+                        }
+
+                        else -> {
+                            binding.moneyContainer.helperText = null
+                        }
                     }
+                    binding.etTotalPrice.setText(Constant.formatPriceLong(numericValue * postingData.nights) + " VNĐ | " + postingData.nights + " đêm" )
+
+
 
                     // Định dạng số tiền và thêm ký tự "đ" ở cuối
-                    val formatted = formatCurrency(cleanedInput) + " đ"
+                    val formatted = formatCurrency(cleanedInput) + " VNĐ"
                     current = formatted
                     binding.etPriceInput.setText(formatted)
-                    binding.etPriceInput.setSelection(formatted.length - 2)
+                    binding.etPriceInput.setSelection(formatted.length - 4)
                 }
 
                 binding.etPriceInput.addTextChangedListener(this)
