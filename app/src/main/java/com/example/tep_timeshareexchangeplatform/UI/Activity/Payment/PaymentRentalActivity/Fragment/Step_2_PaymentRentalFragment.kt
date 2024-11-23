@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.VNPayActivity
@@ -248,7 +249,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             requireActivity().finish()
         }
         val customerInfo = tokenManager.getCustomerInfo()
-        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} đ"
+        binding.tvWalletBalance.text = "${formatPriceLong(customerInfo?.walletAvailableMoney!!)} đ"
 
     }
 
@@ -280,16 +281,16 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 Constant.formatDateByLocale(postingDetail.checkoutDate, requireContext())
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} đ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
 
         }
 
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
 
         }
 

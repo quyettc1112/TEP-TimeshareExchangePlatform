@@ -443,7 +443,7 @@ class VNPayActivity : BaseActivity() {
     }
 
     private fun processPaymentInfo(url: String, view: WebView, packageId: Int) {
-        if (url.contains("https://fams-management.tech/api/payment/payment-infor")) {
+        if (url.contains("https://unwind.id.vn/api/payment/payment-infor")) {
             // Sử dụng evaluateJavascript để lấy nội dung JSON từ trang
             showLoadingWaiting(true)
             view.loadUrl("about:blank")

@@ -17,7 +17,7 @@ class PaymentAPIRepository @Inject constructor(
     }
 
     // function to call API to get payment url
-    suspend fun getPaymentUrl(amount: Int, orderType: String): Resource<PaymentResponse> {
+    suspend fun getPaymentUrl(amount: Long, orderType: String): Resource<PaymentResponse> {
         return try {
             val response = paymentAPIService.getPaymentUrl(amount, orderType)
             if (response.isSuccessful) {

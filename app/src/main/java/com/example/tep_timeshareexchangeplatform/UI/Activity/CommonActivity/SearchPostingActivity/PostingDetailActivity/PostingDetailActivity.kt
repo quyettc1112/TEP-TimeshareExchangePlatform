@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
@@ -48,9 +49,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityTimeshareDetailBinding
     private var imagePostingAdapter = ImagePostingAdapter()
-    private var facilityAdapter = AmenitiesAdapter()
-    private var reviewAdapter = ReviewAdapter()
-    private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val postingDetailViewModel: PostingDetailViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
@@ -75,8 +73,6 @@ class PostingDetailActivity : BaseActivity() {
 
         initAdapter()
 
-        // Review
-        setReviewTimeshare()
 
         // Set up the action for the button
         setToolBarAction()
@@ -264,9 +260,9 @@ class PostingDetailActivity : BaseActivity() {
                 Constant.formatDateByLocale(postingDetail.checkoutDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} đ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
         }
@@ -274,7 +270,7 @@ class PostingDetailActivity : BaseActivity() {
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
             tvDate.text = Constant.getFormattedDate(
                 postingDetail.checkinDate,
                 this@PostingDetailActivity
@@ -285,8 +281,6 @@ class PostingDetailActivity : BaseActivity() {
 
         }
 
-        // Set Amenities
-        facilityAdapter.submitList(postingDetail.resortAmenities)
 
         // Package Info
         binding.apply {
@@ -363,8 +357,6 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
-        facilityAdapter.submitList(listOf())
-        reviewAdapter.submitList(listOf())
     }
 
     private fun bindDataListImage(imageList: List<String>) {
@@ -450,6 +442,7 @@ class PostingDetailActivity : BaseActivity() {
             tvKitchen.text = data.unitType.kitchen
             tvNumKitchen.text = 1.toString()
 
+
             // Max Guest
             tvNumPerson.text = data.unitType.sleeps.toString()
             tvPerson.text =
@@ -526,12 +519,6 @@ class PostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun setReviewTimeshare() {
-        binding.rvReview.apply {
-            adapter = reviewAdapter
-            layoutManager = LinearLayoutManager(this@PostingDetailActivity)
-        }
-    }
 
     private fun setRequestButtonAction() {
         binding.ctrRequestButton.setOnClickListener {
@@ -604,7 +591,6 @@ class PostingDetailActivity : BaseActivity() {
     private fun intentToMemberShipActivity() {
         startActivity(Intent(this, MemberShipActivity::class.java))
     }
-
 
     fun mapToUnitTypeBase(
         unitType: PublicPostingDetailResponse.UnitType,

@@ -138,6 +138,8 @@ class MyPostingDetailActivity : BaseActivity() {
         // Image List
         bindDataListImage(myRentalPostingDetailResponse.imageUrls)
 
+        // Amenities
+        bindDataAmenities(myRentalPostingDetailResponse)
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
@@ -329,7 +331,6 @@ class MyPostingDetailActivity : BaseActivity() {
             MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)
                 ?.getDescription(this)
 
-
     }
 
 
@@ -375,7 +376,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindDataAmenities(data: MyExchangePostingDetailResponse) {
+    private fun bindDataAmenities(data: MyRentalPostingDetailResponse) {
         featuresAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
         entertainmentAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
         kitchenAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
@@ -429,7 +430,6 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
     }
-
 
     private fun bindDataListImage(imageList: List<String>) {
         // List Destination
@@ -513,7 +513,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    fun mapToAmenitiesModel(amenities: List<MyExchangePostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+    fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return amenities.map { amenity ->
             AmenitiesModel(
                 name = amenity.name,

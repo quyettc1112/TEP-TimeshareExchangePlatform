@@ -532,7 +532,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     }
 
 
-    fun formatPrice(price: Int): String {
+    fun formatPrice(price: Long): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)
     }

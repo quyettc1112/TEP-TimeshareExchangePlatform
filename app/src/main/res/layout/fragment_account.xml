@@ -382,7 +382,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="left|center"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_posting_exchange" />
+                            android:src="@drawable/ic_exchange_request" />
 
                         <TextView
                             android:layout_width="0dp"

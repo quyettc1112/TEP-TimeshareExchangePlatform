@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class PackageModel(
     val id: Int,
     val name: String,
-    val price: Int,
+    val price: Long,
     val description: String,
     val duration: Int,
     val type: String,
@@ -15,7 +15,7 @@ data class PackageModel(
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString().toString(),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readString().toString(),
         parcel.readInt(),
         parcel.readString().toString(),
@@ -26,7 +26,7 @@ data class PackageModel(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(name)
-        parcel.writeInt(price)
+        parcel.writeLong(price)
         parcel.writeString(description)
         parcel.writeInt(duration)
         parcel.writeString(type)

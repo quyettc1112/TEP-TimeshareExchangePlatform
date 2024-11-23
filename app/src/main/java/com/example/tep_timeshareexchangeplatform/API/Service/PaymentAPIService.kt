@@ -9,7 +9,7 @@ interface PaymentAPIService {
 
     @GET("payment/url-payment")
     suspend fun getPaymentUrl(
-        @Query("amount") amount : Int,
+        @Query("amount") amount : Long,
         @Query("orderTYpe") orderTYpe : String,
     ): Response<PaymentResponse>
 }

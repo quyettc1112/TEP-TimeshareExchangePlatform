@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    android:minHeight="330dp"
+    android:minHeight="320dp"
     android:backgroundTint="@color/white"
     android:background="@drawable/background_stroke_around"
     android:layout_height="wrap_content">
@@ -146,8 +146,8 @@
 
             <ImageView
                 android:layout_marginStart="1dp"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/ic_room_ts"/>
 
             <TextView
@@ -181,14 +181,12 @@
     <!--// Price-->
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="10dp"
         android:gravity="center|left"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
 
@@ -197,9 +195,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_extrabold"
-            android:text="1.300.000 VND"
+            android:text="1.300.000.000.00 VND"
+            android:maxLines="1"
             android:textColor="@color/blue_full"
-            android:textSize="16dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_numberOfNight"
@@ -236,6 +235,7 @@
     <!-- // Ratign-->
     <LinearLayout
         android:id="@+id/materialCardView3"
+        android:visibility="gone"
         android:layout_width="130dp"
         android:layout_height="22dp"
         android:layout_marginStart="5dp"

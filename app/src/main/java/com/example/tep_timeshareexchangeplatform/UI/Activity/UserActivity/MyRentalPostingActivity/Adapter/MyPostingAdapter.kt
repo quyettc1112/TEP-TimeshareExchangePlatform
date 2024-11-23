@@ -163,7 +163,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
 
             // Price
-            if (item.pricePerNights != null && item.pricePerNights != 0) {
+            if (item.pricePerNights != null && item.pricePerNights != 0L) {
                 binding.tvRoomPricePerNight.text = "${formatPrice(item.pricePerNights)}đ /đêm"
             } else {
                 binding.tvRoomPricePerNight.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
@@ -200,7 +200,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
         }
 
-        fun formatPrice(price: Int): String {
+        fun formatPrice(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }

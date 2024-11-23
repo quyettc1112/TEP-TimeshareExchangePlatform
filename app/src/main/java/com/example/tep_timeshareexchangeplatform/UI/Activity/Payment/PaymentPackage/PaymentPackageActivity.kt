@@ -320,7 +320,7 @@ class PaymentPackageActivity : BaseActivity() {
         }
     }
 
-    fun formatPrice(price: Int): String {
+    fun formatPrice(price: Long): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)
     }

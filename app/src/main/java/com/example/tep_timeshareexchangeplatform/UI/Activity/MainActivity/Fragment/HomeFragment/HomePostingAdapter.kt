@@ -38,7 +38,7 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
             }
 
 
-            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND"
+            binding.tvPrice.text = "${formatPriceLong(item.pricePerNights)} VND"
 
             binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
@@ -48,6 +48,10 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
         }
 
         fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+        fun formatPriceLong(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }

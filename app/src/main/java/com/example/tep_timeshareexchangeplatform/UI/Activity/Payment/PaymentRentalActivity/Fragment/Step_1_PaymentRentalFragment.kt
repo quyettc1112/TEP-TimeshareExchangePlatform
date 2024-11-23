@@ -158,9 +158,9 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
                 Constant.formatDateByLocale(postingDetail.checkoutDate, requireContext())
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} đ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
         }
@@ -168,7 +168,7 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
 
         }
 

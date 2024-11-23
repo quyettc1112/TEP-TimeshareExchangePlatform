@@ -22,7 +22,7 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
         override fun bind(item: PublicPostingResponse.Content) {
             Glide.with(binding.imImageTimeshare.context)
                 .load(item.unitTypeDTO.photos)
-                .error(R.drawable.ic_error_)
+                .error(R.drawable.ic_image_tmp_holder)
                 .into(binding.imImageTimeshare)
             binding.tvTimeshareName.text = item.roomName
             binding.tvLocation.text = item.address
@@ -36,7 +36,9 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
             }
 
 
-            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND"
+
+
+            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VNĐ"
 
             binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
@@ -45,9 +47,18 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
 
         }
 
-        fun formatPrice(price: Int): String {
+        fun formatPrice(price: Long): String {
             val formatter = DecimalFormat("#,###")
-            return formatter.format(price)
+            val formattedPrice = formatter.format(price)
+
+            // Nếu giá trị lớn hơn 100 triệu, thay đổi textSize
+            if (price > 100_000_000) {
+                binding.tvPrice.textSize = 12f // Thay đổi kích thước text thành 10dp
+            } else {
+                binding.tvPrice.textSize = 15f // Hoặc kích thước mặc định
+            }
+
+            return formattedPrice
         }
 
     }

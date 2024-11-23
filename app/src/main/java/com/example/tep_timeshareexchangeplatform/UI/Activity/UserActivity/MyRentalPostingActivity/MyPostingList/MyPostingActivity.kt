@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -112,17 +113,8 @@ class MyPostingActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
-                    it.message?.let { it1 ->
-                        MotionToast.Companion.createColorToast(
-                            this,
-                            "Lỗi",
-                            it1,
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
-                    }
+                    showErrorToast(it.message ?: "Có lỗi xảy ra")
+                    Log.e("MyPostingActivasdasdity", it.message ?: "Có lỗi xảy ra")
                 }
             }
         }

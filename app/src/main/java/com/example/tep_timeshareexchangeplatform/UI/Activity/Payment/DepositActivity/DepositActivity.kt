@@ -52,7 +52,7 @@ class DepositActivity : BaseActivity() {
             finish()
         }
         binding.tvWalletBalancel.text = tokenManager.getCustomerInfo()
-            ?.let { Constant.formatPrice(it.walletAvailableMoney) } + " đ"
+            ?.let { Constant.formatPriceLong(it.walletAvailableMoney) } + " đ"
     }
 
 
@@ -181,7 +181,7 @@ class DepositActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            val amount = binding.edtMoney.text.toString().replace("[^\\d]".toRegex(), "").toInt()
+            val amount = binding.edtMoney.text.toString().replace("[^\\d]".toRegex(), "").toLong()
             viewModel.getResponsePaymentUrl(amount, "DEPOSIT")
         }
     }
