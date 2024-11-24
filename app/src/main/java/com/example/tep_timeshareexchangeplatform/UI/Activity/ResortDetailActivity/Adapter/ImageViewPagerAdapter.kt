@@ -14,6 +14,10 @@ class ImageViewPagerAdapter: BaseAdapter<String, ImageViewPagerAdapter.ImageView
         override fun bind(item: String) {
             if (item.isNotEmpty()) {
                 binding.apply {
+                    imResortImage.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    imResortImage.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                    imResortImage.requestLayout()
+
                     Glide.with(imResortImage.context)
                         .load(item)
                         .into(imResortImage)

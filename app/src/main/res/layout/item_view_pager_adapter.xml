@@ -20,10 +20,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/im_resortImage"
-            app:riv_corner_radius="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/im_material_resort" />
 
