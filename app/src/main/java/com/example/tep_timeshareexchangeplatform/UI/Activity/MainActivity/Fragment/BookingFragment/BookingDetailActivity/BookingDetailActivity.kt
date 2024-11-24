@@ -1,9 +1,12 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
@@ -21,16 +24,19 @@ import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityBookingDetailBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogCancellcationPolicyBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BookingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityBookingDetailBinding
-
     private lateinit var token: TokenManager
+    private lateinit var notificationHelper: NotificationHelper
     private val viewModel: BookingDetailViewModel by viewModels()
 
 
@@ -45,7 +51,9 @@ class BookingDetailActivity : BaseActivity() {
             insets
         }
         token = TokenManager(this)
+        notificationHelper = NotificationHelper(this)
         getIntentData()
+        eventClickCancelBooking()
 
         binding.toolbar.onStartIconClick = {
             onBackPressed()
@@ -143,7 +151,38 @@ class BookingDetailActivity : BaseActivity() {
             }
         }
 
+        // Check Cancel Booking
+        viewModel.cancelBookingResponse.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessToast("Hủy đặt phòng thành công")
+                    val resultIntent = Intent()
+                    Log.d("Checkasfasda", it.data.toString())
+                    resultIntent.putExtra(Constant.DEFAULT_BOOKING_ID, it.data?.id) // Thêm dữ liệu vào Intent
+                    resultIntent.putExtra(Constant.DEFAULT_BOOKING_STATUS, it.data?.status) // Thêm dữ liệu vào Intent
+                    setResult(Activity.RESULT_OK, resultIntent) // Trả kết quả về MainActivity
+                    notificationHelper.makeNotification(
+                        this,
+                        "Hủy đặt phòng thành công",
+                        "Đặt phòng của bạn đã được hủy thành công"
+                    )
+                    finish()
 
+
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailToast(it.message.toString())
+                    Log.d("Chgeckasfasda", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
         // Posting feedback
         viewModel.feedbackRentalResponse.observe(this) {
             when (it.status) {
@@ -180,6 +219,47 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
+    // Event Click
+    private fun eventClickCancelBooking() {
+        binding.btnCancelBooking.setOnClickListener {
+            val bottomSheetDialog = BottomSheetDialog(this,  R.style.MyBottomSheetDialogTheme) // Use `requireContext()` if in Fragment
+
+            // Inflate the bottom sheet layout using View Binding
+            val bottomSheetBinding = DialogCancellcationPolicyBinding.inflate(layoutInflater)
+            bottomSheetDialog.setContentView(bottomSheetBinding.root)
+
+            // Set up actions for buttons inside the bottom sheet
+            bottomSheetBinding.btnCancelBooking.setOnClickListener {
+                val bookingId = viewModel.getMyBookingRentalDetailResponse.value?.data?.id
+                callCancelBooking(bookingId!!)
+                bottomSheetDialog.dismiss()
+            }
+
+            // Bind Cancellation Type
+            val data = viewModel.getMyBookingRentalDetailResponse.value
+            if (data?.data?.rentalPosting?.cancellationType == null) {
+                bottomSheetBinding.tvContentCancellationPolicy.text = "Không có"
+            } else {
+                val refundPolicy = RefundPolicy.getShortDescriptionFromName(
+                    this@BookingDetailActivity,
+                    data?.data?.rentalPosting?.cancellationType.name.toString()
+                )
+                bottomSheetBinding.tvContentCancellationPolicy.text  = refundPolicy
+            }
+
+
+
+            bottomSheetBinding.btnNone.setOnClickListener {
+                // Dismiss the dialog
+                bottomSheetDialog.dismiss()
+            }
+
+            bottomSheetDialog.show()
+        }
+    }
+
+
+
     // Bind Data Section
     private fun bindDataRental(data: MyBookingRentalDetailResponse) {
         // Bind Data Room Reservation
@@ -188,15 +268,15 @@ class BookingDetailActivity : BaseActivity() {
 
             // Check in Date
             tvCheckinDate.text =
-                Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.getFormattedDate(it, this@BookingDetailActivity) }
             tvCheckinDayOfWeek.text =
-                Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.getDayOfWeek(it, this@BookingDetailActivity) }
 
             // Check Out date
             tvCheckoutDate.text =
-                Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.getFormattedDate(it, this@BookingDetailActivity) }
             tvCheckoutDayOfWeek.text =
-                Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.getDayOfWeek(it, this@BookingDetailActivity) }
 
             // Booking Type
             binding.tvBookingTupe.text =
@@ -214,6 +294,9 @@ class BookingDetailActivity : BaseActivity() {
             etPhoneNumber.setText(data.primaryGuestPhone)
             etEmail.setText(data.primaryGuestEmail)
         }
+
+        // Show Cancel Booking
+        showCancelBooking(data.status)
 
 
         if (data.source == "rental") {
@@ -238,9 +321,9 @@ class BookingDetailActivity : BaseActivity() {
             tvLocation.text = data.rentalPosting.roomInfo.unitType.resortAddress
             tvNumberNight.text = data.totalNights.toString()
             tvCheckInDate.text =
-                Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
             tvCheckOutDate.text =
-                Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
 
             // Cancel Policy
             binding_detail_billing.apply {
@@ -255,9 +338,9 @@ class BookingDetailActivity : BaseActivity() {
                 }
             }
 
-            tvRoomPricePerNight.text = Constant.formatPrice(data.pricePerNights)
-            tvEstimatedTotalPrice.text = Constant.formatPrice(data.totalPrice)
-            tvFeePrice.text = Constant.formatPrice(data.serviceFee)
+            tvRoomPricePerNight.text = data.pricePerNights?.let { Constant.formatPriceLong(it) } + "VNĐ"
+            tvEstimatedTotalPrice.text = data.totalPrice?.let { Constant.formatPriceLong(it) } + "(${data.totalNights} đêm)"
+            tvFeePrice.text = data.serviceFee?.let { Constant.formatPriceLong(it) } + "VNĐ"
 
             // Image
             Glide.with(this@BookingDetailActivity)
@@ -277,15 +360,15 @@ class BookingDetailActivity : BaseActivity() {
 
             // Check in Date
             tvCheckinDate.text =
-                Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.getFormattedDate(it, this@BookingDetailActivity) }
             tvCheckinDayOfWeek.text =
-                Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.getDayOfWeek(it, this@BookingDetailActivity) }
 
             // Check Out date
             tvCheckoutDate.text =
-                Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.getFormattedDate(it, this@BookingDetailActivity) }
             tvCheckoutDayOfWeek.text =
-                Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.getDayOfWeek(it, this@BookingDetailActivity) }
 
             // Booking Type
             binding.tvBookingTupe.text =
@@ -326,9 +409,9 @@ class BookingDetailActivity : BaseActivity() {
             tvLocation.text = ""
             tvNumberNight.text = ""
             tvCheckInDate.text =
-                Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
+                data.checkinDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
             tvCheckOutDate.text =
-                Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
+                data.checkoutDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
 
             // Cancel Policy
             binding_detail_billing.apply {
@@ -429,6 +512,8 @@ class BookingDetailActivity : BaseActivity() {
                 )
             }
         }
+        binding.tvStatus.text = MyBookingStatus.fromApiStatus(status)?.getDescription(binding.root.context)
+
     }
 
     private fun onFeedbackClick(bookingId: Int, source: String) {
@@ -448,6 +533,16 @@ class BookingDetailActivity : BaseActivity() {
 
         }
     }
+
+    private fun callCancelBooking(bookingId: Int) {
+        if (!token.isLoggedIn()) {
+            showFailToast("Bạn cần đăng nhập để thực hiện chức năng này")
+            return
+        }
+        viewModel.cancelBooking(token.getAccessToken().toString(), bookingId)
+
+    }
+
 
     private fun callSendFeedBackRental(rating: Int, feedback: String, bookingId: Int) {
         if (!token.isLoggedIn()) {
@@ -493,6 +588,17 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
+    private fun showCancelBooking(status: String) {
+        when (MyBookingStatus.fromApiStatus(status)) {
+            MyBookingStatus.BOOKED -> {
+                binding.btnCancelBooking.visibility = View.VISIBLE
+            }
+
+            else -> {
+                binding.btnCancelBooking.visibility = View.GONE
+            }
+        }
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -500,7 +606,7 @@ class BookingDetailActivity : BaseActivity() {
     }
 
     private fun showSuccessToast(message: String) {
-        MotionToast.createToast(
+        MotionToast.Companion.createColorToast(
             this,
             "Thành Công",
             message,

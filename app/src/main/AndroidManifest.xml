@@ -64,7 +64,7 @@
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity"
+            android:name=".UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity"

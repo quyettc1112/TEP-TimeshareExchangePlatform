@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_medium"
-                android:text="Bộ lọc"
+                android:text="Làm mới"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,10 +107,11 @@
 
 
             <ImageView
+                android:id="@+id/btn_refresh"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_filter"
+                android:src="@drawable/baseline_restart_alt_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
                 app:layout_constraintTop_toTopOf="parent" />

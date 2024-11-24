@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
@@ -73,4 +74,18 @@ class BookingDetailViewModel @Inject constructor(
             }
         }
     }
+
+    // Call API To Cancel Booking
+    private var _cancelBookingResponse = MutableLiveData<Resource<CancelBookingResponse>>()
+    val cancelBookingResponse: LiveData<Resource<CancelBookingResponse>> = _cancelBookingResponse
+    fun cancelBooking(token: String, bookingId: Int) {
+        viewModelScope.launch {
+            _cancelBookingResponse.postValue(Resource.loading(null))
+            customerAPIRepository.cancelBookingRequest(token, bookingId).let {
+                _cancelBookingResponse.postValue(it)
+            }
+        }
+    }
+
+
 }

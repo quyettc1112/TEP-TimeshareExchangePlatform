@@ -1,11 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,11 +18,11 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomFeed
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyBookingAdapter
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -32,8 +36,10 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentBookingBinding
-    private var myOrderAdapter = MyOrderAdapter()
+    private var myBookingAdapter = MyBookingAdapter()
     private lateinit var tokenManager: TokenManager
+    private lateinit var bookingDetailLauncher: ActivityResultLauncher<Intent>
+    private var isNewLoad: Int = 0
 
     companion object {
         const val PAGE_SIZE = 10
@@ -42,6 +48,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initializeBookingDetailLauncher()
         initAdapter()
 
 
@@ -55,6 +62,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         tokenManager = TokenManager(requireContext())
         eventClickNotification()
         checkLogin()
+        eventClickRefresh()
 
 
         return binding.root
@@ -67,7 +75,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         } else {
 
             viewModel.resetCurrentMyBookingPage()
-            myOrderAdapter.submitList(listOf())
+            myBookingAdapter.submitList(listOf())
 
             observeData()
             setOrderList()
@@ -87,7 +95,11 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                         binding.llListContianer.visibility = View.VISIBLE
                         binding.llLoadingContainer.visibility = View.GONE
                         resources.data?.content?.let { viewModel.loadMoreBookingList(it) }
-                        myOrderAdapter.submitList(viewModel.getCurrentMyBookingList())
+                        myBookingAdapter.submitList(viewModel.getCurrentMyBookingList())
+                        if (isNewLoad != 0) {
+                            scrollToBooking(isNewLoad)
+                            isNewLoad = 0
+                        }
                     }
                     binding.animationViewLoadingMore.visibility = View.GONE
                 }
@@ -170,18 +182,18 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     }
 
     private fun initAdapter() {
-        myOrderAdapter.submitList(listOf())
-        myOrderAdapter.onItemClick = {
+        myBookingAdapter.submitList(listOf())
+        myBookingAdapter.onItemClick = {
             val intent = Intent(requireContext(), BookingDetailActivity::class.java)
             if(it.source == "rental") {
                 intent.putExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, it.bookingId)
             } else {
                 intent.putExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, it.bookingId)
             }
-            startActivity(intent)
+            bookingDetailLauncher.launch(intent)
         }
 
-        myOrderAdapter.onFeedbackClick = {
+        myBookingAdapter.onFeedbackClick = {
             val feedbackDialog = CustomFeedbackDialog(requireContext()) { rating, feedback ->
                 callSendFeedBack(rating, feedback, it.bookingId) // Gọi hàm xử lý feedback
             }
@@ -195,6 +207,14 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             startActivity(Intent(requireContext(), NotificationActivity::class.java))
         }
     }
+
+    private fun eventClickRefresh() {
+        binding.btnRefresh.setOnClickListener {
+            myBookingAdapter.submitList(listOf())
+            viewModel.resetCurrentMyBookingPage()
+        }
+    }
+
 
     private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
         if (!tokenManager.isLoggedIn()) {
@@ -228,7 +248,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     }
 
     private fun setOrderList() {
-        binding.rvOrderList.adapter = myOrderAdapter
+        binding.rvOrderList.adapter = myBookingAdapter
         // Scroll Listener
         binding.rvOrderList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -257,4 +277,37 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         }
 
     }
+
+    private fun initializeBookingDetailLauncher() {
+        bookingDetailLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val bookingStatus = result.data?.getStringExtra(Constant.DEFAULT_BOOKING_STATUS)
+                val bookingId = result.data?.getIntExtra(Constant.DEFAULT_BOOKING_ID, 0)
+                Log.d("BookingFragmeasdasdnt", "Booking Status: $bookingStatus")
+                Log.d("BookingFragmeasdasdnt", "Booking ID: $bookingId")
+                if (bookingId != null && bookingStatus != null) {
+                    try {
+                        myBookingAdapter.updateItemStatus(bookingId, bookingStatus)
+                        viewModel.updateBookingItemById(bookingId, bookingStatus)
+
+
+                    } catch (e: UnsupportedOperationException) {
+                        e.printStackTrace()
+                        Toast.makeText(requireContext(), "Không thể cập nhật danh sách", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun scrollToBooking(bookingId: Int) {
+        val position = myBookingAdapter.differ.currentList.indexOfFirst { it.bookingId == bookingId }
+        if (position != -1) {
+            binding.rvOrderList.scrollToPosition(position) // Cuộn đến vị trí
+        }
+    }
+
 }

@@ -1,24 +1,21 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.MyOrderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyBookingBinding
-import com.example.tep_timeshareexchangeplatform.databinding.ItemMyOrderBinding
 
-class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyOrderViewHolder>() {
+class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter.MyOrderViewHolder>() {
 
     var onItemClick: ((MyBookingResponse.Content) -> Unit)? = null
     var onFeedbackClick: ((MyBookingResponse.Content) -> Unit)? = null
@@ -30,13 +27,13 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
 
             binding.tvTimeshareName.text = "${item.resortName} | ${item.unitTypeTitle}"
             binding.tvCheckinDate.text =
-                Constant.getFormattedDate(item.checkinDate, binding.root.context)
+                item.checkinDate?.let { Constant.getFormattedDate(it, binding.root.context) }
             binding.tvCheckinDayOfWeek.text =
-                Constant.getDayOfWeek(item.checkinDate, binding.root.context)
+                item.checkinDate?.let { Constant.getDayOfWeek(it, binding.root.context) }
             binding.tvCheckoutDate.text =
-                Constant.getFormattedDate(item.checkoutDate, binding.root.context)
+                item.checkoutDate?.let { Constant.getFormattedDate(it, binding.root.context) }
             binding.tvCheckoutDayOfWeek.text =
-                Constant.getDayOfWeek(item.checkoutDate, binding.root.context)
+                item.checkoutDate?.let { Constant.getDayOfWeek(it, binding.root.context) }
             binding.tvTimeshareType.text = item.unitTypeTitle
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
@@ -179,6 +176,26 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
             val item = currentList[index].copy(isFeedbackGiven = true) // Cập nhật trạng thái
             currentList[index] = item
             submitList(currentList) // Cập nhật danh sách thông qua DiffUtil
+        }
+    }
+
+    fun updateItemStatus(bookingId: Int, newStatus: String) {
+        val currentList = differ.currentList.toMutableList()
+
+        // Tìm vị trí của item có bookingId tương ứng
+        val position = currentList.indexOfFirst { it.bookingId == bookingId }
+
+        if (position != -1) { // Nếu tìm thấy item
+            val oldItem = currentList[position]
+            val updatedItem = oldItem.copy(status = newStatus) // Cập nhật trạng thái
+            currentList[position] = updatedItem // Thay thế item tại vị trí
+
+            Log.d("Adapter", "Item trước: $oldItem")
+            Log.d("Adapter", "Item sau: $updatedItem")
+
+            differ.submitList(currentList.toList()) // Cập nhật danh sách trong Adapter
+        } else {
+            Log.e("Adapter", "Không tìm thấy item với bookingId: $bookingId")
         }
     }
 }

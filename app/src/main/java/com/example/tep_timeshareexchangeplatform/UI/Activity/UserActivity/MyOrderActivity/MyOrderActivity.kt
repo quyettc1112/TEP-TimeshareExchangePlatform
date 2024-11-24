@@ -1,22 +1,18 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyOrderAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.Adapter.MyBookingAdapter
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyOrderBinding
 
 class MyOrderActivity : BaseActivity() {
     private lateinit var binding: ActivityMyOrderBinding
 
-    private var myOrderAdapter = MyOrderAdapter()
+    private var myBookingAdapter = MyBookingAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +36,11 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        myOrderAdapter.submitList(listOf())
+        myBookingAdapter.submitList(listOf())
     }
 
     private fun setOrderList() {
-        binding.rvOrderList.adapter = myOrderAdapter
+        binding.rvOrderList.adapter = myBookingAdapter
     }
 
     override fun onBackPressed() {

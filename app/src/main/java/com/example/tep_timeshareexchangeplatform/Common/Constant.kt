@@ -94,6 +94,9 @@ class Constant {
         const val priceValuation = "priceValuation"
         const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"
 
+        const val DEFAULT_BOOKING_ID = "bookingId"
+        const val DEFAULT_BOOKING_STATUS = "bookingStatus"
+
         const val DEFAULT_MY_BOOKING_RENTAL = "myBookingRental"
         const val DEFAULT_MY_BOOKING_EXCHANGE = "myBookingExchange"
         const val GENERAL_ID_PAYMENT = "generalIdPayment"
@@ -123,6 +126,8 @@ class Constant {
 
         fun formatDateByLocale(dateString: String, context: Context): String {
             // Định dạng của chuỗi ngày nhập vào (dd-MM-yyyy)
+            if(dateString.isNullOrEmpty()) return ""
+
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
             // Chuyển chuỗi ngày thành đối tượng Date
@@ -145,6 +150,8 @@ class Constant {
         }
 
         fun getDayOfWeek(dateString: String, context: Context): String {
+
+            if(dateString.isNullOrEmpty()) return ""
             // Input date format
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
             val date: Date = inputDateFormat.parse(dateString) ?: return ""

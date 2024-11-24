@@ -20,8 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val publicPostingAPIRepository: PublicPostingAPIRepository,
-    private val publicResortAPIRepository: PublicResortAPIRepository,
     private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
 
@@ -139,6 +137,15 @@ class MainViewModel @Inject constructor(
             customerAPIRepository.getCustomerBooking(token, pageNo, pageSize).let {
                 _myBooking.postValue(it)
             }
+        }
+    }
+    fun updateBookingItemById(bookingId: Int, newStatus: String) {
+        // Tìm vị trí của item cần cập nhật trong danh sách
+        val index = _currentMyBookingList.indexOfFirst { it.bookingId == bookingId }
+        if (index != -1) {
+            // Cập nhật trạng thái bookingStatus
+            val updatedItem = _currentMyBookingList[index].copy(status = newStatus)
+            _currentMyBookingList[index] = updatedItem
         }
     }
 
