@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRoomTypeBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemUnitTypeResortBinding
@@ -22,7 +23,7 @@ class UnitTypeResortAdapter : BaseAdapter<ResortDetailModelResponse.UnitTypeDto,
         override fun bind(item: ResortDetailModelResponse.UnitTypeDto) {
             binding.apply {
                 // Name of the room
-                tvTitleUnit.text ="Phòng" + item.title
+                tvTitleUnit.text = item.title
                 // Image
                 Glide.with(itemView)
                     .load(item.photos)
@@ -35,6 +36,7 @@ class UnitTypeResortAdapter : BaseAdapter<ResortDetailModelResponse.UnitTypeDto,
 
                 tvKitchen.text = item.kitchen
 
+                binding.tvPrice.text = "${item.price?.let { Constant.formatPriceLong(it) }} VNĐ"
 
                 // Number of guests
                 tvNumPerson.text = item.sleeps.toString()
@@ -44,9 +46,6 @@ class UnitTypeResortAdapter : BaseAdapter<ResortDetailModelResponse.UnitTypeDto,
                     onItemClick?.invoke(item)
                 }
 
-                binding.tvView.setOnClickListener {
-                    onViewDetailClick?.invoke(item)
-                }
 
                 binding.llUnitTypeDetail.setOnClickListener {
                     onViewDetailClick?.invoke(item)

@@ -187,6 +187,8 @@ dependencies {
 
     implementation ("com.wdullaer:materialdatetimepicker:4.2.3")
 
+    // PhotoView
+    implementation ("com.github.chrisbanes:PhotoView:2.0.0")
 
 
 

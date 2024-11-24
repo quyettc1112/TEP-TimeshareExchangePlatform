@@ -180,6 +180,7 @@ class ResortDetailActivity : BaseActivity() {
 
         }
     }
+
     private fun bindDataListImage(imageList: List<String>) {
         // List Destination
 

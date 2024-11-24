@@ -11,9 +11,9 @@
 
 
     <LinearLayout
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,9 +23,8 @@
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/im_resortImage"
             app:riv_corner_radius="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/im_material_resort" />
 
 
