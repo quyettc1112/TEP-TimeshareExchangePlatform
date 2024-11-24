@@ -127,7 +127,7 @@ class PostingDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     if (it.data!!.isMember) {
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
                         val intent =
                             Intent(this@PostingDetailActivity, OwnerInfoActivity::class.java)
@@ -321,7 +321,7 @@ class PostingDetailActivity : BaseActivity() {
             }
         }
 
-        val customerInfo = tokenManager.getCustomerInfo()
+        val customerInfo = tokenManager.getProfileInfo()
         if (postingDetail.ownerId == customerInfo?.id) {
             binding.apply {
                 tvPrice.visibility = View.GONE

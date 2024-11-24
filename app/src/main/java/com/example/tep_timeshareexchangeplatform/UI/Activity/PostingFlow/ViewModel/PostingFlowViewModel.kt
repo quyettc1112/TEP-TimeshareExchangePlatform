@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomMode
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimeshare.PostingTimeshareResponse
@@ -640,14 +641,14 @@ class PostingFlowViewModel @Inject constructor(
 
     // ----------------------------------------------------------//
     // Call API Get New Balance
-    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val newBalanceInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> =
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val newBalanceInfoResponse: MutableLiveData<Resource<CustomerProfileResponse>> =
         _customerInfoResponse
 
     fun getCustomerInfo(token: String) {
         viewModelScope.launch {
             _customerInfoResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _customerInfoResponse.postValue(it)
             }
         }

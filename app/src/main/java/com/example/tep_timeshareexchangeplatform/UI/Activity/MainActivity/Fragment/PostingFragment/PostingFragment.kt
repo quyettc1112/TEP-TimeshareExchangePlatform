@@ -58,7 +58,7 @@ class PostingFragment : BaseFragment(R.layout.fragment_posting) {
                 Status.SUCCESS -> {
                     (activity as MainActivity).hideLoadingWaiting()
                     if (it.data!!.isMember) {
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
 
                         // Intent To Rental Posting Activity if User is Member and Valid

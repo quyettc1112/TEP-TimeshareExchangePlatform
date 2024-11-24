@@ -73,8 +73,8 @@ class PaymentPackageActivity : BaseActivity() {
             )
             finish()
         }
-        val customerInfo = tokenManager.getCustomerInfo()
-        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} đ"
+        val customerInfo = tokenManager.getProfileInfo()
+        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} VNĐ"
 
     }
 
@@ -195,7 +195,7 @@ class PaymentPackageActivity : BaseActivity() {
             }
         }
 
-        if (tokenManager.getCustomerInfo()?.walletAvailableMoney!! < rentalPackageEnum.packageModel.price) {
+        if (tokenManager.getProfileInfo()?.walletAvailableMoney!! < rentalPackageEnum.packageModel.price) {
             binding.cardUnwind.isEnabled = false }
 
 

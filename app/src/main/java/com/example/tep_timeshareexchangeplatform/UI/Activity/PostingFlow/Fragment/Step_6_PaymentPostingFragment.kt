@@ -233,7 +233,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let {
-                        tokenManager.saveCustomerInfo(it)
+                        tokenManager.saveProfileInfo(it)
                         bindDataWalletInfo()
                     }
                 }
@@ -475,7 +475,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     private fun bindDataWalletInfo() {
         if (tokenManager.isLoggedIn()) {
-            val availableMoney = tokenManager.getCustomerInfo()?.walletAvailableMoney
+            val availableMoney = tokenManager.getProfileInfo()?.walletAvailableMoney
             binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} đ"
             availableMoney?.let { money ->
                 postingFlowViewModel.packageStep4.value?.price?.let { price ->

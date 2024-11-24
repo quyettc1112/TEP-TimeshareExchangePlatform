@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIReposit
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
@@ -77,12 +78,12 @@ class PaymentRentalViewModel @Inject constructor(
     }
 
     // Call Get New Available Balance
-    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val customerInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val customerInfoResponse: MutableLiveData<Resource<CustomerProfileResponse>> get() = _customerInfoResponse
     fun getCustomerInfo(token: String) {
         viewModelScope.launch {
             _customerInfoResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _customerInfoResponse.postValue(it)
             }
         }

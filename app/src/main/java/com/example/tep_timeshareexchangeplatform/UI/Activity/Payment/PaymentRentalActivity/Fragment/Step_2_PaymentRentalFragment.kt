@@ -209,10 +209,10 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
                     if (it.data!!.isMember) {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                     } else {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                     }
 
                     (activity as PaymentRentalActivity).showSuccessDialog(
@@ -248,8 +248,8 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             )
             requireActivity().finish()
         }
-        val customerInfo = tokenManager.getCustomerInfo()
-        binding.tvWalletBalance.text = "${formatPriceLong(customerInfo?.walletAvailableMoney!!)} đ"
+        val profile = tokenManager.getProfileInfo()
+        binding.tvWalletBalance.text = "${formatPriceLong(profile?.walletAvailableMoney!!)} đ"
 
     }
 

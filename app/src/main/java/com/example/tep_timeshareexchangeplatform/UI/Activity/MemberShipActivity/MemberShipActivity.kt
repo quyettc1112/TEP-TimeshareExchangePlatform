@@ -102,7 +102,7 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    tokenManager.saveCustomerInfo(it.data!!)
+                    tokenManager.saveProfileInfo(it.data!!)
                     tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(
