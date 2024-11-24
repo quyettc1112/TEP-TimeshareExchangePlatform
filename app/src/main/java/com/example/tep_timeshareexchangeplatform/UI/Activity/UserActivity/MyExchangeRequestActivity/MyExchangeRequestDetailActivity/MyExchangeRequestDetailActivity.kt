@@ -81,8 +81,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
                     Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
-
-
                     when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
                             binding.btnAccept.visibility = View.GONE
@@ -103,7 +101,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     } else {
                         binding.btnAccept.visibility = View.VISIBLE
                     }
-
 
 
                 }
