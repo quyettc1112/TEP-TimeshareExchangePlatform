@@ -31,7 +31,6 @@ class TransactionReceivedFragment : BaseFragment(R.layout.fragment_transaction_p
     private val myTransactionAdapter = MyTransactionAdapter()
     private lateinit var tokenManager: TokenManager
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdapter()
