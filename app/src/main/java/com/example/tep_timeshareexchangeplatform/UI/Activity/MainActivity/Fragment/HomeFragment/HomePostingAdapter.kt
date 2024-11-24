@@ -26,10 +26,11 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
                 .load(item.unitTypeDTO.photos)
                 .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
-            binding.tvTimeshareName.text = item.roomName
+            binding.tvResortName.text = item.resortName
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+            binding.llRatingContainer.visibility = View.GONE
 
             if (item.isVerify) {
                 binding.llVerify.visibility = View.VISIBLE

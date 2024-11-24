@@ -216,6 +216,14 @@ class BookingDetailActivity : BaseActivity() {
         }
 
 
+        if (data.source == "rental") {
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
+        } else {
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.ivBookingType)
+        }
+
+
+
         // Bind Data Detail Billing
         val binding_detail_billing = binding.includeDetailBilling
         binding_detail_billing.apply {
@@ -287,6 +295,13 @@ class BookingDetailActivity : BaseActivity() {
             data.isFeedback?.let { bindBookingStatus(data.id,data.status, it, data.source) }
 
 
+        }
+
+
+        if (data.source == "rental") {
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
+        } else {
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.ivBookingType)
         }
 
         // Bind Data Guest Information

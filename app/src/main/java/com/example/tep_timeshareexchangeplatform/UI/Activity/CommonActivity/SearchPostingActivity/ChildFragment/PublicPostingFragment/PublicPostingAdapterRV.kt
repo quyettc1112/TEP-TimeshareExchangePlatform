@@ -24,7 +24,7 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
                 .load(item.unitTypeDTO.photos)
                 .error(R.drawable.ic_image_tmp_holder)
                 .into(binding.imImageTimeshare)
-            binding.tvTimeshareName.text = item.roomName
+            binding.tvTimeshareName.text = item.resortName
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
