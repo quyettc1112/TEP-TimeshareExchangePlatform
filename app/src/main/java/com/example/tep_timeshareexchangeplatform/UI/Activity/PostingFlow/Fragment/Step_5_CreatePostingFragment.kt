@@ -660,21 +660,20 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     private fun isPriceInputvalid(): Boolean {
         val pricePerNight = binding.includePaymentMethod12.etRoomPrice.text.toString()
-        if (pricePerNight.isEmpty()) {
+        if (pricePerNight.isNullOrEmpty() && !binding.includePaymentMethod12.tilRoomPrice.helperText?.isNullOrEmpty()!!) {
             MotionToast.Companion.createColorToast(
                 requireActivity(),
-                "Error",
-                "Vui lòng nhập gia phong",
+                "Lỗi",
+                "Vui lòng nhập giá phòng hơp lệ",
                 MotionToastStyle.WARNING,
                 MotionToast.GRAVITY_BOTTOM,
                 MotionToast.LONG_DURATION,
-                null
+                ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
             )
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }
             binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
-
             return false
         }
         return true

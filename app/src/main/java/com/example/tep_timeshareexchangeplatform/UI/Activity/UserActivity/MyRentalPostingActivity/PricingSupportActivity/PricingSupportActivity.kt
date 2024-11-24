@@ -357,7 +357,7 @@ class PricingSupportActivity : BaseActivity() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
-                    null
+                    ResourcesCompat.getFont(this, R.font.inter_bold)
                 )
             }
         }

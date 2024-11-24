@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -51,7 +52,7 @@ class DepositActivity : BaseActivity() {
         if(!tokenManager.isLoggedIn()) {
             finish()
         }
-        binding.tvWalletBalancel.text = tokenManager.getCustomerInfo()
+        binding.tvWalletBalancel.text = tokenManager.getProfileInfo()
             ?.let { Constant.formatPriceLong(it.walletAvailableMoney) } + " đ"
     }
 
@@ -79,7 +80,7 @@ class DepositActivity : BaseActivity() {
                                 MotionToastStyle.ERROR,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.LONG_DURATION,
-                                null
+                                ResourcesCompat.getFont(this, R.font.inter_bold)
                             )
                         }
                     }
@@ -95,7 +96,7 @@ class DepositActivity : BaseActivity() {
                         MotionToastStyle.ERROR,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        null
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                 }
             }
@@ -107,47 +108,51 @@ class DepositActivity : BaseActivity() {
         binding.edtMoney.addTextChangedListener(object : TextWatcher {
             private var current = ""
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Không cần xử lý ở đây
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Không cần xử lý ở đây
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(editable: Editable?) {
-                // Loại bỏ TextWatcher tạm thời để tránh loop
                 binding.edtMoney.removeTextChangedListener(this)
 
                 val input = editable.toString()
                     .replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
 
+                if(input.isNotEmpty()) {
+                    binding.moneyContainer.helperText = null
+
+                }
+
                 if (input.isNotEmpty()) {
-                    // Kiểm tra và loại bỏ số 0 đầu tiên nếu có
+                    // Loại bỏ số 0 đầu tiên nếu có
                     var cleanedInput = input
                     if (cleanedInput.startsWith("0")) {
-                        cleanedInput = cleanedInput.substring(1) // Loại bỏ số 0 đầu tiên
+                        cleanedInput = cleanedInput.substring(1)
                     }
 
                     // Kiểm tra số tiền tối thiểu 10.000
-                    val numericValue = input.toLongOrNull() ?: 0
-                    if (numericValue < 10000) {
-                        // Hiển thị helper text nếu số tiền nhỏ hơn 10.000
-                        binding.moneyContainer.helperText = "Số tiền tối thiểu là 10.000"
-                    } else {
-                        // Ẩn helper text khi số tiền đạt yêu cầu
-                        binding.moneyContainer.helperText = null
+                    val numericValue = cleanedInput.toLongOrNull() ?: 0
+
+                    when {
+                        numericValue < 10000 -> {
+                            binding.moneyContainer.helperText = "Số tiền tối thiểu là 10.000 VNĐ"
+                        }
+                        numericValue > 100000000 -> {
+                            binding.moneyContainer.helperText = "Số tiền tối đa là 100.000.000 VNĐ"
+                        }
+
+                        else -> {
+                            binding.moneyContainer.helperText = null
+                        }
                     }
 
-
                     // Định dạng số tiền và thêm ký tự "đ" ở cuối
-                    val formatted = formatCurrency(cleanedInput) + " đ"
+                    val formatted = formatCurrency(cleanedInput) + " VNĐ"
                     current = formatted
                     binding.edtMoney.setText(formatted)
-                    binding.edtMoney.setSelection(formatted.length - 2) // Đặt con trỏ vào vị trí trước "đ"
+                    binding.edtMoney.setSelection(formatted.length - 4)
                 }
 
-                // Thêm lại TextWatcher sau khi cập nhật văn bản
                 binding.edtMoney.addTextChangedListener(this)
             }
 
@@ -167,22 +172,26 @@ class DepositActivity : BaseActivity() {
 
     private fun requestButtonClick() {
         binding.btnRequest.setOnClickListener {
-            if (binding.edtMoney.text.toString().isEmpty()) {
+            val priceString = binding.edtMoney.text.toString().replace(" VNĐ", "").replace(".", "").replace(",", "")
+            if (priceString.isNotEmpty() && binding.moneyContainer.helperText.isNullOrEmpty()) {
+                val amount = binding.edtMoney.text.toString().replace("[^\\d]".toRegex(), "").toLong()
+                viewModel.getResponsePaymentUrl(amount, "DEPOSIT")
+
+            } else {
                 // Hiển thị thông báo lỗi nếu số tiền rỗng
                 MotionToast.Companion.createColorToast(
                     this,
                     "Thất Bại",
-                    "Vui lòng nhập số tiền",
-                    MotionToastStyle.INFO,
+                    "Vui lòng nhập số tiền hợp lệ",
+                    MotionToastStyle.WARNING,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
-                    null
+                    ResourcesCompat.getFont(this, R.font.inter_bold)
                 )
                 return@setOnClickListener
             }
 
-            val amount = binding.edtMoney.text.toString().replace("[^\\d]".toRegex(), "").toLong()
-            viewModel.getResponsePaymentUrl(amount, "DEPOSIT")
+
         }
     }
 }
