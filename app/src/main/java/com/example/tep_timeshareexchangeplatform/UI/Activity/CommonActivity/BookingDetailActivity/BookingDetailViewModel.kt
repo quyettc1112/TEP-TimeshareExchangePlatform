@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,15 +20,30 @@ class BookingDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Call Get My Booking Response
-    private val _getMyBookingDetailResponse = MutableLiveData<Resource<MyBookingDetailResponse>>()
-    val getMyBookingDetailResponse: MutableLiveData<Resource<MyBookingDetailResponse>>
-        get() = _getMyBookingDetailResponse
+    private val _getMyBookingRentalDetailResponse = MutableLiveData<Resource<MyBookingRentalDetailResponse>>()
+    val getMyBookingRentalDetailResponse: MutableLiveData<Resource<MyBookingRentalDetailResponse>>
+        get() = _getMyBookingRentalDetailResponse
 
-    fun getMyBookingDetail(token: String, bookingId: Int) {
+    fun getMyBookingRentalDetail(token: String, bookingId: Int) {
         viewModelScope.launch {
-            _getMyBookingDetailResponse.postValue(Resource.loading(null))
+            _getMyBookingRentalDetailResponse.postValue(Resource.loading(null))
             customerAPIRepository.getCustomerBookingDetail(token, bookingId).let {
-                _getMyBookingDetailResponse.postValue(it)
+                _getMyBookingRentalDetailResponse.postValue(it)
+            }
+        }
+    }
+
+
+    // Call get My Booking Exchange Detail Response
+    private val _getMyBookingExchangeDetailResponse = MutableLiveData<Resource<MyBookingExchangeDetailResponse>>()
+    val getMyBookingExchangeDetailResponse: MutableLiveData<Resource<MyBookingExchangeDetailResponse>>
+        get() = _getMyBookingExchangeDetailResponse
+
+    fun getMyBookingExchangeDetail(token: String, bookingId: Int) {
+        viewModelScope.launch {
+            _getMyBookingExchangeDetailResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getMyBookingExchange(token, bookingId).let {
+                _getMyBookingExchangeDetailResponse.postValue(it)
             }
         }
     }
@@ -36,13 +52,24 @@ class BookingDetailViewModel @Inject constructor(
      * Call API To POST FeedBack
      *
      */
-    private var _feedbackResponse = MutableLiveData<Resource<FeedbackResponse>>()
-    val feedbackResponse: LiveData<Resource<FeedbackResponse>> = _feedbackResponse
-    fun postFeedback(token: String, feedbackDTO: FeedbackDTO) {
+    private var _feedbackRentalResponse = MutableLiveData<Resource<FeedbackResponse>>()
+    val feedbackRentalResponse: LiveData<Resource<FeedbackResponse>> = _feedbackRentalResponse
+    fun postFeedbackRental(token: String, feedbackDTO: FeedbackDTO) {
         viewModelScope.launch {
-            _feedbackResponse.postValue(Resource.loading(null))
+            _feedbackRentalResponse.postValue(Resource.loading(null))
             customerAPIRepository.postFeedbackForCustomerRental(token, feedbackDTO).let {
-                _feedbackResponse.postValue(it)
+                _feedbackRentalResponse.postValue(it)
+            }
+        }
+    }
+
+    private var _feedbackExchangeResponse = MutableLiveData<Resource<FeedbackResponse>>()
+    val feedbackExchangeResponse: LiveData<Resource<FeedbackResponse>> = _feedbackExchangeResponse
+    fun postFeedbackExchange(token: String, feedbackDTO: FeedbackDTO) {
+        viewModelScope.launch {
+            _feedbackExchangeResponse.postValue(Resource.loading(null))
+            customerAPIRepository.postFeedbackForCustomerExchange(token, feedbackDTO).let {
+                _feedbackExchangeResponse.postValue(it)
             }
         }
     }

@@ -78,7 +78,7 @@ import com.google.gson.annotations.SerializedName
   "updatedDate": "06-11-2024 06:22:19"
 }
 */
-data class MyBookingDetailResponse(
+data class MyBookingRentalDetailResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("rentalPosting") val rentalPosting: RentalPosting,
     @SerializedName("status") val status: String,

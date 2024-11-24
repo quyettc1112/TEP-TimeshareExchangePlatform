@@ -81,16 +81,16 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                 MyBookingStatus.CANCELED -> {
                     applyStatusStyle(
                         binding.root.context,
-                        R.color.white,
-                        R.color.status_rejected_text
+                        R.color.status_rejected_text,
+                        R.color.white
                     )
                     binding.llFeedbackContainer.visibility = View.GONE
                 }
                 MyBookingStatus.REFUND -> {
                     applyStatusStyle(
                         binding.root.context,
-                        R.color.white,
-                        R.color.status_rejected_text
+                        R.color.status_rejected_text,
+                        R.color.white
                     )
                     binding.llFeedbackContainer.visibility = View.GONE
                 }
@@ -112,7 +112,6 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
                 }
             }
             binding.tvStatus.text = MyBookingStatus.fromApiStatus(item.status)?.getDescription(binding.root.context)
-
 
 
             binding.root.setOnClickListener {

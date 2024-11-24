@@ -6,14 +6,15 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomFeedbackDialog.CustomFeedbackDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
@@ -52,18 +53,40 @@ class BookingDetailActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
-        val bookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_SELECTED_ID, 0)
-        if (bookingId == 0 || !token.isLoggedIn()) {
+        val rentalBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, 0)
+        val exchangeBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, 0)
+
+        if (!token.isLoggedIn()) {
             finish()
-        } else {
-            viewModel.getMyBookingDetail(token.getAccessToken().toString(), bookingId)
-            observeData()
+            return
         }
+
+        when {
+            rentalBookingId != 0 -> {
+                viewModel.getMyBookingRentalDetail(
+                    token.getAccessToken().toString(),
+                    rentalBookingId
+                )
+            }
+
+            exchangeBookingId != 0 -> {
+                viewModel.getMyBookingExchangeDetail(
+                    token.getAccessToken().toString(),
+                    exchangeBookingId
+                )
+            }
+
+            else -> {
+                finish()
+            }
+        }
+
+        observeData()
     }
 
     private fun observeData() {
-        viewModel.getMyBookingDetailResponse.observe(this) { resources ->
-            when(resources.status) {
+        viewModel.getMyBookingRentalDetailResponse.observe(this) { resources ->
+            when (resources.status) {
                 Status.LOADING -> {
                     binding.shimmerViewContainer.visibility = View.VISIBLE
                     binding.shimmerViewContainer.startShimmer()
@@ -71,7 +94,7 @@ class BookingDetailActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     binding.shimmerViewContainer.hideShimmer()
-                    bindData(resources.data!!)
+                    bindDataRental(resources.data!!)
                     Log.d("Check Data Booking Detail", resources.data.toString())
                 }
 
@@ -91,11 +114,41 @@ class BookingDetailActivity : BaseActivity() {
             }
         }
 
+        viewModel.getMyBookingExchangeDetailResponse.observe(this) { resources ->
+            when (resources.status) {
+                Status.LOADING -> {
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                    binding.shimmerViewContainer.startShimmer()
+                }
+
+                Status.SUCCESS -> {
+                    binding.shimmerViewContainer.hideShimmer()
+                    bindDataExchange(resources.data!!)
+                    Log.d("Check Data Booking Detail", resources.data.toString())
+                }
+
+                Status.ERROR -> {
+                    binding.shimmerViewContainer.visibility = View.GONE
+                    binding.shimmerViewContainer.stopShimmer()
+                    MotionToast.createToast(
+                        this,
+                        "Error",
+                        resources.message.toString(),
+                        MotionToastStyle.ERROR,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        null
+                    )
+                }
+            }
+        }
+
+
         // Posting feedback
-        viewModel.feedbackResponse.observe(this) {
+        viewModel.feedbackRentalResponse.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-                   hideLoadingWaiting()
+                    hideLoadingWaiting()
                     showDoneFeedbackDialog(this,
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -128,24 +181,29 @@ class BookingDetailActivity : BaseActivity() {
     }
 
     // Bind Data Section
-    private fun bindData(data: MyBookingDetailResponse) {
+    private fun bindDataRental(data: MyBookingRentalDetailResponse) {
         // Bind Data Room Reservation
         binding.apply {
             tvRoomReservationCode.text = "Mã đặt phòng: ${data.id}"
 
             // Check in Date
-            tvCheckinDate.text = Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
-            tvCheckinDayOfWeek.text = Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
+            tvCheckinDate.text =
+                Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
+            tvCheckinDayOfWeek.text =
+                Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
 
             // Check Out date
-            tvCheckoutDate.text = Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
-            tvCheckoutDayOfWeek.text = Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
+            tvCheckoutDate.text =
+                Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
+            tvCheckoutDayOfWeek.text =
+                Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
 
             // Booking Type
-            binding.tvBookingTupe.text = MyBookingStatus.fromApiStatus(data.source)?.getDescription(binding.root.context)
+            binding.tvBookingTupe.text =
+                MyBookingStatus.fromApiStatus(data.source)?.getDescription(binding.root.context)
 
             // Status
-            bindStatus(data)
+            bindBookingStatus(data.id,data.status, data.isFeedback, data.source)
 
 
         }
@@ -157,6 +215,7 @@ class BookingDetailActivity : BaseActivity() {
             etEmail.setText(data.primaryGuestEmail)
         }
 
+
         // Bind Data Detail Billing
         val binding_detail_billing = binding.includeDetailBilling
         binding_detail_billing.apply {
@@ -166,11 +225,14 @@ class BookingDetailActivity : BaseActivity() {
             llFeePrice.visibility = View.VISIBLE
 
             // Bind Data
-            tvResortNameDtb.text = data.rentalPosting.roomInfo.unitType.resortResortName + " - " + data.rentalPosting.roomInfo.unitType.title
+            tvResortNameDtb.text =
+                data.rentalPosting.roomInfo.unitType.resortResortName + " - " + data.rentalPosting.roomInfo.unitType.title
             tvLocation.text = data.rentalPosting.roomInfo.unitType.resortAddress
             tvNumberNight.text = data.totalNights.toString()
-            tvCheckInDate.text = Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
-            tvCheckOutDate.text = Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
+            tvCheckInDate.text =
+                Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
+            tvCheckOutDate.text =
+                Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
 
             // Cancel Policy
             binding_detail_billing.apply {
@@ -198,11 +260,82 @@ class BookingDetailActivity : BaseActivity() {
         }
 
 
+    }
+
+    private fun bindDataExchange(data: MyBookingExchangeDetailResponse) {
+        // Bind Data Room Reservation
+        binding.apply {
+            tvRoomReservationCode.text = "Mã đặt phòng: ${data.id}"
+
+            // Check in Date
+            tvCheckinDate.text =
+                Constant.getFormattedDate(data.checkinDate, this@BookingDetailActivity)
+            tvCheckinDayOfWeek.text =
+                Constant.getDayOfWeek(data.checkinDate, this@BookingDetailActivity)
+
+            // Check Out date
+            tvCheckoutDate.text =
+                Constant.getFormattedDate(data.checkoutDate, this@BookingDetailActivity)
+            tvCheckoutDayOfWeek.text =
+                Constant.getDayOfWeek(data.checkoutDate, this@BookingDetailActivity)
+
+            // Booking Type
+            binding.tvBookingTupe.text =
+                MyBookingStatus.fromApiStatus(data.source)?.getDescription(binding.root.context)
+
+            // Status
+            data.isFeedback?.let { bindBookingStatus(data.id,data.status, it, data.source) }
+
+
+        }
+
+        // Bind Data Guest Information
+        binding.apply {
+            etFullName.setText(data.primaryGuestName)
+            etPhoneNumber.setText(data.primaryGuestPhone)
+            etEmail.setText(data.primaryGuestEmail)
+        }
+
+        binding.includeDetailBilling.root.visibility = View.VISIBLE
+        // Bind Data Detail Billing
+        val binding_detail_billing = binding.includeDetailBilling
+        binding_detail_billing.apply {
+            // Hide Unnecessary View
+            llPostingBy.visibility = View.GONE
+            // Show Necessary View
+            llFeePrice.visibility = View.VISIBLE
+
+            // Bind Data
+            tvResortNameDtb.text =
+                data.roomInfo.unitType.resortName + " - " + data.roomInfo.unitType.title
+            tvLocation.text = ""
+            tvNumberNight.text = ""
+            tvCheckInDate.text =
+                Constant.formatDateByLocale(data.checkinDate, this@BookingDetailActivity)
+            tvCheckOutDate.text =
+                Constant.formatDateByLocale(data.checkoutDate, this@BookingDetailActivity)
+
+            // Cancel Policy
+            binding_detail_billing.apply {
+                llCancellationPolicy.visibility = View.GONE
+                llRoomPricing.visibility = View.GONE
+            }
+
+            tvFeePrice.text = data.serviceFee?.let { Constant.formatPriceLong(it) }
+
+            // Image
+            Glide.with(this@BookingDetailActivity)
+                .load(data.roomInfo.unitType.photos)
+                .error(R.drawable.im_material_mn)
+                .placeholder(R.drawable.ripple_effect_white)
+                .into(imImageTimeshare)
+        }
+
 
     }
 
-    private fun bindStatus(data: MyBookingDetailResponse) {
-        when (MyBookingStatus.fromApiStatus(data.status)) {
+    private fun bindBookingStatus(bookingId: Int, status: String, isFeedback: Boolean, source: String) {
+        when (MyBookingStatus.fromApiStatus(status)) {
             MyBookingStatus.BOOKED -> {
                 applyStatusStyle(
                     binding.root.context,
@@ -228,12 +361,12 @@ class BookingDetailActivity : BaseActivity() {
                     R.color.white
                 )
                 // Feedback
-                if (data.isFeedback) {
+                if (isFeedback) {
                     binding.llFeedbackContainer.visibility = View.GONE
                 } else {
                     binding.llFeedbackContainer.visibility = View.VISIBLE
                 }
-                onFeedbackClick(data)
+                onFeedbackClick(bookingId, source)
             }
 
             MyBookingStatus.NO_SHOW -> {
@@ -283,45 +416,52 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun onFeedbackClick(data: MyBookingDetailResponse) {
+    private fun onFeedbackClick(bookingId: Int, source: String) {
         binding.llFeedbackContainer.setOnClickListener {
-            val feedbackDialog = CustomFeedbackDialog(this) { rating, feedback ->
-                callSendFeedBack(rating, feedback, data.id) // Gọi hàm xử lý feedback
+            if (source == "rental") {
+                val feedbackDialog = CustomFeedbackDialog(this) { rating, feedback ->
+                    callSendFeedBackRental(rating, feedback, bookingId) // Gọi hàm xử lý feedback
+                }
+                feedbackDialog.show()
+            } else {
+                val feedbackDialog = CustomFeedbackDialog(this) { rating, feedback ->
+                    callSendFeedBackExchange(rating, feedback, bookingId) // Gọi hàm xử lý feedback
+                }
+                feedbackDialog.show()
             }
 
-            feedbackDialog.show()
+
         }
     }
 
-    private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
+    private fun callSendFeedBackRental(rating: Int, feedback: String, bookingId: Int) {
         if (!token.isLoggedIn()) {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Error",
-                "Bạn cần đăng nhập để thực hiện chức năng này",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showFailToast("Bạn cần đăng nhập để thực hiện chức năng này")
             return
         }
 
         val feedbackDTO = FeedbackDTO(rating, feedback, bookingId)
         if (feedbackDTO.bookingId !== 0 && feedbackDTO.ratingPoint !== 0) {
-            viewModel.postFeedback(token.getAccessToken().toString(), feedbackDTO)
+            viewModel.postFeedbackRental(token.getAccessToken().toString(), feedbackDTO)
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Error",
-                "Vui lòng nhập đầy đủ thông tin",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showFailToast("Vui lòng nhập đầy đủ thông tin")
         }
     }
+
+    private fun callSendFeedBackExchange(rating: Int, feedback: String, bookingId: Int){
+        if (!token.isLoggedIn()) {
+           showFailToast("Bạn cần đăng nhập để thực hiện chức năng này")
+            return
+        }
+
+        val feedbackDTO = FeedbackDTO(rating, feedback, bookingId)
+        if (feedbackDTO.bookingId !== 0 && feedbackDTO.ratingPoint !== 0) {
+            viewModel.postFeedbackExchange(token.getAccessToken().toString(), feedbackDTO)
+        } else {
+           showFailToast("Vui lòng nhập đầy đủ thông tin")
+        }
+    }
+
     private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
         binding.apply {
             // Nền
@@ -347,24 +487,24 @@ class BookingDetailActivity : BaseActivity() {
     private fun showSuccessToast(message: String) {
         MotionToast.createToast(
             this,
-            "Success",
+            "Thành Công",
             message,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            null
+            ResourcesCompat.getFont(this, R.font.inter_bold)
         )
     }
 
     private fun showFailToast(message: String) {
         MotionToast.createToast(
             this,
-            "Error",
+            "Lỗi",
             message,
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            null
+            ResourcesCompat.getFont(this, R.font.inter_bold)
         )
     }
 

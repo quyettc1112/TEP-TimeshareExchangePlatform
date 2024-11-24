@@ -35,7 +35,7 @@
             <LinearLayout
                 android:id="@+id/ll_status_container"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/ripple_effect"
@@ -47,8 +47,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_status"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:saveEnabled="false"
                     app:cardCornerRadius="30dp"
@@ -234,6 +234,7 @@
                             android:textSize="14sp" />
 
                         <ImageView
+                            android:visibility="gone"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_check_in" />
@@ -300,6 +301,7 @@
                             android:textSize="14sp" />
 
                         <ImageView
+                            android:visibility="gone"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_check_out" />

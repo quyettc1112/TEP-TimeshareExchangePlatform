@@ -173,7 +173,11 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         myOrderAdapter.submitList(listOf())
         myOrderAdapter.onItemClick = {
             val intent = Intent(requireContext(), BookingDetailActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_MY_BOOKING_SELECTED_ID, it.bookingId)
+            if(it.source == "rental") {
+                intent.putExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, it.bookingId)
+            } else {
+                intent.putExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, it.bookingId)
+            }
             startActivity(intent)
         }
 

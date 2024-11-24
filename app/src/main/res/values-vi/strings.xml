@@ -159,7 +159,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="checkin">Nhận Phòng</string>
     <string name="checkout">Trả Phòng</string>
     <string name="no_show">Không Có Mặt</string>
-    <string name="canceled">Đã Hủy</string>
+    <string name="cancelled">Đã Hủy</string>
     <string name="refund">Hoàn Tiền</string>
     <string name="payment_completed">Đã Thanh Toán</string>
     <string name="rental">Thuê Phòng</string>

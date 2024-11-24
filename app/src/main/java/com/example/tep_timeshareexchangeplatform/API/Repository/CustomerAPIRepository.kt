@@ -11,8 +11,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
@@ -26,7 +26,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
@@ -203,7 +202,7 @@ class CustomerAPIRepository @Inject constructor(
     suspend fun getCustomerBookingDetail(
         token: String,
         bookingId: Int
-    ): Resource<MyBookingDetailResponse> {
+    ): Resource<MyBookingRentalDetailResponse> {
         return try {
             val response = customerAPIService.getMyBookingDetail("Bearer $token", bookingId)
             if (response.isSuccessful) {
@@ -222,7 +221,7 @@ class CustomerAPIRepository @Inject constructor(
         token: String,
         postingId: Int,
         guestDTO: GuestDTO
-    ): Resource<MyBookingDetailResponse> {
+    ): Resource<MyBookingRentalDetailResponse> {
         return try {
             val response =
                 customerAPIService.createBookingRequest("Bearer $token", postingId, guestDTO)
@@ -284,7 +283,7 @@ class CustomerAPIRepository @Inject constructor(
     ): Resource<FeedbackResponse> {
         return try {
             val response =
-                customerAPIService.postFeedbackForCustomerRental("Bearer $token", feedbackDTO)
+                customerAPIService.postFeedbackBookingRental("Bearer $token", feedbackDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -529,6 +528,44 @@ class CustomerAPIRepository @Inject constructor(
         return try {
             val response =
                 customerAPIService.approveExchangeRequest("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Get My Booking Exchange
+    suspend fun getMyBookingExchange(
+        token: String,
+        bookingId: Int
+    ): Resource<MyBookingExchangeDetailResponse> {
+        return try {
+            val response = customerAPIService.getExchangeBookingDetail("Bearer $token", bookingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Post Feedback For Customer, Exchange
+    suspend fun postFeedbackForCustomerExchange(
+        token: String,
+        feedbackDTO: FeedbackDTO
+    ): Resource<FeedbackResponse> {
+        return try {
+            val response =
+                customerAPIService.postFeedbackBookingExchange("Bearer $token", feedbackDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

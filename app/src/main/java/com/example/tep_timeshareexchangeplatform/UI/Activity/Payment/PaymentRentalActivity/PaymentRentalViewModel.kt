@@ -9,7 +9,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIReposi
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
@@ -53,8 +53,8 @@ class PaymentRentalViewModel @Inject constructor(
     }
 
     // Call API Create Booking
-    private val _myBookingResponse = MutableLiveData<Resource<MyBookingDetailResponse>>()
-    val myBookingResponse: MutableLiveData<Resource<MyBookingDetailResponse>> = _myBookingResponse
+    private val _myBookingResponse = MutableLiveData<Resource<MyBookingRentalDetailResponse>>()
+    val myBookingResponse: MutableLiveData<Resource<MyBookingRentalDetailResponse>> = _myBookingResponse
     fun createBooking(token: String, postingId: Int, guestDTO: GuestDTO) {
         viewModelScope.launch {
             _myBookingResponse.postValue(Resource.loading(null))

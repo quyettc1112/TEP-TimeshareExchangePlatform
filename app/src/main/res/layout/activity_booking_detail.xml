@@ -92,7 +92,7 @@
                         android:maxLines="1"
                         android:textColor="@color/black"
                         android:text="Mã đặt phòng: "
-                        android:textSize="20dp" />
+                        android:textSize="16dp" />
 
                     <!--// Bar Code-->
                     <ImageView
@@ -109,7 +109,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/inter_light"
                         android:text="Ghi chú: Vui lòng đưa barcode hoặc mã đặt phòng cho nhân viên để được check in."
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
 
                     <!--// Type Booking-->
                     <LinearLayout
@@ -337,10 +337,12 @@
                 <!--// Guest Info-->
                 <LinearLayout
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/background_stroke_around"
                     android:padding="16dp">
 
                     <!-- Title -->
@@ -351,7 +353,7 @@
                         android:text="Thông tin khách nhận phòng"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:fontFamily="@font/inter_bold"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -362,7 +364,7 @@
                         android:layout_height="wrap_content"
                         android:text="Khách nhận phòng"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -387,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số Điện Thoại"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -412,7 +414,7 @@
                         android:layout_height="wrap_content"
                         android:text="Email"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
