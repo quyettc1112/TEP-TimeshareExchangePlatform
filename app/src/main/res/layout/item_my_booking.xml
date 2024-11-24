@@ -84,6 +84,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/im_booking_type"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:scaleType="fitXY"
@@ -130,7 +131,7 @@
                         android:id="@+id/im_imageTimeshare"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/im_matiral_timeshare" />
                 </com.google.android.material.card.MaterialCardView>
 

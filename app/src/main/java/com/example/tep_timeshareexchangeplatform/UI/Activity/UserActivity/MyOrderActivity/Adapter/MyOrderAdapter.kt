@@ -42,6 +42,14 @@ class MyOrderAdapter : BaseAdapter<MyBookingResponse.Content, MyOrderAdapter.MyO
 
             binding.tvBookingTupe.text = MyBookingStatus.fromApiStatus(item.source)?.getDescription(binding.root.context)
 
+
+            if (item.source == "rental") {
+                Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
+            } else {
+                Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
+            }
+
+
             /*${binding.root.context.getString(R.string.guests)}*/
             binding.tvGuestInfo.text = "Khách: ${item.primaryGuestName}"
 
