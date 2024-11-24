@@ -1,8 +1,10 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.Adapter
 
+import android.content.Context
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
@@ -11,6 +13,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemVi
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemRequestOnPostBinding
 
 class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
@@ -52,6 +55,62 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
+            }
+
+            // Show Status
+            when (MyExchangeRequestStatus.fromApiStatus(item.status)) {
+                MyExchangeRequestStatus.PENDING_APPROVAL -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_pending_approval_text
+                    )
+                }
+
+                MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.status_awaiting_confirmation_bg,
+                        R.color.status_awaiting_confirmation_text
+                    )
+                }
+
+                MyExchangeRequestStatus.COMPLETED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.green_verify
+                    )
+                }
+
+                MyExchangeRequestStatus.REJECTED -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_rejected_text
+                    )
+                }
+
+                else -> {
+                    // Default or unknown status case
+                    applyStatusStyle(
+                        context,
+                        R.color.status_unknown_bg,
+                        R.color.status_unknown_text
+                    )
+                }
+            }
+            binding.tvStatus.text = MyExchangeRequestStatus.fromApiStatus(item.status)?.getDescription(context)
+
+        }
+
+
+
+        private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+            binding.apply {
+                llStatusContainer.backgroundTintList = context.getColorStateList(backgroundColorRes)
+                tvStatus.setTextColor(context.getColor(textColorRes))
+                cardStatus.setStrokeColor(context.getColorStateList(textColorRes))
             }
         }
     }

@@ -35,7 +35,8 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
     private lateinit var exchangeRequestOnPostAdapter: ExchangeRequestOnPostAdapter
     private val viewModel: ExchangeRequestOnPostViewModel by viewModels()
     private var postingId: Int = 0
-    companion object{
+
+    companion object {
         const val POSTING_PAGE_SIZE = 10
     }
 
@@ -123,7 +124,11 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             adapter = exchangeRequestOnPostAdapter
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@ExchangeRequestOnPostActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(
+                    this@ExchangeRequestOnPostActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
         }
 
         // Scroll Listener
