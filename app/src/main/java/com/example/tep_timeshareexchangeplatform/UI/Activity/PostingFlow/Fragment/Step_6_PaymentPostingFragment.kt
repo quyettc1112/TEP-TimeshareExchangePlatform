@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
@@ -452,12 +453,12 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             llLocation.visibility = View.GONE
             llPostingBy.visibility = View.GONE
 
-            /* // Image
+             // Image
              Glide.with(requireContext())
-                 .load(myTimeshareResponse.rentalPosting.roomInfo.unitType.photos)
-                 .error(R.drawable.im_material_mn)
-                 .placeholder(R.drawable.ripple_effect_white)
-                 .into(imImageTimeshare)*/
+                 .load(myTimeshareResponse.resortImage)
+                 .error(R.drawable.ic_image_tmp_holder)
+                 .placeholder(R.drawable.ic_image_tmp_holder)
+                 .into(imImageTimeshare)
 
             // Title
             tvResortNameDtb.text =

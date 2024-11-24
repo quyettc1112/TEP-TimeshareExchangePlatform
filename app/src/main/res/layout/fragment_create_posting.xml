@@ -581,7 +581,7 @@
                             android:layout_margin="5dp">
                             <ImageView
                                 android:id="@+id/iv_main_image"
-                                android:src="@drawable/ic_image_placeholder"
+                                android:src="@drawable/ic_image_tmp_holder"
                                 android:scaleType="centerCrop"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
