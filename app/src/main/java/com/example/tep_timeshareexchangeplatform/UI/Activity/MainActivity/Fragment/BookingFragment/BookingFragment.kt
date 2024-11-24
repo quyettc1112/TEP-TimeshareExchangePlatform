@@ -94,10 +94,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                         binding.llLoadingContainer.visibility = View.GONE
                         resources.data?.content?.let { viewModel.loadMoreBookingList(it) }
                         myBookingAdapter.submitList(viewModel.getCurrentMyBookingList())
-                        if (isNewLoad != 0) {
-                            scrollToBooking(isNewLoad)
-                            isNewLoad = 0
-                        }
                     }
                     binding.animationViewLoadingMore.visibility = View.GONE
                 }
@@ -213,7 +209,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         }
     }
 
-
     private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
         if (!tokenManager.isLoggedIn()) {
             MotionToast.Companion.createColorToast(
@@ -300,12 +295,5 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         }
     }
 
-
-    private fun scrollToBooking(bookingId: Int) {
-        val position = myBookingAdapter.differ.currentList.indexOfFirst { it.bookingId == bookingId }
-        if (position != -1) {
-            binding.rvOrderList.scrollToPosition(position) // Cuộn đến vị trí
-        }
-    }
 
 }

@@ -31,6 +31,10 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityBookingDeta
 import com.example.tep_timeshareexchangeplatform.databinding.DialogCancellcationPolicyBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class BookingDetailActivity : BaseActivity() {
@@ -284,8 +288,6 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
-
-
     // Bind Data Section
     private fun bindDataRental(data: MyBookingRentalDetailResponse) {
         // Bind Data Room Reservation
@@ -321,9 +323,21 @@ class BookingDetailActivity : BaseActivity() {
             etEmail.setText(data.primaryGuestEmail)
         }
 
+
         // Show Cancel Booking
         showCancelBooking(data.status)
 
+        val cancellationType: RefundPolicy?  = RefundPolicy.getRefundPolicyById(data.rentalPosting.cancellationType.id)
+        Log.d("Check Cancellation Type", cancellationType.toString())
+        if (cancellationType?.let {
+                val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") // Định dạng chuỗi tùy chỉnh
+                val checkInDate = LocalDate.parse(data.checkinDate, formatter) // Chuyển String thành LocalDate
+                canCancelBooking(checkInDate, it)
+            } == true) {
+            binding.btnCancelBooking.visibility = View.VISIBLE
+        } else {
+            binding.btnCancelBooking.visibility = View.GONE
+        }
 
         if (data.source == "rental") {
             Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
@@ -364,9 +378,9 @@ class BookingDetailActivity : BaseActivity() {
                 }
             }
 
-            tvRoomPricePerNight.text = data.pricePerNights?.let { Constant.formatPriceLong(it) } + "VNĐ"
-            tvEstimatedTotalPrice.text = data.totalPrice?.let { Constant.formatPriceLong(it) } + "(${data.totalNights} đêm)"
-            tvFeePrice.text = data.serviceFee?.let { Constant.formatPriceLong(it) } + "VNĐ"
+            tvRoomPricePerNight.text = data.pricePerNights?.let { Constant.formatPriceLong(it) } + " VNĐ"
+            tvEstimatedTotalPrice.text = data.totalPrice?.let { Constant.formatPriceLong(it) } + " VNĐ (${data.totalNights} đêm)"
+            tvFeePrice.text = data.serviceFee?.let { Constant.formatPriceLong(it) } + " VNĐ"
 
             // Image
             Glide.with(this@BookingDetailActivity)
@@ -375,8 +389,6 @@ class BookingDetailActivity : BaseActivity() {
                 .placeholder(R.drawable.ripple_effect_white)
                 .into(imImageTimeshare)
         }
-
-
     }
 
     private fun bindDataExchange(data: MyBookingExchangeDetailResponse) {
@@ -466,7 +478,7 @@ class BookingDetailActivity : BaseActivity() {
                     R.color.primaryColor,
                     R.color.white
                 )
-                binding.llFeedbackContainer.visibility = View.GONE
+
             }
 
             MyBookingStatus.CHECK_IN -> {
@@ -611,6 +623,14 @@ class BookingDetailActivity : BaseActivity() {
             // Background
             cardStatus.backgroundTintList = (context.getColorStateList(backgroundColorRes))
         }
+    }
+
+    fun canCancelBooking(checkInDate: LocalDate, refundPolicy: RefundPolicy): Boolean {
+        val today = LocalDate.now() // Ngày hiện tại
+        val allowedCancelDate = checkInDate.minusDays(refundPolicy.duration.toLong()) // Ngày cuối cùng cho phép hủy
+
+        // Kiểm tra nếu hôm nay trước hoặc bằng ngày được phép hủy
+        return today.isBefore(allowedCancelDate) || today.isEqual(allowedCancelDate)
     }
 
     private fun showCancelBooking(status: String) {
