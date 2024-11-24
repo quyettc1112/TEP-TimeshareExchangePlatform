@@ -70,14 +70,14 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text = postingDetail.resortName + " | " + postingDetail.unitType.title
-
+            tvLocation.text = postingDetail.address
             if (postingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {

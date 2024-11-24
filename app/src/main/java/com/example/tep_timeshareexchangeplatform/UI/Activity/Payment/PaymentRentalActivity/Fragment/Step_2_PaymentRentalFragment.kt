@@ -285,6 +285,8 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
 
+            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+
         }
 
         // Data for Request

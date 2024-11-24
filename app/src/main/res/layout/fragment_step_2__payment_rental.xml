@@ -28,17 +28,18 @@
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@+id/customToolbar">
         <LinearLayout
-            android:background="@color/primary_background_F9"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!--// Khách nhaận phòng-->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="16dp">
+                android:background="@drawable/background_stroke_around"
+                android:backgroundTint="@color/white">
 
                 <!-- Title -->
                 <TextView
@@ -118,7 +119,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:background="@android:color/white">
 
                 <!-- Title -->
