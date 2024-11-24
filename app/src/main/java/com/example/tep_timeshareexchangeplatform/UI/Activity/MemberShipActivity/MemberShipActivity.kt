@@ -73,7 +73,7 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    showSuccessToast("Tạo tài khoản thành công")
+                    showSuccessToast("Cập Nhật Thông Tin Thành Công")
                     memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
                 }
 

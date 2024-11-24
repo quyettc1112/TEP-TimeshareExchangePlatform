@@ -436,7 +436,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     resetAllData()
 
                     // Reload My Timeshare List
-                    postingFlowViewModel.currentMyTimesharePage.value = 0
+                    postingFlowViewModel.clearCurrentMyTimeshareList()
                 }
 
                 Status.ERROR -> {

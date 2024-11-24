@@ -504,6 +504,7 @@ class PostingFlowViewModel @Inject constructor(
 
     fun clearCurrentMyTimeshareList() {
         _currentMyTimeshareList.clear()
+        _currentMyTimesharePage.value = 0
     }
 
     private val _isStep3Visible = MutableLiveData<Boolean>()
