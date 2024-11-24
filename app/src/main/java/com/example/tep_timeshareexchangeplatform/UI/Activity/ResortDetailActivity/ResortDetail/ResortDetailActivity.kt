@@ -67,7 +67,7 @@ class ResortDetailActivity : BaseActivity() {
 
         val resortId = intent.getIntExtra(Constant.DEFAULT_RESORT_ID, 0)
         if (resortId != 0) {
-            resortDetailViewModel.getResortDetail(85)
+            resortDetailViewModel.getResortDetail(resortId)
         } else {
             finish()
         }

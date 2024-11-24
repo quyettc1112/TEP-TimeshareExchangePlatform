@@ -73,10 +73,8 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             binding.llListContianer.visibility = View.GONE
             binding.llLoadingContainer.visibility = View.VISIBLE
         } else {
-
-            viewModel.resetCurrentMyBookingPage()
             myBookingAdapter.submitList(listOf())
-
+            viewModel.clearCurrentMyBookingList()
             observeData()
             setOrderList()
         }
@@ -211,7 +209,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     private fun eventClickRefresh() {
         binding.btnRefresh.setOnClickListener {
             myBookingAdapter.submitList(listOf())
-            viewModel.resetCurrentMyBookingPage()
+            viewModel.clearCurrentMyBookingList()
         }
     }
 

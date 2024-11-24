@@ -217,6 +217,32 @@ class BookingDetailActivity : BaseActivity() {
                 }
             }
         }
+
+        viewModel.feedbackExchangeResponse.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showDoneFeedbackDialog(this,
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                binding.llFeedbackContainer.visibility = View.GONE
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    Log.d("Check asdasdasd", it.message.toString())
+                    it.message?.let {
+                       showFailToast(it)
+                    }
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
     }
 
     // Event Click
@@ -542,7 +568,6 @@ class BookingDetailActivity : BaseActivity() {
         viewModel.cancelBooking(token.getAccessToken().toString(), bookingId)
 
     }
-
 
     private fun callSendFeedBackRental(rating: Int, feedback: String, bookingId: Int) {
         if (!token.isLoggedIn()) {

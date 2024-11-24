@@ -182,13 +182,13 @@ class MainViewModel @Inject constructor(
     }
 
 
-
+    fun clearCurrentMyBookingList() {
+        _currentMyBookingList.clear()
+        _currentMyBookingPage.value = 0
+    }
 
 
     fun resetCurrentMyBookingPage() {
-        _currentMyBookingList.clear()
-        _currentMyBookingPage.value = 0
-
         _location.value = "Thành Phố Hồ Chí Minh"
         _dateRange.value = "20/10/2021 - 25/10/2021"
         _roomCount.value = 1
