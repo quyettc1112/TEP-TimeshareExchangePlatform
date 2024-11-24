@@ -47,7 +47,7 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                 item.roomInfo.unitType?.photos?.let {
                     Glide.with(binding.root.context)
                         .load(item.roomInfo.unitType.photos ?: "")
-                        .error(R.drawable.placeholder_image)
+                        .error(R.drawable.ic_image_tmp_holder)
                         .placeholder(R.drawable.ripple_effect_white)
                         .into(binding.ivRoomImage)
                 }
