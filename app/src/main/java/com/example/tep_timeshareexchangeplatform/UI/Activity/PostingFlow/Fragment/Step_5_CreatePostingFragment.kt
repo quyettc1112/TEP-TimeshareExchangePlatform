@@ -201,7 +201,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
         }
         binding.customSpinnerViewDiretion.adapter = spinnerAdapter
-
+        binding.customSpinnerViewDiretion.setSelection(0)
         binding.customSpinnerViewDiretion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -520,7 +520,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun showImageSelectionDialog() {
-        val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
+        // Chọn ảnh phụ
+        openGallery(false)
+
+        /*val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
         AlertDialog.Builder(requireContext())
             .setTitle("Chọn loại ảnh")
             .setItems(options) { dialog, which ->
@@ -540,7 +543,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             .setNegativeButton("Hủy") { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .show()*/
     }
 
     fun openGallery(isMainImage: Boolean) {
@@ -616,33 +619,14 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
 
     private fun isImageValid(): Boolean {
-        val mainImage =
-            postingFlowViewModel.imageList.value?.firstOrNull() // Ảnh chính là ảnh đầu tiên
-        val subImages =
-            postingFlowViewModel.imageList.value?.drop(1) // Ảnh phụ là các ảnh sau ảnh chính
+        val subImages = postingFlowViewModel.imageList.value // Ảnh phụ là các ảnh sau ảnh chính
 
         return when {
-            mainImage == null -> {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng chọn ảnh chính",
-                    MotionToastStyle.WARNING,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-                }
-                false
-            }
-
             subImages.isNullOrEmpty() || subImages.size < 6 -> {
                 MotionToast.Companion.createColorToast(
                     requireActivity(),
-                    "Error",
-                    "Vui lòng chọn ít nhất 6 ảnh phụ",
+                    "Thiếu Ảnh",
+                    "Vui lòng chọn ít nhất 6 ảnh ",
                     MotionToastStyle.WARNING,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.LONG_DURATION,
@@ -810,10 +794,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             requireActivity(),
             "Failed",
             string,
-            MotionToastStyle.INFO,
+            MotionToastStyle.WARNING,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 

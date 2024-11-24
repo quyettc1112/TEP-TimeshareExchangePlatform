@@ -155,7 +155,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.unitTypeDTO.photos)
-                    .error(R.drawable.im_material_mn)
+                    .error(R.drawable.ic_image_tmp_holder)
                     .placeholder(R.drawable.ripple_effect_white)
                     .into(binding.imResortImage)
             }
