@@ -159,7 +159,7 @@
                             android:background="@drawable/background_stroke_around"
                             android:gravity="left|center"
                             android:hint="Email Của Bạn"
-                            android:inputType="phone"
+                            android:inputType="textEmailAddress"
                             android:paddingStart="15dp"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -186,7 +186,7 @@
                             android:background="@drawable/background_stroke_around"
                             android:gravity="left|top"
                             android:hint="Nhập Nội Dung Cần Liên Lạc"
-                            android:inputType="phone"
+                            android:inputType="text"
                             android:minHeight="150dp"
                             android:paddingStart="15dp"
                             android:paddingTop="15dp"

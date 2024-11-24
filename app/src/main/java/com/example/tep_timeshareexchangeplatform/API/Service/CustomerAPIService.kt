@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
@@ -264,6 +265,14 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("bookingId") bookingId: Int
     ) : Response<CancelBookingResponse>
+
+    // Send Contact Request to Owner
+    @POST("customer/rental/booking/form/{postingId}")
+    suspend fun sendContactRequest(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body sentRequestDTO: SentRequestDTO
+    ) : Response<Void>
 
 
 

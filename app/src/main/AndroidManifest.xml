@@ -62,6 +62,7 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity"

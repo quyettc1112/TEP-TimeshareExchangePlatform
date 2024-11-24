@@ -97,6 +97,9 @@ class Constant {
         const val DEFAULT_BOOKING_ID = "bookingId"
         const val DEFAULT_BOOKING_STATUS = "bookingStatus"
 
+        const val OWNER_POSTING_ID = "ownerPostingId"
+
+
         const val DEFAULT_MY_BOOKING_RENTAL = "myBookingRental"
         const val DEFAULT_MY_BOOKING_EXCHANGE = "myBookingExchange"
         const val GENERAL_ID_PAYMENT = "generalIdPayment"

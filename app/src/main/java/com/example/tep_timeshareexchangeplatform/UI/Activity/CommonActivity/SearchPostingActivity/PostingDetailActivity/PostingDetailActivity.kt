@@ -131,6 +131,7 @@ class PostingDetailActivity : BaseActivity() {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
                         val intent =
                             Intent(this@PostingDetailActivity, OwnerInfoActivity::class.java)
+                        intent.putExtra(Constant.OWNER_POSTING_ID, it.data.id)
                         startActivity(intent)
                     } else {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
