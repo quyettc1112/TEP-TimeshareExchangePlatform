@@ -67,7 +67,7 @@ class ResortDetailActivity : BaseActivity() {
 
         val resortId = intent.getIntExtra(Constant.DEFAULT_RESORT_ID, 0)
         if (resortId != 0) {
-            resortDetailViewModel.getResortDetail(resortId)
+            resortDetailViewModel.getResortDetail(85)
         } else {
             finish()
         }
@@ -247,7 +247,6 @@ class ResortDetailActivity : BaseActivity() {
         policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
         nearbyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
 
-        Log.d("Checklasasdasda", "bindDataAmenities: ${data.resortAmenityList.find { it.free == true }}")
         val binding = binding.includeAmenities
 
         binding.title3.visibility = View.GONE
@@ -259,7 +258,7 @@ class ResortDetailActivity : BaseActivity() {
 
 
         binding.rvFeatures.apply {
-            featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES_RESORT)
+            featuresAdapter.filterByAmenityTypes(AmenityType.AMENITIES)
             Log.d("Checklasasdasda", "bindDataAmenities: ${featuresAdapter.differ.currentList}")
             layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
                 flexDirection = FlexDirection.ROW
@@ -283,7 +282,7 @@ class ResortDetailActivity : BaseActivity() {
 
 
         binding.rvPolicy.apply {
-            policyAdapter.filterByAmenityTypes(AmenityType.POLICY_RESORT)
+            policyAdapter.filterByAmenityTypes(AmenityType.POLICY)
             layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
                 flexDirection = FlexDirection.ROW
                 justifyContent = JustifyContent.FLEX_START

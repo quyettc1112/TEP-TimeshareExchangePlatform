@@ -20,12 +20,8 @@ class ResortAmenityAdapter : BaseAdapter<AmenitiesModel, ResortAmenityAdapter.Re
     inner class ResortAmenityViewHolder(binding: ItemFacilitieBinding) : BaseItemViewHolderCF<AmenitiesModel, ItemFacilitieBinding>(binding) {
         override fun bind(item: AmenitiesModel) {
             binding.apply {
-                if(item.isChecked) {
-                    tvFacilitieName.text = item.name + "( Có trả phí )"
-                } else {
-                    tvFacilitieName.text = item.name
-                }
 
+                tvFacilitieName.text = item.name
                 // Lấy hình ảnh từ RoomAmenityDB dựa trên tên
                 val amenityIcon = ResortAmenityDB.values().find { it.model.name == item.name }?.imageResId
                     ?: R.drawable.border // Dùng icon mặc định nếu không tìm thấy
@@ -59,12 +55,11 @@ class ResortAmenityAdapter : BaseAdapter<AmenitiesModel, ResortAmenityAdapter.Re
     }
 
     fun filterByAmenityTypes(vararg types: AmenityType) {
-        val validTypes = types.map { it.displayName } // Lấy displayName từ các enum loại đã chỉ định
+        val validTypes = types.map { it.name } // Lấy tên của các loại từ enum
         filteredList = originalList.filter {
-            validTypes.any { validType ->
-                it.type.contains(validType, ignoreCase = true)
-            }
+            validTypes.contains(it.type.uppercase()) // So sánh dựa trên giá trị `type`
         }
         submitList(filteredList)
     }
+
 }
