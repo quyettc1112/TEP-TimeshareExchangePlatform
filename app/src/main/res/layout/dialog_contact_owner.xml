@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="20dp"
+    android:background="@drawable/ripple_effect"
+    android:backgroundTint="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        app:strokeColor="@color/primary_background_F9"
+        app:strokeWidth="1dp"
+        app:cardCornerRadius="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="20dp"
+                android:layout_height="match_parent">
+
+                <!--// Title-->
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="YÊU CẦU LIÊN LẠC"
+                    android:textColor="@color/red_light"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Liên hệ với chủ sở hữu"
+                    android:textSize="18dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView34"
+                    tools:layout_editor_absoluteX="20dp" />
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/inter_extralight"
+                    android:text="Bạn đang cần trao đổi hoặc yêu cầu thông tin từ chủ sở hữu? Hãy cung cấp thông tin của bạn và nội dung cần liên lạc, chúng tôi sẽ hỗ trợ chuyển yêu cầu của bạn tới chủ sở hữu trong thời gian sớm nhất."
+                    android:textSize="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView35"
+                    tools:layout_editor_absoluteX="20dp" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout29"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/primary_background_F9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView36" />
+
+                <!--// Lose-->
+
+                <!--// Customer Info-->
+                <LinearLayout
+                    android:id="@+id/linearLayout33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout29">
+
+
+                    <!--// Full Name-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tên đầy đủ"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edt_fullname"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:gravity="left|center"
+                            android:hint="Nhập Tên Của bạn"
+                            android:inputType="text"
+                            android:paddingStart="15dp"
+                            android:text="asdads"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!--// Phone -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Số Điện Thoại"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edt_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:gravity="left|center"
+                            android:hint="Số Điện Thoại Của Bạn"
+                            android:inputType="phone"
+                            android:paddingStart="15dp"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+
+                    <!--// Email -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Email"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edt_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:gravity="left|center"
+                            android:hint="Email Của Bạn"
+                            android:inputType="phone"
+                            android:paddingStart="15dp"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!--// Note -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nội Dung"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edt_note_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/background_stroke_around"
+                            android:gravity="left|top"
+                            android:hint="Nhập Nội Dung Cần Liên Lạc"
+                            android:inputType="phone"
+                            android:minHeight="150dp"
+                            android:paddingStart="15dp"
+                            android:paddingTop="15dp"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout32"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout33"
+                    tools:layout_editor_absoluteX="20dp">
+
+                    <!--// Action Cancel Button-->
+                    <LinearLayout
+                        android:id="@+id/btn_cancel_booking"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/ripple_effect"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:visibility="visible">
+
+                        <!-- Icon -->
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/ic_sent" />
+
+                        <!-- Text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="center_vertical"
+                            android:text="Gửi Yêu Cầu"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

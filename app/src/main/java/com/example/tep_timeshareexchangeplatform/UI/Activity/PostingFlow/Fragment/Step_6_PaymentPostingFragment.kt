@@ -101,15 +101,24 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (cancelPolicy) {
                 RefundPolicy.FULL_REFUND.id -> {
                     binding.includeDetailBilling.tvCancellationPolicy.text =
-                        "Hoàn Tiền toàn bộ 100%"
+                        RefundPolicy.FULL_REFUND.getShortDescription(
+                            requireContext()
+                        )
+
                 }
 
                 RefundPolicy.PARTIAL_REFUND.id -> {
-                    binding.includeDetailBilling.tvCancellationPolicy.text = "Hoàn Tiền 50%"
+                    binding.includeDetailBilling.tvCancellationPolicy.text =
+                        RefundPolicy.PARTIAL_REFUND.getShortDescription(
+                            requireContext()
+                        )
                 }
 
                 RefundPolicy.NO_REFUND.id -> {
-                    binding.includeDetailBilling.tvCancellationPolicy.text = "Không Hoàn Tiền"
+                    binding.includeDetailBilling.tvCancellationPolicy.text =
+                        RefundPolicy.NO_REFUND.getShortDescription(
+                            requireContext()
+                        )
                 }
             }
         }
@@ -453,12 +462,12 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             llLocation.visibility = View.GONE
             llPostingBy.visibility = View.GONE
 
-             // Image
-             Glide.with(requireContext())
-                 .load(myTimeshareResponse.resortImage)
-                 .error(R.drawable.ic_image_tmp_holder)
-                 .placeholder(R.drawable.ic_image_tmp_holder)
-                 .into(imImageTimeshare)
+            // Image
+            Glide.with(requireContext())
+                .load(myTimeshareResponse.resortImage)
+                .error(R.drawable.ic_image_tmp_holder)
+                .placeholder(R.drawable.ic_image_tmp_holder)
+                .into(imImageTimeshare)
 
             // Title
             tvResortNameDtb.text =

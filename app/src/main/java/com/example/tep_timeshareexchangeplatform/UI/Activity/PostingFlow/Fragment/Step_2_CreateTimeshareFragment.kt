@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -184,7 +185,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    showErrorToast("${roomList.message}")
+                    Log.d("RoomList", "RoomList: ${roomList.message}")
+                    showErrorToast("Lỗi khi lấy danh sách phòng của Resort","Danh sách phòng trống")
                 }
             }
         }
@@ -200,7 +202,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    showErrorToast("${listUnitType.message}")
+                    (activity as PostingFlowActivity).showFailedDialog(
+                        requireContext(),
+                        "Lỗi Khi Lấy Danh Sách Loại Phòng",
+                        "Danh sách loại phòng trống",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                postingFlowViewModel.updateTaskProgress(0)
+                                binding.scrollView.post {
+                                    binding.scrollView.smoothScrollTo(0, binding.llSelectResortLocationContainer.top)
+                                }
+                            }
+                        }
+                    )
                 }
 
                 else -> {}
@@ -218,7 +232,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    showErrorToast("${unitType.message}")
+                    (activity as PostingFlowActivity).showFailedDialog(
+                        requireContext(),
+                        "Lỗi Khi Lấy Thông Tin Loại Phòng",
+                        "${unitType.message}",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                postingFlowViewModel.updateTaskProgress(1)
+                                binding.scrollView.post {
+                                    binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
+                                }
+                            }
+                        }
+                    )
                 }
             }
 
@@ -269,7 +295,19 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    showErrorToast("${roomDetail?.message}")
+                    (activity as PostingFlowActivity).showFailedDialog(
+                        requireContext(),
+                        "Lỗi Khi Lấy Thông Tin Phòng",
+                        "${roomDetail.message}",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                postingFlowViewModel.updateTaskProgress(1)
+                                binding.scrollView.post {
+                                    binding.scrollView.smoothScrollTo(0, binding.llSelectRoomContainer.top)
+                                }
+                            }
+                        }
+                    )
                 }
 
                 else -> {}
@@ -324,7 +362,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    showSuccessToast("Update Amenities Success")
+                    showSuccessToast("Thành Công","Cập Nhật Tiện Ích Thành Công")
                     postingFlowViewModel.clearAllAmenities()
                     uncheckAllAmenities()
 
@@ -367,6 +405,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.ERROR -> {
                     (activity as PostingFlowActivity).showFailedDialog(
                         requireContext(),
+                        "Cập Nhật Tiện Ích Thất Bại",
                         "${roomAmenities.message}",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -393,7 +432,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    showSuccessToast("Create Timeshare Success")
+                    showSuccessToast("Thành Công", "Tạo Timeshare Thành Công")
                     resetAllData()
 
                     // Reload My Timeshare List
@@ -403,6 +442,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 Status.ERROR -> {
                     (activity as PostingFlowActivity).showFailedDialog(
                         requireContext(),
+                        "Tạo Thông Tin Timeshare Thất Bại",
                         "${timeshareDTO.message}",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -485,6 +525,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             }
 
             3 -> {
+                binding.btnNext.visibility = View.GONE
                 binding.crlContentAmenities.visibility = View.VISIBLE
                 if (postingFlowViewModel.getIsYesOrNoSelected()) {
                     binding.btnEditAmenities.visibility = View.VISIBLE
@@ -566,7 +607,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         binding.btnSaveDay.setOnClickListener {
             val night = postingFlowViewModel.getNumberOfNightsTimeshare()
             if (night == null || night == 0) {
-                showErrorToast("Please select number of nights")
+                showErrorToast("Thất bại", "Hãy chọn số đêm lưu trú")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlDayCheckIn.top)
                 }
@@ -586,7 +627,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlContentAmenities.top)
                 }
-                showWarningToast("Mỗi loại tiện ích cần chọn ít nhất 2 mục")
+                showWarningToast("Cảnh Báo","Mỗi loại tiện ích cần chọn ít nhất 2 mục")
                 return@setOnClickListener
             }
 
@@ -654,6 +695,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
     private fun eventClickEditAmenities() {
         binding.btnEditAmenities.setOnClickListener {
+            postingFlowViewModel.updateTaskProgress(3)
             setEnableAllAmenities(true)
             isEditAmenities = true
         }
@@ -771,7 +813,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
         adapter.onItemClick = {
-            postingFlowViewModel.updateCurrentRoomInfo(it.id)
             postingFlowViewModel.clearAllAmenities()
             uncheckAllAmenities()
             callGetUnitTypeDetailByID(it.unitTypeId)
@@ -785,6 +826,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             val imm =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(bindingInclude.etRoomSearch.windowToken, 0)
+            callGetRoomDetailById(it.id)
             bindingInclude.etRoomSearch.clearFocus()
         }
 
@@ -941,12 +983,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                showWarningToast("Please fill in all required fields")
+                showWarningToast("Cảnh Báo", "Hãy Điền Đầy Đủ Thông Tin")
                 return@setOnClickListener
             }
 
             if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
-                showErrorToast("Please select a unit type")
+                showErrorToast("Thất Bại", "Hãy Chọn Loại Phòng Của Bạn")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
                 }
@@ -1190,35 +1232,35 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         )
     }
 
-    private fun showErrorToast(string: String) {
+    private fun showErrorToast(title: String, message: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Error",
-            string,
+            title,
+            message,
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
-    private fun showSuccessToast(string: String) {
+    private fun showSuccessToast(title: String, message: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Success",
-            string,
+            title,
+            message,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
-    private fun showWarningToast(string: String) {
+    private fun showWarningToast(title: String, message: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Failed",
-            string,
+            title,
+            message,
             MotionToastStyle.WARNING,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,

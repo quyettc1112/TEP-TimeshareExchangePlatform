@@ -117,6 +117,7 @@ open class  BaseActivity : AppCompatActivity() {
 
     open fun showFailedDialog(
         context: Context,
+        title: String,
         message: String?,
         onClickListener: View.OnClickListener? = null
     ) {
@@ -133,8 +134,14 @@ open class  BaseActivity : AppCompatActivity() {
 
         dialog.setCancelable(false)
 
+        val titleTextView  = dialogView.findViewById<TextView>(R.id.tv_title)
+        titleTextView.text = title
+
+
         val textSuccess = dialogView.findViewById<TextView>(R.id.tv_failed_message)
         textSuccess.text = message
+
+
 
         // Ánh xạ các view từ dialog
         val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
