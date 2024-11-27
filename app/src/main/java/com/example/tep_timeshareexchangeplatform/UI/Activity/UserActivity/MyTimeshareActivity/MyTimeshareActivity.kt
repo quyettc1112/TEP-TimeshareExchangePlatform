@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTim
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -25,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyTimeshareActivity : BaseActivity() {
-
     private lateinit var binding: ActivityMyTimeshareBinding
     private lateinit var myTimeshareAdapter : MyTimeshareAdapter
     private lateinit var tokenManager: TokenManager
@@ -44,21 +44,12 @@ class MyTimeshareActivity : BaseActivity() {
         tokenManager = TokenManager(this)
         getIntentValue()
         if (!tokenManager.isLoggedIn()) {
-            MotionToast.Companion.createToast(
-                this,
-                "Error",
-                "Bạn chưa đăng nhập",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showErrorToast( "Lỗi","Bạn chưa đăng nhập" )
             finish()
         } else {
-            myTimeshareViewModel.getMyTimeshareList(tokenManager.getAccessToken().toString(), 0, 10)
+            myTimeshareViewModel.currentPage.value = 0
         }
 
-        tokenManager = TokenManager(this)
         initAdapter()
         observeData()
         setEventItemClick()
@@ -92,7 +83,10 @@ class MyTimeshareActivity : BaseActivity() {
                     layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
                 val totalPages = myTimeshareViewModel.myTimeshareList.value?.data?.totalPages ?: 0
+
                 if (lastCompletelyVisibleItem == (totalItemCount - 1) && myTimeshareViewModel.currentPage.value!! < totalPages - 1) {
+                    Log.d("CurrentysdpasfdCRRR", myTimeshareViewModel.currentPage.value.toString())
+                    Log.d("Currentysdpasfd", totalPages.toString())
                     myTimeshareViewModel.incrementCurrentPage()
                 }
             }
@@ -184,6 +178,7 @@ class MyTimeshareActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        myTimeshareViewModel.clearCurrentMyTimeshareList()
         finish()
     }
 
