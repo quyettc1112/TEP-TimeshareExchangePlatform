@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemImageDetailBinding
 
 class ImageDetailAdapter(private val recyclerView: RecyclerView): BaseAdapter<String, ImageDetailAdapter.ImageDetailViewHolder>() {
@@ -22,6 +23,8 @@ class ImageDetailAdapter(private val recyclerView: RecyclerView): BaseAdapter<St
                 binding.apply {
                      Glide.with(imageView.context)
                          .load(item)
+                         .placeholder(R.drawable.ic_unwind_logo_25)
+                         .error(R.drawable.ic_image_tmp_holder)
                          .into(imageView)
                 }
                // Update the visibility based on whether this item is selected

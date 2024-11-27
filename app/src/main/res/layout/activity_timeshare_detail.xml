@@ -670,7 +670,7 @@
                             android:id="@+id/im_imageTimeshare"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/im_matiral_timeshare" />
                     </com.google.android.material.card.MaterialCardView>
 
@@ -848,7 +848,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="0.6"
                                     android:text="Chính sách hủy"
                                     android:textColor="#000000"
                                     android:textSize="14sp" />
@@ -857,7 +857,7 @@
                                     android:id="@+id/tv_cancel_policy_dtb"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="1.4"
                                     android:gravity="end"
                                     android:textColor="#000000"
                                     android:textSize="14sp"

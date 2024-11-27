@@ -56,9 +56,6 @@ class MemberShipActivity : BaseActivity() {
             onBackPressed()
             finish()
         }
-        binding.imgNext.setOnClickListener {
-            startActivity(Intent(this, PostingFlowActivity::class.java))
-        }
         clickRequestPaymentButton()
 
     }

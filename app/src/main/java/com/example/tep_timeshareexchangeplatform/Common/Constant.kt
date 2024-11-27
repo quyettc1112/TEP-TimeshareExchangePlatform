@@ -122,7 +122,10 @@ class Constant {
             return formatter.format(price)
         }
 
-        fun formatPriceLong(price: Long): String {
+        fun formatPriceLong(price: Long?): String {
+            if (price == null) return "0"
+
+
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }

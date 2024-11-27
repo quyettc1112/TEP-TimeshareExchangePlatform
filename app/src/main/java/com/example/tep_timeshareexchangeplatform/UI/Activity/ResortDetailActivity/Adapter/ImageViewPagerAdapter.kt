@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
+import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemViewPagerAdapterBinding
 
 class ImageViewPagerAdapter: BaseAdapter<String, ImageViewPagerAdapter.ImageViewPagerViewHoler>() {
@@ -20,6 +21,8 @@ class ImageViewPagerAdapter: BaseAdapter<String, ImageViewPagerAdapter.ImageView
 
                     Glide.with(imResortImage.context)
                         .load(item)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image)
                         .into(imResortImage)
                 }
             }

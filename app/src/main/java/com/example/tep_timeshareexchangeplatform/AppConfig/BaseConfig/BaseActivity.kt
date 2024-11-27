@@ -17,10 +17,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ErrorDialog
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.NotifyDialog
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.MyProgressDialog
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import java.util.Locale
@@ -341,6 +344,42 @@ open class  BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+    open fun showSuccessToast(title: String,message: String) {
+        MotionToast.Companion.createColorToast(
+            this,
+            title,
+            message,
+            MotionToastStyle.SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_bold)
+        )
+    }
+
+    open fun showWarningToast(title: String,message: String) {
+        MotionToast.Companion.createColorToast(
+            this,
+            title,
+            message,
+            MotionToastStyle.WARNING,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_bold)
+        )
+    }
+
+    open fun showErrorToast(title: String,message: String) {
+        MotionToast.Companion.createColorToast(
+            this,
+            title,
+            message,
+            MotionToastStyle.ERROR,
+            MotionToast.GRAVITY_BOTTOM,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(this, R.font.inter_bold)
+        )
+    }
 
 
 

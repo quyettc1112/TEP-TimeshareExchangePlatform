@@ -249,7 +249,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             requireActivity().finish()
         }
         val profile = tokenManager.getProfileInfo()
-        binding.tvWalletBalance.text = "${formatPriceLong(profile?.walletAvailableMoney!!)} đ"
+        binding.tvWalletBalance.text = "${profile?.walletAvailableMoney?.let { formatPriceLong(it) }} đ"
 
     }
 
