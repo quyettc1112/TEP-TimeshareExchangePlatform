@@ -23,6 +23,7 @@
         app:titleDetail="19/08 - 23/08  | 4 khách " />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -35,6 +36,7 @@
 
             <!--// Khách nhaận phòng-->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_customer_info"
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,6 +119,7 @@
 
             <!--// Chính sách cho thuê-->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"

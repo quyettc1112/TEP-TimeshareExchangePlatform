@@ -380,15 +380,13 @@ class PostingDetailActivity : BaseActivity() {
         bindDataAmenities(postingDetail)
 
         val userLogState = tokenManager.getUserLogState()
-        when (userLogState) {
-            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
-                binding.tvNotion.visibility = View.GONE
-                binding.tvMemberRequest.visibility = View.GONE
-            }
-            else -> {
-                binding.tvNotion.visibility = View.VISIBLE
-                binding.tvMemberRequest.visibility = View.VISIBLE
-            }
+        val packageModel = RentalPackageEnum.getPackageByName(postingDetail.rentalPackageName)
+        if (packageModel == RentalPackageEnum.BASIC_SERVICE.packageModel && userLogState != UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER) {
+            binding.tvNotion.visibility = View.VISIBLE
+            binding.tvMemberRequest.visibility = View.VISIBLE
+        } else {
+            binding.tvNotion.visibility = View.GONE
+            binding.tvMemberRequest.visibility = View.GONE
         }
 
 

@@ -237,26 +237,22 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
     private fun checkTokenValid() {
         if (!tokenManager.isLoggedIn()) {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Thất Bại",
-                "Vui lòng đăng nhập để thực hiện chức năng này",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            (activity as PaymentRentalActivity).showErrorToast("Thất Bại", "Vui lòng đăng nhập để thực hiện chức năng này")
             requireActivity().finish()
         }
         val profile = tokenManager.getProfileInfo()
-        binding.tvWalletBalance.text = "${profile?.walletAvailableMoney?.let { formatPriceLong(it) }} đ"
+        binding.tvWalletBalance.text = "${profile?.walletAvailableMoney?.let { formatPriceLong(it) }} VNĐ"
 
     }
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
+        if (tokenManager.getProfileInfo()?.walletAvailableMoney!! < postingDetail.totalPrice) {
+            binding.cardUnwind.isEnabled = false }
+
+
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
 
@@ -281,9 +277,9 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 Constant.formatDateByLocale(postingDetail.checkoutDate, requireContext())
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPriceLong(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} VNĐ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
 
             tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
 
@@ -292,9 +288,13 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPriceLong(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
-
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
         }
+
+        val customerProfile = tokenManager.getProfileInfo()
+        binding.etFullName.setText(customerProfile?.fullName)
+        binding.etPhoneNumber.setText(customerProfile?.phone)
+        binding.etEmail.setText(customerProfile?.userEmail)
 
 
     }
@@ -307,17 +307,22 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 binding.etEmail,
                 binding.etNotes
             )
-
-            if (isFormValid && binding.cbAgreeTerms.isChecked) {
-                paymentMethodProcess()
-            } else {
-                // Show error message or keep focus on the invalid field
-                Toast.makeText(
-                    requireContext(),
-                    "Vui lòng kiểm tra lại thông tin!",
-                    Toast.LENGTH_SHORT
-                ).show()
+            if(!isFormValid) {
+                binding.scrollView.post {
+                    binding.scrollView.scrollTo(0, binding.llCustomerInfo.top)
+                }
+                return@setOnClickListener
             }
+
+
+            if (binding.cbAgreeTerms.isChecked == false) {
+                binding.scrollView.post {
+                    binding.scrollView.scrollTo(0, binding.llPolicy.top)
+                }
+                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui lòng đồng ý với điều khoản và chính sách của chúng tôi")
+            }
+
+            paymentMethodProcess()
         }
     }
 

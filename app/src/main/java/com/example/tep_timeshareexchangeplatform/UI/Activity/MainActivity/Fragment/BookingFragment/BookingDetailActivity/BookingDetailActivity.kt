@@ -172,8 +172,6 @@ class BookingDetailActivity : BaseActivity() {
                         "Đặt phòng của bạn đã được hủy thành công"
                     )
                     finish()
-
-
                 }
 
                 Status.ERROR -> {
@@ -323,10 +321,6 @@ class BookingDetailActivity : BaseActivity() {
             etEmail.setText(data.primaryGuestEmail)
         }
 
-
-        // Show Cancel Booking
-        showCancelBooking(data.status)
-
         val cancellationType: RefundPolicy?  = RefundPolicy.getRefundPolicyById(data.rentalPosting.cancellationType.id)
         Log.d("Check Cancellation Type", cancellationType.toString())
         if (cancellationType?.let {
@@ -338,6 +332,11 @@ class BookingDetailActivity : BaseActivity() {
         } else {
             binding.btnCancelBooking.visibility = View.GONE
         }
+
+        // Show Cancel Booking
+        showCancelBooking(data.status)
+
+
 
         if (data.source == "rental") {
             Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
@@ -517,10 +516,11 @@ class BookingDetailActivity : BaseActivity() {
             MyBookingStatus.CANCELED -> {
                 applyStatusStyle(
                     binding.root.context,
-                    R.color.white,
-                    R.color.status_rejected_text
+                    R.color.status_rejected_text,
+                    R.color.white
                 )
                 binding.llFeedbackContainer.visibility = View.GONE
+                binding.btnCancelBooking.visibility = View.GONE
             }
 
             MyBookingStatus.REFUND -> {
