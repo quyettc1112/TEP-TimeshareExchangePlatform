@@ -227,12 +227,14 @@ class PostingDetailActivity : BaseActivity() {
     }
 
     private fun eventClickRequestButton() {
-        binding.ctrRequestButton.setOnClickListener {
+        binding.cvRequestContaner.setOnClickListener {
             callCheckProfileCustomer()
         }
     }
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
+        binding.cvRequestContaner.visibility = View.VISIBLE
+
         // Custom Toolbar Data
         binding.customToolbar.apply {
             setTitle("${postingDetail.resortName}")

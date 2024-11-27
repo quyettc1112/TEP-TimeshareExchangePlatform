@@ -23,16 +23,20 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTime
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentExchangePostingBinding
 
 class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting) {
 
     private lateinit var binding: FragmentExchangePostingBinding
-    private val adapter = ExchangePostingAdapter()
+    private lateinit var tokenManager: TokenManager
+    private lateinit var adapter : ExchangePostingAdapter
     private val viewModel: SearchPostingViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tokenManager = TokenManager(requireContext())
+        adapter = ExchangePostingAdapter(tokenManager)
         adapter.submitList(listOf())
 
     }
@@ -63,15 +67,8 @@ class ExchangePostingFragment : BaseFragment(R.layout.fragment_exchange_posting)
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.GONE
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Error",
-                        resources.message ?: "Error",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    (activity as PostingDetailActivity).showErrorToast("Lỗi", "Không thể tải dữ liệu")
+
                 }
 
                 Status.LOADING -> {

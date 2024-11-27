@@ -1061,6 +1061,7 @@
     <!--// Bottom Button-->
     <LinearLayout
         android:id="@+id/cv_request_contaner"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:background="@drawable/ripple_effect_white"
         android:layout_height="wrap_content"
@@ -1176,6 +1177,43 @@
 
 
     </LinearLayout>
+
+    <!--// Bottom Button-->
+    <LinearLayout
+        android:id="@+id/cv_request_contaner_exchange"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/ripple_effect"
+        android:backgroundTint="@color/blue_see_more"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_view_container">
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icon chọn ngày"
+            android:src="@drawable/baseline_currency_exchange_24" />
+
+        <!-- Text -->
+        <TextView
+            android:id="@+id/tv_request_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
 
 
 

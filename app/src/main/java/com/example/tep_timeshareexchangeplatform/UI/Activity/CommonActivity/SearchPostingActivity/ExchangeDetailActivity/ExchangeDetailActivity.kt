@@ -23,6 +23,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
@@ -110,15 +111,7 @@ class ExchangeDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi", "Không thể tải dữ liệu")
                 }
             }
         }
@@ -128,6 +121,7 @@ class ExchangeDetailActivity : BaseActivity() {
     }
 
     private fun bindDataPostingDetail(postingDetail: ExchangeDetailResponse) {
+        binding.cvRequestContanerExchange.visibility = View.VISIBLE
         // Custom Toolbar Data
         binding.customToolbar.apply {
             setTitle("${postingDetail.resortName}")
@@ -188,7 +182,32 @@ class ExchangeDetailActivity : BaseActivity() {
             tvEstimatedTotalPrice.visibility = View.GONE
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
+            Glide.with(this@ExchangeDetailActivity)
+                .load(postingDetail.unitType.photos)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.placeholder_image)
+                .into(binding.imImageTimeshare)
+
         }
+
+        // Button
+        val customerInfo = tokenManager.getProfileInfo()
+        if (postingDetail.ownerId == customerInfo?.id) {
+            binding.cvRequestContanerExchange.backgroundTintList = resources.getColorStateList(R.color.green_verify)
+            binding.tvRequestExchange.text = "Bài Đăng Của Bạn"
+        } else {
+            binding.tvRequestExchange.text = "Gửi Yêu Cầu Trao Đổi"
+            binding.cvRequestContanerExchange.setOnClickListener {
+                val intent = Intent(this, RequestExchangeActivity::class.java)
+                intent.putExtra(Constant.DEFAULT_POSTING_ID, postingDetail.exchangePostingId)
+                startActivity(intent)
+            }
+        }
+
+
+
+
+
 
 
 
@@ -295,7 +314,6 @@ class ExchangeDetailActivity : BaseActivity() {
             }
         }
     }
-
 
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
@@ -416,19 +434,7 @@ class ExchangeDetailActivity : BaseActivity() {
         )
     }
 
-    fun formatPriceLong(price: Long): String {
-        val formatter = DecimalFormat("#,###")
-        val formattedPrice = formatter.format(price)
 
-        // Nếu giá trị lớn hơn 100 triệu, thay đổi textSize
-        if (price > 100_000_000) {
-            binding.tvPrice.textSize = 12f // Thay đổi kích thước text thành 10dp
-        } else {
-            binding.tvPrice.textSize = 15f // Hoặc kích thước mặc định
-        }
-
-        return formattedPrice
-    }
 
     fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ExchangeDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->

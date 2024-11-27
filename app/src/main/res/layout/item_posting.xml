@@ -147,12 +147,38 @@
 
             <ImageView
                 android:layout_marginStart="1dp"
+                android:padding="1dp"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_room_ts"/>
 
             <TextView
                 android:id="@+id/tv_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="center|left"
+                android:maxLines="2"
+                android:text="Phòng Studio, 1 Giường, 4 Người"
+                android:textSize="11dp" />
+        </LinearLayout>
+
+        <!-- // Night-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:minHeight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="1dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/ic_nights"/>
+
+            <TextView
+                android:id="@+id/tv_nights"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -174,6 +200,8 @@
         android:background="@drawable/ripple_no_color"
         android:backgroundTint="@color/blue_see_more"
         android:textColor="@color/white"
+        android:textSize="10dp"
+        android:fontFamily="@font/inter_medium"
         android:textAllCaps="false"
         android:text="Trao Đổi"
         app:layout_constraintEnd_toEndOf="parent"

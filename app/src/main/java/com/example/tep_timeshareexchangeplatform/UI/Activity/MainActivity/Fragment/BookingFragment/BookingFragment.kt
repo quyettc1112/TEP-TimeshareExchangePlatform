@@ -42,7 +42,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
     private var isNewLoad: Int = 0
 
     companion object {
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 15
     }
 
 
@@ -100,15 +100,8 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
                 Status.ERROR -> {
                     resources.message?.let {
-                        MotionToast.Companion.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            it,
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
+                        (activity as MainActivity).showErrorToast("Lỗi", "Không thể tải dữ liệu")
+
                     }
                 }
 
@@ -154,17 +147,9 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                 }
 
                 Status.ERROR -> {
-                    (activity as MainActivity).hideLoadingWaiting()
-                    it.message?.let {
-                        MotionToast.Companion.createColorToast(
-                            requireActivity(),
-                            "Error",
-                            it,
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
+                    (activity as MainActivity).apply {
+                        hideLoadingWaiting()
+                        showErrorToast("Lỗi", "Lỗi Khi Gửi Phản Hồi")
                     }
                 }
 
@@ -211,15 +196,8 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
         if (!tokenManager.isLoggedIn()) {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Error",
-                "Bạn cần đăng nhập để thực hiện chức năng này",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            (activity as MainActivity).showErrorToast("Lỗi", "Bạn cần đăng nhập để thực hiện chức năng này")
+
             return
         }
 
@@ -227,15 +205,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         if (feedbackDTO.bookingId !== 0 && feedbackDTO.ratingPoint !== 0) {
             viewModel.postFeedback(tokenManager.getAccessToken().toString(), feedbackDTO)
         } else {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Error",
-                "Vui lòng nhập đầy đủ thông tin",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            (activity as MainActivity).showErrorToast("Lỗi", "Vui lòng nhập đầy đủ thông tin")
         }
 
     }
