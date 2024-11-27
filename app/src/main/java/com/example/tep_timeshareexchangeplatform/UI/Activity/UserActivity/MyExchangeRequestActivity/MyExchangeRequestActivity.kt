@@ -33,7 +33,7 @@ class MyExchangeRequestActivity : BaseActivity() {
     private lateinit var exchangeAdapter: MyExchangeRequestAdapter
     private val viewModel: MyExchangeRequestViewModel by viewModels()
 
-    companion object{
+    companion object {
         const val POSTING_PAGE_SIZE = 10
     }
 
@@ -52,15 +52,7 @@ class MyExchangeRequestActivity : BaseActivity() {
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             observeData()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showErrorToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
         binding.customToolbar.onStartIconClick = {
             finish()
@@ -77,7 +69,6 @@ class MyExchangeRequestActivity : BaseActivity() {
         }
     }
 
-
     private fun observeData() {
         viewModel.myExchangeRequestList.observe(this) {
             when (it.status) {
@@ -86,23 +77,26 @@ class MyExchangeRequestActivity : BaseActivity() {
                 }
 
                 Status.SUCCESS -> {
-                    binding.animLoadingMore.visibility = View.GONE
-                    viewModel.loadMoreRequestList(it.data?.content ?: listOf())
-                    exchangeAdapter.submitList(viewModel.getCurrentRequestList())
-
+                    if (it.data?.totalPages == 0) {
+                        showInfoDialog(
+                            this,
+                            "Bạn chưa có bài yêu cầu trao đổi nào",
+                            object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    finish()
+                                }
+                            }
+                        )
+                    } else {
+                        binding.animLoadingMore.visibility = View.GONE
+                        viewModel.loadMoreRequestList(it.data?.content ?: listOf())
+                        exchangeAdapter.submitList(viewModel.getCurrentRequestList())
+                    }
                 }
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message ?: "Có lỗi xảy ra",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi", it.message ?: "Có lỗi xảy ra")
                 }
             }
         }
@@ -116,13 +110,16 @@ class MyExchangeRequestActivity : BaseActivity() {
         }
     }
 
-
     private fun bindDataMyPostingList() {
         binding.rvMyPosting.apply {
             adapter = exchangeAdapter
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@MyExchangeRequestActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(
+                    this@MyExchangeRequestActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
         }
 
         // Scroll Listener

@@ -152,10 +152,7 @@ class PostingDetailActivity : BaseActivity() {
                 // Case User have not Profile Info
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    Log.d("CheckProasdasdasdfile", "observe: ${it.message}")
                     if (it.message!!.contains("404")) {
-                        Toast.makeText(this, "Không Tìm Thấy Thông Tin Khách Hàng", Toast.LENGTH_SHORT)
-                            .show()
                         when (postingDetailViewModel.getCurrentPackage()) {
                             // Pack 1 - Extend MemberShip
                             RentalPackageEnum.BASIC_SERVICE.packageModel -> {

@@ -101,6 +101,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     llMyPosting.visibility = View.VISIBLE
                     llMyExchangePosting.visibility = View.VISIBLE
                     llMyTransaction.visibility = View.VISIBLE
+                    llMyExchangeRequest.visibility = View.VISIBLE
 
                     // Un Hide Wallet
                     cardWalletContainer.visibility = View.VISIBLE
@@ -131,6 +132,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     llMyPosting.visibility = View.VISIBLE
                     llMyExchangePosting.visibility = View.VISIBLE
                     llMyTransaction.visibility = View.VISIBLE
+                    llMyExchangeRequest.visibility = View.VISIBLE
 
                 }
             }
@@ -153,6 +155,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     llMyPosting.visibility = View.GONE
                     llMyExchangePosting.visibility = View.GONE
                     llMyTransaction.visibility = View.GONE
+                    llMyExchangeRequest.visibility = View.GONE
 
                 }
             }

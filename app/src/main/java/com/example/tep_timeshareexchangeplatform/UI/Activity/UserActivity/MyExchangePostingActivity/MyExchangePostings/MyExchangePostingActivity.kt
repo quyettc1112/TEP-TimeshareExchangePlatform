@@ -53,15 +53,7 @@ class MyExchangePostingActivity : BaseActivity() {
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             observeData()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showErrorToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
         initAdapter()
         bindDataMyPostingList()
@@ -111,23 +103,26 @@ class MyExchangePostingActivity : BaseActivity() {
                 }
 
                 Status.SUCCESS -> {
-                    binding.animLoadingMore.visibility = View.GONE
-                    viewModel.loadMorePostingList(it.data?.content ?: listOf())
-                    exchangeAdapter.submitList(viewModel.getCurrentPostingList())
-
+                    if (it.data?.totalPages == 0) {
+                        showInfoDialog(
+                            this,
+                            "Bạn chưa có bài đăng Trao Đổi nào",
+                            object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    finish()
+                                }
+                            }
+                        )
+                    } else {
+                        binding.animLoadingMore.visibility = View.GONE
+                        viewModel.loadMorePostingList(it.data?.content ?: listOf())
+                        exchangeAdapter.submitList(viewModel.getCurrentPostingList())
+                    }
                 }
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message ?: "Có lỗi xảy ra",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi", "Không thể tải dữ liệu")
                 }
             }
         }
@@ -146,15 +141,7 @@ class MyExchangePostingActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Thành công",
-                        "Ẩn bài đăng thành công",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_bold)
-                    )
+                    showSuccessToast("Thành Công", "Ẩn bài đăng thành công")
                     exchangeAdapter.updateItemStatus(itemPosition, MyPostingStatus.CLOSED.name)
                     val id = exchangeAdapter.getItemIdFromPosition(itemPosition) ?: 0
                     viewModel.updatePostingItem(id, MyPostingStatus.CLOSED.name)
@@ -162,15 +149,7 @@ class MyExchangePostingActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message ?: "Có lỗi xảy ra",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_bold)
-                    )
+                    showErrorToast("Lỗi", "Không thể ẩn bài đăng")
                 }
             }
         }

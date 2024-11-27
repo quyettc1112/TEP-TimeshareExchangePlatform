@@ -28,7 +28,7 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
-
+            binding.tvNights.text = "${item.nights} đêm"
             if (item.isVerify) {
                 binding.llVerify.visibility = View.VISIBLE
             } else {
