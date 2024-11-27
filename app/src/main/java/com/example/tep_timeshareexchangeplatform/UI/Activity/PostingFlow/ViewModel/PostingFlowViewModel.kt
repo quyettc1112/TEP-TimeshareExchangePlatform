@@ -24,7 +24,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.Resort
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.ValidYearResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
@@ -34,7 +33,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Time
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -553,10 +551,10 @@ class PostingFlowViewModel @Inject constructor(
     // Tracking Start Date, End Date
     // LiveData để lưu giá trị ngày check-in và check-out
     private val _checkinDate = MutableLiveData<String>()
-    val checkinDate: LiveData<String> get() = _checkinDate
+    val checkinDateValid: LiveData<String> get() = _checkinDate
 
     private val _checkoutDate = MutableLiveData<String>()
-    val checkoutDate: LiveData<String> get() = _checkoutDate
+    val checkoutDateValid: LiveData<String> get() = _checkoutDate
 
     // Phương thức để cập nhật giá trị ngày check-in
     fun setCheckinDate(date: String) {

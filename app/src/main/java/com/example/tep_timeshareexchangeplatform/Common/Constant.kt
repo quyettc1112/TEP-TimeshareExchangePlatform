@@ -154,6 +154,30 @@ class Constant {
 
             return dateFormat.format(date)
         }
+        fun formatDateByLocaleYMD(dateString: String, context: Context): String {
+            // Định dạng của chuỗi ngày nhập vào (yyyy-MM-dd)
+            if (dateString.isNullOrEmpty()) return ""
+
+            val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+            // Chuyển chuỗi ngày thành đối tượng Date
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Định dạng ngày tháng dựa trên ngôn ngữ đã lưu
+            val dateFormat = if (languageCode == "vi") {
+                // Định dạng cho Tiếng Việt (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+            } else {
+                // Định dạng cho Tiếng Anh hoặc ngôn ngữ khác (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.ENGLISH)
+            }
+
+            return dateFormat.format(date)
+        }
 
         fun getDayOfWeek(dateString: String, context: Context): String {
 

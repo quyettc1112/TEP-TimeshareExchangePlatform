@@ -202,6 +202,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
         binding.customSpinnerViewDiretion.adapter = spinnerAdapter
         binding.customSpinnerViewDiretion.setSelection(0)
+        postingFlowViewModel.updateCancelPolicy(0)
         binding.customSpinnerViewDiretion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -620,18 +621,9 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     private fun isImageValid(): Boolean {
         val subImages = postingFlowViewModel.imageList.value // Ảnh phụ là các ảnh sau ảnh chính
-
         return when {
             subImages.isNullOrEmpty() || subImages.size < 6 -> {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Thiếu Ảnh",
-                    "Vui lòng chọn ít nhất 6 ảnh ",
-                    MotionToastStyle.WARNING,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
+                (activity as PostingFlowActivity).showWarningToast("Thiếu Ảnh", "Vui lòng chọn ít nhất 6 ảnh")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
                 }

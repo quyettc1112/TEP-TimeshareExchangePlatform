@@ -135,6 +135,16 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 }
             }
         }
+        postingFlowViewModel.checkinDateValid.observe(viewLifecycleOwner) { checkinDate ->
+            Log.d("CheckDate", checkinDate.toString())
+            binding.includeDetailBilling.tvCheckInDate.text =
+                Constant.formatDateByLocaleYMD(checkinDate, requireContext())
+        }
+        postingFlowViewModel.checkoutDateValid.observe(viewLifecycleOwner) { checkoutDate ->
+            Log.d("CheckDate", checkoutDate.toString())
+            binding.includeDetailBilling.tvCheckOutDate.text =
+                Constant.formatDateByLocaleYMD(checkoutDate, requireContext())
+        }
 
 
         // FIRST CHECK TYPE POSTING
@@ -362,7 +372,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         // Exchange Posting Date Range
         binding.includeExchangeTime.customSpinnerProvince.isEnabled = false
 
-
         postingFlowViewModel.exchangeDateRange.observe(viewLifecycleOwner) { checkinDate ->
             bindDataExchangeTime(checkinDate)
         }
@@ -469,10 +478,12 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 .placeholder(R.drawable.ic_image_tmp_holder)
                 .into(imImageTimeshare)
 
-            // Title
+            // Titlew
             tvResortNameDtb.text =
                 "${myTimeshareResponse.resortName} | ${myTimeshareResponse.roomCode}"
 
+            Log.d("CheckDateCCC", myTimeshareResponse.startDate.toString())
+            Log.d("CheckDateCCC", myTimeshareResponse.endDate.toString())
             tvCheckInDate.text =
                 Constant.formatDateByLocale(myTimeshareResponse.startDate, requireContext())
             tvCheckOutDate.text =
@@ -611,8 +622,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
                     cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
-                    checkinDate = postingFlowViewModel.checkinDate.value!!,
-                    checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+                    checkinDate = postingFlowViewModel.checkinDateValid.value!!,
+                    checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
                     rentalPackageId = rentalPackageEnum?.id!!,
                     imageUrls = postingFlowViewModel.getUploadedImageUrls()
                 )
@@ -625,8 +636,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
                     exchangePackageId = rentalPackageEnum?.id!!,
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
-                    checkinDate = postingFlowViewModel.checkinDate.value!!,
-                    checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+                    checkinDate = postingFlowViewModel.checkinDateValid.value!!,
+                    checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
                     imageUrls = postingFlowViewModel.getUploadedImageUrls()
                 )
                 callCreateExchangePosting(exchangeTimeshareDTO)
@@ -646,8 +657,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
             timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
             cancellationTypeId = postingFlowViewModel.cancelPolicy.value!!,
-            checkinDate = postingFlowViewModel.checkinDate.value!!,
-            checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+            checkinDate = postingFlowViewModel.checkinDateValid.value!!,
+            checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
             rentalPackageId = rentalPackageEnum?.id!!,
             imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
@@ -670,8 +681,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
             exchangePackageId = rentalPackageEnum?.id!!,
             timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
-            checkinDate = postingFlowViewModel.checkinDate.value!!,
-            checkoutDate = postingFlowViewModel.checkoutDate.value!!,
+            checkinDate = postingFlowViewModel.checkinDateValid.value!!,
+            checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
             imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
         Log.d("CheckDTO", postingTimeshareDTO.toString())
