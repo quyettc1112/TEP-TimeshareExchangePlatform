@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -148,11 +149,13 @@ class PostingDetailActivity : BaseActivity() {
                         }
                     }
                 }
-
                 // Case User have not Profile Info
                 Status.ERROR -> {
                     hideLoadingWaiting()
+                    Log.d("CheckProasdasdasdfile", "observe: ${it.message}")
                     if (it.message!!.contains("404")) {
+                        Toast.makeText(this, "Không Tìm Thấy Thông Tin Khách Hàng", Toast.LENGTH_SHORT)
+                            .show()
                         when (postingDetailViewModel.getCurrentPackage()) {
                             // Pack 1 - Extend MemberShip
                             RentalPackageEnum.BASIC_SERVICE.packageModel -> {
@@ -227,7 +230,7 @@ class PostingDetailActivity : BaseActivity() {
     }
 
     private fun eventClickRequestButton() {
-        binding.cvRequestContaner.setOnClickListener {
+        binding.ctrRequestButton.setOnClickListener {
             callCheckProfileCustomer()
         }
     }
