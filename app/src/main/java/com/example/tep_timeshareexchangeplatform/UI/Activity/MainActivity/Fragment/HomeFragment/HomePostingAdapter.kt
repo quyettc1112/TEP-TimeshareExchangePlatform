@@ -30,6 +30,7 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+            binding.tvNights.text = "${item.nights} đêm"
             binding.llRatingContainer.visibility = View.GONE
 
             if (item.isVerify) {

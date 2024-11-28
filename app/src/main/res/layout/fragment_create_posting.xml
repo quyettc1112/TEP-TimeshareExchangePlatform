@@ -634,11 +634,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_margin="20dp"
         android:background="@drawable/ripple_effect_white"
         android:backgroundTint="@color/blue_btn_search"
-        android:text="Tiếp theo"
+        android:text="Thanh Toán"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"

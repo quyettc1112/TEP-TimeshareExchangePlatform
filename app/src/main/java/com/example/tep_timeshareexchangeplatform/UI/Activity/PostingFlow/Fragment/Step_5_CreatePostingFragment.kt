@@ -133,7 +133,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             if (postingFlowViewModel.numberOfNights.value != null) {
                 val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
                 val value =
-                    "${Constant.formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
+                    "${Constant.formatPriceLong(totalPrice)} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
                 binding.includePaymentMethod12.etTotalPrice.setText(value)
             }
 
@@ -635,26 +635,23 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun isPriceInputvalid(): Boolean {
-        val pricePerNight = binding.includePaymentMethod12.etRoomPrice.text.toString()
-        if (pricePerNight.isNullOrEmpty() && !binding.includePaymentMethod12.tilRoomPrice.helperText?.isNullOrEmpty()!!) {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Lỗi",
-                "Vui lòng nhập giá phòng hơp lệ",
-                MotionToastStyle.WARNING,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
-            )
+        // Lấy giá từ ViewModel
+        val pricePerNight = postingFlowViewModel.pricePerNight.value
+
+        // Kiểm tra nếu giá tiền là null
+        if (pricePerNight == null || pricePerNight < 10000 || pricePerNight > 100_000_000) {
+            (activity as PostingFlowActivity).showWarningToast("Lỗi", "Vui lòng nhập giá phòng từ 10,000 đến 100,000,000")
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }
-            binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
+            binding.includePaymentMethod12.tilRoomPrice.error = "Giá phòng phải từ 10,000 đến 100,000,000"
             return false
         }
+
+        // Nếu tất cả các điều kiện đều hợp lệ
+        binding.includePaymentMethod12.tilRoomPrice.error = null
         return true
     }
-
     private fun isDateExchangeValid() : Boolean {
         val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
         if (numberOfNights == 0) {
@@ -702,16 +699,16 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     }
                     val numericValue = input.toLongOrNull() ?: 0
                     when {
-                        numericValue < 100000 -> {
+                        numericValue < 10000 -> {
                             // Hiển thị helper text nếu số tiền nhỏ hơn 100.000
                             binding.includePaymentMethod12.tilRoomPrice.helperText =
-                                "Số tiền tối thiểu là 100.000"
+                                "Số tiền tối thiểu là 10.000"
                         }
 
-                        numericValue > 10_000_000_000 -> {
-                            // Hiển thị helper text nếu số tiền lớn hơn 10 tỷ
+                        numericValue > 100_000_000 -> {
+                            // Hiển thị helper text nếu số tiền lớn hơn 100 Triệu
                             binding.includePaymentMethod12.tilRoomPrice.helperText =
-                                "Số tiền tối đa là 10 tỷ"
+                                "Số tiền tối đa cho 1 đêm là 100 triệu"
                         }
 
                         else -> {

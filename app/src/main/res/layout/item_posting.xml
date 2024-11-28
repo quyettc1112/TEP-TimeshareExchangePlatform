@@ -200,7 +200,7 @@
         android:background="@drawable/ripple_no_color"
         android:backgroundTint="@color/blue_see_more"
         android:textColor="@color/white"
-        android:textSize="10dp"
+        android:textSize="12dp"
         android:fontFamily="@font/inter_medium"
         android:textAllCaps="false"
         android:text="Trao Đổi"
