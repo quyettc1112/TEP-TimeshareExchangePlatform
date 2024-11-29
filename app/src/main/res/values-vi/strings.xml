@@ -96,6 +96,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     // Profile Fragment
     <string name="profile_title">Thông Tin Người Dùng</string>
     <string name="my_profile">Hồ sơ của tôi</string>
+    <string name="my_dashboard">Thống kê dữ liệu</string>
     <string name="my_timeshare">Danh sách Timeshare của tôi</string>
     <string name="my_rental_posting">Bài đăng thuê phòng của tôi</string>
     <string name="my_exchange_posting">Bài đăng trao đổi của tôi</string>
