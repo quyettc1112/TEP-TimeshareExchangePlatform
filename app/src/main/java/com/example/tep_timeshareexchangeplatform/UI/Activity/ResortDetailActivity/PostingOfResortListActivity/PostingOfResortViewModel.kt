@@ -1,11 +1,16 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangesResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -15,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostingOfResortViewModel @Inject constructor(
-    private val publicPostingAPIRepository: PublicPostingAPIRepository
+    private val publicPostingAPIRepository: PublicPostingAPIRepository,
+    private val customerAPIRepository: CustomerAPIRepository
 ) : ViewModel() {
 
     private val _currentResortID = MutableLiveData<Int>()
@@ -23,6 +29,7 @@ class PostingOfResortViewModel @Inject constructor(
         _currentResortID.value = resortID
     }
     fun getCurrentResortID(): Int {
+        Log.d("PostingOfResortViewModel", "getCurrentResortID: ${_currentResortID.value}")
         return _currentResortID.value ?: 0
     }
 
@@ -67,7 +74,7 @@ class PostingOfResortViewModel @Inject constructor(
     fun getExchangePostingList(pageNo: Int, pageSize: Int, name: String) {
         viewModelScope.launch {
             _publicExchangePosingList.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getExchangePostings(pageNo, pageSize, name).let {
+            publicPostingAPIRepository.getExchangePostings(pageNo, pageSize, name, getCurrentResortID()).let {
                 _publicExchangePosingList.postValue(it)
             }
         }
@@ -99,5 +106,34 @@ class PostingOfResortViewModel @Inject constructor(
     init {
         _currentPostingsPage.value = 0
         _currentExchangePage.value = 0
+    }
+
+    // Call get Is Member API
+    // Call API Get Is Customer Exist
+    private val _isCustomerExist = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val isCustomerExist: MutableLiveData<Resource<CustomerProfileResponse>>
+        get() = _isCustomerExist
+
+    fun callIsCustomerExist(token: String) {
+        viewModelScope.launch {
+            _isCustomerExist.postValue(Resource.loading(null))
+            customerAPIRepository.getCustomerProfile(token).let {
+                _isCustomerExist.postValue(it)
+            }
+        }
+    }
+
+    // Call API Create Customer
+    private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
+    val createCustomerResponse: MutableLiveData<Resource<CustomerResponse>>
+        get() = _customerResponse
+
+    fun callCreateCustomer(token: String, customerDTO: CustomerDTO) {
+        viewModelScope.launch {
+            _customerResponse.postValue(Resource.loading(null))
+            customerAPIRepository.createCustomer(token, customerDTO).let {
+                _customerResponse.postValue(it)
+            }
+        }
     }
 }

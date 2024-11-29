@@ -11,14 +11,15 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Time
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareBinding
+import com.example.tep_timeshareexchangeplatform.databinding.ItemMyTimeshareV2Binding
 
 class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.Content, MyTimeshareAdapter.MyTimeshareViewHolder>() {
     var isExchange = isExchange
     var onItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     var onSelectExchangeItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
     var onSelectItemClick: ((MyTimeshareResponse.Content) -> Unit)? = null
-    inner class MyTimeshareViewHolder(binding: ItemMyTimeshareBinding) :
-        BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareBinding>(binding) {
+    inner class MyTimeshareViewHolder(binding: ItemMyTimeshareV2Binding) :
+        BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareV2Binding>(binding) {
         override fun bind(item: MyTimeshareResponse.Content) {
             // Hide Unessary View
 
@@ -29,7 +30,7 @@ class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.
             Glide.with(binding.root.context)
                 .load(item.resortImage)
                 .error(R.drawable.backgroud_earth)
-                .into(binding.imResortImage)
+                .into(binding.imImageTimeshare)
 
             binding.btnSelect.setOnClickListener {
                 onItemClick?.invoke(item)
@@ -65,7 +66,7 @@ class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyTimeshareViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMyTimeshareBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemMyTimeshareV2Binding.inflate(layoutInflater, parent, false)
         return MyTimeshareViewHolder(binding)
     }
 

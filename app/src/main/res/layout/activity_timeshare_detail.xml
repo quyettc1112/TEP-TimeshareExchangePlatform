@@ -7,7 +7,7 @@
     android:background="@color/primary_background_F9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity">
+    tools:context=".UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity">
 
     <!--// Custom Toolbar-->
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
@@ -43,10 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--// Timeshare Detail Image-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp">
 
                     <!--// Timeshare Detail Image-->
                     <androidx.core.widget.NestedScrollView
@@ -69,11 +65,6 @@
                     </androidx.core.widget.NestedScrollView>
 
 
-
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Resort Info and Map-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -679,7 +670,7 @@
                             android:id="@+id/im_imageTimeshare"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/im_matiral_timeshare" />
                     </com.google.android.material.card.MaterialCardView>
 
@@ -857,7 +848,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="0.6"
                                     android:text="Chính sách hủy"
                                     android:textColor="#000000"
                                     android:textSize="14sp" />
@@ -866,7 +857,7 @@
                                     android:id="@+id/tv_cancel_policy_dtb"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="1.4"
                                     android:gravity="end"
                                     android:textColor="#000000"
                                     android:textSize="14sp"
@@ -963,6 +954,8 @@
 
                             <!-- User Image -->
                             <ImageView
+                                android:id="@+id/im_owner_info"
+                                android:visibility="gone"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:src="@drawable/ic_user_default_avt"
@@ -1068,6 +1061,7 @@
     <!--// Bottom Button-->
     <LinearLayout
         android:id="@+id/cv_request_contaner"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:background="@drawable/ripple_effect_white"
         android:layout_height="wrap_content"
@@ -1183,6 +1177,43 @@
 
 
     </LinearLayout>
+
+    <!--// Bottom Button-->
+    <LinearLayout
+        android:id="@+id/cv_request_contaner_exchange"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/ripple_effect"
+        android:backgroundTint="@color/blue_see_more"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_view_container">
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icon chọn ngày"
+            android:src="@drawable/baseline_currency_exchange_24" />
+
+        <!-- Text -->
+        <TextView
+            android:id="@+id/tv_request_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
 
 
 

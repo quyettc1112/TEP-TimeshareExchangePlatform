@@ -9,8 +9,9 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIReposi
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
@@ -43,7 +44,7 @@ class PaymentRentalViewModel @Inject constructor(
     private val _responseVNPAYUrl = MutableLiveData<Resource<PaymentResponse>>()
     val responseVNPAYUrl: MutableLiveData<Resource<PaymentResponse>> = _responseVNPAYUrl
     // call API to get response URL
-    fun getResponsePaymentUrl(amount: Int, orderType: String) {
+    fun getResponsePaymentUrl(amount: Long, orderType: String) {
         viewModelScope.launch {
             _responseVNPAYUrl.postValue(Resource.loading(null))
             paymentAPIRepository.getPaymentUrl(amount, orderType).let {
@@ -53,8 +54,8 @@ class PaymentRentalViewModel @Inject constructor(
     }
 
     // Call API Create Booking
-    private val _myBookingResponse = MutableLiveData<Resource<MyBookingDetailResponse>>()
-    val myBookingResponse: MutableLiveData<Resource<MyBookingDetailResponse>> = _myBookingResponse
+    private val _myBookingResponse = MutableLiveData<Resource<MyBookingRentalDetailResponse>>()
+    val myBookingResponse: MutableLiveData<Resource<MyBookingRentalDetailResponse>> = _myBookingResponse
     fun createBooking(token: String, postingId: Int, guestDTO: GuestDTO) {
         viewModelScope.launch {
             _myBookingResponse.postValue(Resource.loading(null))
@@ -77,12 +78,12 @@ class PaymentRentalViewModel @Inject constructor(
     }
 
     // Call Get New Available Balance
-    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val customerInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val customerInfoResponse: MutableLiveData<Resource<CustomerProfileResponse>> get() = _customerInfoResponse
     fun getCustomerInfo(token: String) {
         viewModelScope.launch {
             _customerInfoResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _customerInfoResponse.postValue(it)
             }
         }

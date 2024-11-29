@@ -20,6 +20,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
+import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
@@ -93,15 +94,7 @@ class MyPostingDetailActivity : BaseActivity() {
             viewModel.getMyPostingDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
@@ -116,15 +109,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
                 }
 
                 Status.LOADING -> {
@@ -138,11 +123,13 @@ class MyPostingDetailActivity : BaseActivity() {
         // Image List
         bindDataListImage(myRentalPostingDetailResponse.imageUrls)
 
+        // Amenities
+        bindDataAmenities(myRentalPostingDetailResponse)
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myRentalPostingDetailResponse.unitType.title}")
-            setTitleDetail("${myRentalPostingDetailResponse.checkinDate} - ${myRentalPostingDetailResponse.checkoutDate}")
+            setTitle("Chi Tiết Bài Đăng")
+            setTitleDetail("${myRentalPostingDetailResponse.resortName}")
         }
 
         // Resort Info
@@ -233,14 +220,14 @@ class MyPostingDetailActivity : BaseActivity() {
             )
             tvNumberNight.text = "${myRentalPostingDetailResponse.nights} đêm"
 
-            if (myRentalPostingDetailResponse.pricePerNights == 0) {
+            if (myRentalPostingDetailResponse.pricePerNights == 0L) {
                 tvRoomPricePerNight.text = "Đang Chờ Xác Nhận"
                 tvEstimatedTotalPrice.text = "Đang Chờ Xác Nhận"
             } else {
                 tvRoomPricePerNight.text =
-                    "${formatPrice(myRentalPostingDetailResponse.pricePerNights)} đ"
+                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} đ"
                 tvEstimatedTotalPrice.text =
-                    "${formatPrice(myRentalPostingDetailResponse.totalPrice)} đ"
+                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} đ"
             }
             tvLocation.text = myRentalPostingDetailResponse.address
 
@@ -329,7 +316,6 @@ class MyPostingDetailActivity : BaseActivity() {
             MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)
                 ?.getDescription(this)
 
-
     }
 
 
@@ -375,7 +361,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun bindDataAmenities(data: MyExchangePostingDetailResponse) {
+    private fun bindDataAmenities(data: MyRentalPostingDetailResponse) {
         featuresAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
         entertainmentAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
         kitchenAdapter.submitOriginalList(mapToAmenitiesModel(data.roomAmenities))
@@ -429,7 +415,6 @@ class MyPostingDetailActivity : BaseActivity() {
 
 
     }
-
 
     private fun bindDataListImage(imageList: List<String>) {
         // List Destination
@@ -513,7 +498,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    fun mapToAmenitiesModel(amenities: List<MyExchangePostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+    fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return amenities.map { amenity ->
             AmenitiesModel(
                 name = amenity.name,

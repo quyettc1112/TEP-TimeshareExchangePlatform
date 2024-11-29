@@ -69,21 +69,27 @@ class TransactionAllFragment : BaseFragment(R.layout.fragment_transaction_all) {
                 }
 
                 Status.SUCCESS -> {
-                    binding.lottieLoading.visibility = View.GONE
-                    myTransactionViewModel.loadMoreWalletList(it.data!!.content)
-                    myTransactionAdapter.submitList(myTransactionViewModel.getCurrentWalletList())
+                    if (it.data?.totalPages == 0) {
+                        (activity as MyTransactionActivity).showInfoDialog(
+                            requireContext(),
+                            "Bạn chưa có bài đăng giao dịch nào",
+                            object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    requireActivity().finish()
+                                }
+                            }
+                        )
+                    } else {
+                        binding.lottieLoading.visibility = View.GONE
+                        myTransactionViewModel.loadMoreWalletList(it.data!!.content)
+                        myTransactionAdapter.submitList(myTransactionViewModel.getCurrentWalletList())
+                    }
                 }
 
                 Status.ERROR -> {
                     binding.lottieLoading.visibility = View.GONE
-                    MotionToast.createToast(
-                        requireActivity(),
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
+                    (activity as MyTransactionActivity).showErrorToast(
+                        "Có lỗi xảy ra", "Không thể tải dữ liệu"
                     )
                 }
             }

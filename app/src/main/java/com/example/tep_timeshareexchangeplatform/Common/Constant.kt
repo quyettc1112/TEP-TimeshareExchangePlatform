@@ -94,7 +94,14 @@ class Constant {
         const val priceValuation = "priceValuation"
         const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"
 
-        const val DEFAULT_MY_BOOKING_SELECTED_ID = "myBookingSelectedId"
+        const val DEFAULT_BOOKING_ID = "bookingId"
+        const val DEFAULT_BOOKING_STATUS = "bookingStatus"
+
+        const val OWNER_POSTING_ID = "ownerPostingId"
+
+
+        const val DEFAULT_MY_BOOKING_RENTAL = "myBookingRental"
+        const val DEFAULT_MY_BOOKING_EXCHANGE = "myBookingExchange"
         const val GENERAL_ID_PAYMENT = "generalIdPayment"
 
         const val USER_LOGIN_STATE = "userLoginState"
@@ -115,14 +122,43 @@ class Constant {
             return formatter.format(price)
         }
 
-        fun formatPriceLong(price: Long): String {
+        fun formatPriceLong(price: Long?): String {
+            if (price == null) return "0"
+
+
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
 
         fun formatDateByLocale(dateString: String, context: Context): String {
             // Định dạng của chuỗi ngày nhập vào (dd-MM-yyyy)
+            if(dateString.isNullOrEmpty()) return ""
+
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+
+            // Chuyển chuỗi ngày thành đối tượng Date
+            val date: Date = inputDateFormat.parse(dateString) ?: return ""
+
+            // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
+            val preferenceHelper = PreferenceHelper(context)
+            val languageCode = preferenceHelper.getLanguage()
+
+            // Định dạng ngày tháng dựa trên ngôn ngữ đã lưu
+            val dateFormat = if (languageCode == "vi") {
+                // Định dạng cho Tiếng Việt (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd 'Tháng' M, yyyy", Locale.forLanguageTag("vi"))
+            } else {
+                // Định dạng cho Tiếng Anh hoặc ngôn ngữ khác (thêm thứ vào)
+                SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.ENGLISH)
+            }
+
+            return dateFormat.format(date)
+        }
+        fun formatDateByLocaleYMD(dateString: String, context: Context): String {
+            // Định dạng của chuỗi ngày nhập vào (yyyy-MM-dd)
+            if (dateString.isNullOrEmpty()) return ""
+
+            val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
             // Chuyển chuỗi ngày thành đối tượng Date
             val date: Date = inputDateFormat.parse(dateString) ?: return ""
@@ -144,6 +180,8 @@ class Constant {
         }
 
         fun getDayOfWeek(dateString: String, context: Context): String {
+
+            if(dateString.isNullOrEmpty()) return ""
             // Input date format
             val inputDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
             val date: Date = inputDateFormat.parse(dateString) ?: return ""

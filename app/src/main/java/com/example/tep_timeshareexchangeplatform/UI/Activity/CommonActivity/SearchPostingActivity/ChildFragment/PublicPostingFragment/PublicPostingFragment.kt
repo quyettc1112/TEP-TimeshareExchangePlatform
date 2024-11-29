@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Sea
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -66,13 +67,14 @@ class PublicPostingFragment : BaseFragment(R.layout.fragment_timeshare) {
                     binding.animLoadingMore.visibility = View.GONE
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
-                        "Error",
+                        "Error Public Posting",
                         resources.message ?: "Error",
                         MotionToastStyle.ERROR,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
                         null
                     )
+                    Log.d("PublicPostingFragmenasdasdat", "observeViewModel: ${resources.message}")
                 }
 
                 Status.LOADING -> {

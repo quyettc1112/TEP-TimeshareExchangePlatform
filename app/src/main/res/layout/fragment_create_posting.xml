@@ -562,6 +562,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/crl_image_info">
                         <TextView
+                            android:visibility="gone"
                             android:layout_gravity="left"
                             android:padding="5dp"
                             android:layout_width="wrap_content"
@@ -573,6 +574,7 @@
                             android:textStyle="bold" />
 
                         <com.google.android.material.card.MaterialCardView
+                            android:visibility="gone"
                             android:layout_gravity="center"
                             android:layout_width="200dp"
                             android:layout_height="200dp"
@@ -581,7 +583,7 @@
                             android:layout_margin="5dp">
                             <ImageView
                                 android:id="@+id/iv_main_image"
-                                android:src="@drawable/ic_image_placeholder"
+                                android:src="@drawable/ic_image_tmp_holder"
                                 android:scaleType="centerCrop"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
@@ -627,19 +629,39 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-
-
-    <androidx.appcompat.widget.AppCompatButton
+    <LinearLayout
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_margin="20dp"
         android:background="@drawable/ripple_effect_white"
         android:backgroundTint="@color/blue_btn_search"
-        android:text="Tiếp theo"
-        android:textColor="@color/white"
+        android:clickable="true"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icon chọn ngày"
+            android:src="@drawable/baseline_payments_24" />
+
+        <!-- Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:text="Thanh Toán"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

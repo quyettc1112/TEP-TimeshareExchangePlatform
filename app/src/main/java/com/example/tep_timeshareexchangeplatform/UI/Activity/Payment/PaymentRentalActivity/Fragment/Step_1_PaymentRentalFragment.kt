@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -52,16 +53,11 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
                 }
 
                 Status.ERROR -> {
-                    (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    (activity as PaymentRentalActivity).apply {
+                        hideLoadingWaiting()
+                        showErrorToast("Lỗi", "Không thể tải dữ liệu")
+                    }
+
                 }
             }
         }
@@ -70,14 +66,14 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text = postingDetail.resortName + " | " + postingDetail.unitType.title
-
+            tvLocation.text = postingDetail.address
             if (postingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {
@@ -158,17 +154,23 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
                 Constant.formatDateByLocale(postingDetail.checkoutDate, requireContext())
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} VNĐ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
+
+            Glide.with(requireContext())
+                .load(postingDetail.unitType.photos)
+                .placeholder(R.drawable.ic_image_tmp_holder)
+                .error(R.drawable.ic_image_tmp_holder)
+                .into(binding.imImageTimeshare)
 
         }
 
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
 
         }
 

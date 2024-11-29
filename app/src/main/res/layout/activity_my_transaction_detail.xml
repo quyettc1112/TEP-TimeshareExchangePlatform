@@ -19,8 +19,7 @@
         android:title="Chi Tiết Giao Dịch"
         app:layout_constraintTop_toTopOf="parent"
         app:showStartText="false"
-        app:showTitleDetail="true"
-        app:titleDetail="08:00 24/03/2025" />
+        app:showTitleDetail="true" />
 
     <!--// Content -->
     <ScrollView
@@ -75,8 +74,7 @@
                             android:id="@+id/im_avatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_logo_only" />
+                            android:padding="10dp" />
                     </androidx.cardview.widget.CardView>
 
                     <!--// Name Properties-->

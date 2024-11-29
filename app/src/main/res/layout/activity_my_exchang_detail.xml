@@ -341,6 +341,9 @@
                 </LinearLayout>
 
                 <!--// Unit Type-->
+
+
+                <!--// Facilities-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -353,8 +356,6 @@
 
                 </LinearLayout>
 
-
-                <!--// Facilities-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -543,44 +544,7 @@
 
     </LinearLayout>
 
-   <!--
-    &lt;!&ndash;// Bottom Button&ndash;&gt;
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_request_contaner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/primary_background"
-        app:strokeWidth="1dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            &lt;!&ndash; Request list Button &ndash;&gt;
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_list_request"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingStart=""
-                android:textAllCaps="false"
-                android:drawableStart="@drawable/baseline_checklist_24"
-                android:background="@drawable/ripple_effect"
-                android:fontFamily="@font/inter_bold"
-                android:text="Danh sách yêu cầu"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

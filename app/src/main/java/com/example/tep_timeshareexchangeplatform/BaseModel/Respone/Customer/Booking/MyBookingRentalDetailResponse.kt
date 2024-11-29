@@ -78,12 +78,12 @@ import com.google.gson.annotations.SerializedName
   "updatedDate": "06-11-2024 06:22:19"
 }
 */
-data class MyBookingDetailResponse(
+data class MyBookingRentalDetailResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("rentalPosting") val rentalPosting: RentalPosting,
     @SerializedName("status") val status: String,
-    @SerializedName("checkinDate") val checkinDate: String,
-    @SerializedName("checkoutDate") val checkoutDate: String,
+    @SerializedName("checkinDate") val checkinDate: String?,
+    @SerializedName("checkoutDate") val checkoutDate: String?,
     @SerializedName("primaryGuestName") val primaryGuestName: String,
     @SerializedName("primaryGuestPhone") val primaryGuestPhone: String,
     @SerializedName("primaryGuestEmail") val primaryGuestEmail: String,
@@ -92,10 +92,10 @@ data class MyBookingDetailResponse(
     @SerializedName("renterFullLegalName") val renterFullLegalName: String,
     @SerializedName("renterLegalPhone") val renterLegalPhone: String,
     @SerializedName("renterLegalAvatar") val renterLegalAvatar: Any?,
-    @SerializedName("serviceFee") val serviceFee: Int,
-    @SerializedName("totalPrice") val totalPrice: Int,
+    @SerializedName("serviceFee") val serviceFee: Long?,
+    @SerializedName("totalPrice") val totalPrice: Long?,
     @SerializedName("totalNights") val totalNights: Int,
-    @SerializedName("pricePerNights") val pricePerNights: Int,
+    @SerializedName("pricePerNights") val pricePerNights: Long?,
     @SerializedName("createdDate") val createdDate: String,
     @SerializedName("updatedDate") val updatedDate: String,
     @SerializedName("source") val source: String

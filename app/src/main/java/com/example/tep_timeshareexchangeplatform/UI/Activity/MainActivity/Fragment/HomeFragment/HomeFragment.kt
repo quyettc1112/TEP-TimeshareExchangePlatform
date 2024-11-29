@@ -28,7 +28,7 @@ import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ResortDetailActivity
@@ -52,6 +52,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     lateinit var gridAdapter: GridAdapter
     private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private lateinit var locationResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var postingDetailResultLauncher: ActivityResultLauncher<Intent>
     private val homeViewModel: HomeViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -319,7 +320,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             it.onItemClick = {
                 val intent = Intent(requireContext(), PostingDetailActivity::class.java)
                 intent.putExtra(Constant.DEFAULT_POSTING_ID, it.rentalPostingId)
-                startActivity(intent)
+                postingDetailResultLauncher.launch(intent)
             }
             it.onFavoriteClick = {
                 Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
@@ -392,8 +393,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 intent.putExtra(Constant.SEARCH_DATE, dateRange)
                 intent.putExtra(Constant.SEARCH_ROOM, roomCount)
                 startActivity(intent)
-
-
             }
         }
     }
@@ -419,6 +418,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                         data?.getStringExtra(Constant.DEFAULT_SELECTION_LOCATION_KEY)
                     selectedLocation?.let {
                         mainViewModel.updateLocation(selectedLocation)
+                    }
+                }
+            }
+
+        postingDetailResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(requireContext(), "Refresh", Toast.LENGTH_SHORT).show()
+                    (activity as MainActivity).apply {
+                        checkUserLoggedIn()
+                        checkUserStateLog()
                     }
                 }
             }

@@ -8,7 +8,7 @@ enum class MyBookingStatus(val apiStatus: String, val statusResId: Int) {
     CHECK_IN("Checkin", R.string.checkin),
     CHECKOUT("Checkout", R.string.checkout),
     NO_SHOW("NoShow", R.string.no_show),
-    CANCELED("Canceled", R.string.canceled),
+    CANCELED("Cancelled", R.string.cancelled),
     REFUND("Refund", R.string.refund),
     PAYMENT_COMPLETED("PaymentCompleted", R.string.payment_completed),
     RENTAL("rental", R.string.rental),

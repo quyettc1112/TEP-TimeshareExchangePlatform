@@ -9,9 +9,9 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
     MEMBERSHIP_MONTHLY(
         PackageModel(
             id = 1,
-            name = "Gói 6 Tháng",
+            name = "Gói Thành Viên 6 Tháng",
             price = 119000,
-            description = "Gói trao đổi timeshare trong 1 tháng.",
+            description = "",
             duration = 6,  // Thời gian sử dụng là 1 tháng
             type = "Membership",
             listBenefit = listOf(
@@ -26,9 +26,9 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
     MEMBERSHIP_YEARLY(
         PackageModel(
             id = 2,
-            name = "Gói Năm",
+            name = "Gói Thành Viên 1 Năm",
             price = 239000,
-            description = "Gói trao đổi timeshare trong 1 năm.",
+            description = "",
             duration = 12,  // Thời gian sử dụng là 1 năm
             type = "Membership",
             listBenefit = listOf(
@@ -118,6 +118,10 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
 
         fun getPackageByName(name: String): PackageModel? {
             return values().find { it.packageModel.name == name }?.packageModel
+        }
+
+        fun getPackageEnumById(id: Int): RentalPackageEnum? {
+            return values().find { it.packageModel.id == id }
         }
     }
 }

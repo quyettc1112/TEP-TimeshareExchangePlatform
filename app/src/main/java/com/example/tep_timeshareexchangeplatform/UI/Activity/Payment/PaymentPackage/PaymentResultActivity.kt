@@ -42,13 +42,13 @@ class PaymentResultActivity : BaseActivity() {
         tokenManager = TokenManager(this)
 
         // Call get new available balance
-        paymentResultViewModel.getCustomerInfo(tokenManager.getAccessToken().toString())
+        paymentResultViewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
         observeData()
 
     }
 
     private fun observeData() {
-        paymentResultViewModel.customerInfoResponse.observe(this) {
+        paymentResultViewModel.customerProfileResponse.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
@@ -57,11 +57,11 @@ class PaymentResultActivity : BaseActivity() {
                     hideLoadingWaiting()
                     if (it.data!!.isMember) {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                     }
                     else {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                        tokenManager.saveCustomerInfo(it.data)
+                        tokenManager.saveProfileInfo(it.data)
                     }
                     bindData()
                 }

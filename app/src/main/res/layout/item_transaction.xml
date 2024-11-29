@@ -44,7 +44,7 @@
         android:fontFamily="@font/inter_medium"
         android:text="Chuyển tiền/Thanh toán đến Unwind"
         android:textColor="@android:color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/materialCardView7"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
         android:maxLines="1"
         android:text="(Ví Thanh Toán)"
         android:textColor="@android:color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/materialCardView7"
         app:layout_constraintTop_toBottomOf="@+id/tv_trans_to" />
@@ -99,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-93.000đ"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

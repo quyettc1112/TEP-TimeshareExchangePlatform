@@ -163,7 +163,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
 
             // Price
-            if (item.pricePerNights != null && item.pricePerNights != 0) {
+            if (item.pricePerNights != null && item.pricePerNights != 0L) {
                 binding.tvRoomPricePerNight.text = "${formatPrice(item.pricePerNights)}đ /đêm"
             } else {
                 binding.tvRoomPricePerNight.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
@@ -200,7 +200,7 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             }
         }
 
-        fun formatPrice(price: Int): String {
+        fun formatPrice(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
@@ -222,6 +222,14 @@ class MyPostingAdapter(var context: MyPostingActivity) :
             val updatedItem = currentList[position].copy(status = newStatus) // Cập nhật trạng thái
             currentList[position] = updatedItem // Thay thế item trong danh sách
             submitList(currentList) // Cập nhật danh sách trong Adapter
+        }
+    }
+
+    fun getItemIdFromPosition(position: Int): Int? {
+        return if (position >= 0 && position < differ.currentList.size) { // `items` là danh sách dữ liệu của adapter
+            differ.currentList[position].rentalPostingId // Giả sử mỗi item có thuộc tính `id`
+        } else {
+            null
         }
     }
 

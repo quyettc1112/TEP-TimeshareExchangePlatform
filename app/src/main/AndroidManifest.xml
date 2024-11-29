@@ -55,7 +55,7 @@
             android:name=".UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.ExchangeDetailActivity.ExchangeDetailActivity"
+            android:name=".UI.Activity.CommonActivity.SearchPostingActivity.ExchangeDetailActivity.ExchangeDetailActivity"
             android:exported="false" />
         <activity
             android:name=".UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity"
@@ -65,9 +65,10 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity"
+            android:name=".UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity"
@@ -137,7 +138,7 @@
             android:name=".UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity"
+            android:name=".UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.AuthActivity.LoginActivity"
@@ -150,7 +151,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

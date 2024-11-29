@@ -7,14 +7,17 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
     android:layout_margin="5dp"
+    android:padding="10dp"
     android:background="@drawable/ripple_effect"
     android:backgroundTint="@color/white"
     android:elevation="2dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_unit_type_resort"
-        android:layout_width="120dp"
-        android:layout_height="90dp"
+        android:layout_width="110dp"
+        android:layout_height="130dp"
+        app:riv_border_width="2dp"
+        app:riv_border_color="@color/yellow200"
         android:scaleType="centerCrop"
         android:src="@drawable/im_material_da_lat"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +27,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <HorizontalScrollView
+        <LinearLayout
             android:id="@+id/ll_unit_type_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,7 +71,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title_unit">
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -76,13 +79,11 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/background_stroke_around"
                     android:gravity="center|left"
                     android:minHeight="20dp"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
+
                     android:paddingTop="3dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp">
@@ -116,13 +117,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/background_stroke_around"
                     android:gravity="center|left"
                     android:minHeight="20dp"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
                     android:paddingTop="3dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp">
@@ -148,12 +145,10 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/background_stroke_around"
                     android:gravity="center|left"
                     android:minHeight="20dp"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
+
                     android:paddingTop="3dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp">
@@ -162,7 +157,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="6dp"
-                        android:padding="3dp"
+                        android:padding="4dp"
                         android:src="@drawable/ic_person" />
 
                     <TextView
@@ -186,31 +181,39 @@
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--// Price-->
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:gravity="center|left"
             android:orientation="horizontal"
-            android:paddingTop="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_unit_type_detail">
 
             <TextView
-                android:id="@+id/tv_view"
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_extrabold"
+                android:text="1.300.000 VND"
+                android:textColor="@color/blue_full"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_numberOfNight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_medium"
-                android:maxLines="1"
-                android:text="Hướng Nhìn: Studio King"
-                android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text=" | 1 đêm"
+                android:textColor="@color/primary_stroke_around"
+                android:textSize="10dp" />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

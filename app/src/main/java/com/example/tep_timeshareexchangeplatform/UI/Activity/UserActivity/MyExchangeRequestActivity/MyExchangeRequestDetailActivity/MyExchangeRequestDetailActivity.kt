@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExc
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -77,13 +78,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     bindData(it.data!!)
                     binding.shimmerViewContainer.hideShimmer()
-
-                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
-                        binding.btnAccept.visibility = View.GONE
-
-                    } else {
-                        binding.btnAccept.visibility = View.VISIBLE
-                    }
+                    Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
+                    Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
                     when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
@@ -98,6 +94,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         MyExchangeRequestStatus.REJECTED -> {
                             binding.btnAccept.visibility = View.GONE
                         }
+                    }
+                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
+                        binding.btnAccept.visibility = View.GONE
+
+                    } else {
+                        binding.btnAccept.visibility = View.VISIBLE
                     }
 
 

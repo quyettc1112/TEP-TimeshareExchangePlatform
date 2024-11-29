@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,13 +18,13 @@ class PostingViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Call API Get Is Customer Exist
-    private val _isCustomerExist = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val isCustomerExist: MutableLiveData<Resource<CustomerInfoResponse>>
+    private val _isCustomerExist = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val isCustomerExist: MutableLiveData<Resource<CustomerProfileResponse>>
         get() = _isCustomerExist
     fun callIsCustomerExist(token: String) {
         viewModelScope.launch {
             _isCustomerExist.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _isCustomerExist.postValue(it)
             }
         }

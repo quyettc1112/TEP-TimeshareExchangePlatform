@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -215,15 +216,38 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <LinearLayout
                     android:id="@+id/btn_search"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/background_btn_search"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/search_search"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:gravity="center"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ripple_effect_white"
+                    android:backgroundTint="@color/blue_btn_search"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" >
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Icon chọn ngày"
+                        android:src="@drawable/baseline_search_24_white" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Tim kiếm"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -614,7 +638,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="50dp"
                 android:background="@color/white"
                 android:orientation="vertical">
                 <!-- // Suggest Title-->
@@ -672,15 +695,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="310dp"
-                    android:orientation="vertical"
-                    android:paddingBottom="50dp">
+                    android:orientation="vertical">
                     <!-- // Suggest Title-->
 
                     <!--// List Blog-->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rc_blog"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
@@ -688,11 +710,16 @@
                         android:paddingTop="5dp"
                         android:paddingEnd="15dp"
                         android:paddingBottom="5dp"
-                        tools:listitem="@layout/item_blog"></androidx.recyclerview.widget.RecyclerView>
+                        tools:listitem="@layout/item_blog"/>
                 </LinearLayout>
 
 
             </LinearLayout>
+
+            <View
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"/>
 
 
         </LinearLayout>

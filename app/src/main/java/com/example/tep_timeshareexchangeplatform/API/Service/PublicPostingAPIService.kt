@@ -34,6 +34,7 @@ interface PublicPostingAPIService {
         @Query("pageNo") pageNo: Int,
         @Query("pageSize") pageSize: Int,
         @Query("resortName") resortName: String,
+        @Query("resortId") resortId: Int? = null,
     ): Response<ExchangesResponse>
 
     // Get Exchange Posting Detail By ID
@@ -45,8 +46,8 @@ interface PublicPostingAPIService {
     @GET("public/posting/{resortId}")
     suspend fun getRentalPostingOfResortByID(
         @Path("resortId") resortId: Int,
-        @Query("pageNo") pageNo: Int,
-        @Query("pageSize") pageSize: Int,
+        @Query("page") pageNo: Int,
+        @Query("size") pageSize: Int,
     ) : Response<PublicPostingResponse>
 
     @GET("public/blog/postings")
@@ -60,6 +61,14 @@ interface PublicPostingAPIService {
     suspend fun getBlogDetail(
         @Path("postingId") postingId: Int
     ): Response<BlogDetailResponse>
+
+
+    @GET("public/exchange/postings")
+    suspend fun getExchangePostingsByResortId(
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("resortName") resortName: String,
+    ): Response<ExchangesResponse>
 
 
 }

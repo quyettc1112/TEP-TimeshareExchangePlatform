@@ -41,7 +41,6 @@ class ImageListActivity : BaseActivity() {
         // Set up RecyclerView with LinearLayoutManager
         setUpImageList(imagePosition, listImage)
         setToolbarEvent()
-        setAutoScroll()
 
     }
 
@@ -86,9 +85,7 @@ class ImageListActivity : BaseActivity() {
 
     }
 
-    private fun setAutoScroll() {
-        autoScrollHelper.setupAutoScroll(binding.viewPager)
-    }
+
 
 
 }

@@ -66,7 +66,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
      * Check User State Log
      * Handler User State Log, Change UI when user is logged in or not
      */
-    private fun checkUserStateLog() {
+    fun checkUserStateLog() {
         val userLogState = tokenManager.getUserLogState()
         val customerProfileInfo = tokenManager.getProfileInfo()
         when (userLogState) {
@@ -95,7 +95,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     }
 
     // Check User is logged in or not
-    private fun checkUserLoggedIn() {
+    fun checkUserLoggedIn() {
         val tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn()) {
             // Decode JWT token to JWTPayloadModel
@@ -181,7 +181,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         super.onResume()
         checkUserLoggedIn()
         checkUserStateLog()
-        mainViewModel.resetCurrentMyBookingPage()
+        //mainViewModel.resetCurrentMyBookingPage()
     }
 
     @SuppressLint("MissingSuperCall")

@@ -56,9 +56,6 @@ class MemberShipActivity : BaseActivity() {
             onBackPressed()
             finish()
         }
-        binding.imgNext.setOnClickListener {
-            startActivity(Intent(this, PostingFlowActivity::class.java))
-        }
         clickRequestPaymentButton()
 
     }
@@ -73,7 +70,7 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    showSuccessToast("Tạo tài khoản thành công")
+                    showSuccessToast("Cập Nhật Thông Tin Thành Công")
                     memberShipViewModel.getCustomerInfo(tokenManager.getAccessToken()!!)
                 }
 
@@ -102,7 +99,7 @@ class MemberShipActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    tokenManager.saveCustomerInfo(it.data!!)
+                    tokenManager.saveProfileInfo(it.data!!)
                     tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                     val intent = Intent(this@MemberShipActivity, PaymentPackageActivity::class.java)
                     intent.putExtra(

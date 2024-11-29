@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity.PostingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingAdapterRV
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingViewModel
+import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity.PostingOfResortViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -26,15 +28,13 @@ import com.example.tep_timeshareexchangeplatform.databinding.FragmentRentalPosti
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentTimeshareBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_posting_resort) {
 
     companion object {
-        fun newInstance() = RentalPostingResortFragment()
         const val PAGE_SIZE = 16
     }
     private lateinit var binding: FragmentRentalPostingResortBinding
-    var publicPostingAdapterRV = PublicPostingAdapterRV()
+    private var publicPostingAdapterRV = PublicPostingAdapterRV()
     private val viewModel: PostingOfResortViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,20 +61,13 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
                     resources.data?.let {
                         viewModel.loadMorePostings(it.content)
                         publicPostingAdapterRV.submitList(viewModel.getCurrentPostingList())
+                        Log.d("RentalPostingResortFragment", "onCreateView: viewModel.publicRentalPosingList.observe = ${viewModel.getCurrentPostingList()?.size}")
                     }
                 }
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.GONE
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Error",
-                        resources.message ?: "Error",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    (activity as PostingOfResortActivity).showErrorToast("Lỗi", resources.message ?: "Không thể tải dữ liệu")
                 }
 
                 Status.LOADING -> {
@@ -84,6 +77,7 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
         }
 
         viewModel.currentPostingsPage.observe(viewLifecycleOwner) {
+            Log.d("RentalPostingResortFragment", "onCreateView: viewModel.currentPostingsPage.observe = $it")
             viewModel.getRentalPostingList(it, PAGE_SIZE)
         }
 
@@ -92,7 +86,6 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
 
 
     private fun setPublicPostingListUI() {
-
         binding.rcPosting.layoutManager =
             GridLayoutManager(requireActivity(), 2, LinearLayoutManager.VERTICAL, false)
         binding.rcPosting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -101,14 +94,10 @@ class RentalPostingResortFragment : BaseFragment(R.layout.fragment_rental_postin
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
                 val lastCompletelyVisibleItem =
                     layoutManager.findLastCompletelyVisibleItemPosition()
+
                 val totalItemCount = layoutManager.itemCount
-
-                val totalElementOfAPI =
-                    viewModel.publicRentalPosingList.value?.data?.totalElements ?: 0
-                val currentListSizeOfAdapter = publicPostingAdapterRV.differ.currentList.size
-
-
-                if (lastCompletelyVisibleItem == totalItemCount - 1 && currentListSizeOfAdapter < totalElementOfAPI) {
+                val totalPages = viewModel.publicRentalPosingList.value?.data?.totalPages ?: 0
+                if (lastCompletelyVisibleItem == (totalItemCount - 1) && viewModel.currentPostingsPage.value!! < totalPages - 1) {
                     viewModel.incrementCurrentPostingsPage()
                 }
             }

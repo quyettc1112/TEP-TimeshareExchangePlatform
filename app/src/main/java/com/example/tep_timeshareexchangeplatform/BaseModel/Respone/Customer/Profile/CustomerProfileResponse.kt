@@ -43,7 +43,7 @@ data class CustomerProfileResponse(
     @SerializedName("memberExpiryDate") val memberExpiryDate: String,
     @SerializedName("isMember") val isMember: Boolean,
     @SerializedName("walletId") val walletId: Int,
-    @SerializedName("walletAvailableMoney") val walletAvailableMoney: Int,
+    @SerializedName("walletAvailableMoney") val walletAvailableMoney: Long,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -63,7 +63,7 @@ data class CustomerProfileResponse(
         parcel.readString().toString(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readLong()
     ) {
     }
 
@@ -85,7 +85,7 @@ data class CustomerProfileResponse(
         parcel.writeString(memberExpiryDate)
         parcel.writeByte(if (isMember) 1 else 0)
         parcel.writeInt(walletId)
-        parcel.writeInt(walletAvailableMoney)
+        parcel.writeLong(walletAvailableMoney)
     }
 
     override fun describeContents(): Int {
