@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
@@ -22,9 +23,11 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
@@ -39,6 +42,7 @@ import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEn
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityExchangeDetailBinding
@@ -65,6 +69,7 @@ class ExchangeDetailActivity : BaseActivity() {
     private var kitchenAdapter = RoomAmenitiesAdapter()
     private var policyAdapter = RoomAmenitiesAdapter()
 
+    private var exchangeId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +93,7 @@ class ExchangeDetailActivity : BaseActivity() {
         if (intent == 0) {
             finish()
         }
+        exchangeId = intent
         exchangeDetailViewModel.getExchangeDetail(intent)
         observePostingDetail()
 
@@ -116,6 +122,35 @@ class ExchangeDetailActivity : BaseActivity() {
             }
         }
 
+        exchangeDetailViewModel.isCustomerExist.observe(this) {
+            when (it.status) {
+                // Case User have Profile Info
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    saveUserLogState(it)
+                    // Case User is Member
+                    if (it.data!!.isMember) {
+                        val intent = Intent(this, RequestExchangeActivity::class.java)
+                        intent.putExtra(Constant.DEFAULT_POSTING_ID, exchangeId)
+                        startActivity(intent)
+                    } else {
+                        intentToMemberShipActivity()
+                    }
+                }
+                // Case User have not Profile Info
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    if (it.message!!.contains("404")) {
+                        intentToMemberShipActivity()
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+                    }
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
 
 
     }
@@ -190,25 +225,7 @@ class ExchangeDetailActivity : BaseActivity() {
 
         }
 
-        // Button
-        val customerInfo = tokenManager.getProfileInfo()
-        if (postingDetail.ownerId == customerInfo?.id) {
-            binding.cvRequestContanerExchange.backgroundTintList = resources.getColorStateList(R.color.green_verify)
-            binding.tvRequestExchange.text = "Bài Đăng Của Bạn"
-        } else {
-            binding.tvRequestExchange.text = "Gửi Yêu Cầu Trao Đổi"
-            binding.cvRequestContanerExchange.setOnClickListener {
-                val intent = Intent(this, RequestExchangeActivity::class.java)
-                intent.putExtra(Constant.DEFAULT_POSTING_ID, postingDetail.exchangePostingId)
-                startActivity(intent)
-            }
-        }
-
-
-
-
-
-
+        eventClickRequestButton(postingDetail)
 
 
     }
@@ -267,6 +284,7 @@ class ExchangeDetailActivity : BaseActivity() {
 
 
     }
+
     private fun bindDataUnitType(data: ExchangeDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
@@ -311,6 +329,35 @@ class ExchangeDetailActivity : BaseActivity() {
                 )
                 val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
                 unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
+            }
+        }
+    }
+
+    private fun callCheckProfileCustomer() {
+        if (!tokenManager.isLoggedIn()) {
+            showWarningToast(
+                "Bạn chưa đăng nhập!",
+                "Vui lòng đăng nhập để thực hiện chức năng này"
+            )
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        if (tokenManager.getAccessToken() != null) {
+            exchangeDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken().toString())
+        }
+    }
+
+    private fun eventClickRequestButton(postingDetail: ExchangeDetailResponse) {
+        // Button
+        val customerInfo = tokenManager.getProfileInfo()
+        if (postingDetail.ownerId == customerInfo?.id) {
+            binding.cvRequestContanerExchange.backgroundTintList =
+                resources.getColorStateList(R.color.green_verify)
+            binding.tvRequestExchange.text = "Bài Đăng Của Bạn"
+        } else {
+            binding.tvRequestExchange.text = "Gửi Yêu Cầu Trao Đổi"
+            binding.cvRequestContanerExchange.setOnClickListener {
+                callCheckProfileCustomer()
             }
         }
     }
@@ -434,8 +481,6 @@ class ExchangeDetailActivity : BaseActivity() {
         )
     }
 
-
-
     fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ExchangeDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
@@ -446,5 +491,38 @@ class ExchangeDetailActivity : BaseActivity() {
         }
     }
 
+    private fun showCreateProfileDialog() {
+        val dialogUpdateCustomer =
+            MemberInfoDialog(
+                this,
+                object : MemberInfoDialog.ConfirmCallback {
+                    override fun positiveAction(customerDTO: CustomerDTO) {
+                        callCreateCustomer(customerDTO)
+                    }
+                })
+        dialogUpdateCustomer.show()
+    }
+
+    private fun callCreateCustomer(customerDTO: CustomerDTO) {
+        exchangeDetailViewModel.callCreateCustomer(
+            tokenManager.getAccessToken().toString(),
+            customerDTO
+        )
+    }
+
+    private fun saveUserLogState(it: Resource<CustomerProfileResponse>) {
+        if (it.data!!.isMember) {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+        }
+        // User Is Not Member
+        else {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+        }
+        tokenManager.saveProfileInfo(it.data)
+    }
+
+    private fun intentToMemberShipActivity() {
+        startActivity(Intent(this, MemberShipActivity::class.java))
+    }
 
 }

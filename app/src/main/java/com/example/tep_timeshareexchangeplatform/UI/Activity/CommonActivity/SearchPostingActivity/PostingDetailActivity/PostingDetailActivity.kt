@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
@@ -166,7 +167,6 @@ class PostingDetailActivity : BaseActivity() {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
                     }
                 }
-
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -228,6 +228,10 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun eventClickRequestButton() {
         binding.ctrRequestButton.setOnClickListener {
+            if(!tokenManager.isLoggedIn()) {
+                showWarningToast("Bạn Chưa Đăng Nhập", "Vui Lòng Đăng Nhập Để Thực Hiện Thao Tác")
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
             callCheckProfileCustomer()
         }
     }

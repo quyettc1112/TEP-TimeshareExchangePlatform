@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPI
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,34 @@ class ExchangeDetailViewModel @Inject constructor(
             _exchangeDetail.postValue(Resource.loading(null))
             publicPostingAPIRepository.getExchangePostingDetail(exchangeId).let {
                 _exchangeDetail.postValue(it)
+            }
+        }
+    }
+
+    // Call API Get Is Customer Exist
+    private val _isCustomerExist = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val isCustomerExist: MutableLiveData<Resource<CustomerProfileResponse>>
+        get() = _isCustomerExist
+
+    fun callIsCustomerExist(token: String) {
+        viewModelScope.launch {
+            _isCustomerExist.postValue(Resource.loading(null))
+            customerAPIRepository.getCustomerProfile(token).let {
+                _isCustomerExist.postValue(it)
+            }
+        }
+    }
+
+    // Call API Create Customer
+    private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
+    val createCustomerResponse: MutableLiveData<Resource<CustomerResponse>>
+        get() = _customerResponse
+
+    fun callCreateCustomer(token: String, customerDTO: CustomerDTO) {
+        viewModelScope.launch {
+            _customerResponse.postValue(Resource.loading(null))
+            customerAPIRepository.createCustomer(token, customerDTO).let {
+                _customerResponse.postValue(it)
             }
         }
     }
