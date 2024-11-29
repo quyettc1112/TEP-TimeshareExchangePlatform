@@ -54,35 +54,157 @@
                         android:src="@drawable/im_matiral_timeshare" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <!--//Timeshare name-->
-                <TextView
-                    android:id="@+id/tv_timeshareName"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
-                    android:maxLines="2"
-                    android:text="Flamingo Đại Lải Resort"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    app:layout_constraintEnd_toStartOf="@+id/ll_status_container"
+                <!--// Type Booking-->
+                <LinearLayout
+                    android:id="@+id/ll_type_booking_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:elevation="3dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout34"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+                    app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
-                <!--// Room Type-->
-                <TextView
-                    android:id="@+id/tv_timeshareType"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_medium"
-                    android:maxLines="1"
-                    android:text="Studio King asdasd as "
-                    android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_timeshareName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
+                    <ImageView
+                        android:id="@+id/im_booking_type"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_rental_booking" />
+
+
+                    <TextView
+                        android:id="@+id/tv_booking_tupe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Thuê Phòng"
+                        android:textColor="@color/blue_btn_search"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout34"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:weightSum="10"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_status_container">
+                    <!--// CheckIn/ Check Out Date-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4.75"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxLines="1"
+                            android:text="Thông Tin Đặt Phòng"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+                        <!--//Timeshare name-->
+                        <TextView
+                            android:id="@+id/tv_timeshareName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_bold"
+                            android:maxLines="2"
+                            android:text="Flamingo Đại Lải Resort"
+                            android:textSize="12dp"
+                            app:layout_constraintEnd_toStartOf="@+id/ll_status_container"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_type_booking_container" />
+
+                        <!--// Room Type-->
+                        <TextView
+                            android:id="@+id/tv_timeshareType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
+                            android:text="Studio King asdasd as "
+                            android:textSize="12dp"
+                            app:layout_constraintEnd_toEndOf="@+id/tv_timeshareName"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
+
+
+                    </LinearLayout>
+
+                    <!--// Line-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/gray_400" />
+
+                    </LinearLayout>
+
+                    <!--// Guest Info-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4.75"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_medium"
+                            android:maxLines="1"
+                            android:text="Thông Tin Khách Hàng"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_guest_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:maxLines="2"
+                            android:text="Nguyễn Văn A"
+                            android:textSize="12dp"
+                            app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
+
+                        <TextView
+                            android:id="@+id/tv_guest_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
+                            android:text="0356970686"
+                            android:textSize="12dp"
+                            app:layout_constraintStart_toEndOf="@+id/materialCardView"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
 
 
 
@@ -97,7 +219,6 @@
                     android:backgroundTint="@color/white"
                     android:elevation="3dp"
                     android:padding="5dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_timeshareName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
@@ -136,163 +257,148 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp" />
 
+            <!--// Check-in, Check-out Date-->
             <LinearLayout
+                android:id="@+id/linearLayout27"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
                 android:weightSum="10"
-                android:orientation="horizontal">
-                <!--// CheckIn/ Check Out Date-->
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout12">
+
+                <!-- Check-in Date Section -->
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4.75">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.75"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <!-- Label for Check-in Date -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:maxLines="1"
-                        android:text="Ngày Nhận/Trả Phòng"
-                        android:textColor="@color/gray_text"
-                        android:textSize="12sp" />
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
+                            android:text="Ngày Nhận Phòng"
+                            android:textColor="@color/gray_text"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:visibility="gone"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_check_in" />
+
+
+                    </LinearLayout>
+
 
                     <!-- Check-in Date -->
                     <TextView
                         android:id="@+id/tv_checkin_date"
-                        android:layout_gravity="left"
-                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_bold"
                         android:maxLines="1"
                         android:text="16 Tháng 9, 2024"
                         android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!-- Check-in Day -->
+
+                    <TextView
+                        android:id="@+id/tv_checkin_dayOfWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_light"
+                        android:text="Thứ 2"
+                        android:textColor="@color/gray_text"
                         android:textSize="12sp" />
-                    <ImageView
-                        android:visibility="gone"
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="center"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@drawable/baseline_keyboard_double_arrow_down_24"/>
+                </LinearLayout>
+
+                <!-- Arrow Icon -->
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
+
+                <!-- Check-out Date Section -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.75"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <!-- Label for Check-in Date -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
+                            android:text="Ngày Trả Phòng"
+                            android:textColor="@color/gray_text"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:visibility="gone"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_check_out" />
+
+                    </LinearLayout>
+
                     <!-- Check-out Date -->
                     <TextView
                         android:id="@+id/tv_checkout_date"
-                        android:layout_gravity="left"
-                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter_bold"
                         android:maxLines="1"
                         android:text="16 Tháng 9, 2024"
                         android:textColor="@color/black"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
 
-
-
-                </LinearLayout>
-
-                <!--// Line-->
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray_400"/>
-
-                </LinearLayout>
-
-                <!--// Guest Info-->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="4.75">
-
+                    <!-- Check-out Day -->
                     <TextView
+                        android:id="@+id/tv_checkout_dayOfWeek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:maxLines="1"
-                        android:text="Thông Tin Khách Hàng"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_light"
+                        android:text="Thứ 2"
                         android:textColor="@color/gray_text"
                         android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_guest_email"
-                        android:layout_marginTop="4dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
-                        android:maxLines="2"
-                        android:text="Nguyễn Văn A"
-                        android:textSize="12dp"
-                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
-
-                    <TextView
-                        android:id="@+id/tv_guest_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
-                        android:maxLines="1"
-                        android:text="0356970686"
-                        android:textSize="12dp"
-                        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_timeshareName" />
-
-
-
-
-
                 </LinearLayout>
-
-
-
             </LinearLayout>
-            <!--// Type Booking-->
-            <LinearLayout
-                android:id="@+id/ll_type_booking_container"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ripple_effect"
-                android:backgroundTint="@color/i_blue_light"
-                android:elevation="3dp"
-                android:gravity="center"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_status_container">
-
-                <ImageView
-                    android:id="@+id/im_booking_type"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:padding="1dp"
-                    android:layout_marginStart="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_rental_booking" />
 
 
-                <TextView
-                    android:id="@+id/tv_booking_tupe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="Thuê Phòng"
-                    android:textColor="@color/blue_btn_search"
-                    android:textSize="10dp" />
-            </LinearLayout>
+
 
         </LinearLayout>
 

@@ -28,9 +28,9 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
 
             binding.tvTimeshareName.text = "${item.resortName}"
             binding.tvCheckinDate.text =
-                item.checkinDate?.let { Constant.formatDateByLocale(it, binding.root.context) }
+                item.checkinDate?.let { Constant.getFormattedDate(it, binding.root.context) }
             binding.tvCheckoutDate.text =
-                item.checkoutDate?.let { Constant.formatDateByLocale(it, binding.root.context) }
+                item.checkoutDate?.let { Constant.getFormattedDate(it, binding.root.context) }
             binding.tvTimeshareType.text = item.unitTypeTitle
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
@@ -45,7 +45,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
 
 
             /*${binding.root.context.getString(R.string.guests)}*/
-            binding.tvGuestEmail.text = "${item.primaryGuestEmail}"
+            binding.tvGuestEmail.text = "${item.primaryGuestName}"
             binding.tvGuestPhone.text = "SĐT: ${item.primaryGuestPhone}"
 
             when (MyBookingStatus.fromApiStatus(item.status)) {
