@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient Border -->
+    <item>
+        <shape>
+            <gradient
+                android:angle="135"
+                android:startColor="#34E89E"
+                android:endColor="#0F3443"
+                android:type="linear" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+
+    <!-- Inner Solid Background -->
+    <item
+        android:left="3dp"
+        android:top="3dp"
+        android:right="3dp"
+        android:bottom="3dp">
+        <shape>
+            <solid android:color="#ffffff" />
+            <corners android:radius="11dp" />
+        </shape>
+    </item>
+</layer-list>
