@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.PostingOfResortListActivity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class PostingOfResortViewModel @Inject constructor(
         _currentResortID.value = resortID
     }
     fun getCurrentResortID(): Int {
+        Log.d("PostingOfResortViewModel", "getCurrentResortID: ${_currentResortID.value}")
         return _currentResortID.value ?: 0
     }
 
@@ -67,7 +69,7 @@ class PostingOfResortViewModel @Inject constructor(
     fun getExchangePostingList(pageNo: Int, pageSize: Int, name: String) {
         viewModelScope.launch {
             _publicExchangePosingList.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getExchangePostings(pageNo, pageSize, name).let {
+            publicPostingAPIRepository.getExchangePostings(pageNo, pageSize, name, getCurrentResortID()).let {
                 _publicExchangePosingList.postValue(it)
             }
         }
