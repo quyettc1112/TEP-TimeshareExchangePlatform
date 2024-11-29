@@ -16,7 +16,7 @@ data class UnitTypeModel(
     @SerializedName("bedsQueen") val bedsQueen: Int,
     @SerializedName("bedsTwin") val bedsTwin: Int,
     @SerializedName("buildingsOption") val buildingsOption: Any?,
-    @SerializedName("price") val price: Int,
+    @SerializedName("price") val price: Long?,
     @SerializedName("description") val description: String,
     @SerializedName("kitchen") val kitchen: String,
     @SerializedName("photos") val photos: String,

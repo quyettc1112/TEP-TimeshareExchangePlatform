@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -42,12 +43,12 @@ class MemberShipViewModel @Inject constructor(
     }
 
     // Call Get New Available Balance
-    private val _customerInfoResponse = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val customerInfoResponse: MutableLiveData<Resource<CustomerInfoResponse>> get() = _customerInfoResponse
+    private val _customerInfoResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val customerInfoResponse: MutableLiveData<Resource<CustomerProfileResponse>> get() = _customerInfoResponse
     fun getCustomerInfo(token: String) {
         viewModelScope.launch {
             _customerInfoResponse.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _customerInfoResponse.postValue(it)
             }
         }

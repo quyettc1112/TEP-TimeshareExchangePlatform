@@ -16,6 +16,7 @@ import android.widget.DatePicker
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -56,10 +57,13 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
     private val imageUploadAdapter = ImageUploadAdapter()
+    private lateinit var pickImagesLauncher: ActivityResultLauncher<String>
+    private lateinit var pickSingleImageLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager(requireContext())
+        initializeLaunchers()
 
     }
 
@@ -133,7 +137,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             if (postingFlowViewModel.numberOfNights.value != null) {
                 val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!
                 val value =
-                    "${Constant.formatPrice(totalPrice.toInt())} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
+                    "${Constant.formatPriceLong(totalPrice)} đ/${postingFlowViewModel.numberOfNights.value!!} đêm"
                 binding.includePaymentMethod12.etTotalPrice.setText(value)
             }
 
@@ -201,7 +205,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
         }
         binding.customSpinnerViewDiretion.adapter = spinnerAdapter
-
+        binding.customSpinnerViewDiretion.setSelection(0)
+        postingFlowViewModel.updateCancelPolicy(0)
         binding.customSpinnerViewDiretion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -520,7 +525,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun showImageSelectionDialog() {
-        val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
+        // Chọn ảnh phụ
+        openGallery(false)
+
+        /*val options = arrayOf("Chọn ảnh chính", "Chọn ảnh phụ")
         AlertDialog.Builder(requireContext())
             .setTitle("Chọn loại ảnh")
             .setItems(options) { dialog, which ->
@@ -540,7 +548,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             .setNegativeButton("Hủy") { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .show()*/
     }
 
     fun openGallery(isMainImage: Boolean) {
@@ -551,29 +559,32 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
-    private val pickImagesLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+
+
+    private fun initializeLaunchers() {
+        pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
                 val listImage = mutableListOf<ImageUploadModel>()
                 for (uri in uris) {
                     listImage.add(ImageUploadModel.create(uri))
                 }
-                // Save To View Model
+                // Save to ViewModel
                 postingFlowViewModel.addImages(listImage)
                 // Show UI
                 imageUploadAdapter.addImage(listImage)
             }
         }
-    private val pickSingleImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+
+        pickSingleImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                // Load ảnh chính vào ImageView
+                // Load main image into ImageView
                 binding.ivMainImage.setImageURI(uri)
 
                 // Optionally, update ExchangeOfResortViewModel or perform other actions
                 postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
             }
         }
+    }
 
 
     // Function to set event next
@@ -616,38 +627,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
 
     private fun isImageValid(): Boolean {
-        val mainImage =
-            postingFlowViewModel.imageList.value?.firstOrNull() // Ảnh chính là ảnh đầu tiên
-        val subImages =
-            postingFlowViewModel.imageList.value?.drop(1) // Ảnh phụ là các ảnh sau ảnh chính
-
+        val subImages = postingFlowViewModel.imageList.value // Ảnh phụ là các ảnh sau ảnh chính
         return when {
-            mainImage == null -> {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng chọn ảnh chính",
-                    MotionToastStyle.WARNING,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
-                binding.scrollView.post {
-                    binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
-                }
-                false
-            }
-
             subImages.isNullOrEmpty() || subImages.size < 6 -> {
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Error",
-                    "Vui lòng chọn ít nhất 6 ảnh phụ",
-                    MotionToastStyle.WARNING,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
-                )
+                (activity as PostingFlowActivity).showWarningToast("Thiếu Ảnh", "Vui lòng chọn ít nhất 6 ảnh")
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.crlContentImage.top)
                 }
@@ -659,27 +642,23 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun isPriceInputvalid(): Boolean {
-        val pricePerNight = binding.includePaymentMethod12.etRoomPrice.text.toString()
-        if (pricePerNight.isEmpty()) {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Error",
-                "Vui lòng nhập gia phong",
-                MotionToastStyle.WARNING,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+        // Lấy giá từ ViewModel
+        val pricePerNight = postingFlowViewModel.pricePerNight.value
+
+        // Kiểm tra nếu giá tiền là null
+        if (pricePerNight == null || pricePerNight < 10000 || pricePerNight > 100_000_000) {
+            (activity as PostingFlowActivity).showWarningToast("Lỗi", "Vui lòng nhập giá phòng từ 10,000 đến 100,000,000")
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }
-            binding.includePaymentMethod12.tilRoomPrice.error = "Vui lòng nhập giá phòng"
-
+            binding.includePaymentMethod12.tilRoomPrice.error = "Giá phòng phải từ 10,000 đến 100,000,000"
             return false
         }
+
+        // Nếu tất cả các điều kiện đều hợp lệ
+        binding.includePaymentMethod12.tilRoomPrice.error = null
         return true
     }
-
     private fun isDateExchangeValid() : Boolean {
         val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
         if (numberOfNights == 0) {
@@ -727,16 +706,16 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     }
                     val numericValue = input.toLongOrNull() ?: 0
                     when {
-                        numericValue < 100000 -> {
+                        numericValue < 10000 -> {
                             // Hiển thị helper text nếu số tiền nhỏ hơn 100.000
                             binding.includePaymentMethod12.tilRoomPrice.helperText =
-                                "Số tiền tối thiểu là 100.000"
+                                "Số tiền tối thiểu là 10.000"
                         }
 
-                        numericValue > 10_000_000_000 -> {
-                            // Hiển thị helper text nếu số tiền lớn hơn 10 tỷ
+                        numericValue > 100_000_000 -> {
+                            // Hiển thị helper text nếu số tiền lớn hơn 100 Triệu
                             binding.includePaymentMethod12.tilRoomPrice.helperText =
-                                "Số tiền tối đa là 10 tỷ"
+                                "Số tiền tối đa cho 1 đêm là 100 triệu"
                         }
 
                         else -> {
@@ -811,10 +790,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             requireActivity(),
             "Failed",
             string,
-            MotionToastStyle.INFO,
+            MotionToastStyle.WARNING,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 

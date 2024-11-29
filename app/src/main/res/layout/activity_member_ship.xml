@@ -40,9 +40,10 @@
         app:layout_constraintTop_toBottomOf="@+id/vp_member_ship" />
 
     <!--// Button Request-->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/ctr_request_button"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="50dp"
         android:layout_margin="30dp"
         android:background="@drawable/ripple_effect_white"
@@ -52,38 +53,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Icon -->
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icon chọn ngày"
+            android:src="@drawable/ic_logo_only" />
+
+        <!-- Text -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp">
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:text="Đăng ký gói thành viên"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_semibold"
-                android:text="Đăng Ký Gói Thành Viên"
-                android:textColor="@color/white" />
+    </LinearLayout>
 
 
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/img_next"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="30dp"
-        android:translationZ="10dp"
-        android:src="@drawable/baseline_navigate_next_24_black"
-        app:layout_constraintBottom_toBottomOf="@+id/vp_member_ship"
-        app:layout_constraintEnd_toEndOf="@+id/vp_member_ship">
-
-    </ImageView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

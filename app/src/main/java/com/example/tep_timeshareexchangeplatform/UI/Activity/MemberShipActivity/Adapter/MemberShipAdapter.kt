@@ -36,7 +36,7 @@ class MemberShipAdapter: BaseAdapter<PackageModel, MemberShipAdapter.MemberShipV
             }
         }
 
-        fun formatPrice(price: Int): String {
+        fun formatPrice(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }

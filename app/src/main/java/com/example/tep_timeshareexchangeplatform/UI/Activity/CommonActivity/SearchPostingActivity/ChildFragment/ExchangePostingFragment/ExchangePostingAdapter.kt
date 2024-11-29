@@ -11,45 +11,55 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ItemPostingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemTimeshareVer1Binding
 import java.text.DecimalFormat
 
-class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePostingAdapter.ExchangePostingViewHolder>() {
+class ExchangePostingAdapter(tokenManager: TokenManager) :
+    BaseAdapter<ExchangesResponse.Content, ExchangePostingAdapter.ExchangePostingViewHolder>() {
 
+    private val tokenManager = tokenManager
     var onItemClick: ((ExchangesResponse.Content) -> Unit)? = null
     var onFavoriteClick: ((ExchangesResponse.Content) -> Unit)? = null
     var onExchangeButtonClick: ((ExchangesResponse.Content) -> Unit)? = null
 
-    inner class ExchangePostingViewHolder(binding: ItemPostingBinding): BaseItemViewHolderCF<ExchangesResponse.Content, ItemPostingBinding>(binding) {
+    inner class ExchangePostingViewHolder(binding: ItemPostingBinding) :
+        BaseItemViewHolderCF<ExchangesResponse.Content, ItemPostingBinding>(binding) {
         override fun bind(item: ExchangesResponse.Content) {
             Glide.with(binding.imImageTimeshare.context)
                 .load(item.unitTypeDTO.photos)
                 .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
-            binding.tvTimeshareName.text = item.roomName
+            binding.tvTimeshareName.text = item.resortName
             binding.tvLocation.text = item.address
-            binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
-            binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
-            binding.tvNumberOfNight.apply {
-                text = "${item.nights} đêm"
-                textSize = 16f
-            }
-            binding.tvPrice.visibility =View.GONE
-
-            binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
+            binding.tvCheckInDate.text =
+                Constant.formatDateByLocale(item.checkinDate, binding.root.context)
+            binding.tvCheckOutDate.text =
+                Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+            binding.tvNights.text = "${item.nights} đêm"
+            binding.tvPrice.visibility = View.GONE
+            binding.tvRoom.text =
+                "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
             }
-            binding.tvNumberOfNight.visibility = View.GONE
             binding.llRatingContainer.visibility = View.GONE
             binding.tvPrice.visibility = View.GONE
             binding.btnExchange.visibility = View.VISIBLE
-            binding.btnExchange.setOnClickListener {
-                onExchangeButtonClick?.let { it1 -> it1(item) }
-            }
-
             binding.llVerify.visibility = if (item.isVerify) View.VISIBLE else View.GONE
+            val customerInfo = tokenManager.getProfileInfo()
+            if (item.ownerId == customerInfo?.id) {
+                binding.btnExchange.apply {
+                    backgroundTintList = resources.getColorStateList(R.color.green_verify)
+                    text = "Bài Đăng Của Bạn"
+                    textSize = 10f
+                }
+            } else {
+                binding.btnExchange.setOnClickListener {
+                    onExchangeButtonClick?.let { it1 -> it1(item) }
+                }
+            }
 
         }
 
@@ -62,11 +72,17 @@ class ExchangePostingAdapter : BaseAdapter<ExchangesResponse.Content, ExchangePo
 
     override fun differCallBack(): DiffUtil.ItemCallback<ExchangesResponse.Content> {
         return object : DiffUtil.ItemCallback<ExchangesResponse.Content>() {
-            override fun areItemsTheSame(oldItem: ExchangesResponse.Content, newItem: ExchangesResponse.Content): Boolean {
+            override fun areItemsTheSame(
+                oldItem: ExchangesResponse.Content,
+                newItem: ExchangesResponse.Content
+            ): Boolean {
                 return oldItem.exchangePostingId == newItem.exchangePostingId
             }
 
-            override fun areContentsTheSame(oldItem: ExchangesResponse.Content, newItem: ExchangesResponse.Content): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ExchangesResponse.Content,
+                newItem: ExchangesResponse.Content
+            ): Boolean {
                 return oldItem == newItem
             }
         }

@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ExchangeDetailActivity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,39 +8,40 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPI
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PostingDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostingDetailViewModel @Inject constructor(
+class ExchangeDetailViewModel @Inject constructor(
     private val publicPostingAPIRepository: PublicPostingAPIRepository,
     private val customerAPIRepository: CustomerAPIRepository
-) :ViewModel() {
+): ViewModel() {
 
-    // Call get Posting Detail API
-    private val _postingDetail = MutableLiveData<Resource<PublicPostingDetailResponse>>()
-    val postingDetail: MutableLiveData<Resource<PublicPostingDetailResponse>> = _postingDetail
-    fun getPostingDetail(postingId: Int) {
+    // Call Get Exchange Detail API
+    private val _exchangeDetail = MutableLiveData<Resource<ExchangeDetailResponse>>()
+    val exchangeDetail: MutableLiveData<Resource<ExchangeDetailResponse>> = _exchangeDetail
+    fun getExchangeDetail(exchangeId: Int) {
         viewModelScope.launch {
-            _postingDetail.postValue(Resource.loading(null))
-            publicPostingAPIRepository.getPublicPostingDetail(postingId).let {
-                _postingDetail.postValue(it)
+            _exchangeDetail.postValue(Resource.loading(null))
+            publicPostingAPIRepository.getExchangePostingDetail(exchangeId).let {
+                _exchangeDetail.postValue(it)
             }
         }
     }
 
     // Call API Get Is Customer Exist
-    private val _isCustomerExist = MutableLiveData<Resource<CustomerInfoResponse>>()
-    val isCustomerExist: MutableLiveData<Resource<CustomerInfoResponse>>
+    private val _isCustomerExist = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val isCustomerExist: MutableLiveData<Resource<CustomerProfileResponse>>
         get() = _isCustomerExist
+
     fun callIsCustomerExist(token: String) {
         viewModelScope.launch {
             _isCustomerExist.postValue(Resource.loading(null))
-            customerAPIRepository.getIsCustomerExist(token).let {
+            customerAPIRepository.getCustomerProfile(token).let {
                 _isCustomerExist.postValue(it)
             }
         }
@@ -50,6 +51,7 @@ class PostingDetailViewModel @Inject constructor(
     private val _customerResponse = MutableLiveData<Resource<CustomerResponse>>()
     val createCustomerResponse: MutableLiveData<Resource<CustomerResponse>>
         get() = _customerResponse
+
     fun callCreateCustomer(token: String, customerDTO: CustomerDTO) {
         viewModelScope.launch {
             _customerResponse.postValue(Resource.loading(null))
@@ -58,5 +60,6 @@ class PostingDetailViewModel @Inject constructor(
             }
         }
     }
+
 
 }

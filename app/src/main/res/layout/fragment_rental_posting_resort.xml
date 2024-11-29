@@ -21,8 +21,10 @@
         tools:listitem="@layout/item_timeshare_ver_1"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:translationZ="10dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -31,7 +33,7 @@
             android:id="@+id/anim_loading_more"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:translationZ="10dp"
+
             app:layout_constraintBottom_toBottomOf="@+id/rc_topResort"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

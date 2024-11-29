@@ -155,7 +155,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
                 // Photo
                 Glide.with(binding.root.context)
                     .load(item.unitTypeDTO.photos)
-                    .error(R.drawable.im_material_mn)
+                    .error(R.drawable.ic_image_tmp_holder)
                     .placeholder(R.drawable.ripple_effect_white)
                     .into(binding.imResortImage)
             }
@@ -200,6 +200,14 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
             val updatedItem = currentList[position].copy(status = newStatus) // Cập nhật trạng thái
             currentList[position] = updatedItem // Thay thế item trong danh sách
             submitList(currentList) // Cập nhật danh sách trong Adapter
+        }
+    }
+
+    fun getItemIdFromPosition(position: Int): Int? {
+        return if (position >= 0 && position < differ.currentList.size) { // `items` là danh sách dữ liệu của adapter
+            differ.currentList[position].exchangePostingId // Giả sử mỗi item có thuộc tính `id`
+        } else {
+            null
         }
     }
     override fun differCallBack(): DiffUtil.ItemCallback<MyExchangePostingsResponse.Content> {

@@ -1,18 +1,23 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PostingDetailActivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
@@ -20,20 +25,19 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdap
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
-import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
+import com.example.tep_timeshareexchangeplatform.Until.Resource
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityTimeshareDetailBinding
@@ -48,9 +52,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostingDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityTimeshareDetailBinding
     private var imagePostingAdapter = ImagePostingAdapter()
-    private var facilityAdapter = AmenitiesAdapter()
-    private var reviewAdapter = ReviewAdapter()
-    private val autoScrollHelper = AutoScrollViewPagerHelper(interval = 3000L)
     private val postingDetailViewModel: PostingDetailViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
@@ -75,13 +76,15 @@ class PostingDetailActivity : BaseActivity() {
 
         initAdapter()
 
-        // Review
-        setReviewTimeshare()
 
         // Set up the action for the button
-        setToolBarAction()
-        setRequestButtonAction()
+        eventClickToolBarAction()
+        eventClickRequestButton()
 
+    }
+
+    private fun initAdapter() {
+        imagePostingAdapter = ImagePostingAdapter()
     }
 
     private fun getIntentValue() {
@@ -128,27 +131,42 @@ class PostingDetailActivity : BaseActivity() {
         // Call check User Is Member
         postingDetailViewModel.isCustomerExist.observe(this) {
             when (it.status) {
+                // Case User have Profile Info
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    if (it.data!!.isMember) {
-                        tokenManager.saveCustomerInfo(it.data)
-                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
-                        val intent =
-                            Intent(this@PostingDetailActivity, OwnerInfoActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
-                        intentToMemberShipActivity()
+                    saveUserLogState(it)
+                    when (postingDetailViewModel.getCurrentPackage()) {
+                        // Pack 1 - Get Profile Info
+                        RentalPackageEnum.BASIC_SERVICE.packageModel -> {
+                            if (it.data!!.isMember) {
+                                intentToOwnerInfo(it.data!!)
+                            } else {
+                                intentToMemberShipActivity()
+                            }
+                        }
+                        // Pack 2, 3, 4 - Go To Payment
+                        else -> {
+                            intentToPaymentRental(postingDetailViewModel.postingDetail.value!!.data)
+                        }
                     }
                 }
-
+                // Case User have not Profile Info
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     if (it.message!!.contains("404")) {
-                        intentToMemberShipActivity()
+                        when (postingDetailViewModel.getCurrentPackage()) {
+                            // Pack 1 - Extend MemberShip
+                            RentalPackageEnum.BASIC_SERVICE.packageModel -> {
+                                intentToMemberShipActivity()
+                            }
+                            // Pack 2, 3, 4 - Create Customer Profile
+                            else -> {
+                                showCreateProfileDialog()
+                            }
+                        }
+                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
                     }
                 }
-
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -164,29 +182,13 @@ class PostingDetailActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    MotionToast.createColorToast(
-                        this,
-                        "Success",
-                        "Create Customer Success",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                    postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
+                    showSuccessToast("Cập Nhật Thành Công", "Thông Tin Khách Hàng Đã Được Cập Nhật")
+                    //   tokenManager.saveProfileInfo(it.data!!)
+                    callCheckProfileCustomer()
                 }
 
                 Status.ERROR -> {
-                    Log.d("CheckErrorCreate", it.message.toString() + " " + it.message.toString())
-                    MotionToast.createColorToast(
-                        this,
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Cập Nhật Thất Bại", it.message.toString())
                     hideLoadingWaiting()
                 }
             }
@@ -195,10 +197,51 @@ class PostingDetailActivity : BaseActivity() {
 
     }
 
+    private fun saveUserLogState(it: Resource<CustomerProfileResponse>) {
+        if (it.data!!.isMember) {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER)
+        }
+        // User Is Not Member
+        else {
+            tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
+        }
+        tokenManager.saveProfileInfo(it.data)
+    }
+
+    private fun showCreateProfileDialog() {
+        val dialogUpdateCustomer =
+            MemberInfoDialog(
+                this,
+                object : MemberInfoDialog.ConfirmCallback {
+                    override fun positiveAction(customerDTO: CustomerDTO) {
+                        callCreateCustomer(customerDTO)
+                    }
+                })
+        dialogUpdateCustomer.show()
+    }
+
+    private fun eventClickToolBarAction() {
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
+    }
+
+    private fun eventClickRequestButton() {
+        binding.ctrRequestButton.setOnClickListener {
+            if(!tokenManager.isLoggedIn()) {
+                showWarningToast("Bạn Chưa Đăng Nhập", "Vui Lòng Đăng Nhập Để Thực Hiện Thao Tác")
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            callCheckProfileCustomer()
+        }
+    }
+
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
+        binding.cvRequestContaner.visibility = View.VISIBLE
+
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${postingDetail.unitType.title}")
+            setTitle("${postingDetail.resortName}")
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
 
         }
@@ -217,7 +260,6 @@ class PostingDetailActivity : BaseActivity() {
 
         // Bind Image
         bindDataListImage(postingDetail.imageUrls)
-
 
         // Checkin Date, Check out Date
         binding.apply {
@@ -264,17 +306,22 @@ class PostingDetailActivity : BaseActivity() {
                 Constant.formatDateByLocale(postingDetail.checkoutDate, this@PostingDetailActivity)
             tvNightDtb.text = "${postingDetail.nights} đêm"
             tvRoomPricePerNight.text =
-                "${Constant.formatPrice(postingDetail.pricePerNights)} đ / 1 đêm"
+                "${Constant.formatPriceLong(postingDetail.pricePerNights)} VNĐ / 1 đêm"
             tvEstimatedTotalPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
 
+            Glide.with(this@PostingDetailActivity)
+                .load(postingDetail.unitType.photos)
+                .placeholder(R.drawable.ic_image_tmp_holder)
+                .error(R.drawable.ic_image_tmp_holder)
+                .into(binding.imImageTimeshare)
         }
 
         // Data for Request
         binding.apply {
             tvPrice.text =
-                "${Constant.formatPrice(postingDetail.totalPrice)} đ / ${postingDetail.nights} đêm"
+                "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvDate.text = Constant.getFormattedDate(
                 postingDetail.checkinDate,
                 this@PostingDetailActivity
@@ -284,9 +331,6 @@ class PostingDetailActivity : BaseActivity() {
             )
 
         }
-
-        // Set Amenities
-        facilityAdapter.submitList(postingDetail.resortAmenities)
 
         // Package Info
         binding.apply {
@@ -327,7 +371,7 @@ class PostingDetailActivity : BaseActivity() {
             }
         }
 
-        val customerInfo = tokenManager.getCustomerInfo()
+        val customerInfo = tokenManager.getProfileInfo()
         if (postingDetail.ownerId == customerInfo?.id) {
             binding.apply {
                 tvPrice.visibility = View.GONE
@@ -341,30 +385,17 @@ class PostingDetailActivity : BaseActivity() {
 
         bindDataAmenities(postingDetail)
 
-    }
+        val userLogState = tokenManager.getUserLogState()
+        val packageModel = RentalPackageEnum.getPackageByName(postingDetail.rentalPackageName)
+        if (packageModel == RentalPackageEnum.BASIC_SERVICE.packageModel && userLogState != UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER) {
+            binding.tvNotion.visibility = View.VISIBLE
+            binding.tvMemberRequest.visibility = View.VISIBLE
+        } else {
+            binding.tvNotion.visibility = View.GONE
+            binding.tvMemberRequest.visibility = View.GONE
+        }
 
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
-        val bedTypes = listOf(
-            "bedsFull" to "Full",
-            "bedsKing" to "King",
-            "bedsSofa" to "Sofa",
-            "bedsMurphy" to "Murphy",
-            "bedsQueen" to "Queen",
-            "bedsTwin" to "Twin"
-        )
 
-        val bedsList = bedTypes.mapNotNull { (key, label) ->
-            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
-            if (count > 0) "$count giường $label" else null
-        }.joinToString(", ")
-
-        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
-    }
-
-    private fun initAdapter() {
-        imagePostingAdapter = ImagePostingAdapter()
-        facilityAdapter.submitList(listOf())
-        reviewAdapter.submitList(listOf())
     }
 
     private fun bindDataListImage(imageList: List<String>) {
@@ -418,12 +449,6 @@ class PostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun setToolBarAction() {
-        binding.customToolbar.onStartIconClick = {
-            finish()
-        }
-    }
-
     private fun bindDataUnitType(data: PublicPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
@@ -449,6 +474,7 @@ class PostingDetailActivity : BaseActivity() {
             // Kitchen
             tvKitchen.text = data.unitType.kitchen
             tvNumKitchen.text = 1.toString()
+
 
             // Max Guest
             tvNumPerson.text = data.unitType.sleeps.toString()
@@ -526,85 +552,36 @@ class PostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun setReviewTimeshare() {
-        binding.rvReview.apply {
-            adapter = reviewAdapter
-            layoutManager = LinearLayoutManager(this@PostingDetailActivity)
-        }
+    private fun callCreateCustomer(customerDTO: CustomerDTO) {
+        postingDetailViewModel.callCreateCustomer(
+            tokenManager.getAccessToken().toString(),
+            customerDTO
+        )
     }
 
-    private fun setRequestButtonAction() {
-        binding.ctrRequestButton.setOnClickListener {
-            val postingDetail = postingDetailViewModel.postingDetail.value!!.data
-            if (postingDetail!!.rentalPackageName != null) {
-                val rentalPackageEnum =
-                    RentalPackageEnum.getPackageByName(postingDetail.rentalPackageName)
-                when (rentalPackageEnum) {
-                    RentalPackageEnum.BASIC_SERVICE.packageModel -> {
-                        postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken()!!)
-                    }
-
-                    else -> {
-                        val userLogState = tokenManager.getUserLogState()
-                        when (userLogState) {
-                            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
-                                val intent = Intent(this, PaymentRentalActivity::class.java)
-                                intent.putExtra(
-                                    Constant.DEFAULT_POSTING_ID,
-                                    postingDetail.rentalPostingId
-                                )
-                                startActivity(intent)
-                            }
-
-                            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
-                                val intent = Intent(this, PaymentRentalActivity::class.java)
-                                intent.putExtra(
-                                    Constant.DEFAULT_POSTING_ID,
-                                    postingDetail.rentalPostingId
-                                )
-                                startActivity(intent)
-                            }
-
-                            UserLogState.LOGGED_IN_AS_USER -> {
-                                /*val dialogFragment = MemberInfoDialog.newInstance()
-                                dialogFragment.show(supportFragmentManager, dialogFragment.tag)
-                                dialogFragment.setOnClickRequestButton(object :
-                                    MemberInfoDialog.OnClickRequestButton {
-                                    override fun onClickRequestButton(customerDTO: CustomerDTO) {
-                                        // Call API Create Customer
-                                        postingDetailViewModel.callCreateCustomer(
-                                            tokenManager.getAccessToken()
-                                                .toString(), customerDTO
-                                        )
-                                    }
-                                })*/
-                                // startActivity(Intent(this, MainActivity::class.java))
-                            }
-
-                            UserLogState.LOGGED_OUT -> {
-                                finish()
-                                MotionToast.Companion.createColorToast(
-                                    this,
-                                    "Thất Bại",
-                                    "Vui lòng đăng nhập để thực hiện chức năng này",
-                                    MotionToastStyle.ERROR,
-                                    MotionToast.GRAVITY_BOTTOM,
-                                    MotionToast.LONG_DURATION,
-                                    null
-                                )
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
+    private fun callCheckProfileCustomer() {
+        postingDetailViewModel.callIsCustomerExist(tokenManager.getAccessToken().toString())
     }
 
     private fun intentToMemberShipActivity() {
         startActivity(Intent(this, MemberShipActivity::class.java))
     }
 
+    private fun intentToPaymentRental(postingDetail: PublicPostingDetailResponse?) {
+        val intent = Intent(this, PaymentRentalActivity::class.java)
+        intent.putExtra(
+            Constant.DEFAULT_POSTING_ID,
+            postingDetail?.rentalPostingId ?: 0
+        )
+        startActivity(intent)
+    }
+
+    private fun intentToOwnerInfo(data: CustomerProfileResponse) {
+        val intent =
+            Intent(this@PostingDetailActivity, OwnerInfoActivity::class.java)
+        intent.putExtra(Constant.OWNER_POSTING_ID, data.id)
+        startActivity(intent)
+    }
 
     fun mapToUnitTypeBase(
         unitType: PublicPostingDetailResponse.UnitType,
@@ -653,5 +630,28 @@ class PostingDetailActivity : BaseActivity() {
         }
     }
 
+    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+        val bedTypes = listOf(
+            "bedsFull" to "Full",
+            "bedsKing" to "King",
+            "bedsSofa" to "Sofa",
+            "bedsMurphy" to "Murphy",
+            "bedsQueen" to "Queen",
+            "bedsTwin" to "Twin"
+        )
+
+        val bedsList = bedTypes.mapNotNull { (key, label) ->
+            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
+            if (count > 0) "$count giường $label" else null
+        }.joinToString(", ")
+
+        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
 
 }

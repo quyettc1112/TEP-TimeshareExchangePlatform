@@ -73,8 +73,8 @@ class PaymentPackageActivity : BaseActivity() {
             )
             finish()
         }
-        val customerInfo = tokenManager.getCustomerInfo()
-        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} đ"
+        val customerInfo = tokenManager.getProfileInfo()
+        binding.tvWalletBalance.text = "${formatPrice(customerInfo?.walletAvailableMoney!!)} VNĐ"
 
     }
 
@@ -93,15 +93,7 @@ class PaymentPackageActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Thao tác thất bại", "Thanh Toán Không Thành Công")
                 }
             }
         }
@@ -195,7 +187,7 @@ class PaymentPackageActivity : BaseActivity() {
             }
         }
 
-        if (tokenManager.getCustomerInfo()?.walletAvailableMoney!! < rentalPackageEnum.packageModel.price) {
+        if (tokenManager.getProfileInfo()?.walletAvailableMoney!! < rentalPackageEnum.packageModel.price) {
             binding.cardUnwind.isEnabled = false }
 
 
@@ -214,6 +206,10 @@ class PaymentPackageActivity : BaseActivity() {
             tvFeeService.text = "Miễn Phí"
             tvTotalFee.text = "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
             tvTotalAmount.text = "${formatPrice(rentalPackageEnum.packageModel.price)} VND"
+
+            // Email
+            val customerInfo = tokenManager.getProfileInfo()
+            tvEmail.text = customerInfo?.userEmail.toString()
         }
 
     }
@@ -320,7 +316,7 @@ class PaymentPackageActivity : BaseActivity() {
         }
     }
 
-    fun formatPrice(price: Int): String {
+    fun formatPrice(price: Long): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(price)
     }

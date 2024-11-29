@@ -89,21 +89,40 @@
                 app:spanCount="2"/>
 
             <!--// See More-->
-            <androidx.appcompat.widget.AppCompatButton
+            <LinearLayout
                 android:id="@+id/btn_see_more"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="100dp"
                 android:background="@drawable/ripple_effect_white"
                 android:backgroundTint="@color/blue_btn_search"
-                android:fontFamily="@font/inter_bold"
-                android:text="Tiếp tục"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:clickable="true"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- Icon -->
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/baseline_arrow_downward_24" />
+
+                <!-- Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center_vertical"
+                    android:text="Tiếp Tục"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
 
             <!--// Have Timeshare Yet ?-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,34 +145,73 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- First Button (Yes Option) -->
-                <androidx.appcompat.widget.AppCompatButton
+
+                <LinearLayout
                     android:id="@+id/btn_yes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_marginTop="16dp"
+                    android:layout_height="45dp"
                     android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="@color/blue_see_more"
-                    android:text="Có, tôi muốn sử dụng Timeshare của mình để cho thuê."
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:backgroundTint="@color/blue_btn_search"
+                    android:clickable="true"
+                    android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_question" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_question">
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Icon chọn ngày"
+                        android:src="@drawable/baseline_check_circle_24" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Có: Tôi đã khai báo Timeshare trên Unwind."
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
                 <!-- Second Button (No Option) -->
-                <androidx.appcompat.widget.AppCompatButton
+                <LinearLayout
                     android:id="@+id/btn_no"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="#B0BEC5"
-                    android:text="Chưa, tự tôi sẽ thiết lập Timeshare của mình để cho thuê."
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_yes" />
+                    app:layout_constraintTop_toBottomOf="@id/btn_yes">
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Icon chọn ngày"
+                        android:src="@drawable/baseline_build_circle_24" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Chưa: Tôi tự thiết lập Timeshare để đăng bài."
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
 
                 <!-- Resort Selection Label -->
                 <TextView

@@ -45,7 +45,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         tokenManager = TokenManager(requireContext())
         myTimeshareAdapter.submitList(listOf())
         postingFlowViewModel.clearCurrentMyTimeshareList()
-        postingFlowViewModel.currentMyTimesharePage.value = 0
 
     }
 
@@ -116,8 +115,8 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
         postingFlowViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
             if(it == 0) {
-                postingFlowViewModel.clearCurrentMyTimeshareList()
                 myTimeshareAdapter.submitList(listOf())
+                myTimeshareAdapter.notifyDataSetChanged()
             }
 
             postingFlowViewModel.getMyTimeshareList(

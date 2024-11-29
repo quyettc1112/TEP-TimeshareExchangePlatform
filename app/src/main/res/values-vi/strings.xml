@@ -96,6 +96,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     // Profile Fragment
     <string name="profile_title">Thông Tin Người Dùng</string>
     <string name="my_profile">Hồ sơ của tôi</string>
+    <string name="my_dashboard">Thống kê dữ liệu</string>
     <string name="my_timeshare">Danh sách Timeshare của tôi</string>
     <string name="my_rental_posting">Bài đăng thuê phòng của tôi</string>
     <string name="my_exchange_posting">Bài đăng trao đổi của tôi</string>
@@ -159,7 +160,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="checkin">Nhận Phòng</string>
     <string name="checkout">Trả Phòng</string>
     <string name="no_show">Không Có Mặt</string>
-    <string name="canceled">Đã Hủy</string>
+    <string name="cancelled">Đã Hủy</string>
     <string name="refund">Hoàn Tiền</string>
     <string name="payment_completed">Đã Thanh Toán</string>
     <string name="rental">Thuê Phòng</string>

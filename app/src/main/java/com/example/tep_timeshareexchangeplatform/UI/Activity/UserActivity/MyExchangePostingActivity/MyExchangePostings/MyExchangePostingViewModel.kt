@@ -46,6 +46,19 @@ class MyExchangePostingViewModel @Inject constructor(
         _currentPostingList.addAll(list)
     }
 
+    fun updatePostingItem(postingId: Int, newStatus: String) {
+        // Tìm vị trí của item trong danh sách hiện tại
+        val index = _currentPostingList.indexOfFirst { it.exchangePostingId == postingId }
+
+        if (index != -1) { // Nếu tìm thấy item
+            // Cập nhật item với trạng thái mới
+            val updatedItem = _currentPostingList[index].copy(status = newStatus)
+
+            // Thay thế item trong danh sách
+            _currentPostingList[index] = updatedItem
+        }
+    }
+
     fun getCurrentPostingList(): List<MyExchangePostingsResponse.Content> {
         return _currentPostingList
     }

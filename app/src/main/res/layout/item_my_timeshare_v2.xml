@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    android:padding="5dp"
+    android:background="@drawable/ripple_effect"
+    android:backgroundTint="@color/white"
+    android:elevation="3dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/im_imageTimeshare"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        app:riv_border_width="2dp"
+        app:riv_border_color="@color/yellow200"
+        android:scaleType="centerCrop"
+        android:src="@drawable/im_material_da_lat"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="10dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/im_imageTimeshare"
+        app:layout_constraintTop_toTopOf="parent">
+        <!--// Resort Name-->
+        <TextView
+            android:id="@+id/tv_resortName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/inter_bold"
+            android:maxLines="2"
+            android:text="Flamingo Đại Lải asd asdasdasdaasdasd"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--// Resort Info-->
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_resortName">
+
+            <!-- // Location-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:text="Mã Phòng: "
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_room_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:gravity="center|left"
+                    android:text="Phòng Studio King "
+                    android:textColor="@color/blue_btn_search"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <!-- // Check In Day-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center|left"
+                android:minHeight="20dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_check_in"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="Nhận Phòng: "
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_checkin_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="18/09/2024 - 20/09/2024"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <!-- // Check Out Day-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center|left"
+                android:minHeight="20dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_check_out"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="Trả Phòng: "
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_check_out_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:text="18/09/2024 - 20/09/2024"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <!--// Book Now Button-->
+            <LinearLayout
+                android:id="@+id/btn_select"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ripple_effect_white"
+                android:backgroundTint="@color/blue_btn_search"
+                android:clickable="true"
+                android:gravity="center">
+
+                <!-- Icon -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Icon chọn ngày"
+                    android:src="@drawable/baseline_check_24" />
+
+                <!-- Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center_vertical"
+                    android:text="Chọn"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

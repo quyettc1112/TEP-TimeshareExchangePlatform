@@ -90,6 +90,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Gia hạn thành viên thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -132,6 +133,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Nạp tiền vào ví thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -166,6 +168,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Tạo bài đăng cho thuê thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -200,6 +203,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Tạo bài đăng trao đổi thất bại",
                         it.message.toString() + "Create Transaction",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -243,6 +247,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Tạo bài đăng cho thuê thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -285,6 +290,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Tạo bài đăng trao đổi thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -314,6 +320,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
+                        "Đặt phòng thất bại",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -443,7 +450,7 @@ class VNPayActivity : BaseActivity() {
     }
 
     private fun processPaymentInfo(url: String, view: WebView, packageId: Int) {
-        if (url.contains("https://fams-management.tech/api/payment/payment-infor")) {
+        if (url.contains("https://unwind.id.vn/api/payment/payment-infor")) {
             // Sử dụng evaluateJavascript để lấy nội dung JSON từ trang
             showLoadingWaiting(true)
             view.loadUrl("about:blank")
@@ -500,6 +507,7 @@ class VNPayActivity : BaseActivity() {
         )
         showFailedDialog(
             this@VNPayActivity,
+            "Thanh toán thất bại",
             responseCodeEnum.getString(this@VNPayActivity),
             object : View.OnClickListener {
                 override fun onClick(v: View?) {

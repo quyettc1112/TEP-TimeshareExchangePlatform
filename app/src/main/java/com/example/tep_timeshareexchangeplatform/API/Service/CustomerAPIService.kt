@@ -8,8 +8,10 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
@@ -23,7 +25,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Vali
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.ExchangeRequestOnPostResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.ExchangeRequestPostingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
@@ -110,7 +111,7 @@ interface CustomerAPIService {
     suspend fun getMyBookingDetail(
         @Header ("Authorization") token: String,
         @Path ("bookingId") bookingId: Int
-    ) : Response<MyBookingDetailResponse>
+    ) : Response<MyBookingRentalDetailResponse>
 
 
     // Create Booking Request
@@ -119,7 +120,7 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int,
         @Body guestDTO: GuestDTO
-    ) : Response<MyBookingDetailResponse>
+    ) : Response<MyBookingRentalDetailResponse>
 
 
     // Get Customer Exchange Posting
@@ -149,7 +150,13 @@ interface CustomerAPIService {
 
     // Post Feedback For Customer, Rental
     @POST("customer/feedback/rental")
-    suspend fun postFeedbackForCustomerRental(
+    suspend fun postFeedbackBookingRental(
+        @Header ("Authorization") token: String,
+        @Body feedbackDTO: FeedbackDTO
+    ) : Response<FeedbackResponse>
+
+    @POST("customer/feedback/exchange")
+    suspend fun postFeedbackBookingExchange(
         @Header ("Authorization") token: String,
         @Body feedbackDTO: FeedbackDTO
     ) : Response<FeedbackResponse>
@@ -205,7 +212,7 @@ interface CustomerAPIService {
     suspend fun deactivateRentalPosting(
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int
-    ): Response<MyRentalPostingsResponse>
+    ): Response<MyRentalPostingDetailResponse>
 
     // Deactivate Exchange Posting
     @PUT("customer/deactivate/exchange/{postingId}")
@@ -245,6 +252,32 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("requestId") requestId: Int
     ) : Response<ApproveExchangeResponse>
+
+    @GET("customer/exchange/booking/{bookingId}")
+    suspend fun getExchangeBookingDetail(
+        @Header ("Authorization") token: String,
+        @Path ("bookingId") bookingId: Int
+    ) : Response<MyBookingExchangeDetailResponse>
+
+    // Call cancel Booking
+    @POST("customer/rental/booking/cancel/{bookingId}")
+    suspend fun cancelRentalBooking(
+        @Header ("Authorization") token: String,
+        @Path ("bookingId") bookingId: Int
+    ) : Response<CancelBookingResponse>
+
+    // Send Contact Request to Owner
+    @POST("customer/rental/booking/form/{postingId}")
+    suspend fun sendContactRequest(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body sentRequestDTO: SentRequestDTO
+    ) : Response<Void>
+
+
+
+
+
 
 
 

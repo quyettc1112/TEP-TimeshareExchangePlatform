@@ -180,6 +180,7 @@ class ResortDetailActivity : BaseActivity() {
 
         }
     }
+
     private fun bindDataListImage(imageList: List<String>) {
         // List Destination
 
@@ -247,7 +248,6 @@ class ResortDetailActivity : BaseActivity() {
         policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
         nearbyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.resortAmenityList))
 
-        Log.d("Checklasasdasda", "bindDataAmenities: ${data.resortAmenityList.find { it.free == true }}")
         val binding = binding.includeAmenities
 
         binding.title3.visibility = View.GONE
@@ -259,7 +259,7 @@ class ResortDetailActivity : BaseActivity() {
 
 
         binding.rvFeatures.apply {
-            featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES_RESORT)
+            featuresAdapter.filterByAmenityTypes(AmenityType.AMENITIES)
             Log.d("Checklasasdasda", "bindDataAmenities: ${featuresAdapter.differ.currentList}")
             layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
                 flexDirection = FlexDirection.ROW
@@ -283,7 +283,7 @@ class ResortDetailActivity : BaseActivity() {
 
 
         binding.rvPolicy.apply {
-            policyAdapter.filterByAmenityTypes(AmenityType.POLICY_RESORT)
+            policyAdapter.filterByAmenityTypes(AmenityType.POLICY)
             layoutManager = FlexboxLayoutManager(this@ResortDetailActivity).apply {
                 flexDirection = FlexDirection.ROW
                 justifyContent = JustifyContent.FLEX_START

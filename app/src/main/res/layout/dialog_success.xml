@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="20dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_margin="20dp"
-    android:backgroundTint="@color/white"
-    android:padding="20dp"
-    android:background="@drawable/ripple_effect_white"
-    android:gravity="center">
-
-    <!-- Success Icon -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/ivSuccessIcon"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/anim_sucess"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"/>
-
-    <!-- Success Title -->
-    <TextView
-        android:id="@+id/tvSuccessTitle"
-        android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gửi thành công"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Success Message -->
-    <TextView
-        android:id="@+id/tvSuccessMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Yêu cầu của bạn đã được gửi thành công. Vui lòng đợi người kiểm duyệt liên lạc. Hãy kiểm tra thường xuyên email để cập nhật về yêu cầu của bạn."
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        android:textAlignment="center"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Confirmation Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnConfirm"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Xác nhận"
+        android:backgroundTint="@color/white"
+        android:padding="20dp"
         android:background="@drawable/ripple_effect_white"
-        android:backgroundTint="@color/green_verify"
-        android:textColor="@android:color/white"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp" />
+        android:gravity="center">
 
-</LinearLayout>
+        <!-- Success Icon -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ivSuccessIcon"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_sucess"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"/>
+
+        <!-- Success Title -->
+        <TextView
+            android:id="@+id/tvSuccessTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gửi thành công"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Success Message -->
+        <TextView
+            android:id="@+id/tvSuccessMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yêu cầu của bạn đã được gửi thành công. Vui lòng đợi người kiểm duyệt liên lạc. Hãy kiểm tra thường xuyên email để cập nhật về yêu cầu của bạn."
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:textAlignment="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Confirmation Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnConfirm"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Xác nhận"
+            android:background="@drawable/ripple_effect_white"
+            android:backgroundTint="@color/green_verify"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</FrameLayout>
+
+

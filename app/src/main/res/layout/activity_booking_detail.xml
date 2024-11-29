@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background_F9"
-    tools:context=".UI.Activity.CommonActivity.BookingDetailActivity.BookingDetailActivity">
+    tools:context=".UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity">
 
     <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
         android:id="@+id/toolbar"
@@ -76,8 +76,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
-                            android:fontFamily="@font/inter_extrabold"
-                            android:text="Đã xác nhận"
+                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/red_light"
                             android:textSize="10dp" />
                     </LinearLayout>
@@ -85,14 +84,13 @@
                     <!--// Room Reservation Code-->
                     <TextView
                         android:id="@+id/tv_room_reservation_code"
-                        android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_bold"
                         android:maxLines="1"
                         android:textColor="@color/black"
                         android:text="Mã đặt phòng: "
-                        android:textSize="20dp" />
+                        android:textSize="16dp" />
 
                     <!--// Bar Code-->
                     <ImageView
@@ -109,7 +107,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/inter_light"
                         android:text="Ghi chú: Vui lòng đưa barcode hoặc mã đặt phòng cho nhân viên để được check in."
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
 
                     <!--// Type Booking-->
                     <LinearLayout
@@ -126,6 +124,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
+                            android:id="@+id/iv_booking_type"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:scaleType="fitXY"
@@ -183,6 +182,7 @@
                                         android:textColor="@color/gray_text"
                                         android:textSize="12sp" />
                                     <ImageView
+                                        android:visibility="visible"
                                         android:src="@drawable/ic_check_in"
                                         android:layout_width="20dp"
                                         android:layout_height="match_parent"/>
@@ -243,20 +243,24 @@
                                 android:orientation="vertical">
 
                                 <!-- Label for Check-in Date -->
+
+
                                 <LinearLayout
                                     android:orientation="horizontal"
                                     android:gravity="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
+
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:maxLines="1"
                                         android:fontFamily="@font/inter_medium"
+                                        android:maxLines="1"
                                         android:text="Ngày Trả Phòng"
                                         android:textColor="@color/gray_text"
                                         android:textSize="12sp" />
                                     <ImageView
+                                        android:visibility="visible"
                                         android:src="@drawable/ic_check_out"
                                         android:layout_width="20dp"
                                         android:layout_height="match_parent"/>
@@ -266,18 +270,17 @@
 
 
                                 <!-- Check-in Date -->
+
+                                <!-- Check-in Day -->
                                 <TextView
                                     android:id="@+id/tv_checkout_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:maxLines="1"
                                     android:fontFamily="@font/inter_bold"
+                                    android:maxLines="1"
                                     android:text=""
                                     android:textColor="@color/black"
                                     android:textSize="14sp" />
-
-                                <!-- Check-in Day -->
-
                                 <TextView
                                     android:id="@+id/tv_checkout_dayOfWeek"
                                     android:layout_width="wrap_content"
@@ -334,13 +337,24 @@
 
                 </LinearLayout>
 
+                <!--// Detail Billing-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include android:id="@+id/include_detail_billing"
+                        layout="@layout/include_detail_billing"/>
+
+                </LinearLayout>
+
                 <!--// Guest Info-->
                 <LinearLayout
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/background_stroke_around"
                     android:padding="16dp">
 
                     <!-- Title -->
@@ -351,7 +365,7 @@
                         android:text="Thông tin khách nhận phòng"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:fontFamily="@font/inter_bold"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -362,7 +376,7 @@
                         android:layout_height="wrap_content"
                         android:text="Khách nhận phòng"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -387,7 +401,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số Điện Thoại"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -412,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:text="Email"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:fontFamily="@font/inter_medium"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -434,9 +448,43 @@
 
                 </LinearLayout>
 
-                <!--// Detail Billing-->
-                <include android:id="@+id/include_detail_billing"
-                    layout="@layout/include_detail_billing"/>
+                <!--// Action Cancel Button-->
+                <LinearLayout
+                    android:id="@+id/btn_cancel_booking"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    android:layout_margin="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ripple_effect"
+                    android:backgroundTint="@color/red_light"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_cancel_24"
+                        android:contentDescription="Icon chọn ngày"
+                        android:layout_marginEnd="8dp" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Huỷ Đặt Phòng"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
 
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>

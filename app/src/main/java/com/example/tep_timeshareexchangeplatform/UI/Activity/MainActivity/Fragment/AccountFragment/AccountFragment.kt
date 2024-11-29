@@ -21,6 +21,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Noti
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyDashboardActivity.MyDashboardActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
@@ -77,7 +78,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
         mainViewModel.customerProfileInfo.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvBalance.text = Constant.formatPrice(it.walletAvailableMoney) + " đ"
+                binding.tvBalance.text = Constant.formatPriceLong(it.walletAvailableMoney) + " đ"
                 Glide.with(requireContext())
                     .load(it.avatar)
                     .placeholder(R.drawable.ic_image_placeholder)
@@ -98,9 +99,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     llCustomerContainer.visibility = View.VISIBLE
 
                     llMyTimeshare.visibility = View.VISIBLE
+                    llMyDashboard.visibility = View.VISIBLE
                     llMyPosting.visibility = View.VISIBLE
                     llMyExchangePosting.visibility = View.VISIBLE
                     llMyTransaction.visibility = View.VISIBLE
+                    llMyExchangeRequest.visibility = View.VISIBLE
 
                     // Un Hide Wallet
                     cardWalletContainer.visibility = View.VISIBLE
@@ -128,9 +131,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     animMembership.visibility = View.GONE
 
                     llMyTimeshare.visibility = View.VISIBLE
+                    llMyDashboard.visibility = View.VISIBLE
                     llMyPosting.visibility = View.VISIBLE
                     llMyExchangePosting.visibility = View.VISIBLE
                     llMyTransaction.visibility = View.VISIBLE
+                    llMyExchangeRequest.visibility = View.VISIBLE
 
                 }
             }
@@ -150,9 +155,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     animMembership.visibility = View.GONE
 
                     llMyTimeshare.visibility = View.GONE
+                    llMyDashboard.visibility = View.GONE
                     llMyPosting.visibility = View.GONE
                     llMyExchangePosting.visibility = View.GONE
                     llMyTransaction.visibility = View.GONE
+                    llMyExchangeRequest.visibility = View.GONE
 
                 }
             }
@@ -253,6 +260,16 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     Intent(
                         requireContext(),
                         MyTimeshareActivity::class.java
+                    )
+                )
+            }
+
+            // Timeshare của tôi
+            llMyDashboard.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        MyDashboardActivity::class.java
                     )
                 )
             }

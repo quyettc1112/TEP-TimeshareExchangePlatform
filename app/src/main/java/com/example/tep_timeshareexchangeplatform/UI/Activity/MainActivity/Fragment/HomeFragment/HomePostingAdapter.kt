@@ -26,10 +26,12 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
                 .load(item.unitTypeDTO.photos)
                 .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
-            binding.tvTimeshareName.text = item.roomName
+            binding.tvResortName.text = item.resortName
             binding.tvLocation.text = item.address
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
+            binding.tvNights.text = "${item.nights} đêm"
+            binding.llRatingContainer.visibility = View.GONE
 
             if (item.isVerify) {
                 binding.llVerify.visibility = View.VISIBLE
@@ -38,7 +40,7 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
             }
 
 
-            binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VND"
+            binding.tvPrice.text = "${formatPriceLong(item.pricePerNights)} VND"
 
             binding.tvRoom.text = "${item.unitTypeDTO.title}, ${item.unitTypeDTO.bedrooms} phòng ngủ, ${item.unitTypeDTO.sleeps} người"
             binding.root.setOnClickListener {
@@ -48,6 +50,10 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
         }
 
         fun formatPrice(price: Int): String {
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(price)
+        }
+        fun formatPriceLong(price: Long): String {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }

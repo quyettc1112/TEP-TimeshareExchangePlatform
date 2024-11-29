@@ -30,7 +30,7 @@ data class CustomerInfoResponse(
     @SerializedName("userRoleRoleName") val userRoleRoleName: String,
     @SerializedName("isActive") val isActive: Boolean,
     @SerializedName("walletId") val walletId: Int,
-    @SerializedName("walletAvailableMoney") val walletAvailableMoney: Int,
+    @SerializedName("walletAvailableMoney") val walletAvailableMoney: Long,
     @SerializedName("isMember") val isMember: Boolean
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -43,7 +43,7 @@ data class CustomerInfoResponse(
         parcel.readString().toString(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readByte() != 0.toByte()
     ) {
     }
@@ -57,7 +57,7 @@ data class CustomerInfoResponse(
         parcel.writeString(userRoleRoleName)
         parcel.writeByte(if (isActive) 1 else 0)
         parcel.writeInt(walletId)
-        parcel.writeInt(walletAvailableMoney)
+        parcel.writeLong(walletAvailableMoney)
         parcel.writeByte(if (isMember) 1 else 0)
     }
 

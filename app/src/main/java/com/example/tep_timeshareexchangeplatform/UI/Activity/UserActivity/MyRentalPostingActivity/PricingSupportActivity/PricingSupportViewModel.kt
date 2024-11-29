@@ -29,5 +29,13 @@ class PricingSupportViewModel @Inject constructor(
         }
     }
 
+    private val _pricePerNight = MutableLiveData<Long>()
+    val pricePerNight: MutableLiveData<Long>
+        get() = _pricePerNight
+
+    fun updatePricePerNight(pricePerNight: Long) {
+        _pricePerNight.value = pricePerNight
+    }
+
 
 }

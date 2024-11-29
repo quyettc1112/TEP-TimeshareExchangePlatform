@@ -43,55 +43,25 @@
                 android:layout_height="wrap_content">
 
                 <!--// Timeshare Detail Image-->
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="250dp">
+                    android:layout_height="305dp"
+                    android:fillViewport="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <!--// Image List-->
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/viewPagerImage"
-                        android:maxWidth="360dp"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewResortImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:isScrollContainer="false"
+                        android:nestedScrollingEnabled="false"
+                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <!--// Indicator-->
-                    <me.relex.circleindicator.CircleIndicator3
-                        android:id="@+id/indicator"
-                        android:layout_marginBottom="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:layout_constraintBottom_toBottomOf="@+id/viewPagerImage"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <!--// Next To Button-->
-                    <ImageView
-                        android:id="@+id/icBackTo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_back_to"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <ImageView
-                        android:id="@+id/ivNextPage"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/ic_next_page"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/viewPagerImage"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
 
                 <!--// Resort Info and Map-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,6 +77,7 @@
                     <TextView
                         android:id="@+id/tvResortName"
                         android:layout_width="0dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
                         android:fontFamily="@font/inter_extrabold"
@@ -604,11 +575,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:background="@color/white"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:paddingTop="10dp"
-                    android:paddingBottom="20dp"
-                    android:background="@color/white">
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout7"
@@ -624,107 +595,25 @@
                             android:fontFamily="@font/inter_bold"
                             android:text="Những tiện nghi phổ biến nhất"
                             android:textColor="@color/black"
-                            android:textSize="16dp"
+                            android:textSize="14dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!--// Frame Layout Facilities-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_resort_facilities"
-                        android:layout_marginTop="10dp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
-                        tools:layout_editor_absoluteX="20dp"
-                        tools:listitem="@layout/item_facilitie"/>
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+                        <include
+                            android:id="@+id/include_amenities"
+                            layout="@layout/include_amenities" />
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--// Room Terms-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="20dp"
-                    android:background="@color/white">
-                    <!-- // Suggest Title-->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout8"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="Quy đinh phòng"
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!--// Room Terms-->
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:layout_marginTop="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
-
-                        <LinearLayout
-                            android:layout_marginEnd="20dp"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:src="@drawable/ic_no_pet"/>
-                            <TextView
-                                android:layout_marginTop="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Cấm vật nuôi"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_marginEnd="10dp"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:src="@drawable/ic_no_smooking"/>
-                            <TextView
-                                android:layout_marginTop="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Cấm hút thuốc"/>
-
-                        </LinearLayout>
-
-                    </com.google.android.flexbox.FlexboxLayout>
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Cancel Policy-->
                 <androidx.constraintlayout.widget.ConstraintLayout

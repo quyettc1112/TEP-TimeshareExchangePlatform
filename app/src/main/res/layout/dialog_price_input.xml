@@ -28,16 +28,14 @@
         android:orientation="horizontal">
 
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/money_Container"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:focusable="true"
-            android:hint="Nhập mức giá"
+            android:hint="Nhập mức giá (VNĐ)"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="15dp"
             app:boxCornerRadiusBottomStart="15dp"
@@ -53,15 +51,49 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_price_input"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"
-                android:textSize="16sp"
-                android:background="@drawable/background_stroke_around" />
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:fontFamily="@font/inter_bold"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textSize="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/ll_payment_method_12"
+        android:layout_marginStart="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@+id/tilRoomPrice">
+
+
+        <!-- Input for Room Price -->
+        <EditText
+            android:id="@+id/et_total_price"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/background_stroke_around"
+            android:backgroundTint="@color/primary_background_F9"
+            android:enabled="false"
+            android:hint="Giá tiền cho tổng số đêm"
+            android:inputType="numberDecimal"
+            android:padding="12dp" />
+
+    </LinearLayout>
     <!-- Nút Chấp Nhận Mức Giá -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_accept_price"

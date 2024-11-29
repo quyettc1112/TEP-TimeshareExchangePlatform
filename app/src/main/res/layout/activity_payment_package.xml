@@ -270,10 +270,10 @@
                         android:id="@+id/textView24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Dịch Vụ"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -281,11 +281,11 @@
                         android:id="@+id/tv_service_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="Member Ship"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -301,6 +301,7 @@
 
                 <!--// User Name-->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingTop="10dp"
@@ -352,10 +353,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Email"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -363,11 +364,11 @@
                         android:id="@+id/tv_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="quyet@gmail.com"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -393,10 +394,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Giá Dịch Vụ"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -404,11 +405,11 @@
                         android:id="@+id/tv_price_service"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="179.000 VNĐ"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -434,10 +435,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Chu kỳ"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -445,11 +446,11 @@
                         android:id="@+id/tv_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="1 Tháng"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -475,10 +476,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Phí dịch vụ"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -486,11 +487,11 @@
                         android:id="@+id/tv_fee_service"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="Miễn Phí"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -516,10 +517,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:text="Tạm Tính"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -527,11 +528,11 @@
                         android:id="@+id/tv_total_fee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_extrabold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
                         android:maxLines="1"
                         android:text="179.000 VNĐ"
-                        android:textSize="16dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

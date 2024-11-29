@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,10 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.paging.LOGGER
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.UnitTypeDetailBottomSheet.UnitTypeDetailBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -79,13 +78,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     bindData(it.data!!)
                     binding.shimmerViewContainer.hideShimmer()
-
-                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
-                        binding.btnAccept.visibility = View.GONE
-
-                    } else {
-                        binding.btnAccept.visibility = View.VISIBLE
-                    }
+                    Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
+                    Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
                     when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
@@ -100,6 +94,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         MyExchangeRequestStatus.REJECTED -> {
                             binding.btnAccept.visibility = View.GONE
                         }
+                    }
+                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
+                        binding.btnAccept.visibility = View.GONE
+
+                    } else {
+                        binding.btnAccept.visibility = View.VISIBLE
                     }
 
 
@@ -212,6 +212,52 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     this@MyExchangeRequestDetailActivity
                 )
         }
+
+        when (MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)) {
+            MyExchangeRequestStatus.PENDING_APPROVAL -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_pending_approval_text
+                )
+            }
+
+            MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+                applyStatusStyle(
+                    this,
+                    R.color.status_awaiting_confirmation_bg,
+                    R.color.status_awaiting_confirmation_text
+                )
+            }
+
+            MyExchangeRequestStatus.COMPLETED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.green_verify
+                )
+            }
+
+            MyExchangeRequestStatus.REJECTED -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_rejected_text
+                )
+            }
+
+            else -> {
+                // Default or unknown status case
+                applyStatusStyle(
+                    this,
+                    R.color.status_unknown_bg,
+                    R.color.status_unknown_text
+                )
+            }
+        }
+        binding.tvStatus.text =
+            MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)
+                ?.getDescription(this)
     }
 
     private fun evenClickApproveExchangeRequest() {
@@ -284,5 +330,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }.joinToString(", ")
 
         return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+
+    private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
+        binding.apply {
+            llStatusContainer.visibility = View.VISIBLE
+            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            tvStatus.setTextColor(context.getColor(textColorRes))
+            cardStatus.setStrokeColor(context.getColor(textColorRes))
+        }
     }
 }

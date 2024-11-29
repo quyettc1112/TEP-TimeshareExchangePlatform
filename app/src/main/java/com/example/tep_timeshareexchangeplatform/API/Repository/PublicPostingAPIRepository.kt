@@ -60,10 +60,11 @@ class PublicPostingAPIRepository @Inject constructor(
     suspend fun getExchangePostings(
         pageNo: Int,
         pageSize: Int,
-        resortName: String
+        resortName: String,
+        resortId: Int? = null,
     ): Resource<ExchangesResponse> {
         return try {
-            val response = publicPostingAPIService.getExchangePostings(pageNo, pageSize, resortName)
+            val response = publicPostingAPIService.getExchangePostings(pageNo, pageSize, resortName, resortId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

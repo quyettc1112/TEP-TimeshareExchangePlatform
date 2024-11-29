@@ -19,7 +19,7 @@ class DepositViewModel  @Inject constructor(
     val responseVNPAYUrl: MutableLiveData<Resource<PaymentResponse>> = _responseVNPAYUrl
 
     // call API to get response URL
-    fun getResponsePaymentUrl(amount: Int, orderType: String) {
+    fun getResponsePaymentUrl(amount: Long, orderType: String) {
         viewModelScope.launch {
             _responseVNPAYUrl.postValue(Resource.loading(null))
             paymentAPIRepository.getPaymentUrl(amount, orderType).let {
