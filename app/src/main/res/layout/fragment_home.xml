@@ -222,7 +222,7 @@
                     android:gravity="center"
                     android:layout_height="45dp"
                     android:background="@drawable/ripple_effect_white"
-                    android:backgroundTint="@color/blue_see_more"
+                    android:backgroundTint="@color/blue_btn_search"
                     android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
