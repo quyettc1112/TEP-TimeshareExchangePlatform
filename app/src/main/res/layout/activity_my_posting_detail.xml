@@ -25,8 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:showStartText="false"
-            app:showTitleDetail="true"
-            app:titleDetail="Flamingo Dai Lai | Studio King" />
+            app:showTitleDetail="true" />
 
         <!--// Timeshare Detail-->
         <ScrollView

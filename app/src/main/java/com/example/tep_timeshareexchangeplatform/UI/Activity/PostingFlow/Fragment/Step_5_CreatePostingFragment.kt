@@ -16,6 +16,7 @@ import android.widget.DatePicker
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -56,10 +57,13 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     private val postingFlowViewModel: PostingFlowViewModel by activityViewModels()
     private lateinit var tokenManager: TokenManager
     private val imageUploadAdapter = ImageUploadAdapter()
+    private lateinit var pickImagesLauncher: ActivityResultLauncher<String>
+    private lateinit var pickSingleImageLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager(requireContext())
+        initializeLaunchers()
 
     }
 
@@ -555,29 +559,32 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
     }
 
-    private val pickImagesLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+
+
+    private fun initializeLaunchers() {
+        pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
                 val listImage = mutableListOf<ImageUploadModel>()
                 for (uri in uris) {
                     listImage.add(ImageUploadModel.create(uri))
                 }
-                // Save To View Model
+                // Save to ViewModel
                 postingFlowViewModel.addImages(listImage)
                 // Show UI
                 imageUploadAdapter.addImage(listImage)
             }
         }
-    private val pickSingleImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+
+        pickSingleImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                // Load ảnh chính vào ImageView
+                // Load main image into ImageView
                 binding.ivMainImage.setImageURI(uri)
 
                 // Optionally, update ExchangeOfResortViewModel or perform other actions
                 postingFlowViewModel.setMainImage(ImageUploadModel.create(uri))
             }
         }
+    }
 
 
     // Function to set event next

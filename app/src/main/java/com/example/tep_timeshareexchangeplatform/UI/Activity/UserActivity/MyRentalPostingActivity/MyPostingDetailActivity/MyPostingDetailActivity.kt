@@ -94,15 +94,7 @@ class MyPostingDetailActivity : BaseActivity() {
             viewModel.getMyPostingDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
@@ -117,15 +109,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
                 }
 
                 Status.LOADING -> {
@@ -144,8 +128,8 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myRentalPostingDetailResponse.unitType.title}")
-            setTitleDetail("${myRentalPostingDetailResponse.checkinDate} - ${myRentalPostingDetailResponse.checkoutDate}")
+            setTitle("Chi Tiết Bài Đăng")
+            setTitleDetail("${myRentalPostingDetailResponse.resortName}")
         }
 
         // Resort Info
