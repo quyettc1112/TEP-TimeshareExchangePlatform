@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">35.247.160.131</domain>
         <domain includeSubdomains="true">sandbox.vnpayment.vn</domain>
+        <domain includeSubdomains="true">nominatim.openstreetmap.org</domain>
 
 
     </domain-config>

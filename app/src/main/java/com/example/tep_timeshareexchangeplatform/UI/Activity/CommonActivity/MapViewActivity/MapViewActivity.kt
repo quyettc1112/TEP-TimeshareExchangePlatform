@@ -1,18 +1,30 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.NearbyBottomSheet.NearByBottomSheet
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MapsAmenityType
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMapViewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -20,9 +32,13 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 
+@AndroidEntryPoint
 class MapViewActivity : BaseActivity() {
     private lateinit var binding: ActivityMapViewBinding
+    private val mapsViewModel: MapsViewModel by viewModels()
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
+    private lateinit var bottomSheet: NearByBottomSheet
+    private val markers = mutableListOf<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMapViewBinding.inflate(layoutInflater)
@@ -30,6 +46,10 @@ class MapViewActivity : BaseActivity() {
         enableEdgeToEdge()
 
         getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        getInstance().cacheMapTileCount = 20  // Số lượng tile trong bộ nhớ cache
+        getInstance().tileDownloadThreads = 12  // Số luồng tải tile đồng thời
+        getInstance().setTileFileSystemCacheMaxBytes(50L * 1024 * 1024) // 50 MB cho bộ nhớ cache
+        //getInstance().tileDownloadThreads = 8
 
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -38,38 +58,156 @@ class MapViewActivity : BaseActivity() {
             insets
         }
 
-        binding.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+        binding.map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = binding.map.controller
-        mapController.setZoom(20)
-        val startPoint = GeoPoint(12.69279795, 108.06307161563717);
+        mapController.setZoom(15)
+        val startPoint = GeoPoint(10.823099, 106.629662) // Hồ Chí Minh
         mapController.setCenter(startPoint);
 
-        // Bounding box từ JSON
-        val nodes = listOf(
-            Pair(12.6932999,  108.0631007),
-            Pair(12.6926438, 108.0635546),
-            Pair( 12.6923045,108.063063),
-            Pair( 12.6929521,108.0625804) ,// Quay lại điểm đầu
-            Pair( 12.6932999,108.0631007) ,// Quay lại điểm đầu
-        )
-      //  drawPolygonFromNodes(nodes, binding.map)
+        getIntentValue()
+        eventClickBack()
+        eventClickMyLocation()
 
 
-        val customIcon = ContextCompat.getDrawable(this, R.drawable.baseline_location_pin_24_blue)
-        val marker = Marker(binding.map).apply {
-            position = startPoint
-            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            icon = customIcon // Biểu tượng tùy chỉnh
-            title = "Khách Sạn Mường Thanh"
-            subDescription = "Địa chỉ: 81 Nguyễn Tất Thành, Buôn Ma Thuột"
-           /* setOnMarkerClickListener { marker, mapView ->
-                Toast.makeText(this@MapViewActivity, "Bạn đã nhấn vào ${marker.title}", Toast.LENGTH_SHORT).show()
-                true
-            }*/
+    }
+
+    private fun getIntentValue() {
+        observerData()
+        val latitude = intent.getDoubleExtra("latitude", 12.69279795)
+        val longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
+        callGetReverseGeocodingAPI(latitude, longitude)
+        callGetOverpassAPI(latitude, longitude)
+
+    }
+
+    private fun observerData() {
+        // Get Reverse Geocoding API
+        mapsViewModel.geoJsonResponseLiveData.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val geoJsonResponse = it.data
+                    if (geoJsonResponse != null) {
+                        val mapController = binding.map.controller
+                        mapController.setZoom(12)
+                        val startPoint = GeoPoint(
+                            geoJsonResponse.features[0].geometry.coordinates[1],
+                            geoJsonResponse.features[0].geometry.coordinates[0]
+                        );
+                        mapController.setCenter(startPoint);
+                        val customIcon = ContextCompat.getDrawable(
+                            this,
+                            R.drawable.baseline_location_pin_24_blue
+                        )
+                        val marker = Marker(binding.map).apply {
+                            position = startPoint
+                            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                            icon = customIcon // Biểu tượng tùy chỉnh
+                            title = geoJsonResponse.features[0].properties.name
+                            subDescription = geoJsonResponse.features[0].properties.displayName
+                        }
+                        binding.map.overlays.add(marker)
+                        binding.map.controller.animateTo(startPoint, 20.0, 1500)
+                        binding.map.invalidate()
+                    }
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    Log.d("MapViewActivitsadsy", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        })
+
+        // Get Around Location
+        mapsViewModel.overpassResponseLiveData.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val overpassResponse = it.data
+                    if (overpassResponse != null) {
+                        bottomSheet = NearByBottomSheet(overpassResponse.elements)
+                        eventClickNearBy()
+                    }
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    Log.d("MapViewActivitsadsy", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        })
+
+    }
+
+    private fun callGetReverseGeocodingAPI(latitude: Double, longitude: Double) {
+        mapsViewModel.getReverseGeocoding(latitude, longitude)
+    }
+
+    private fun callGetOverpassAPI(latitude: Double, longitude: Double) {
+        mapsViewModel.getOverpass(latitude, longitude)
+    }
+
+    private fun eventClickBack() {
+        binding.cvBack.setOnClickListener {
+            finish()
         }
-        binding.map.overlays.add(marker)
+    }
 
+    private fun eventClickNearBy() {
+        binding.btnNearbyLocation.setOnClickListener {
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+        }
 
+        bottomSheet.nearByAdapter.onItemClickListener = { element ->
+            moveMapToLocation(element)
+        }
+    }
+
+    private fun eventClickMyLocation() {
+        binding.ivMyLocation.setOnClickListener {
+            val mapController = binding.map.controller
+            mapController.setZoom(19)
+            val startPoint = GeoPoint(12.69279795, 108.06307161563717) // Hồ Chí Minh
+            mapController.setCenter(startPoint);
+            binding.map.invalidate()
+        }
+    }
+
+    private fun moveMapToLocation(overpassResponse: OverpassResponse.Element) {
+        val geoPoint = GeoPoint(overpassResponse.lat, overpassResponse.lon) // Tạo GeoPoint từ tọa độ
+
+        // Xóa tất cả các marker trước đó
+        markers.forEach { marker ->
+            binding.map.overlays.remove(marker)
+        }
+        markers.clear() // Xóa danh sách marker
+
+        // Tạo marker mới
+        val newMarker = Marker(binding.map).apply {
+            position = geoPoint
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            icon = ContextCompat.getDrawable(this@MapViewActivity, R.drawable.baseline_location_pin_24_blue) // Icon của marker
+            title = overpassResponse.tags.name // Tiêu đề cho marker
+            subDescription = overpassResponse.tags.description // Mô tả cho marker
+        }
+
+        // Thêm marker mới vào danh sách và bản đồ
+        markers.add(newMarker)
+        binding.map.overlays.add(newMarker)
+
+        // Di chuyển và zoom bản đồ đến vị trí mới
+        binding.map.controller.animateTo(geoPoint, 20.0, 1500)
+        binding.map.controller.setCenter(geoPoint)
+        binding.map.invalidate() // Cập nhật bản đồ
     }
 
     override fun onResume() {
@@ -82,7 +220,11 @@ class MapViewActivity : BaseActivity() {
         binding.map.onPause()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val permissionsToRequest = ArrayList<String>()
         var i = 0
@@ -94,23 +236,10 @@ class MapViewActivity : BaseActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toTypedArray(),
-                REQUEST_PERMISSIONS_REQUEST_CODE)
+                REQUEST_PERMISSIONS_REQUEST_CODE
+            )
         }
     }
 
-    fun drawPolygonFromNodes(nodes: List<Pair<Double, Double>>, mapView: MapView) {
-        val geoPoints = nodes.map { GeoPoint(it.first, it.second) } // Chuyển node thành GeoPoint
-
-        val polygon = Polygon().apply {
-            points = geoPoints
-            outlinePaint.color = Color.BLUE // Màu viền
-            outlinePaint.strokeWidth = 5f  // Độ rộng viền
-            fillPaint.color = Color.argb(50, 0, 0, 255) // Màu nền
-        }
-
-        // Thêm đa giác vào bản đồ
-        mapView.overlays.add(polygon)
-        mapView.invalidate()
-    }
 
 }

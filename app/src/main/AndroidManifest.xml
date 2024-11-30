@@ -33,14 +33,7 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
 
-        <activity
-            android:name=".UI.Activity.CommonActivity.MapViewActivity.MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
         <activity
             android:name=".UI.Activity.UserActivity.MyDashboardActivity.MyDashboardActivity"
             android:exported="false" />

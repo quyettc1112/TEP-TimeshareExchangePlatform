@@ -23,6 +23,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortAmenityAdapter
@@ -77,6 +78,7 @@ class ResortDetailActivity : BaseActivity() {
 
         eventClickViewAllFeedback()
         eventClickBack()
+        eventClickShowMaps()
 
         // Observe Data
         observeData()
@@ -193,6 +195,14 @@ class ResortDetailActivity : BaseActivity() {
     private fun eventClickBack() {
         binding.cvBack.setOnClickListener {
             onBackPressed()
+        }
+    }
+
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.DEFAULT_RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
+            startActivity(intent)
         }
     }
 
