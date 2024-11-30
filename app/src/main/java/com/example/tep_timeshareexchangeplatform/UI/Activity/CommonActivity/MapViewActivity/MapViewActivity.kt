@@ -1,18 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -21,17 +16,16 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.NearbyBottomSheet.NearByBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MapsAmenityType
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMapViewBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import org.osmdroid.views.MapView
 import org.osmdroid.config.Configuration.*
-import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.Polyline
 
 @AndroidEntryPoint
@@ -41,14 +35,20 @@ class MapViewActivity : BaseActivity() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
     private lateinit var bottomSheet: NearByBottomSheet
     private val markers = mutableListOf<Marker>()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentRoute: Polyline? = null
-    private var latitude = 0.0
-    private var longitude = 0.0
+    private var resort_latitude = 0.0
+    private var reosrt_longitude = 0.0
+    private var user_latitude = 0.0
+    private var user_longitude = 0.0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMapViewBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
 
         getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
         getInstance().cacheMapTileCount = 20  // Số lượng tile trong bộ nhớ cache
@@ -68,20 +68,20 @@ class MapViewActivity : BaseActivity() {
         val startPoint = GeoPoint(10.823099, 106.629662) // Hồ Chí Minh
         mapController.setCenter(startPoint);
 
-
+        eventClickMyLocation()
         getIntentValue()
         eventClickBack()
-        eventClickMyLocation()
+        eventClickRouteToResort()
 
 
     }
 
     private fun getIntentValue() {
         observerData()
-        latitude = intent.getDoubleExtra("latitude", 12.69279795)
-        longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
-        callGetReverseGeocodingAPI(latitude, longitude)
-        callGetOverpassAPI(latitude, longitude)
+        resort_latitude = intent.getDoubleExtra("latitude", 12.69279795)
+        reosrt_longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
+        callGetReverseGeocodingAPI(resort_latitude, reosrt_longitude)
+        callGetOverpassAPI(resort_latitude, reosrt_longitude)
 
     }
 
@@ -166,6 +166,7 @@ class MapViewActivity : BaseActivity() {
                 Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     Log.d("MapViewActivitsadsy", it.message.toString())
+                    hideLoadingWaiting()
                 }
 
                 Status.LOADING -> {
@@ -207,16 +208,20 @@ class MapViewActivity : BaseActivity() {
 
     private fun eventClickMyLocation() {
         binding.ivMyLocation.setOnClickListener {
-            val mapController = binding.map.controller
-            mapController.setZoom(19)
-            val startPoint = GeoPoint(12.69279795, 108.06307161563717) // Hồ Chí Minh
-            mapController.setCenter(startPoint);
-            binding.map.invalidate()
+            Toast.makeText(this, "Đang dò Vị trí của bạn", Toast.LENGTH_SHORT).show()
+            getCurrentLocation()
+        }
+    }
+
+    private fun eventClickRouteToResort() {
+        binding.ivRouteToResort.setOnClickListener {
+            routeToResort()
         }
     }
 
     private fun moveMapToLocation(overpassResponse: OverpassResponse.Element) {
-        val geoPoint = GeoPoint(overpassResponse.lat, overpassResponse.lon) // Tạo GeoPoint từ tọa độ
+        val geoPoint =
+            GeoPoint(overpassResponse.lat, overpassResponse.lon) // Tạo GeoPoint từ tọa độ
 
         // Xóa tất cả các marker trước đó
         markers.forEach { marker ->
@@ -228,7 +233,10 @@ class MapViewActivity : BaseActivity() {
         val newMarker = Marker(binding.map).apply {
             position = geoPoint
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            icon = ContextCompat.getDrawable(this@MapViewActivity, R.drawable.baseline_location_pin_24_blue) // Icon của marker
+            icon = ContextCompat.getDrawable(
+                this@MapViewActivity,
+                R.drawable.baseline_location_pin_24_blue
+            ) // Icon của marker
             title = overpassResponse.tags.name // Tiêu đề cho marker
             subDescription = overpassResponse.tags.description // Mô tả cho marker
         }
@@ -237,22 +245,17 @@ class MapViewActivity : BaseActivity() {
         markers.add(newMarker)
         binding.map.overlays.add(newMarker)
 
-        // Di chuyển và zoom bản đồ đến vị trí mới
-        binding.map.controller.animateTo(geoPoint, 19.0, 1500)
-        binding.map.controller.setCenter(geoPoint)
-        binding.map.invalidate() // Cập nhật bản đồ
 
-
-        val start = "$longitude,$latitude" // Điểm bắt đầu
+        val start = "$reosrt_longitude,$resort_latitude" // Điểm bắt đầu
         val end = "${geoPoint.longitude},${geoPoint.latitude}"
 
         callGetRouteAPI(start, end)
 
     }
 
-
     private fun drawRoute(coordinates: List<List<Double>>) {
-        val geoPoints = coordinates.map { GeoPoint(it[1], it[0]) } // Chuyển từ [lon, lat] sang GeoPoint
+        val geoPoints =
+            coordinates.map { GeoPoint(it[1], it[0]) } // Chuyển từ [lon, lat] sang GeoPoint
 
         // Xóa tuyến đường cũ nếu tồn tại
         currentRoute?.let {
@@ -272,9 +275,98 @@ class MapViewActivity : BaseActivity() {
         // Thêm tuyến đường mới vào bản đồ
         binding.map.overlays.add(polyline)
 
+        if (geoPoints.isNotEmpty()) {
+            val boundingBox = BoundingBox.fromGeoPoints(geoPoints) // Tạo bounding box từ các GeoPoint
+            binding.map.zoomToBoundingBox(boundingBox, true)        // Zoom để hiển thị toàn bộ bounding box
+        }
+
         Toast.makeText(this, "Vẽ tuyến đường thành công", Toast.LENGTH_SHORT).show()
 
         // Cập nhật lại bản đồ
+        binding.map.invalidate()
+    }
+
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(this, "Vui lòng cấp quyền truy cập vị trí", Toast.LENGTH_SHORT).show()
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_PERMISSIONS_REQUEST_CODE
+            )
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                user_latitude = location.latitude
+                user_longitude = location.longitude
+
+                Log.d("MapViewActivity", "Latitude: $user_latitude, Longitude: $user_longitude")
+
+                // Thêm Marker tại vị trí hiện tại
+                addCurrentLocationMarker(user_latitude, user_longitude)
+            } else {
+                Toast.makeText(this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun routeToResort() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(this, "Vui lòng cấp quyền truy cập vị trí", Toast.LENGTH_SHORT).show()
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_PERMISSIONS_REQUEST_CODE
+            )
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                user_latitude = location.latitude
+                user_longitude = location.longitude
+
+
+                val start = "$user_longitude,$user_latitude"
+                val end = "$reosrt_longitude,$resort_latitude"
+                callGetRouteAPI(start, end)
+            } else {
+                Toast.makeText(this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun addCurrentLocationMarker(lat: Double, lon: Double) {
+        val geoPoint = GeoPoint(lat, lon) // Tạo GeoPoint từ tọa độ
+
+        // Tạo Marker
+        val marker = Marker(binding.map).apply {
+            position = geoPoint
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            icon = ContextCompat.getDrawable(
+                this@MapViewActivity,
+                R.drawable.baseline_location_pin_24_blue
+            )
+            title = "Vị trí hiện tại của bạn"
+        }
+
+        // Thêm Marker vào bản đồ
+        binding.map.overlays.add(marker)
+
+        // Zoom đến vị trí Marker
+        binding.map.controller.setCenter(geoPoint)
+        binding.map.controller.setZoom(19.0)
+
+        // Cập nhật bản đồ
         binding.map.invalidate()
     }
 
@@ -294,18 +386,12 @@ class MapViewActivity : BaseActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val permissionsToRequest = ArrayList<String>()
-        var i = 0
-        while (i < grantResults.size) {
-            permissionsToRequest.add(permissions[i])
-            i++
-        }
-        if (permissionsToRequest.size > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                REQUEST_PERMISSIONS_REQUEST_CODE
-            )
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation()
+            } else {
+                Toast.makeText(this, "Cần cấp quyền để sử dụng tính năng này", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

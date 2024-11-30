@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
-            android:text="Địa điểm gần bạn"
+            android:text="Địa điểm gần nơi cho thuê"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -111,6 +111,29 @@
             android:background="@color/white"
             android:padding="10dp"
             android:src="@drawable/baseline_my_location_24"
+            app:layout_constraintBottom_toTopOf="@+id/btn_nearby_location"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/iv_route_to_resort"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_nearby_location"
+        app:layout_constraintEnd_toStartOf="@+id/iv_my_location">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:src="@drawable/ic_route_to_reosrt"
             app:layout_constraintBottom_toTopOf="@+id/btn_nearby_location"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.cardview.widget.CardView>
