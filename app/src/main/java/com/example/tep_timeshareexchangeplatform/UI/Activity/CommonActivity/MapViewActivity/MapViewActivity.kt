@@ -63,6 +63,7 @@ class MapViewActivity : BaseActivity() {
         }
 
         binding.map.setTileSource(TileSourceFactory.MAPNIK)
+        binding.map.setMultiTouchControls(true)
         val mapController = binding.map.controller
         mapController.setZoom(15)
         val startPoint = GeoPoint(10.823099, 106.629662) // Hồ Chí Minh
