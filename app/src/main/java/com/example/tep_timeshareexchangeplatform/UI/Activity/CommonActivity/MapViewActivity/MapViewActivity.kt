@@ -1,10 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -14,6 +17,8 @@ import org.osmdroid.views.MapView
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polygon
 
 class MapViewActivity : BaseActivity() {
     private lateinit var binding: ActivityMapViewBinding
@@ -33,12 +38,36 @@ class MapViewActivity : BaseActivity() {
             insets
         }
 
-        binding.map.setTileSource(TileSourceFactory.MAPNIK)
-
+        binding.map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
         val mapController = binding.map.controller
-        mapController.setZoom(9.5)
-        val startPoint = GeoPoint(48.8583, 2.2944);
+        mapController.setZoom(20)
+        val startPoint = GeoPoint(12.69279795, 108.06307161563717);
         mapController.setCenter(startPoint);
+
+        // Bounding box từ JSON
+        val nodes = listOf(
+            Pair(12.6932999,  108.0631007),
+            Pair(12.6926438, 108.0635546),
+            Pair( 12.6923045,108.063063),
+            Pair( 12.6929521,108.0625804) ,// Quay lại điểm đầu
+            Pair( 12.6932999,108.0631007) ,// Quay lại điểm đầu
+        )
+      //  drawPolygonFromNodes(nodes, binding.map)
+
+
+        val customIcon = ContextCompat.getDrawable(this, R.drawable.baseline_location_pin_24_blue)
+        val marker = Marker(binding.map).apply {
+            position = startPoint
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            icon = customIcon // Biểu tượng tùy chỉnh
+            title = "Khách Sạn Mường Thanh"
+            subDescription = "Địa chỉ: 81 Nguyễn Tất Thành, Buôn Ma Thuột"
+           /* setOnMarkerClickListener { marker, mapView ->
+                Toast.makeText(this@MapViewActivity, "Bạn đã nhấn vào ${marker.title}", Toast.LENGTH_SHORT).show()
+                true
+            }*/
+        }
+        binding.map.overlays.add(marker)
 
 
     }
@@ -68,4 +97,20 @@ class MapViewActivity : BaseActivity() {
                 REQUEST_PERMISSIONS_REQUEST_CODE)
         }
     }
+
+    fun drawPolygonFromNodes(nodes: List<Pair<Double, Double>>, mapView: MapView) {
+        val geoPoints = nodes.map { GeoPoint(it.first, it.second) } // Chuyển node thành GeoPoint
+
+        val polygon = Polygon().apply {
+            points = geoPoints
+            outlinePaint.color = Color.BLUE // Màu viền
+            outlinePaint.strokeWidth = 5f  // Độ rộng viền
+            fillPaint.color = Color.argb(50, 0, 0, 255) // Màu nền
+        }
+
+        // Thêm đa giác vào bản đồ
+        mapView.overlays.add(polygon)
+        mapView.invalidate()
+    }
+
 }

@@ -8,33 +8,52 @@
     android:layout_height="match_parent">
 
     <!--// Custom Toolbar-->
-
-    <com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomToolbar.CustomToolbar
-        android:id="@+id/customToolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:padding="10dp"
         android:layout_height="wrap_content"
+        android:translationZ="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showTitleDetail="false"
-        app:textStart="@string/back" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/baseline_arrow_back_24"/>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!--// Resort Detail Scroll Container-->
     <androidx.core.widget.NestedScrollView
-        android:visibility="visible"
+        android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customToolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--Resort Info component-->
         <LinearLayout
-            android:orientation="vertical"
-            android:background="@color/primary_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/primary_background_F9"
+            android:orientation="vertical">
             <!--// Resort Image-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -48,6 +67,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewResortImage"
                         android:layout_width="match_parent"
@@ -61,145 +81,51 @@
                 </androidx.core.widget.NestedScrollView>
 
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--// Resort Info and Map-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/white"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_resort_info"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp">
 
-                <!--// Resort Name-->
-                <TextView
-                    android:id="@+id/tvResortName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_extrabold"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/ll_favorite"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!--// Resort Type-->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/materialCardView4"
-                    android:visibility="gone"
-                    android:layout_width="90dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    app:cardCornerRadius="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvResortName"
-                    app:strokeColor="#20A3C9"
-                    app:strokeWidth="2dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="Khách sạn"
-                        android:textColor="#20A3C9" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- // Rating-->
+                <!--// Baner Image -->
                 <LinearLayout
-                    android:id="@+id/materialCardView3"
-                    android:visibility="gone"
-                    android:layout_width="130dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_rating"
-                    app:layout_constraintStart_toEndOf="@+id/materialCardView4"
-                    app:layout_constraintTop_toBottomOf="@+id/tvResortName"
-                    app:strokeColor="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center|left"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/baseline_star_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:gravity="center"
-                            android:text="4.5"
-                            android:textColor="#007EF2"
-                            android:textSize="12dp" />
-
-                        <TextView
-                            android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:gravity="center"
-                            android:text="254 đánh giá"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-               <!-- // Favorite Button-->
-                <LinearLayout
-                    android:id="@+id/ll_favorite"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/background_circle"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/baseline_favorite_24" />
-                </LinearLayout>
-
-                <!--// Location-->
-                <LinearLayout
-                    android:id="@+id/linearLayout9"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
-                    tools:layout_editor_absoluteX="20dp">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/ic_location" />
+                    android:layout_height="25dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_location"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="9"
-                        android:fontFamily="@font/inter_light"
-                        android:maxLines="2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/background_stroke_around"
+                        android:backgroundTint="@color/primaryColor"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center"
                         android:paddingStart="5dp"
-                        android:textSize="12sp" />
+                        android:paddingEnd="5dp"
+                        android:text="Ưu đãi chớp nhoáng"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/background_stroke_around"
+                        android:backgroundTint="#9C27B0"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="Giá sốc cuối tuần"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
 
 
                 </LinearLayout>
@@ -209,7 +135,7 @@
                     android:id="@+id/ll_verify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal"
                     android:weightSum="10"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -227,30 +153,313 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
                         android:layout_weight="9"
-                        android:text="Đã xác thực và Đảm bảo bởi Unwind"
-                        android:fontFamily="@font/inter_light"
+                        android:fontFamily="@font/inter_bold"
                         android:maxLines="2"
                         android:paddingStart="5dp"
-                        android:textSize="12sp" />
+                        android:text="Đã xác thực và Đảm Bảo bởi Unwind"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
 
-                <!--// Find More-->
+                <!--// Resort Name-->
                 <TextView
-                    android:id="@+id/tv_find_more"
-                    android:layout_width="0dp"
+                    android:id="@+id/tvResortName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left|center"
-                    android:layout_weight="9"
-                    android:fontFamily="@font/inter_light"
-                    android:maxLines="2"
-                    android:textColor="@color/blue_see_more"
-                    android:paddingStart="5dp"
-                    android:text="Tìm hiểu thêm"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/ll_verify"
-                    app:layout_constraintTop_toTopOf="@+id/ll_verify" />
+                    android:fontFamily="@font/inter_extrabold"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--// Rating-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp">
+
+                    <!-- // Ratign-->
+                    <LinearLayout
+                        android:id="@+id/linearLayout35"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/background_stroke_around"
+                        android:backgroundTint="#F23161"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_avg_rating_top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_semibold"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="5dp"
+                            android:src="@drawable/baseline_star_24" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_rating_count_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/linearLayout35"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--// See More Review-->
+                    <TextView
+                        android:id="@+id/tv_see_more_review_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Xem tất cả đánh giá >"
+                        android:textColor="@color/quantum_orange"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Resort Type-->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialCardView4"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvResortName"
+                    app:strokeColor="#20A3C9"
+                    app:strokeWidth="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Khách sạn"
+                        android:textColor="#20A3C9" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!--// Location-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
+                    tools:layout_editor_absoluteX="20dp">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="0.5"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_resort_location"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="9"
+                        android:fontFamily="@font/inter_medium"
+                        android:maxLines="2"
+                        android:paddingStart="5dp"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_see_map"
+                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_see_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:src="@drawable/ic_maps"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/im_map"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_maps"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_location_see_map"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
+                            android:paddingStart="5dp"
+                            android:text="Bản Đồ"
+                            android:textColor="#F23161"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/im_map"
+                            app:layout_constraintStart_toEndOf="@+id/imageView5"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+            <!--// Facilities-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Những tiện nghi phổ biến nhất"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+                    <include
+                        android:id="@+id/include_amenities"
+                        layout="@layout/include_amenities" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--// Resort Room Type-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:paddingTop="10dp">
+
+                <!-- // Suggest Title-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Loại phòng"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|top"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_sugest_see_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/inter_light"
+                            android:gravity="center"
+                            android:text="@string/suggest_seemore"
+                            android:textColor="@color/blue_see_more"
+                            android:textSize="12dp" />
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/forward" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_resort_room_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -259,11 +468,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:background="@color/white"
+                android:paddingStart="16dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="20dp"
-                android:background="@color/white">
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp">
 
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -299,134 +508,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--// Resort Room Type-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:background="@color/white">
-
-                <!-- // Suggest Title-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
-                        android:text="Loại phòng"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center|top"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/tv_sugest_see_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:fontFamily="@font/inter_light"
-                            android:gravity="center"
-                            android:text="@string/suggest_seemore"
-                            android:textColor="@color/blue_see_more"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="20dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/forward" />
-                    </LinearLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_resort_room_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-                    tools:listitem="@layout/item_unit_type_resort" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--// Resort Facilities-->
-            <!--// Facilities-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:background="@color/white"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="20dp">
-                <!-- // Suggest Title-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
-                        android:text="Những tiện nghi phổ biến nhất"
-                        android:textColor="@color/black"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
-                    <include
-                        android:id="@+id/include_amenities"
-                        layout="@layout/include_amenities" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <!--// Resort Review-->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
                 android:minHeight="300dp"
-                android:paddingBottom="150dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:paddingTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingEnd="20dp"
+                android:paddingBottom="150dp">
 
                 <!--// Review Scrore-->
                 <TextView
@@ -435,9 +527,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
 
-                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="30dp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -471,8 +563,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_review"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_avg_rating">
 
@@ -494,17 +586,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <!--// Bottom Layout Container-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:visibility="visible"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="@color/white"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -541,21 +632,16 @@
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginEnd="20dp"
+            android:background="@drawable/ripple_effect_white"
+            android:backgroundTint="#F23161"
             android:text="Chọn phòng"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:background="@drawable/ripple_effect_white"
-            android:backgroundTint="#F23161"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

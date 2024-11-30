@@ -76,10 +76,10 @@ class ResortDetailActivity : BaseActivity() {
         initAdapter()
 
         eventClickViewAllFeedback()
+        eventClickBack()
 
         // Observe Data
         observeData()
-
 
 
     }
@@ -90,6 +90,7 @@ class ResortDetailActivity : BaseActivity() {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     resources.data?.let { resortDetail ->
                         // Set Resort Detail Info
@@ -104,26 +105,16 @@ class ResortDetailActivity : BaseActivity() {
                         // Action Event
                         setTypeRoomClickAction()
                         setButtonSelectRoomClick()
-                        bindDataCustomToolBar(resortDetail.resortName)
                     }
                     hideLoadingWaiting()
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorDialog(resources.message.toString(), "")
 
                 }
             }
-        }
-    }
-
-    private fun bindDataCustomToolBar(resortName: String? = null) {
-        binding.customToolbar.onStartIconClick = {
-            onBackPressed()
-        }
-        binding.customToolbar.apply {
-            setTitle(resortName ?: "")
-            isShowStartText(false)
         }
     }
 
@@ -151,33 +142,80 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
+    private fun setButtonSelectRoomClick() {
+        binding.btnSelectRoom.setOnClickListener {
+            val intent = Intent(this, PostingOfResortActivity::class.java)
+            intent.putExtra(
+                Constant.RESORT_NAME,
+                resortDetailViewModel.resortDetail.value?.data?.resortName
+            )
+            intent.putExtra(Constant.RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
+            startActivity(intent)
+        }
+
+    }
+
     private fun eventClickViewAllFeedback() {
         binding.tvSeeMoreReview.setOnClickListener {
             val intent = Intent(this, FeedbackListActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
-            intent.putExtra(Constant.AVG_RATING, resortDetailViewModel.resortDetail.value?.data?.averageRating)
-            intent.putExtra(Constant.TOTAL_RATING, resortDetailViewModel.resortDetail.value?.data?.totalRating)
+            intent.putExtra(
+                Constant.DEFAULT_RESORT_ID,
+                resortDetailViewModel.resortDetail.value?.data?.id
+            )
+            intent.putExtra(
+                Constant.AVG_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.averageRating
+            )
+            intent.putExtra(
+                Constant.TOTAL_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.totalRating
+            )
+            startActivity(intent)
+        }
+        binding.tvSeeMoreReviewTop.setOnClickListener {
+            val intent = Intent(this, FeedbackListActivity::class.java)
+            intent.putExtra(
+                Constant.DEFAULT_RESORT_ID,
+                resortDetailViewModel.resortDetail.value?.data?.id
+            )
+            intent.putExtra(
+                Constant.AVG_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.averageRating
+            )
+            intent.putExtra(
+                Constant.TOTAL_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.totalRating
+            )
             startActivity(intent)
         }
     }
+
+    private fun eventClickBack() {
+        binding.cvBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
 
     // Binding Data Group Function
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
             tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
             tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
-            tvMinPrice.text = "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
-            tvDescription.text = resortDetailViewModel.resortDetail.value?.data?.description.toString()
+            tvMinPrice.text =
+                "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
+            tvDescription.text =
+                resortDetailViewModel.resortDetail.value?.data?.description.toString()
             if (resortDetailModelResponse.isActive) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
-                tvFindMore.visibility = View.GONE
             }
 
             tvAvgRating.text = resortDetailModelResponse.averageRating.toString()
             tvTotalRating.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
-
+            tvAvgRatingTop.text = resortDetailModelResponse.averageRating.toString()
+            tvRatingCountTop.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
         }
     }
 
@@ -207,7 +245,8 @@ class ResortDetailActivity : BaseActivity() {
 
         imagePostingAdapter.submitList(imageList)
         if (imageList.size == 1) {
-            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManagerCheck =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerViewResortImage.apply {
                 adapter = imagePostingAdapter
                 layoutManager = layoutManagerCheck
@@ -231,15 +270,12 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
-    fun formatPrice(price: Int): String {
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(price)
-    }
     private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
         unitTypeAdapter.submitList(resorts)
         binding.rvResortRoomType.apply {
             adapter = unitTypeAdapter
-            layoutManager = LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -294,15 +330,6 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
-    private fun setButtonSelectRoomClick() {
-        binding.btnSelectRoom.setOnClickListener {
-            val intent = Intent(this, PostingOfResortActivity::class.java)
-            intent.putExtra(Constant.RESORT_NAME, resortDetailViewModel.resortDetail.value?.data?.resortName)
-            intent.putExtra(Constant.RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
-            startActivity(intent)
-        }
-
-    }
     private fun bindDataReviewResort(listReview: List<ResortDetailModelResponse.Feedback>) {
         reviewAdapter.submitList(listReview)
         binding.rvReview.apply {
@@ -310,11 +337,9 @@ class ResortDetailActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@ResortDetailActivity)
         }
     }
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
-    fun mapToUnitTypeBase(unitTypeDto: ResortDetailModelResponse.UnitTypeDto): UnitTypeBase {
+
+
+    private fun mapToUnitTypeBase(unitTypeDto: ResortDetailModelResponse.UnitTypeDto): UnitTypeBase {
         return UnitTypeBase(
             id = unitTypeDto.id,
             title = unitTypeDto.title,
@@ -345,7 +370,8 @@ class ResortDetailActivity : BaseActivity() {
             }
         )
     }
-    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ResortDetailModelResponse.ResortAmenity>): List<AmenitiesModel> {
+
+    private fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ResortDetailModelResponse.ResortAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
                 name = roomAmenity.name,
@@ -355,6 +381,15 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
+    private fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 
 
 }

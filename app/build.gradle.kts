@@ -4,6 +4,7 @@ plugins {
    // id("com.google.gms.google-services")
     id ("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
