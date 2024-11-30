@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.API.Repository
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.MapsAPIService
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.DirectionResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.GeoJsonResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
@@ -21,6 +22,9 @@ class MapsAPIRepository  @Inject constructor(
         apiServiceFactory.createApiService(MapsAPIService::class.java, BaseAPI.OVERPASS_API)
     }
 
+    private val routingAPIService: MapsAPIService by lazy {
+        apiServiceFactory.createApiService(MapsAPIService::class.java, BaseAPI.ROUTING_API)
+    }
 
 
     // function to call API to get reverse geocoding
@@ -56,6 +60,21 @@ class MapsAPIRepository  @Inject constructor(
 
     fun buildOverpassQuery(latitude: Double, longitude: Double, radius: Int = 1000): String {
         return "[out:json];node(around:$radius,$latitude,$longitude)[\"name\"];out;"
+    }
+
+
+    suspend fun getRoute(start: String, end: String): Resource<DirectionResponse> {
+        return try {
+            val response = routingAPIService.getRoute(start, end)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
     }
 
 }

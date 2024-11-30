@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.MapsAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.DirectionResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.GeoJsonResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -39,6 +40,19 @@ class MapsViewModel @Inject constructor(
             overpassResponse.postValue(Resource.loading(null))
             mapsAPIRepository.getNodes(latitude, longitude).let {
                 overpassResponse.postValue(it)
+            }
+        }
+    }
+
+    // Get Route from start to end
+    private val directionResponse = MutableLiveData<Resource<DirectionResponse>>()
+    val directionResponseLiveData: MutableLiveData<Resource<DirectionResponse>>
+        get() = directionResponse
+    fun getRoute(start: String, end: String) {
+        viewModelScope.launch {
+            directionResponse.postValue(Resource.loading(null))
+            mapsAPIRepository.getRoute(start, end).let {
+                directionResponse.postValue(it)
             }
         }
     }

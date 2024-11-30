@@ -27,10 +27,12 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityMapViewBind
 import dagger.hilt.android.AndroidEntryPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.config.Configuration.*
+import org.osmdroid.library.BuildConfig
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
+import org.osmdroid.views.overlay.Polyline
 
 @AndroidEntryPoint
 class MapViewActivity : BaseActivity() {
@@ -39,6 +41,9 @@ class MapViewActivity : BaseActivity() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
     private lateinit var bottomSheet: NearByBottomSheet
     private val markers = mutableListOf<Marker>()
+    private var currentRoute: Polyline? = null
+    private var latitude = 0.0
+    private var longitude = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMapViewBinding.inflate(layoutInflater)
@@ -49,7 +54,6 @@ class MapViewActivity : BaseActivity() {
         getInstance().cacheMapTileCount = 20  // Số lượng tile trong bộ nhớ cache
         getInstance().tileDownloadThreads = 12  // Số luồng tải tile đồng thời
         getInstance().setTileFileSystemCacheMaxBytes(50L * 1024 * 1024) // 50 MB cho bộ nhớ cache
-        //getInstance().tileDownloadThreads = 8
 
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -64,6 +68,7 @@ class MapViewActivity : BaseActivity() {
         val startPoint = GeoPoint(10.823099, 106.629662) // Hồ Chí Minh
         mapController.setCenter(startPoint);
 
+
         getIntentValue()
         eventClickBack()
         eventClickMyLocation()
@@ -73,8 +78,8 @@ class MapViewActivity : BaseActivity() {
 
     private fun getIntentValue() {
         observerData()
-        val latitude = intent.getDoubleExtra("latitude", 12.69279795)
-        val longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
+        latitude = intent.getDoubleExtra("latitude", 12.69279795)
+        longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
         callGetReverseGeocodingAPI(latitude, longitude)
         callGetOverpassAPI(latitude, longitude)
 
@@ -132,6 +137,29 @@ class MapViewActivity : BaseActivity() {
                     if (overpassResponse != null) {
                         bottomSheet = NearByBottomSheet(overpassResponse.elements)
                         eventClickNearBy()
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    Log.d("MapViewActivitsadsy", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        })
+
+        // Get Route
+        mapsViewModel.directionResponseLiveData.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    val directionResponse = it.data
+                    if (directionResponse != null) {
+                        drawRoute(directionResponse.routes[0].geometry.coordinates)
                     }
                 }
 
@@ -156,6 +184,10 @@ class MapViewActivity : BaseActivity() {
         mapsViewModel.getOverpass(latitude, longitude)
     }
 
+    private fun callGetRouteAPI(start: String, end: String) {
+        mapsViewModel.getRoute(start, end)
+    }
+
     private fun eventClickBack() {
         binding.cvBack.setOnClickListener {
             finish()
@@ -169,6 +201,7 @@ class MapViewActivity : BaseActivity() {
 
         bottomSheet.nearByAdapter.onItemClickListener = { element ->
             moveMapToLocation(element)
+            bottomSheet.dismiss()
         }
     }
 
@@ -205,9 +238,44 @@ class MapViewActivity : BaseActivity() {
         binding.map.overlays.add(newMarker)
 
         // Di chuyển và zoom bản đồ đến vị trí mới
-        binding.map.controller.animateTo(geoPoint, 20.0, 1500)
+        binding.map.controller.animateTo(geoPoint, 19.0, 1500)
         binding.map.controller.setCenter(geoPoint)
         binding.map.invalidate() // Cập nhật bản đồ
+
+
+        val start = "$longitude,$latitude" // Điểm bắt đầu
+        val end = "${geoPoint.longitude},${geoPoint.latitude}"
+
+        callGetRouteAPI(start, end)
+
+    }
+
+
+    private fun drawRoute(coordinates: List<List<Double>>) {
+        val geoPoints = coordinates.map { GeoPoint(it[1], it[0]) } // Chuyển từ [lon, lat] sang GeoPoint
+
+        // Xóa tuyến đường cũ nếu tồn tại
+        currentRoute?.let {
+            binding.map.overlays.remove(it)
+        }
+
+        // Tạo tuyến đường mới
+        val polyline = Polyline().apply {
+            setPoints(geoPoints)
+            color = Color.BLUE // Màu của tuyến đường
+            width = 10.0f       // Độ dày của tuyến đường
+        }
+
+        // Lưu tuyến đường hiện tại
+        currentRoute = polyline
+
+        // Thêm tuyến đường mới vào bản đồ
+        binding.map.overlays.add(polyline)
+
+        Toast.makeText(this, "Vẽ tuyến đường thành công", Toast.LENGTH_SHORT).show()
+
+        // Cập nhật lại bản đồ
+        binding.map.invalidate()
     }
 
     override fun onResume() {
