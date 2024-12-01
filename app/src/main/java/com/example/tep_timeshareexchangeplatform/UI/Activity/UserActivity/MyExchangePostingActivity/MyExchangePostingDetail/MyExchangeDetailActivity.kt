@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -177,7 +178,7 @@ class MyExchangeDetailActivity : BaseActivity() {
         binding.apply {
             tvResortName.text =
                 myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
-            tvLocation.text = myExchangePostingDetail.address
+            tvLocation.text = myExchangePostingDetail.location?.displayName ?: "Không có thông tin"
 
             if (myExchangePostingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -237,7 +238,7 @@ class MyExchangeDetailActivity : BaseActivity() {
                 this@MyExchangeDetailActivity
             )
             tvNumberNight.text = "${myExchangePostingDetail.nights} đêm"
-            tvLocation.text = myExchangePostingDetail.address
+            tvLocation.text = myExchangePostingDetail.location?.displayName ?: "Không có thông tin"
 
             llRoomPricing.visibility = View.GONE
             Glide.with(binding.root.context)
@@ -251,7 +252,6 @@ class MyExchangeDetailActivity : BaseActivity() {
 
         // Set Amenities
         facilityAdapter.submitList(listOf())
-
 
         // Show Status
         when (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)) {
@@ -339,6 +339,27 @@ class MyExchangeDetailActivity : BaseActivity() {
         binding.tvStatus.text =
             MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)
                 ?.getDescription(this)
+
+        // Show Update Status
+        if (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status) == MyPostingStatus.PROCESSING) {
+            binding.apply {
+                customToolbar.isShowEndIcon(true)
+                customToolbar.onEndIconClick = {
+                    Toast.makeText(
+                        this@MyExchangeDetailActivity,
+                        "Chức năng cập nhật trạng thái đang được phát triển",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            binding.apply {
+                customToolbar.isShowEndIcon(false)
+            }
+        }
+
+        // Description
+        binding.etNote.setText(myExchangePostingDetail.description)
 
 
     }

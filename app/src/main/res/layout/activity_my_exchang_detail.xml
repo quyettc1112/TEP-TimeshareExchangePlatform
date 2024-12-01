@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:showEndIcon="false"
+        app:endIcon="@drawable/ic_posting_update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -341,9 +343,6 @@
                 </LinearLayout>
 
                 <!--// Unit Type-->
-
-
-                <!--// Facilities-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -356,6 +355,7 @@
 
                 </LinearLayout>
 
+                <!--// Amenities-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -398,6 +398,43 @@
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--// Description-->
+                <LinearLayout
+                    android:background="@color/white"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <!-- Nights Label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Ghi Chú"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etNote"
+                        android:enabled="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/background_stroke_around"
+                        android:gravity="top|start"
+                        android:inputType="text|textShortMessage"
+                        android:minHeight="100dp"
+                        android:padding="10dp"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
 
                 <!--// Package Detail-->
                 <com.google.android.material.card.MaterialCardView

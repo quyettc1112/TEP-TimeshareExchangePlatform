@@ -4,16 +4,16 @@ package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting
 import com.google.gson.annotations.SerializedName
 
 data class MyExchangePostingsResponse(
-    @SerializedName("content") val content: List<Content>,
-    @SerializedName("pageable") val pageable: Pageable,
     @SerializedName("totalPages") val totalPages: Int,
     @SerializedName("totalElements") val totalElements: Int,
-    @SerializedName("last") val last: Boolean,
     @SerializedName("size") val size: Int,
+    @SerializedName("content") val content: List<Content>,
     @SerializedName("number") val number: Int,
     @SerializedName("sort") val sort: Sort,
-    @SerializedName("numberOfElements") val numberOfElements: Int,
+    @SerializedName("pageable") val pageable: Pageable,
     @SerializedName("first") val first: Boolean,
+    @SerializedName("last") val last: Boolean,
+    @SerializedName("numberOfElements") val numberOfElements: Int,
     @SerializedName("empty") val empty: Boolean
 ) {
     data class Content(
@@ -26,7 +26,8 @@ data class MyExchangePostingsResponse(
         @SerializedName("roomName") val roomName: String,
         @SerializedName("resortId") val resortId: Int,
         @SerializedName("resortName") val resortName: String,
-        @SerializedName("address") val address: String,
+        @SerializedName("resortLocationName") val resortLocationName: String,
+        @SerializedName("resortLocationDisplayName") val resortLocationDisplayName: String,
         @SerializedName("isVerify") val isVerify: Boolean,
         @SerializedName("nights") val nights: Int,
         @SerializedName("exchangePackageId") val exchangePackageId: Int,
@@ -58,12 +59,18 @@ data class MyExchangePostingsResponse(
         )
     }
 
+    data class Sort(
+        @SerializedName("empty") val empty: Boolean,
+        @SerializedName("sorted") val sorted: Boolean,
+        @SerializedName("unsorted") val unsorted: Boolean
+    )
+
     data class Pageable(
+        @SerializedName("offset") val offset: Int,
+        @SerializedName("sort") val sort: Sort,
+        @SerializedName("paged") val paged: Boolean,
         @SerializedName("pageNumber") val pageNumber: Int,
         @SerializedName("pageSize") val pageSize: Int,
-        @SerializedName("sort") val sort: Sort,
-        @SerializedName("offset") val offset: Int,
-        @SerializedName("paged") val paged: Boolean,
         @SerializedName("unpaged") val unpaged: Boolean
     ) {
         data class Sort(
@@ -72,10 +79,4 @@ data class MyExchangePostingsResponse(
             @SerializedName("unsorted") val unsorted: Boolean
         )
     }
-
-    data class Sort(
-        @SerializedName("empty") val empty: Boolean,
-        @SerializedName("sorted") val sorted: Boolean,
-        @SerializedName("unsorted") val unsorted: Boolean
-    )
 }
