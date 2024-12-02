@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Im
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.Adapter.ImageUPAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailViewModel
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
@@ -27,7 +28,7 @@ class UpdateRentalBottomDialog(
     private val binding get() = _binding!!
     private val imageUploadAdapter = ImageUPAdapter()
     private lateinit var tokenManager: TokenManager
-    private lateinit var pickImagesUPLauncher: ActivityResultLauncher<String>
+    private lateinit var pickImagesUPLauncher_Rental: ActivityResultLauncher<String>
 
 
     override fun onCreateView(
@@ -60,11 +61,11 @@ class UpdateRentalBottomDialog(
         myRentalDetailViewModel.uploadImageResponse.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    (activity as MyExchangeDetailActivity).showLoadingWaiting(true)
+                    (activity as MyPostingDetailActivity).showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    (activity as MyExchangeDetailActivity).apply {
+                    (activity as MyPostingDetailActivity).apply {
                         hideLoadingWaiting()
                     }
                     myRentalDetailViewModel.addListImageForPut(it.data ?: emptyList())
@@ -73,7 +74,7 @@ class UpdateRentalBottomDialog(
                 }
 
                 Status.ERROR -> {
-                    (activity as MyExchangeDetailActivity).apply {
+                    (activity as MyPostingDetailActivity).apply {
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Không thể tải ảnh lên")
                     }
@@ -85,14 +86,14 @@ class UpdateRentalBottomDialog(
         myRentalDetailViewModel.updateExchangeResponse.observe(viewLifecycleOwner, {
             when (it?.status) {
                 Status.LOADING -> {
-                    (activity as MyExchangeDetailActivity).showLoadingWaiting(true)
+                    (activity as MyPostingDetailActivity).showLoadingWaiting(true)
                 }
 
                 Status.SUCCESS -> {
-                    (activity as MyExchangeDetailActivity).apply {
+                    (activity as MyPostingDetailActivity).apply {
                         hideLoadingWaiting()
                         showSuccessToast("Thành công", "Cập nhật bài đăng thành công")
-                        (activity as MyExchangeDetailActivity).apply {
+                        (activity as MyPostingDetailActivity).apply {
                           /*  myExchangeDetailViewModel.getCustomerExchangeDetail(
                                 tokenManager.getAccessToken().toString(),
                                 myExchangeDetailViewModel.myExchangeDetail.value?.data?.exchangePostingId ?: 0
@@ -103,7 +104,7 @@ class UpdateRentalBottomDialog(
                 }
 
                 Status.ERROR -> {
-                    (activity as MyExchangeDetailActivity).apply {
+                    (activity as MyPostingDetailActivity).apply {
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Không thể cập nhật bài đăng")
                     }
@@ -129,7 +130,7 @@ class UpdateRentalBottomDialog(
     }
 
     private fun initializeLaunchers() {
-        pickImagesUPLauncher =
+        pickImagesUPLauncher_Rental =
             registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
                 if (uris.isNotEmpty()) {
                     val listImage = mutableListOf<ImageUploadModel>()
@@ -146,7 +147,7 @@ class UpdateRentalBottomDialog(
 
     private fun eventClickAddImage() {
         binding.btnAddImage.setOnClickListener {
-            pickImagesUPLauncher.launch("image/*")
+            pickImagesUPLauncher_Rental.launch("image/*")
         }
     }
 
@@ -217,7 +218,7 @@ class UpdateRentalBottomDialog(
             ?: 0 // Ảnh phụ là các ảnh sau ảnh chính
         return when {
             subImages == 0 || subImages!! < 6 -> {
-                (activity as MyExchangeDetailActivity).showWarningToast(
+                (activity as MyPostingDetailActivity).showWarningToast(
                     "Thiếu Ảnh",
                     "Vui lòng chọn ít nhất 6 ảnh"
                 )

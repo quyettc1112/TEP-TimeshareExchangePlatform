@@ -336,7 +336,6 @@ class MyPostingDetailActivity : BaseActivity() {
 
     }
 
-
     private fun bindDataUnitType(data: MyRentalPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
