@@ -61,6 +61,9 @@ class Constant {
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
+        const val RESORT_LATITUDE = "resortLatitude"
+        const val RESORT_LONGITUDE = "resortLongitude"
+
         const val DEFAULT_PACKAGE_SELECTION = "packageSelection"
 
         const val PAYMENT_URL = "paymentUrl"

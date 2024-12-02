@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.NearbyBottomSheet.NearByBottomSheet
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMapViewBinding
@@ -79,8 +80,15 @@ class MapViewActivity : BaseActivity() {
 
     private fun getIntentValue() {
         observerData()
-        resort_latitude = intent.getDoubleExtra("latitude", 10.3334567)
-        reosrt_longitude = intent.getDoubleExtra("longitude", 107.0894716)
+        resort_latitude = intent.getDoubleExtra(Constant.RESORT_LATITUDE, 0.0)
+        reosrt_longitude = intent.getDoubleExtra(Constant.RESORT_LONGITUDE, 0.0)
+
+        if(reosrt_longitude == 0.0 || resort_latitude == 0.0){
+            Toast.makeText(this, "Không thể lấy vị trí của khu nghỉ dưỡng", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         callGetReverseGeocodingAPI(resort_latitude, reosrt_longitude)
         callGetOverpassAPI(resort_latitude, reosrt_longitude)
 

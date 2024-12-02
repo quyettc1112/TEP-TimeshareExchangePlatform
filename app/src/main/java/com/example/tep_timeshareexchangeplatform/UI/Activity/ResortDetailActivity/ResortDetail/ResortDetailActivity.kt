@@ -8,23 +8,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.paging.LOGGER
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortAmenityAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
@@ -199,7 +194,8 @@ class ResortDetailActivity : BaseActivity() {
     private fun eventClickShowMaps() {
         binding.llSeeMap.setOnClickListener {
             val intent = Intent(this, MapViewActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
+            intent.putExtra(Constant.RESORT_LATITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
             startActivity(intent)
         }
     }
@@ -208,7 +204,7 @@ class ResortDetailActivity : BaseActivity() {
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
             tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
-            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
+            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.location?.displayName ?: "Không Có Dữ Liệu"
             tvMinPrice.text =
                 "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
             tvDescription.text =
@@ -370,9 +366,9 @@ class ResortDetailActivity : BaseActivity() {
             isActive = unitTypeDto.isActive,
             unitTypeAmenitiesDTOS = unitTypeDto.unitTypeAmenitiesList.map { amenity ->
                 UnitTypeBase.UnitTypeAmenitiesDTOS(
-                    name = amenity.name,
-                    type = amenity.type,
-                    isActive = amenity.isActive
+                    name = amenity?.name ?: "",
+                    type = amenity?.type,
+                    isActive = amenity?.isActive
                 )
             }
         )
