@@ -59,7 +59,7 @@ class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePosting
                 // Kiểm tra nếu đây là item thứ 6 và còn item sau đó
                 if (position == 5 && itemCount > 6) {
                     binding.llNumImageContainer.visibility = View.VISIBLE
-                    binding.tvNumImageLeft.text = "+${itemCount - 5}"
+                    binding.tvNumImageLeft.text = "+${itemCount - 6}"
                 } else {
                     binding.llNumImageContainer.visibility = View.GONE
                 }
