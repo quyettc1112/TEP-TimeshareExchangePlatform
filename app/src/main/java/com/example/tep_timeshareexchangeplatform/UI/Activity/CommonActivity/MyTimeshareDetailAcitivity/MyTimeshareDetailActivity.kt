@@ -23,6 +23,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -67,6 +68,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
         initAdapter()
         observeViewModel()
         setEventButtonRequestClick()
+        eventClickShowUpdateBottomSheet()
     }
 
     private fun observeViewModel() {
@@ -106,6 +108,17 @@ class MyTimeshareDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickShowUpdateBottomSheet() {
+       binding.customToolbar.onEndIconClick = {
+           val updateTimeshareBottomDialog = UpdateTimeshareBottomDialog(
+               myTimeshareDetailViewModel = myTimeshareDetailViewModel
+           )
+           updateTimeshareBottomDialog.show(supportFragmentManager, "UpdateTimeshareBottomDialog")
+       }
+    }
+
+
+
     // Bind Data
     private fun bindDataTimeshareDetail(myTimeshareDetailResponse: MyTimeshareDetailResponse) {
         // Check in Date, Check out Date
@@ -132,6 +145,12 @@ class MyTimeshareDetailActivity : BaseActivity() {
                 )
         }
 
+        // Custom Toolbar Data
+        binding.customToolbar.apply {
+            setTitle("Chi Tiết Timeshare")
+            setTitleDetail("${myTimeshareDetailResponse.resortName}")
+        }
+
         // Image
         Glide.with(this)
             .load(myTimeshareDetailResponse.resortImage)
@@ -140,11 +159,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
             .into(binding.ivTimeshareDetail)
 
         binding.apply {
-            binding.customToolbar.apply {
-                setTitle("${myTimeshareDetailResponse.unitType.title}")
-                setTitleDetail("${myTimeshareDetailResponse.startDate} đến ${myTimeshareDetailResponse.endDate}")
-
-            }
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
             tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
@@ -199,25 +213,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
             }
         }
     }
-
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
-        val bedTypes = listOf(
-            "bedsFull" to "Full",
-            "bedsKing" to "King",
-            "bedsSofa" to "Sofa",
-            "bedsMurphy" to "Murphy",
-            "bedsQueen" to "Queen",
-            "bedsTwin" to "Twin"
-        )
-
-        val bedsList = bedTypes.mapNotNull { (key, label) ->
-            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
-            if (count > 0) "$count giường $label" else null
-        }.joinToString(", ")
-
-        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
-    }
-
 
     private fun bindDataAmenities(data: MyTimeshareDetailResponse) {
         featuresAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
@@ -356,7 +351,25 @@ class MyTimeshareDetailActivity : BaseActivity() {
         autoScrollHelper.pauseAutoScroll()
     }
 
-    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+
+    private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+        val bedTypes = listOf(
+            "bedsFull" to "Full",
+            "bedsKing" to "King",
+            "bedsSofa" to "Sofa",
+            "bedsMurphy" to "Murphy",
+            "bedsQueen" to "Queen",
+            "bedsTwin" to "Twin"
+        )
+
+        val bedsList = bedTypes.mapNotNull { (key, label) ->
+            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
+            if (count > 0) "$count giường $label" else null
+        }.joinToString(", ")
+
+        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+    private fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
                 name = roomAmenity.name,

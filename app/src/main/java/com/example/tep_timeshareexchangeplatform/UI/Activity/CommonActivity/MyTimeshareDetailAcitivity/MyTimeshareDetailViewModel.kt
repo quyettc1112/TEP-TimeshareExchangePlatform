@@ -5,20 +5,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class MyTimeshareDetailViewModel @Inject constructor(
-    private val timeshareRepository: TimeshareRepository
+    private val timeshareRepository: TimeshareRepository,
+    private val publicResortAPIRepository: PublicResortAPIRepository,
+    private val roomAPIRepository: RoomAPIRepository,
 ): ViewModel() {
 
     // ----------------------------------------------------------//
@@ -69,6 +78,116 @@ class MyTimeshareDetailViewModel @Inject constructor(
 
     fun clearAllAmenities() {
         _selectedAmenities.value = AmenityType.values().associateWith { emptyList() }
+    }
+
+
+
+    private val _currentRoomInfo = MutableLiveData<Int>()
+    val currentRoomInfo: MutableLiveData<Int>
+        get() = _currentRoomInfo
+
+    fun updateCurrentRoomInfo(currentRoomInfo: Int) {
+        _currentRoomInfo.value = currentRoomInfo
+    }
+
+    // ----------------------------------------------------------//
+    // Call Unit Type Detail
+    // Init MutableLiveData for Unit Type Detail
+    private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>>()
+    val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>> = _unitTypeDetail
+    fun getUnitTypeDetailByID(token: String, unitTypeID: Int) {
+        viewModelScope.launch {
+            _unitTypeDetail.postValue(Resource.loading(null))
+            publicResortAPIRepository.getUnitTypeDetailById(token, unitTypeID).let {
+                _unitTypeDetail.postValue(it)
+            }
+        }
+    }
+
+    private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
+    val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
+
+    // Function to get Room List By Resort ID
+    fun getRoomListByResortId(token: String, resortID: Int) {
+        viewModelScope.launch {
+            _roomList.postValue(Resource.loading(null))
+            roomAPIRepository.getRoomListByResortId(token, resortID).let {
+                _roomList.postValue(it)
+            }
+        }
+    }
+
+
+    private val _startDateTimeshare = MutableLiveData<String>()
+    val startDateTimeshare: LiveData<String> get() = _startDateTimeshare
+
+    private val _endDateTimeshare = MutableLiveData<String>()
+    val endDateTimeshare: LiveData<String> get() = _endDateTimeshare
+
+    fun setTimeshareDateRange(start: Long?, end: Long?) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        _startDateTimeshare.value = start?.let { dateFormat.format(Date(it)) }
+        _endDateTimeshare.value = end?.let { dateFormat.format(Date(it)) }
+        if (start != null && end != null) {
+            val numberOfDays = ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            _numberOfNightsTimeShare.value = numberOfDays
+        } else {
+            _numberOfNightsTimeShare.value = 0
+        }
+    }
+
+    fun getTimeshareDateRange(): Pair<String, String> {
+        val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Định dạng ban đầu
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Định dạng mong muốn
+
+        val startDateFormatted = _startDateTimeshare.value?.let { dateString ->
+            try {
+                val date = inputFormat.parse(dateString) // Chuyển chuỗi sang Date
+                date?.let { outputFormat.format(it) } ?: dateString // Định dạng lại
+            } catch (e: Exception) {
+                dateString // Trả về chuỗi gốc nếu có lỗi
+            }
+        } ?: ""
+
+        val endDateFormatted = _endDateTimeshare.value?.let { dateString ->
+            try {
+                val date = inputFormat.parse(dateString) // Chuyển chuỗi sang Date
+                date?.let { outputFormat.format(it) } ?: dateString // Định dạng lại
+            } catch (e: Exception) {
+                dateString // Trả về chuỗi gốc nếu có lỗi
+            }
+        } ?: ""
+
+        return Pair(startDateFormatted, endDateFormatted)
+    }
+
+
+    private val _numberOfNightsTimeShare = MutableLiveData<Int>()
+    val numberOfNightsTimeshare: LiveData<Int> get() = _numberOfNightsTimeShare
+    fun getNumberOfNightsTimeshare(): Int {
+        return _numberOfNightsTimeShare.value ?: 0
+    }
+
+    fun resetTimeshareDateRange() {
+        _startDateTimeshare.value = ""
+        _endDateTimeshare.value = ""
+        _numberOfNightsTimeShare.value = 0
+    }
+
+
+    private val _yearRange = MutableLiveData<Pair<Int, Int>>()
+    val yearRange: LiveData<Pair<Int, Int>> get() = _yearRange
+
+    fun setYearRange(startYear: Int, endYear: Int) {
+        _yearRange.value = Pair(startYear, endYear)
+    }
+
+    fun getYearRange(): Pair<Int, Int> {
+        return (_yearRange.value ?: Pair(0, 0)) as Pair<Int, Int>
+    }
+
+    fun resetTimeshareYearRange() {
+        _yearRange.value = Pair(0, 0)
     }
 
 }
