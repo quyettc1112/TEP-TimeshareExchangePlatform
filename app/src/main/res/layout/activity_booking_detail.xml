@@ -76,7 +76,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
-                            android:fontFamily="@font/inter_medium"
+                            android:fontFamily="@font/inter_bold"
                             android:textColor="@color/red_light"
                             android:textSize="10dp" />
                     </LinearLayout>
@@ -110,23 +110,25 @@
                         android:textSize="12dp" />
 
                     <!--// Type Booking-->
+                    <!--// Type Booking-->
                     <LinearLayout
                         android:id="@+id/ll_type_booking_container"
+                        android:background="@drawable/background_strock_blue"
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:backgroundTint="@color/white"
+                        android:layout_height="25dp"
                         android:elevation="3dp"
                         android:gravity="center"
-                        android:padding="5dp"
+                        app:layout_constraintBottom_toTopOf="@+id/linearLayout34"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
                         <ImageView
-                            android:id="@+id/iv_booking_type"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:id="@+id/im_booking_type"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="10dp"
+                            android:padding="1dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_rental_booking" />
 
@@ -136,11 +138,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginEnd="10dp"
-                            android:fontFamily="@font/inter_medium"
+                            android:fontFamily="@font/inter_bold"
                             android:text="Thuê Phòng"
-                            android:textColor="@color/black"
+                            android:textColor="@color/blue_btn_search"
                             android:textSize="12dp" />
                     </LinearLayout>
 

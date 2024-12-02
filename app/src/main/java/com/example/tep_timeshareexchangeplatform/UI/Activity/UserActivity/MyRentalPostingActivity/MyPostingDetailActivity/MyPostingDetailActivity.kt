@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRen
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -13,25 +14,22 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingDetailBinding
@@ -110,6 +108,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
+                    Log.e("MyPostingDetailActivityasd", "observeMyPostingDetail: ${it.message}")
                 }
 
                 Status.LOADING -> {
@@ -128,7 +127,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("Chi Tiết Bài Đăng")
+            setTitle("Chi Tiết Bài Đăng Cho Thuê")
             setTitleDetail("${myRentalPostingDetailResponse.resortName}")
         }
 
@@ -136,7 +135,8 @@ class MyPostingDetailActivity : BaseActivity() {
         binding.apply {
             tvResortName.text =
                 myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
-            tvLocation.text = myRentalPostingDetailResponse.address
+            tvLocation.text =
+                myRentalPostingDetailResponse.location?.displayName ?: "Không Có Dữ Liệu"
 
             if (myRentalPostingDetailResponse.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -207,7 +207,7 @@ class MyPostingDetailActivity : BaseActivity() {
         // UI DTB
         binding.includeDetailBilling.apply {
             llPostingBy.visibility = View.GONE
-            llRoomPricing.visibility = View.GONE
+            llRoomPricing.visibility = View.VISIBLE
             tvResortNameDtb.text =
                 myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
             tvCheckInDate.text = Constant.formatDateByLocale(
@@ -225,11 +225,12 @@ class MyPostingDetailActivity : BaseActivity() {
                 tvEstimatedTotalPrice.text = "Đang Chờ Xác Nhận"
             } else {
                 tvRoomPricePerNight.text =
-                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} đ"
+                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} VNĐ"
                 tvEstimatedTotalPrice.text =
-                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} đ"
+                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} VNĐ"
             }
-            tvLocation.text = myRentalPostingDetailResponse.address
+            tvLocation.text =
+                myRentalPostingDetailResponse.location?.displayName ?: "Không Có Dữ Liệu"
 
             Glide.with(binding.root.context)
                 .load(myRentalPostingDetailResponse.unitType.photos)
@@ -244,8 +245,7 @@ class MyPostingDetailActivity : BaseActivity() {
         // Set Amenities
         facilityAdapter.submitList(listOf())
 
-
-
+        // Set Status
         when (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)) {
             MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
@@ -315,6 +315,24 @@ class MyPostingDetailActivity : BaseActivity() {
         binding.tvStatus.text =
             MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)
                 ?.getDescription(this)
+
+
+        // Show Update Status
+        if (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status) == MyPostingStatus.PROCESSING) {
+            binding.apply {
+                customToolbar.isShowEndIcon(true)
+                customToolbar.onEndIconClick = {
+                    showUpdateRentalDialog()
+                }
+            }
+        } else {
+            binding.apply {
+                customToolbar.isShowEndIcon(false)
+            }
+        }
+
+        // Description
+        binding.etNote.setText(myRentalPostingDetailResponse.description)
 
     }
 
@@ -442,7 +460,8 @@ class MyPostingDetailActivity : BaseActivity() {
 
         imagePostingAdapter.submitList(imageList)
         if (imageList.size == 1) {
-            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManagerCheck =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerViewResortImage.apply {
                 adapter = imagePostingAdapter
                 layoutManager = layoutManagerCheck
@@ -471,7 +490,16 @@ class MyPostingDetailActivity : BaseActivity() {
         autoScrollHelper.pauseAutoScroll()
     }
 
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+    private fun showUpdateRentalDialog() {
+        viewModel.resetUpdateExchangeResponse()
+        val updateRentalBottomDialog = UpdateRentalBottomDialog(
+            myRentalDetailViewModel = viewModel
+        )
+        updateRentalBottomDialog.show(supportFragmentManager, "UpdateExchangeBottomDialog")
+    }
+
+
+    private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
             "bedsFull" to "Full",
             "bedsKing" to "King",
@@ -498,7 +526,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+    private fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return amenities.map { amenity ->
             AmenitiesModel(
                 name = amenity.name,

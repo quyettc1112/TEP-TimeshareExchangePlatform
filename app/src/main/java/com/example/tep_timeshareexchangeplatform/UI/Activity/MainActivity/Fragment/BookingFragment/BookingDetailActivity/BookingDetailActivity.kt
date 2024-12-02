@@ -43,7 +43,6 @@ class BookingDetailActivity : BaseActivity() {
     private lateinit var notificationHelper: NotificationHelper
     private val viewModel: BookingDetailViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -339,9 +338,9 @@ class BookingDetailActivity : BaseActivity() {
 
 
         if (data.source == "rental") {
-            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
         } else {
-            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.ivBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
         }
 
 
@@ -419,9 +418,9 @@ class BookingDetailActivity : BaseActivity() {
 
 
         if (data.source == "rental") {
-            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.ivBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
         } else {
-            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.ivBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
         }
 
         // Bind Data Guest Information
