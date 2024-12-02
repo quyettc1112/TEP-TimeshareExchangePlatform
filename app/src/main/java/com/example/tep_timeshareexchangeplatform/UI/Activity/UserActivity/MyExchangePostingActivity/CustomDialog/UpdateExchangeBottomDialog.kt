@@ -84,7 +84,7 @@ class UpdateExchangeBottomDialog(
 
         // Update Exchange Posting
         myExchangeDetailViewModel.updateExchangeResponse.observe(viewLifecycleOwner, {
-            when (it.status) {
+            when (it?.status) {
                 Status.LOADING -> {
                     (activity as MyExchangeDetailActivity).showLoadingWaiting(true)
                 }
@@ -108,6 +108,10 @@ class UpdateExchangeBottomDialog(
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Không thể cập nhật bài đăng")
                     }
+                }
+
+                null -> {
+
                 }
             }
         })
@@ -199,6 +203,8 @@ class UpdateExchangeBottomDialog(
         super.onDestroyView()
         _binding = null // Avoid memory leaks
         myExchangeDetailViewModel.clearListImageForPut()
+
+
 
     }
 

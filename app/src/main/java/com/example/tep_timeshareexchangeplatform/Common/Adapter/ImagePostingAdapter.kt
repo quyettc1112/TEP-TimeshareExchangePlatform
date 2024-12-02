@@ -90,4 +90,8 @@ class ImagePostingAdapter : BaseAdapter<String, ImagePostingAdapter.ImagePosting
         val binding = ItemTimeshareImageBinding.inflate(layoutInflater, parent, false)
         return ImagePostingViewHolder(binding)
     }
+
+    fun clearListImageForPut() {
+        differ.submitList(emptyList())
+    }
 }

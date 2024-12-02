@@ -31,8 +31,12 @@ class MyExchangeDetailViewModel @Inject constructor(
                 _myExchangeDetail.postValue(it)
             }
         }
-
     }
+    fun getImageList(): List<String> {
+        return _myExchangeDetail.value?.data?.imageUrls ?: emptyList()
+    }
+
+
 
     // Currnt Image List. For Put
     private val _listImageForPut =  MutableLiveData<List<String>?>(emptyList())
@@ -83,14 +87,18 @@ class MyExchangeDetailViewModel @Inject constructor(
 
 
     // Update Exchange Posting
-    private val _updateExchangeResponse = MutableLiveData<Resource<Void>>()
-    val updateExchangeResponse: LiveData<Resource<Void>> get() = _updateExchangeResponse
+    private val _updateExchangeResponse = MutableLiveData<Resource<Void>?>()
+    val updateExchangeResponse: LiveData<Resource<Void>?> get() = _updateExchangeResponse
     fun callUpdateExchangePosting(token: String, postingId: Int, exchangePostingUpdateDTO: ExchangePostingUpdateDTO) {
         viewModelScope.launch {
             _updateExchangeResponse.postValue(Resource.loading(null))
             val response = customerAPIRepository.updateExchangePosting(token, postingId, exchangePostingUpdateDTO)
             _updateExchangeResponse.postValue(response)
         }
+    }
+
+    fun resetUpdateExchangeResponse() {
+        _updateExchangeResponse.value = null
     }
 
 

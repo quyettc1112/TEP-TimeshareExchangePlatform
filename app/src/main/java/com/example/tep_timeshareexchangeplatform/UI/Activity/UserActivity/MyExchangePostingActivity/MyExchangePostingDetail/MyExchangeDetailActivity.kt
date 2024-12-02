@@ -47,7 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangDetailBinding
-    private var imagePostingAdapter = ImagePostingAdapter()
+    private lateinit var imagePostingAdapter : ImagePostingAdapter
     private var facilityAdapter = AmenitiesAdapter()
     private val viewModel: MyExchangeDetailViewModel by viewModels()
     private var postingId: Int = 0
@@ -56,7 +56,6 @@ class MyExchangeDetailActivity : BaseActivity() {
     private var entertainmentAdapter = RoomAmenitiesAdapter()
     private var kitchenAdapter = RoomAmenitiesAdapter()
     private var policyAdapter = RoomAmenitiesAdapter()
-    private lateinit var updateExchangeBottomDialog: UpdateExchangeBottomDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,9 +78,6 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
-        imagePostingAdapter.apply {
-            submitList(listOf())
-        }
 
         featuresAdapter.submitOriginalList(listOf())
         entertainmentAdapter.submitOriginalList(listOf())
@@ -132,11 +128,8 @@ class MyExchangeDetailActivity : BaseActivity() {
     }
 
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
-        // BindDAta Package
-        /* bindPackageData(myExchangePostingDetail.exchangePackageName)
- */
         // List Image
-        bindDataListImage(myExchangePostingDetail.imageUrls)
+        bindDataListImage()
 
         // Unit Type
         bindDataUnitType(myExchangePostingDetail)
@@ -450,59 +443,56 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataListImage(imageList: List<String>) {
+    private fun bindDataListImage() {
         // List Destination
+        imagePostingAdapter = ImagePostingAdapter()
 
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    return when (position) {
-                        0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        else -> {
-                            SpannedGridLayoutManager.SpanInfo(1, 1)
+        imagePostingAdapter.submitList(viewModel.getImageList())
+
+        val layoutManagerCheck = if (viewModel.getImageList().size == 1) {
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            SpannedGridLayoutManager(
+                object : SpannedGridLayoutManager.GridSpanLookup {
+                    override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                        // Conditions for 2x2 items
+                        return when (position) {
+                            0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            else -> {
+                                SpannedGridLayoutManager.SpanInfo(1, 1)
+                            }
                         }
                     }
-                }
-            },
-            4,  // number of columns
-            1f // how big is default item
-        )
-
-        imagePostingAdapter.submitList(imageList)
-        if (imageList.size == 1) {
-            val layoutManagerCheck =
-                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = layoutManagerCheck
-            }
-        } else {
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = manager
-            }
+                },
+                4,  // number of columns
+                1f // how big is default item
+            )
         }
-
+        binding.recyclerViewResortImage.apply {
+            adapter = imagePostingAdapter
+            layoutManager = layoutManagerCheck
+        }
         imagePostingAdapter.onItemClickListener = { position ->
             val intent = Intent(this@MyExchangeDetailActivity, ImageListActivity::class.java)
             intent.putExtra(Constant.IMAGE_POSITION, position)
             intent.putStringArrayListExtra(
                 Constant.IMAGE_LIST,
-                ArrayList(imageList)
+                ArrayList(viewModel.getImageList())
             )
             startActivity(intent)
         }
+        imagePostingAdapter.submitList(viewModel.getImageList())
 
     }
 
     private fun showUpdateExchangeDialog() {
-        updateExchangeBottomDialog = UpdateExchangeBottomDialog(
+        viewModel.resetUpdateExchangeResponse()
+        val updateExchangeBottomDialog = UpdateExchangeBottomDialog(
             description = binding.etNote.text.toString(),
             myExchangeDetailViewModel = viewModel
         )
