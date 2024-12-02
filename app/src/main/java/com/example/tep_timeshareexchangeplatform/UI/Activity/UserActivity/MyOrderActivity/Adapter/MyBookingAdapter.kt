@@ -28,9 +28,15 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
 
             binding.tvTimeshareName.text = "${item.resortName}"
             binding.tvCheckinDate.text =
-                item.checkinDate?.let { Constant.getFormattedDate(it, binding.root.context) }
+                item.checkinDate?.let { Constant.getFormattedDate(it, binding.root.context) }  ?: "Không Có Thông Tin"
+            binding.tvCheckinDayOfWeek.text =
+                item.checkinDate?.let { Constant.getDayOfWeek(it, binding.root.context) } ?: "Không Có Thông Tin"
             binding.tvCheckoutDate.text =
-                item.checkoutDate?.let { Constant.getFormattedDate(it, binding.root.context) }
+                item.checkoutDate?.let { Constant.getFormattedDate(it, binding.root.context) }  ?: "Không Có Thông Tin"
+            binding.tvCheckoutDayOfWeek.text =
+                item.checkoutDate?.let { Constant.getDayOfWeek(it, binding.root.context) }  ?: "Không Có Thông Tin"
+
+
             binding.tvTimeshareType.text = item.unitTypeTitle
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
@@ -45,8 +51,8 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
 
 
             /*${binding.root.context.getString(R.string.guests)}*/
-            binding.tvGuestEmail.text = "${item.primaryGuestName}"
-            binding.tvGuestPhone.text = "SĐT: ${item.primaryGuestPhone}"
+            binding.tvGuestEmail.text = "${item.primaryGuestName ?: "Không Có Thông Tin"}"
+            binding.tvGuestPhone.text = "SĐT: ${item.primaryGuestPhone ?: "Không Có Thông Tin"}"
 
             when (MyBookingStatus.fromApiStatus(item.status)) {
                 MyBookingStatus.BOOKED -> {
