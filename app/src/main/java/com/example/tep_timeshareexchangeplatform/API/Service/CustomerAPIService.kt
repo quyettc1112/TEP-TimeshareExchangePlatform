@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
@@ -282,6 +283,14 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("postingId") postingId: Int,
         @Body exchangePostingUpdateDTO: ExchangePostingUpdateDTO
+    ) : Response<Void>
+
+    // Update Rental Posting
+    @PUT("customer/rental/{postingId}")
+    suspend fun updateRentalPosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body rentalPostingUpdateDTO: RentalPostingUpdateDTO
     ) : Response<Void>
 
 

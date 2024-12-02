@@ -659,6 +659,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.includePaymentMethod12.tilRoomPrice.error = null
         return true
     }
+
     private fun isDateExchangeValid() : Boolean {
         val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
         if (numberOfNights == 0) {

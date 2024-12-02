@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingUpdateDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -33,6 +34,10 @@ class MyPostingDetailViewModel @Inject constructor(
             }
         }
     }
+    fun getImageList(): List<String> {
+        return _postingDetailResponse.value?.data?.imageUrls ?: emptyList()
+    }
+
 
 
 
@@ -82,20 +87,39 @@ class MyPostingDetailViewModel @Inject constructor(
     fun getUploadedImageUrls(): List<String> {
         return _listImageResponse.value?.data ?: emptyList()
     }
-
-
-    // Update Exchange Posting
-    private val _updateExchangeResponse = MutableLiveData<Resource<Void>?>()
-    val updateExchangeResponse: LiveData<Resource<Void>?> get() = _updateExchangeResponse
-    fun callUpdateExchangePosting(token: String, postingId: Int, exchangePostingUpdateDTO: ExchangePostingUpdateDTO) {
+    // Update Rental Posting
+    private val _updateRentalResponse = MutableLiveData<Resource<Void>?>()
+    val updateRentalResponse: LiveData<Resource<Void>?> get() = _updateRentalResponse
+    fun callUpdateRentalPosting(token: String, postingId: Int, rentalPostingUpdateDTO: RentalPostingUpdateDTO) {
         viewModelScope.launch {
-            _updateExchangeResponse.postValue(Resource.loading(null))
-            val response = customerAPIRepository.updateExchangePosting(token, postingId, exchangePostingUpdateDTO)
-            _updateExchangeResponse.postValue(response)
+            _updateRentalResponse.postValue(Resource.loading(null))
+            val response = customerAPIRepository.updateRentalPosting(token, postingId, rentalPostingUpdateDTO)
+            _updateRentalResponse.postValue(response)
         }
     }
 
-    fun resetUpdateExchangeResponse() {
-        _updateExchangeResponse.value = null
+    fun resetUpdateRentalResponse() {
+        _updateRentalResponse.value = null
     }
+
+
+
+    // Cancel Policy
+    private val _cancelPolicy = MutableLiveData<Int>()
+    val cancelPolicy: MutableLiveData<Int>
+        get() = _cancelPolicy
+
+    fun updateCancelPolicy(cancelPolicy: Int) {
+        _cancelPolicy.value = cancelPolicy
+    }
+
+    // Tracking PricePerNight
+    private val _pricePerNight = MutableLiveData<Long>()
+    val pricePerNight: MutableLiveData<Long>
+        get() = _pricePerNight
+
+    fun updatePricePerNight(pricePerNight: Long) {
+        _pricePerNight.value = pricePerNight
+    }
+
 }

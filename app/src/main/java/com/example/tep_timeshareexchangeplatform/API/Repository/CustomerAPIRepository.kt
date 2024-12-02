@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
@@ -511,7 +512,12 @@ class CustomerAPIRepository @Inject constructor(
     ): Resource<ExchangeRequestOnPostResponse> {
         return try {
             val response =
-                customerAPIService.getCustomerExchangeRequestOnPost("Bearer $token", postingId, pageNo, pageSize)
+                customerAPIService.getCustomerExchangeRequestOnPost(
+                    "Bearer $token",
+                    postingId,
+                    pageNo,
+                    pageSize
+                )
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -606,7 +612,8 @@ class CustomerAPIRepository @Inject constructor(
         sentRequestDTO: SentRequestDTO
     ): Resource<Void> {
         return try {
-            val response = customerAPIService.sendContactRequest("Bearer $token", postingId, sentRequestDTO)
+            val response =
+                customerAPIService.sendContactRequest("Bearer $token", postingId, sentRequestDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -625,7 +632,34 @@ class CustomerAPIRepository @Inject constructor(
         exchangePostingUpdateDTO: ExchangePostingUpdateDTO
     ): Resource<Void> {
         return try {
-            val response = customerAPIService.updateExchangePosting("Bearer $token", postingId, exchangePostingUpdateDTO)
+            val response = customerAPIService.updateExchangePosting(
+                "Bearer $token",
+                postingId,
+                exchangePostingUpdateDTO
+            )
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Update Rental Posting
+    suspend fun updateRentalPosting(
+        token: String,
+        postingId: Int,
+        rentalPostingUpdateDTO: RentalPostingUpdateDTO
+    ): Resource<Void> {
+        return try {
+            val response = customerAPIService.updateRentalPosting(
+                "Bearer $token",
+                postingId,
+                rentalPostingUpdateDTO
+            )
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

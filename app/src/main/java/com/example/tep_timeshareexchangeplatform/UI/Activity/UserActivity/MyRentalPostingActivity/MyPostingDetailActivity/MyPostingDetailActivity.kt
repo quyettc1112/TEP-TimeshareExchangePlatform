@@ -120,7 +120,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
     private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
         // Image List
-        bindDataListImage(myRentalPostingDetailResponse.imageUrls)
+        bindDataListImage()
 
         // Amenities
         bindDataAmenities(myRentalPostingDetailResponse)
@@ -433,55 +433,50 @@ class MyPostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataListImage(imageList: List<String>) {
+    private fun bindDataListImage() {
         // List Destination
+        imagePostingAdapter = ImagePostingAdapter()
 
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    return when (position) {
-                        0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        else -> {
-                            SpannedGridLayoutManager.SpanInfo(1, 1)
+        imagePostingAdapter.submitList(viewModel.getImageList())
+
+        val layoutManagerCheck = if (viewModel.getImageList().size == 1) {
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            SpannedGridLayoutManager(
+                object : SpannedGridLayoutManager.GridSpanLookup {
+                    override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                        // Conditions for 2x2 items
+                        return when (position) {
+                            0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            else -> {
+                                SpannedGridLayoutManager.SpanInfo(1, 1)
+                            }
                         }
                     }
-                }
-            },
-            4,  // number of columns
-            1f // how big is default item
-        )
-
-        imagePostingAdapter.submitList(imageList)
-        if (imageList.size == 1) {
-            val layoutManagerCheck =
-                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = layoutManagerCheck
-            }
-        } else {
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = manager
-            }
+                },
+                4,  // number of columns
+                1f // how big is default item
+            )
         }
-
+        binding.recyclerViewResortImage.apply {
+            adapter = imagePostingAdapter
+            layoutManager = layoutManagerCheck
+        }
         imagePostingAdapter.onItemClickListener = { position ->
             val intent = Intent(this@MyPostingDetailActivity, ImageListActivity::class.java)
             intent.putExtra(Constant.IMAGE_POSITION, position)
             intent.putStringArrayListExtra(
                 Constant.IMAGE_LIST,
-                ArrayList(imageList)
+                ArrayList(viewModel.getImageList())
             )
             startActivity(intent)
         }
-
+        imagePostingAdapter.submitList(viewModel.getImageList())
     }
 
     override fun onDestroy() {
@@ -490,13 +485,12 @@ class MyPostingDetailActivity : BaseActivity() {
     }
 
     private fun showUpdateRentalDialog() {
-        viewModel.resetUpdateExchangeResponse()
+        viewModel.resetUpdateRentalResponse()
         val updateRentalBottomDialog = UpdateRentalBottomDialog(
             myRentalDetailViewModel = viewModel
         )
         updateRentalBottomDialog.show(supportFragmentManager, "UpdateExchangeBottomDialog")
     }
-
 
     private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
