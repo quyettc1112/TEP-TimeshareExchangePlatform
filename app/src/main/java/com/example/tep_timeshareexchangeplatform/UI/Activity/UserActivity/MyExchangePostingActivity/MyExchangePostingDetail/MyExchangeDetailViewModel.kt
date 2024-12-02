@@ -70,8 +70,8 @@ class MyExchangeDetailViewModel @Inject constructor(
         return _imageListFromDevice.value?.map { it.part } ?: emptyList()
     }
 
-    private val _listImageResponse = MutableLiveData<Resource<List<String>>>()
-    val uploadImageResponse: LiveData<Resource<List<String>>> get() = _listImageResponse
+    private val _listImageResponse = MutableLiveData<Resource<List<String>>?>()
+    val uploadImageResponse: LiveData<Resource<List<String>>?> get() = _listImageResponse
     fun callUploadImages(token: String) {
         viewModelScope.launch {
             _listImageResponse.postValue(Resource.loading(null))
@@ -97,8 +97,13 @@ class MyExchangeDetailViewModel @Inject constructor(
         }
     }
 
+
     fun resetUpdateExchangeResponse() {
         _updateExchangeResponse.value = null
+        _listImageResponse.value = null
+        _listImageForPut.value = emptyList()
+        _imageListFromDevice.value = emptyList()
+
     }
 
 

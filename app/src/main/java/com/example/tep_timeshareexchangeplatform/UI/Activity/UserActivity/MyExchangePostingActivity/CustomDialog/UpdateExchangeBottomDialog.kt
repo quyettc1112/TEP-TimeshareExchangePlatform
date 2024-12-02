@@ -59,7 +59,7 @@ class UpdateExchangeBottomDialog(
     private fun observeViewModel() {
         // UpLoad Image
         myExchangeDetailViewModel.uploadImageResponse.observe(viewLifecycleOwner, {
-            when (it.status) {
+            when (it?.status) {
                 Status.LOADING -> {
                     (activity as MyExchangeDetailActivity).showLoadingWaiting(true)
                 }
@@ -78,6 +78,10 @@ class UpdateExchangeBottomDialog(
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Không thể tải ảnh lên")
                     }
+                }
+
+                null -> {
+
                 }
             }
         })

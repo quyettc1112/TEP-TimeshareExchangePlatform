@@ -50,6 +50,14 @@ class UpdateRentalBottomDialog(
         // Inflate layout using View Binding
         _binding = DialogUpdateRentalPostingBinding.inflate(inflater, container, false)
         tokenManager = TokenManager(requireContext())
+        imageUploadAdapter.submitList(listOf())
+
+
+        myRentalDetailViewModel.clearListImageForPut()
+        Log.d("UpdateRentalBottomDialog", "onCreateView: ${myRentalDetailViewModel.postingDetailResponse.value?.data?.imageUrls?.size}")
+        Log.d("UpdateRentalBottomDialog", "onCreateView: ${  myRentalDetailViewModel.getImageList().size}")
+        Log.d("UpdateRentalBottomDialog", "onCreateView: ${imageUploadAdapter.differ.currentList?.size}")
+
         initializeLaunchers()
         initAdapter()
         observeViewModel()
@@ -70,11 +78,10 @@ class UpdateRentalBottomDialog(
 
     }
 
-
     private fun observeViewModel() {
         // UpLoad Image
         myRentalDetailViewModel.uploadImageResponse.observe(viewLifecycleOwner, {
-            when (it.status) {
+            when (it?.status) {
                 Status.LOADING -> {
                     (activity as MyPostingDetailActivity).showLoadingWaiting(true)
                 }
@@ -93,6 +100,10 @@ class UpdateRentalBottomDialog(
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Không thể tải ảnh lên")
                     }
+                }
+
+                null -> {
+
                 }
             }
         })
@@ -193,7 +204,7 @@ class UpdateRentalBottomDialog(
                     imageUrls = it1
                 )
             }
-            Log.d("RentalPostingUpdateDTO", rentalPostingUpdateDTO.toString())
+            Log.d("RentalPostingUpdateDTO", rentalPostingUpdateDTO!!.imageUrls.size.toString())
 
             callUpdateRentalPosting(
                 myRentalDetailViewModel.postingDetailResponse.value?.data?.rentalPostingId ?: 0,
@@ -210,7 +221,10 @@ class UpdateRentalBottomDialog(
         myRentalDetailViewModel.addListImageForPut(
             myRentalDetailViewModel.postingDetailResponse.value?.data?.imageUrls ?: emptyList()
         )
+        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${myRentalDetailViewModel.getImagesForPut()?.size}")
         imageUploadAdapter.submitList(myRentalDetailViewModel.getImagesForPut())
+        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${myRentalDetailViewModel.getImagesForPut()?.size}")
+        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${imageUploadAdapter.differ.currentList?.size}")
     }
 
     private fun bindDataSpinnerCancellationPolicy() {
@@ -371,14 +385,15 @@ class UpdateRentalBottomDialog(
         super.onDestroyView()
         _binding = null // Avoid memory leaks
         myRentalDetailViewModel.clearListImageForPut()
+        imageUploadAdapter.clearAll()
 
-
+        Log.d("DasdasdasdadwsA", "onDestroyView: ${myRentalDetailViewModel.getImagesForPut()?.size}")
+        Log.d("DasdasdasdadwsA", "onDestroyView: ${imageUploadAdapter.differ.currentList?.size}")
     }
 
     override fun getTheme(): Int {
         return R.style.MyBottomSheetDialogTheme // Use custom theme
     }
-
 
     private fun isImageValid(): Boolean {
         val subImages = myRentalDetailViewModel.getImagesForPut()?.size

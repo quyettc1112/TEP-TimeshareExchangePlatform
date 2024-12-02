@@ -57,6 +57,7 @@ class MyPostingDetailViewModel @Inject constructor(
             remove(image)
         }
     }
+
     fun clearListImageForPut() {
         _listImageForPut.value = emptyList()
     }
@@ -73,8 +74,8 @@ class MyPostingDetailViewModel @Inject constructor(
         return _imageListFromDevice.value?.map { it.part } ?: emptyList()
     }
 
-    private val _listImageResponse = MutableLiveData<Resource<List<String>>>()
-    val uploadImageResponse: LiveData<Resource<List<String>>> get() = _listImageResponse
+    private val _listImageResponse = MutableLiveData<Resource<List<String>>?>()
+    val uploadImageResponse: LiveData<Resource<List<String>>?> get() = _listImageResponse
     fun callUploadImages(token: String) {
         viewModelScope.launch {
             _listImageResponse.postValue(Resource.loading(null))
@@ -82,10 +83,6 @@ class MyPostingDetailViewModel @Inject constructor(
             val response = storageAPIRepository.uploadFiles(token, images)
             _listImageResponse.postValue(response)
         }
-    }
-
-    fun getUploadedImageUrls(): List<String> {
-        return _listImageResponse.value?.data ?: emptyList()
     }
     // Update Rental Posting
     private val _updateRentalResponse = MutableLiveData<Resource<Void>?>()
@@ -100,6 +97,10 @@ class MyPostingDetailViewModel @Inject constructor(
 
     fun resetUpdateRentalResponse() {
         _updateRentalResponse.value = null
+        _listImageResponse.value = null
+        _listImageForPut.value = emptyList()
+        _imageListFromDevice.value = emptyList()
+
     }
 
 
