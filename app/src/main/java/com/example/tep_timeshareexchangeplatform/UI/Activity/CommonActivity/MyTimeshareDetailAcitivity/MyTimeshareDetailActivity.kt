@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyT
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -84,15 +85,8 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Error",
-                        "Error ${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_thin)
-                    )
+                    showErrorToast("Lỗi Khi Tải Dữ Liệu", "Không thể tải dữ liệu")
+                    Log.d("ErrorMyTimeshare", it.message.toString())
                 }
             }
         }
@@ -104,17 +98,10 @@ class MyTimeshareDetailActivity : BaseActivity() {
         val myTimeshareId = intent.getIntExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, 0)
         val token = TokenManager(this).getAccessToken()
         if (myTimeshareId == 0 || token == null) {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Error",
-                "Error when get data",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(this, R.font.inter_thin)
-            )
+            showErrorToast("Lỗi", "Không có Id Timeshare")
             return
         } else {
+            Log.d("MyTimeshareIdasasd", myTimeshareId.toString())
             myTimeshareDetailViewModel.getMyTimeshareDetail(token, myTimeshareId)
         }
     }
@@ -170,7 +157,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
 
     }
-
 
     private fun bindDataUnitType(data: MyTimeshareDetailResponse) {
         // Set Unit Type Of Posting

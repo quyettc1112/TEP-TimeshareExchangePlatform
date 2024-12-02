@@ -617,7 +617,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         when (postingFlowViewModel.typeOfPostingFlow.value) {
             Constant.RENTAL_POSTING_FLOW -> {
                 val postingTimeshareDTO = PostingTimeshareDTO(
-                    description = "String",
+                    description = "",
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
                     pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,

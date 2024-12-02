@@ -72,6 +72,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     ): View? {
         binding = FragmentCreatePostingBinding.inflate(inflater, container, false)
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
+
+        postingFlowViewModel.updateCancelPolicy(0)
+
+
         observeViewModel()
         setEventChangeMyTimeshare()
         bindDataSpinnerCancellationPolicy()

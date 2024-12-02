@@ -1,18 +1,13 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ImageUploadModel
-import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.databinding.ItemImageUploadBinding
 
 class ImageUploadAdapter: BaseAdapter<ImageUploadModel, ImageUploadAdapter.ImageUploadViewHolder>(){
@@ -20,37 +15,10 @@ class ImageUploadAdapter: BaseAdapter<ImageUploadModel, ImageUploadAdapter.Image
     inner class ImageUploadViewHolder(binding: ItemImageUploadBinding): BaseItemViewHolderCF<ImageUploadModel, ItemImageUploadBinding>(binding) {
         override fun bind(item: ImageUploadModel) {
             binding.apply {
-                // Load image using Glide
-                Glide.with(itemView.context)
-                    .load(item)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: com.bumptech.glide.request.target.Target<Drawable>,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            binding.lottiePlaceholder.visibility = View.GONE
-                            imageViewAvatar.setImageResource(R.drawable.ic_error_) // hiển thị ảnh lỗi
-                            imageViewAvatar.visibility = View.VISIBLE
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable,
-                            model: Any,
-                            target: com.bumptech.glide.request.target.Target<Drawable>?,
-                            dataSource: com.bumptech.glide.load.DataSource,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            binding.lottiePlaceholder.visibility = View.GONE
-                            imageViewAvatar.visibility = View.VISIBLE
-                            return false
-                        }
-
-                    })
-                    .error(R.drawable.ic_image_tmp_holder)
+                Glide.with(imageViewAvatar.context)
+                    .load(item.uri)
                     .into(imageViewAvatar)
+                // Thiết lập sự kiện click cho root view của item
             }
             binding.cardViewClose.visibility = ViewGroup.VISIBLE
             binding.cardViewClose.setOnClickListener {

@@ -134,16 +134,8 @@ class MyTimeshareActivity : BaseActivity() {
                             }
                         )
                     } else
-                        MotionToast.Companion.createToast(
-                            this,
-                            "Error",
-                            resources.message.toString(),
-                            MotionToastStyle.ERROR,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            null
-                        )
-
+                        showErrorToast("Lỗi", resources.message)
+                    Log.d("ErrorMyTimeshare", resources.message.toString())
                 }
             }
         }
@@ -161,6 +153,7 @@ class MyTimeshareActivity : BaseActivity() {
             val intent = Intent(this, MyTimeshareDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, it.timeShareId)
             startActivity(intent)
+
         }
         myTimeshareAdapter.onSelectExchangeItemClick = {
             returnSelectedTimeshare(it.timeShareId)

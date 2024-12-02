@@ -105,6 +105,12 @@
                     android:id="@+id/include_payment_method_1_2"
                     layout="@layout/include_input_price1_2"
                     android:visibility="visible" />
+                <include
+                    android:id="@+id/include_payment_method_3_4"
+                    layout="@layout/include_input_price3_4"
+                    android:visibility="gone" />
+
+
 
 
             </LinearLayout>

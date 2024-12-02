@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailViewModel
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.DialogUpdateRentalPostingBinding
@@ -54,9 +55,18 @@ class UpdateRentalBottomDialog(
 
 
         myRentalDetailViewModel.clearListImageForPut()
-        Log.d("UpdateRentalBottomDialog", "onCreateView: ${myRentalDetailViewModel.postingDetailResponse.value?.data?.imageUrls?.size}")
-        Log.d("UpdateRentalBottomDialog", "onCreateView: ${  myRentalDetailViewModel.getImageList().size}")
-        Log.d("UpdateRentalBottomDialog", "onCreateView: ${imageUploadAdapter.differ.currentList?.size}")
+        Log.d(
+            "UpdateRentalBottomDialog",
+            "onCreateView: ${myRentalDetailViewModel.postingDetailResponse.value?.data?.imageUrls?.size}"
+        )
+        Log.d(
+            "UpdateRentalBottomDialog",
+            "onCreateView: ${myRentalDetailViewModel.getImageList().size}"
+        )
+        Log.d(
+            "UpdateRentalBottomDialog",
+            "onCreateView: ${imageUploadAdapter.differ.currentList?.size}"
+        )
 
         initializeLaunchers()
         initAdapter()
@@ -120,10 +130,11 @@ class UpdateRentalBottomDialog(
                         hideLoadingWaiting()
                         showSuccessToast("Thành công", "Cập nhật bài đăng thành công")
                         (activity as MyPostingDetailActivity).apply {
-                              myRentalDetailViewModel.getMyPostingDetail(
-                                  tokenManager.getAccessToken().toString(),
-                                  myRentalDetailViewModel.postingDetailResponse.value?.data?.rentalPostingId ?: 0
-                              )
+                            myRentalDetailViewModel.getMyPostingDetail(
+                                tokenManager.getAccessToken().toString(),
+                                myRentalDetailViewModel.postingDetailResponse.value?.data?.rentalPostingId
+                                    ?: 0
+                            )
                         }
                         dismiss()
                     }
@@ -191,7 +202,11 @@ class UpdateRentalBottomDialog(
             if (!isImageValid()) {
                 return@setOnClickListener
             }
-            if (!isPriceInputvalid()) {
+            val packageModel =
+                myRentalDetailViewModel.postingDetailResponse.value?.data?.rentalPackageName ?: ""
+
+            val rentalPackageEnum = RentalPackageEnum.getPackageByName(packageModel)
+            if (rentalPackageEnum != RentalPackageEnum.DELEGATED_SERVICE.packageModel && !isPriceInputvalid()) {
                 return@setOnClickListener
             }
 
@@ -221,10 +236,7 @@ class UpdateRentalBottomDialog(
         myRentalDetailViewModel.addListImageForPut(
             myRentalDetailViewModel.postingDetailResponse.value?.data?.imageUrls ?: emptyList()
         )
-        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${myRentalDetailViewModel.getImagesForPut()?.size}")
         imageUploadAdapter.submitList(myRentalDetailViewModel.getImagesForPut())
-        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${myRentalDetailViewModel.getImagesForPut()?.size}")
-        Log.d("UpdateRentalBottomDialoasasdg", "bindDataImages: ${imageUploadAdapter.differ.currentList?.size}")
     }
 
     private fun bindDataSpinnerCancellationPolicy() {
@@ -283,9 +295,32 @@ class UpdateRentalBottomDialog(
     }
 
     private fun bindDataPrice() {
-        val price = myRentalDetailViewModel.postingDetailResponse.value?.data?.pricePerNights
-        myRentalDetailViewModel.pricePerNight.value = price
-        binding.includePaymentMethod12.etRoomPrice.setText(Constant.formatPriceLong(price ?: 0))
+        val packageModel =
+            myRentalDetailViewModel.postingDetailResponse.value?.data?.rentalPackageName ?: ""
+        if (packageModel != null && packageModel.isNotEmpty()) {
+            val rentalPackageEnum = RentalPackageEnum.getPackageByName(packageModel)
+            when (rentalPackageEnum) {
+                RentalPackageEnum.DELEGATED_SERVICE.packageModel -> {
+                    binding.includePaymentMethod12.root.visibility = View.GONE
+                    binding.includePaymentMethod34.root.visibility = View.VISIBLE
+                    myRentalDetailViewModel.pricePerNight.value = 0
+                }
+
+                else -> {
+                    binding.includePaymentMethod12.root.visibility = View.VISIBLE
+                    binding.includePaymentMethod34.root.visibility = View.GONE
+                    val price =
+                        myRentalDetailViewModel.postingDetailResponse.value?.data?.pricePerNights
+                    myRentalDetailViewModel.pricePerNight.value = price
+                    binding.includePaymentMethod12.etRoomPrice.setText(
+                        Constant.formatPriceLong(
+                            price ?: 0
+                        )
+                    )
+                }
+            }
+        }
+
     }
 
     private fun callUploadImages() {
@@ -387,7 +422,10 @@ class UpdateRentalBottomDialog(
         myRentalDetailViewModel.clearListImageForPut()
         imageUploadAdapter.clearAll()
 
-        Log.d("DasdasdasdadwsA", "onDestroyView: ${myRentalDetailViewModel.getImagesForPut()?.size}")
+        Log.d(
+            "DasdasdasdadwsA",
+            "onDestroyView: ${myRentalDetailViewModel.getImagesForPut()?.size}"
+        )
         Log.d("DasdasdasdadwsA", "onDestroyView: ${imageUploadAdapter.differ.currentList?.size}")
     }
 
