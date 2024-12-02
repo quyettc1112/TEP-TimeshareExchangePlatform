@@ -82,8 +82,6 @@ class ResortDetailActivity : BaseActivity() {
 
         // Observe Data
         observeData()
-
-
     }
 
     private fun observeData() {
@@ -205,7 +203,6 @@ class ResortDetailActivity : BaseActivity() {
             startActivity(intent)
         }
     }
-
 
     // Binding Data Group Function
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {

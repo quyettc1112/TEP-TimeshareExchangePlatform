@@ -14,6 +14,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
@@ -659,6 +660,29 @@ class CustomerAPIRepository @Inject constructor(
                 "Bearer $token",
                 postingId,
                 rentalPostingUpdateDTO
+            )
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Update Timeshare
+    suspend fun updateTimeshare(
+        token: String,
+        timeShareId: Int,
+        timeshareUpdateDTO: TimeshareUpdateDTO
+    ): Resource<Void> {
+        return try {
+            val response = customerAPIService.updateTimeshare(
+                "Bearer $token",
+                timeShareId,
+                timeshareUpdateDTO
             )
             if (response.isSuccessful) {
                 Resource.success(response.body())

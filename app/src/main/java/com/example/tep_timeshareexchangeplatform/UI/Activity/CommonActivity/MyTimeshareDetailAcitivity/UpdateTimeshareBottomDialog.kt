@@ -64,7 +64,7 @@ class UpdateTimeshareBottomDialog(
 
     private fun observeViewModel() {
         myTimeshareDetailViewModel.roomList.observe(viewLifecycleOwner) { roomList ->
-            when (roomList.status) {
+            when (roomList?.status) {
                 Status.LOADING -> {
                     (activity as MyTimeshareDetailActivity).showLoadingWaiting(true)
                 }
@@ -79,11 +79,13 @@ class UpdateTimeshareBottomDialog(
                     Log.d("RoomList", "RoomList: ${roomList.message}")
                     (activity as MyTimeshareDetailActivity).showErrorToast("Lỗi khi lấy danh sách phòng của Resort","Danh sách phòng trống")
                 }
+
+                null -> {}
             }
         }
 
         myTimeshareDetailViewModel.unitTypeDetail.observe(viewLifecycleOwner) { unitType ->
-            when (unitType.status) {
+            when (unitType?.status) {
                 Status.LOADING -> {
                     binding.includeUnitTypeYes.llProcessbar.visibility = View.VISIBLE
                 }
@@ -105,13 +107,45 @@ class UpdateTimeshareBottomDialog(
                         }
                     )
                 }
+
+                null -> {}
             }
 
         }
 
         myTimeshareDetailViewModel.numberOfNightsTimeshare.observe(viewLifecycleOwner) { numberOfNights ->
-            if (numberOfNights > 0) {
-                binding.etNightsCount.setText(numberOfNights.toString())
+            if (numberOfNights != null) {
+                if (numberOfNights > 0) {
+                    binding.etNightsCount.setText(numberOfNights.toString())
+                }
+            }
+        }
+
+        myTimeshareDetailViewModel.updateTimeshare.observe(viewLifecycleOwner) { updateTimeshare ->
+            when (updateTimeshare?.status) {
+                Status.LOADING -> {
+                    (activity as MyTimeshareDetailActivity).showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    (activity as MyTimeshareDetailActivity).apply {
+                        hideLoadingWaiting()
+                        showSuccessToast("Cập nhật thành công", "Cập nhật thông tin thành công")
+                        val myTimeshareId = myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId ?: 0
+                        myTimeshareDetailViewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), myTimeshareId)
+                        dismiss()
+                    }
+
+                    dismiss()
+                }
+
+                Status.ERROR -> {
+                    (activity as MyTimeshareDetailActivity).hideLoadingWaiting()
+                    (activity as MyTimeshareDetailActivity).showErrorToast("Lỗi cập nhật", "Lỗi khi cập nhật thông tin")
+                    Log.d("UpdateTimeshasasdare", "UpdateTimeshare: ${updateTimeshare.message}")
+                }
+
+                null -> {}
             }
         }
     }
@@ -307,11 +341,12 @@ class UpdateTimeshareBottomDialog(
             val timeshareUpdateDTO = TimeshareUpdateDTO(
                 startYear = myTimeshareDetailViewModel.yearRange.value!!.first,
                 endYear = myTimeshareDetailViewModel.yearRange.value!!.second,
-                startDate = myTimeshareDetailViewModel.getTimeshareDateRange().first,
-                endDate = myTimeshareDetailViewModel.getTimeshareDateRange().second,
+                startDate = myTimeshareDetailViewModel.getTimeshareDateRange().first.toString(),
+                endDate = myTimeshareDetailViewModel.getTimeshareDateRange().second.toString(),
                 roomInfoId = myTimeshareDetailViewModel.currentRoomInfo.value!!
             )
-            Log.d("UpdateTimesasdasdahare", "Update Timeshare: $timeshareUpdateDTO")
+            Log.d("UpdateTimeshasasdare", "UpdateTimeshare: $timeshareUpdateDTO")
+            callUpdateTimeshare(timeshareUpdateDTO)
         }
     }
 
@@ -336,6 +371,16 @@ class UpdateTimeshareBottomDialog(
         myTimeshareDetailViewModel.getRoomListByResortId(
             tokenManager.getAccessToken().toString(), resortID
         )
+    }
+
+    private fun callUpdateTimeshare(timeshareUpdateDTO: TimeshareUpdateDTO) {
+        Log.d("UpdateTimeshasasdare", "UpdateTimeshare: $timeshareUpdateDTO, ${myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId}")
+        myTimeshareDetailViewModel.callUpdateTimeshare(
+            tokenManager.getAccessToken().toString(),
+            myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId ?: 0,
+            timeshareUpdateDTO
+        )
+
     }
 
     override fun onDestroyView() {

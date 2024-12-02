@@ -65,7 +65,7 @@ data class GeoJsonResponse(
         data class Properties(
             @SerializedName("place_id") val placeId: Int,
             @SerializedName("osm_type") val osmType: String,
-            @SerializedName("osm_id") val osmId: Int,
+            @SerializedName("osm_id") val osmId: Long,
             @SerializedName("place_rank") val placeRank: Int,
             @SerializedName("category") val category: String,
             @SerializedName("type") val type: String,

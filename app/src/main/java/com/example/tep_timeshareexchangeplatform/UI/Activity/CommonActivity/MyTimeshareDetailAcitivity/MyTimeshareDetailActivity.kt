@@ -73,7 +73,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
     private fun observeViewModel() {
         myTimeshareDetailViewModel.myTimeshareDetail.observe(this) {
-            when (it.status) {
+            when (it?.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -90,6 +90,8 @@ class MyTimeshareDetailActivity : BaseActivity() {
                     showErrorToast("Lỗi Khi Tải Dữ Liệu", "Không thể tải dữ liệu")
                     Log.d("ErrorMyTimeshare", it.message.toString())
                 }
+
+                null -> {}
             }
         }
     }
@@ -109,14 +111,14 @@ class MyTimeshareDetailActivity : BaseActivity() {
     }
 
     private fun eventClickShowUpdateBottomSheet() {
-       binding.customToolbar.onEndIconClick = {
-           val updateTimeshareBottomDialog = UpdateTimeshareBottomDialog(
-               myTimeshareDetailViewModel = myTimeshareDetailViewModel
-           )
-           updateTimeshareBottomDialog.show(supportFragmentManager, "UpdateTimeshareBottomDialog")
-       }
+        myTimeshareDetailViewModel.resetAllValue()
+        binding.customToolbar.onEndIconClick = {
+            val updateTimeshareBottomDialog = UpdateTimeshareBottomDialog(
+                myTimeshareDetailViewModel = myTimeshareDetailViewModel
+            )
+            updateTimeshareBottomDialog.show(supportFragmentManager, "UpdateTimeshareBottomDialog")
+        }
     }
-
 
 
     // Bind Data
@@ -167,7 +169,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         bindDataAmenities(myTimeshareDetailResponse)
 
         binding.cvRequestContaner.visibility = View.GONE
-
 
 
     }
@@ -221,7 +222,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
 
 
-
         val binding = binding.includeAmenities
         binding.rvFeatures.apply {
             featuresAdapter.filterByAmenityTypes(AmenityType.FEATURES)
@@ -266,8 +266,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
             }
             adapter = policyAdapter
         }
-
-
 
 
     }
@@ -369,6 +367,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
         return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
     }
+
     private fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
@@ -378,6 +377,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
             )
         }
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

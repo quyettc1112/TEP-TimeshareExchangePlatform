@@ -58,7 +58,7 @@ class MapsAPIRepository  @Inject constructor(
         }
     }
 
-    fun buildOverpassQuery(latitude: Double, longitude: Double, radius: Int = 1000): String {
+    fun buildOverpassQuery(latitude: Double, longitude: Double, radius: Int = 5000): String {
         return "[out:json];node(around:$radius,$latitude,$longitude)[\"name\"];out;"
     }
 

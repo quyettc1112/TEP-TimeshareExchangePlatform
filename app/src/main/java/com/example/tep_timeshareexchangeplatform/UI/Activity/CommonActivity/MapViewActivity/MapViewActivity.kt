@@ -79,8 +79,8 @@ class MapViewActivity : BaseActivity() {
 
     private fun getIntentValue() {
         observerData()
-        resort_latitude = intent.getDoubleExtra("latitude", 12.69279795)
-        reosrt_longitude = intent.getDoubleExtra("longitude", 108.06307161563717)
+        resort_latitude = intent.getDoubleExtra("latitude", 10.3334567)
+        reosrt_longitude = intent.getDoubleExtra("longitude", 107.0894716)
         callGetReverseGeocodingAPI(resort_latitude, reosrt_longitude)
         callGetOverpassAPI(resort_latitude, reosrt_longitude)
 
@@ -121,6 +121,7 @@ class MapViewActivity : BaseActivity() {
                 Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     Log.d("MapViewActivitsadsy", it.message.toString())
+
                 }
 
                 Status.LOADING -> {

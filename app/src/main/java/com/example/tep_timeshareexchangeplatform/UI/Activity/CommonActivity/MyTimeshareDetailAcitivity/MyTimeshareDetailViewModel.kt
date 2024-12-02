@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
@@ -28,12 +30,13 @@ class MyTimeshareDetailViewModel @Inject constructor(
     private val timeshareRepository: TimeshareRepository,
     private val publicResortAPIRepository: PublicResortAPIRepository,
     private val roomAPIRepository: RoomAPIRepository,
+    private val customerAPIRepository: CustomerAPIRepository
 ): ViewModel() {
 
     // ----------------------------------------------------------//
     // Call API get my timeshare Detail
-    private val _myTimeshareDetail = MutableLiveData<Resource<MyTimeshareDetailResponse>>()
-    val myTimeshareDetail: MutableLiveData<Resource<MyTimeshareDetailResponse>> = _myTimeshareDetail
+    private val _myTimeshareDetail = MutableLiveData<Resource<MyTimeshareDetailResponse>?>()
+    val myTimeshareDetail: MutableLiveData<Resource<MyTimeshareDetailResponse>?> = _myTimeshareDetail
     fun getMyTimeshareDetail(token: String, timeshareID: Int) {
         viewModelScope.launch {
             _myTimeshareDetail.postValue(Resource.loading(null))
@@ -44,8 +47,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
 
     // Lưu trạng thái tiện ích theo từng loại (type)
-    private val _selectedAmenities = MutableLiveData<Map<AmenityType, List<AmenitiesModel>>>()
-    val selectedAmenities: LiveData<Map<AmenityType, List<AmenitiesModel>>> get() = _selectedAmenities
+    private val _selectedAmenities = MutableLiveData<Map<AmenityType, List<AmenitiesModel>>?>()
+    val selectedAmenities: MutableLiveData<Map<AmenityType, List<AmenitiesModel>>?> get() = _selectedAmenities
 
 
     fun updateAmenitiesForType(type: AmenityType, selectedAmenities: List<AmenitiesModel>) {
@@ -82,8 +85,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
 
 
 
-    private val _currentRoomInfo = MutableLiveData<Int>()
-    val currentRoomInfo: MutableLiveData<Int>
+    private val _currentRoomInfo = MutableLiveData<Int?>()
+    val currentRoomInfo: MutableLiveData<Int?>
         get() = _currentRoomInfo
 
     fun updateCurrentRoomInfo(currentRoomInfo: Int) {
@@ -93,8 +96,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
     // ----------------------------------------------------------//
     // Call Unit Type Detail
     // Init MutableLiveData for Unit Type Detail
-    private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>>()
-    val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>> = _unitTypeDetail
+    private val _unitTypeDetail = MutableLiveData<Resource<UnitTypeModel>?>()
+    val unitTypeDetail: MutableLiveData<Resource<UnitTypeModel>?> = _unitTypeDetail
     fun getUnitTypeDetailByID(token: String, unitTypeID: Int) {
         viewModelScope.launch {
             _unitTypeDetail.postValue(Resource.loading(null))
@@ -104,8 +107,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
         }
     }
 
-    private val _roomList = MutableLiveData<Resource<List<RoomModel>>>()
-    val roomList: MutableLiveData<Resource<List<RoomModel>>> = _roomList
+    private val _roomList = MutableLiveData<Resource<List<RoomModel>>?>()
+    val roomList: MutableLiveData<Resource<List<RoomModel>>?> = _roomList
 
     // Function to get Room List By Resort ID
     fun getRoomListByResortId(token: String, resortID: Int) {
@@ -118,14 +121,14 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
 
 
-    private val _startDateTimeshare = MutableLiveData<String>()
-    val startDateTimeshare: LiveData<String> get() = _startDateTimeshare
+    private val _startDateTimeshare = MutableLiveData<String?>()
+    val startDateTimeshare: MutableLiveData<String?> get() = _startDateTimeshare
 
-    private val _endDateTimeshare = MutableLiveData<String>()
-    val endDateTimeshare: LiveData<String> get() = _endDateTimeshare
+    private val _endDateTimeshare = MutableLiveData<String?>()
+    val endDateTimeshare: MutableLiveData<String?> get() = _endDateTimeshare
 
     fun setTimeshareDateRange(start: Long?, end: Long?) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Định dạng chuẩn lưu trữ
         _startDateTimeshare.value = start?.let { dateFormat.format(Date(it)) }
         _endDateTimeshare.value = end?.let { dateFormat.format(Date(it)) }
         if (start != null && end != null) {
@@ -137,24 +140,24 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
 
     fun getTimeshareDateRange(): Pair<String, String> {
-        val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Định dạng ban đầu
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Định dạng mong muốn
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Định dạng lưu trữ
+        val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()) // Định dạng mong muốn
 
         val startDateFormatted = _startDateTimeshare.value?.let { dateString ->
             try {
-                val date = inputFormat.parse(dateString) // Chuyển chuỗi sang Date
+                val date = inputFormat.parse(dateString) // Chuyển chuỗi lưu trữ sang Date
                 date?.let { outputFormat.format(it) } ?: dateString // Định dạng lại
             } catch (e: Exception) {
-                dateString // Trả về chuỗi gốc nếu có lỗi
+                dateString // Nếu lỗi, trả về chuỗi ban đầu
             }
         } ?: ""
 
         val endDateFormatted = _endDateTimeshare.value?.let { dateString ->
             try {
-                val date = inputFormat.parse(dateString) // Chuyển chuỗi sang Date
+                val date = inputFormat.parse(dateString) // Chuyển chuỗi lưu trữ sang Date
                 date?.let { outputFormat.format(it) } ?: dateString // Định dạng lại
             } catch (e: Exception) {
-                dateString // Trả về chuỗi gốc nếu có lỗi
+                dateString // Nếu lỗi, trả về chuỗi ban đầu
             }
         } ?: ""
 
@@ -162,8 +165,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
 
 
-    private val _numberOfNightsTimeShare = MutableLiveData<Int>()
-    val numberOfNightsTimeshare: LiveData<Int> get() = _numberOfNightsTimeShare
+    private val _numberOfNightsTimeShare = MutableLiveData<Int?>()
+    val numberOfNightsTimeshare: MutableLiveData<Int?> get() = _numberOfNightsTimeShare
     fun getNumberOfNightsTimeshare(): Int {
         return _numberOfNightsTimeShare.value ?: 0
     }
@@ -175,8 +178,8 @@ class MyTimeshareDetailViewModel @Inject constructor(
     }
 
 
-    private val _yearRange = MutableLiveData<Pair<Int, Int>>()
-    val yearRange: LiveData<Pair<Int, Int>> get() = _yearRange
+    private val _yearRange = MutableLiveData<Pair<Int, Int>?>()
+    val yearRange: MutableLiveData<Pair<Int, Int>?> get() = _yearRange
 
     fun setYearRange(startYear: Int, endYear: Int) {
         _yearRange.value = Pair(startYear, endYear)
@@ -189,5 +192,31 @@ class MyTimeshareDetailViewModel @Inject constructor(
     fun resetTimeshareYearRange() {
         _yearRange.value = Pair(0, 0)
     }
+
+
+    // ----------------------------------------------------------//
+    private val _updateTimeshare = MutableLiveData<Resource<Void>?>()
+    val updateTimeshare: MutableLiveData<Resource<Void>?> get() = _updateTimeshare
+    fun callUpdateTimeshare(token: String, timeshareID: Int, timeshareUpdateDTO: TimeshareUpdateDTO) {
+        viewModelScope.launch {
+            _updateTimeshare.postValue(Resource.loading(null))
+            customerAPIRepository.updateTimeshare(token, timeshareID, timeshareUpdateDTO).let {
+                _updateTimeshare.postValue(it)
+            }
+        }
+    }
+
+    fun resetAllValue() {
+        _selectedAmenities.value = null
+        _currentRoomInfo.value = null
+        _unitTypeDetail.value = null
+        _roomList.value = null
+        _startDateTimeshare.value = null
+        _endDateTimeshare.value = null
+        _numberOfNightsTimeShare.value = null
+        _yearRange.value = null
+        _updateTimeshare.value = null
+    }
+
 
 }
