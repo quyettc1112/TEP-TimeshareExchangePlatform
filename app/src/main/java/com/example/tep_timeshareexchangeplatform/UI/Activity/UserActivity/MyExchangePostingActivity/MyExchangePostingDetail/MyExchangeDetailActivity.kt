@@ -24,6 +24,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapEx
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.CustomDialog.UpdateExchangeBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
@@ -55,6 +56,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private var entertainmentAdapter = RoomAmenitiesAdapter()
     private var kitchenAdapter = RoomAmenitiesAdapter()
     private var policyAdapter = RoomAmenitiesAdapter()
+    private lateinit var updateExchangeBottomDialog: UpdateExchangeBottomDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,15 +98,7 @@ class MyExchangeDetailActivity : BaseActivity() {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
@@ -222,7 +216,6 @@ class MyExchangeDetailActivity : BaseActivity() {
                 )
             }
         }
-
 
         // UI DTB
         binding.includeDetailBilling.apply {
@@ -345,11 +338,7 @@ class MyExchangeDetailActivity : BaseActivity() {
             binding.apply {
                 customToolbar.isShowEndIcon(true)
                 customToolbar.onEndIconClick = {
-                    Toast.makeText(
-                        this@MyExchangeDetailActivity,
-                        "Chức năng cập nhật trạng thái đang được phát triển",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showUpdateExchangeDialog()
                 }
             }
         } else {
@@ -512,6 +501,13 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
+    private fun showUpdateExchangeDialog() {
+        updateExchangeBottomDialog = UpdateExchangeBottomDialog(
+            description = binding.etNote.text.toString(),
+            myExchangeDetailViewModel = viewModel
+        )
+        updateExchangeBottomDialog.show(supportFragmentManager, "UpdateExchangeBottomDialog")
+    }
 
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(

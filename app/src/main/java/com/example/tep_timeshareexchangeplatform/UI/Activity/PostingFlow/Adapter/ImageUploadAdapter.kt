@@ -11,7 +11,6 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.Im
 import com.example.tep_timeshareexchangeplatform.databinding.ItemImageUploadBinding
 
 class ImageUploadAdapter: BaseAdapter<ImageUploadModel, ImageUploadAdapter.ImageUploadViewHolder>(){
-
     var onDeleteClick: (ImageUploadModel) -> Unit = {}
     inner class ImageUploadViewHolder(binding: ItemImageUploadBinding): BaseItemViewHolderCF<ImageUploadModel, ItemImageUploadBinding>(binding) {
         override fun bind(item: ImageUploadModel) {
@@ -26,8 +25,6 @@ class ImageUploadAdapter: BaseAdapter<ImageUploadModel, ImageUploadAdapter.Image
                 onDeleteClick.let { invoke -> invoke(item) }
             }
         }
-
-
     }
 
     override fun differCallBack(): DiffUtil.ItemCallback<ImageUploadModel> {

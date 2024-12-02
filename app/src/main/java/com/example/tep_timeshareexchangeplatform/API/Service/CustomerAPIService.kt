@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
@@ -274,6 +275,14 @@ interface CustomerAPIService {
         @Body sentRequestDTO: SentRequestDTO
     ) : Response<Void>
 
+
+    // Update Exchange Posting
+    @PUT("customer/exchange/{postingId}")
+    suspend fun updateExchangePosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body exchangePostingUpdateDTO: ExchangePostingUpdateDTO
+    ) : Response<Void>
 
 
 
