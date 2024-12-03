@@ -20,6 +20,7 @@ class ImageUploadAdapter: BaseAdapter<ImageUploadModel, ImageUploadAdapter.Image
                     .into(imageViewAvatar)
                 // Thiết lập sự kiện click cho root view của item
             }
+            binding.lottiePlaceholder.visibility = ViewGroup.GONE
             binding.cardViewClose.visibility = ViewGroup.VISIBLE
             binding.cardViewClose.setOnClickListener {
                 onDeleteClick.let { invoke -> invoke(item) }

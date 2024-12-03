@@ -71,13 +71,19 @@ class UpdateTimeshareBottomDialog(
 
                 Status.SUCCESS -> {
                     (activity as MyTimeshareDetailActivity).hideLoadingWaiting()
-                    bindDataRoomCodeSpinner(roomList.data, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.roomId)
+                    bindDataRoomCodeSpinner(
+                        roomList.data,
+                        myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.roomId
+                    )
                 }
 
                 Status.ERROR -> {
                     (activity as MyTimeshareDetailActivity).hideLoadingWaiting()
                     Log.d("RoomList", "RoomList: ${roomList.message}")
-                    (activity as MyTimeshareDetailActivity).showErrorToast("Lỗi khi lấy danh sách phòng của Resort","Danh sách phòng trống")
+                    (activity as MyTimeshareDetailActivity).showErrorToast(
+                        "Lỗi khi lấy danh sách phòng của Resort",
+                        "Danh sách phòng trống"
+                    )
                 }
 
                 null -> {}
@@ -131,8 +137,12 @@ class UpdateTimeshareBottomDialog(
                     (activity as MyTimeshareDetailActivity).apply {
                         hideLoadingWaiting()
                         showSuccessToast("Cập nhật thành công", "Cập nhật thông tin thành công")
-                        val myTimeshareId = myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId ?: 0
-                        myTimeshareDetailViewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), myTimeshareId)
+                        val myTimeshareId =
+                            myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId
+                                ?: 0
+                        myTimeshareDetailViewModel.getMyTimeshareDetail(
+                            tokenManager.getAccessToken().toString(), myTimeshareId
+                        )
                         dismiss()
                     }
 
@@ -141,7 +151,10 @@ class UpdateTimeshareBottomDialog(
 
                 Status.ERROR -> {
                     (activity as MyTimeshareDetailActivity).hideLoadingWaiting()
-                    (activity as MyTimeshareDetailActivity).showErrorToast("Lỗi cập nhật", "Lỗi khi cập nhật thông tin")
+                    (activity as MyTimeshareDetailActivity).showErrorToast(
+                        "Lỗi cập nhật",
+                        "Lỗi khi cập nhật thông tin"
+                    )
                     Log.d("UpdateTimeshasasdare", "UpdateTimeshare: ${updateTimeshare.message}")
                 }
 
@@ -166,7 +179,8 @@ class UpdateTimeshareBottomDialog(
 
         // Tìm vị trí tương ứng với RoomId
         val selectedPosition = selectedRoomId?.let { id ->
-            roomList?.indexOfFirst { it.id == id }?.let { it + 1 } // +1 để tính cả mục "Chọn Mã Phòng"
+            roomList?.indexOfFirst { it.id == id }
+                ?.let { it + 1 } // +1 để tính cả mục "Chọn Mã Phòng"
         } ?: 0 // Nếu không tìm thấy hoặc selectedRoomId là null, mặc định là 0
 
         // Đặt selection cho Spinner
@@ -189,7 +203,8 @@ class UpdateTimeshareBottomDialog(
                         return
                     }
 
-                    val selectedRoom = roomList?.get(position - 1) // Trừ 1 để bỏ qua mục "Chọn Mã Phòng"
+                    val selectedRoom =
+                        roomList?.get(position - 1) // Trừ 1 để bỏ qua mục "Chọn Mã Phòng"
 
                     // Cập nhật ViewModel
                     myTimeshareDetailViewModel.updateCurrentRoomInfo(selectedRoom!!.id)
@@ -252,7 +267,7 @@ class UpdateTimeshareBottomDialog(
 
     private fun bindDataSpinnerValidYear() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val yearList = (currentYear..currentYear + 100).toList()
+        val yearList = (currentYear - 50..currentYear + 100).toList()
 
         val yearAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, yearList)
@@ -260,6 +275,17 @@ class UpdateTimeshareBottomDialog(
 
         binding.spValidStarYear.adapter = yearAdapter
         binding.spValidEndYear.adapter = yearAdapter
+
+        // Thiết lập giá trị mặc định cho start year và end year
+        val startYearPosition =
+            yearList.indexOf(myTimeshareDetailViewModel.myTimeshareDetail.value!!.data?.startYear)
+
+
+
+        binding.spValidStarYear.setSelection(startYearPosition)
+     //   binding.spValidEndYear.setSelection(endYearPosition)
+
+
 
         binding.spValidStarYear.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -279,7 +305,9 @@ class UpdateTimeshareBottomDialog(
                         etNightsCount.setText("0")
                     }
 
-                    val validEndYearList = yearList.filter { it > selectedStartYear }
+                    val validEndYearList = yearList.filter { it >= selectedStartYear }
+                    val endYearPosition =
+                        validEndYearList.indexOf(myTimeshareDetailViewModel.myTimeshareDetail.value!!.data?.endYear)
                     val endYearAdapter = ArrayAdapter(
                         requireContext(),
                         android.R.layout.simple_spinner_item,
@@ -288,20 +316,11 @@ class UpdateTimeshareBottomDialog(
                     endYearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
                     binding.spValidEndYear.adapter = endYearAdapter
-
-                    /*val currentEndYearPosition = validEndYearList.indexOf(
-                        binding.spValidEndYear.selectedItem ?: selectedStartYear
-                    )
-                    binding.spValidEndYear.setSelection(if (currentEndYearPosition >= 0) currentEndYearPosition else 0)*/
                     binding.spValidEndYear.adapter = endYearAdapter
 
-                    // Set the default selection to the first item in the validEndYearList
-                    binding.spValidEndYear.setSelection(0)
 
-                    /*// Lưu cặp giá trị năm Start và End
-                    val selectedEndYear =
-                        validEndYearList.getOrNull(currentEndYearPosition) ?: selectedStartYear*/
-                    val selectedEndYear = validEndYearList.firstOrNull() ?: (selectedStartYear + 1)
+                    binding.spValidEndYear.setSelection(endYearPosition)
+                    val selectedEndYear = validEndYearList[endYearPosition]
                     myTimeshareDetailViewModel.setYearRange(selectedStartYear, selectedEndYear)
                 }
 
@@ -330,11 +349,13 @@ class UpdateTimeshareBottomDialog(
                     // Không cần xử lý
                 }
             }
+
+
     }
 
     private fun eventClickSaveUpdate() {
         binding.btnSaveUpdatePosting.setOnClickListener {
-            if(!isValidDateRange()) {
+            if (!isValidDateRange()) {
                 return@setOnClickListener
             }
 
@@ -374,7 +395,10 @@ class UpdateTimeshareBottomDialog(
     }
 
     private fun callUpdateTimeshare(timeshareUpdateDTO: TimeshareUpdateDTO) {
-        Log.d("UpdateTimeshasasdare", "UpdateTimeshare: $timeshareUpdateDTO, ${myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId}")
+        Log.d(
+            "UpdateTimeshasasdare",
+            "UpdateTimeshare: $timeshareUpdateDTO, ${myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId}"
+        )
         myTimeshareDetailViewModel.callUpdateTimeshare(
             tokenManager.getAccessToken().toString(),
             myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.timeShareId ?: 0,

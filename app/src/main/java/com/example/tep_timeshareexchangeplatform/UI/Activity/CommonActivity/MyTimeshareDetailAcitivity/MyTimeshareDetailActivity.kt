@@ -21,6 +21,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.Unit
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
@@ -69,6 +70,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
         observeViewModel()
         setEventButtonRequestClick()
         eventClickShowUpdateBottomSheet()
+        eventClickShowMaps()
     }
 
     private fun observeViewModel() {
@@ -120,7 +122,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         }
     }
 
-
     // Bind Data
     private fun bindDataTimeshareDetail(myTimeshareDetailResponse: MyTimeshareDetailResponse) {
         // Check in Date, Check out Date
@@ -160,18 +161,37 @@ class MyTimeshareDetailActivity : BaseActivity() {
             .placeholder(R.drawable.ripple_effect_white)
             .into(binding.ivTimeshareDetail)
 
+        // Resort Name, Location
         binding.apply {
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
-            tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
+            tvLocation.text = (myTimeshareDetailResponse.location.displayName ?: "Không Có Thông Tin").toString()
         }
+
+        // Unit Type
         bindDataUnitType(myTimeshareDetailResponse)
+
+        // Amenities
         bindDataAmenities(myTimeshareDetailResponse)
+
 
         binding.cvRequestContaner.visibility = View.GONE
 
+        // Valid Year
+        binding.spValidStarYear.setText(myTimeshareDetailResponse.startYear.toString())
+        binding.spValidEndYear.setText(myTimeshareDetailResponse.endYear.toString())
+
 
     }
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
+    }
+
 
     private fun bindDataUnitType(data: MyTimeshareDetailResponse) {
         // Set Unit Type Of Posting
@@ -306,7 +326,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
     }
 
-
     private fun intentValueToPostingFlow(myTimeshareResponse: MyTimeshareResponse.Content) {
         val intent = Intent()
         intent.putExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, myTimeshareResponse)
@@ -348,7 +367,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         super.onDestroy()
         autoScrollHelper.pauseAutoScroll()
     }
-
 
     private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(

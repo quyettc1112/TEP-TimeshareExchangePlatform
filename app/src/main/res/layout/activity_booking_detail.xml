@@ -114,6 +114,7 @@
                     <LinearLayout
                         android:id="@+id/ll_type_booking_container"
                         android:visibility="gone"
+                        android:layout_marginBottom="10dp"
                         android:background="@drawable/background_strock_blue"
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"

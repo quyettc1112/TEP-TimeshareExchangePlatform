@@ -80,8 +80,8 @@ class MapViewActivity : BaseActivity() {
 
     private fun getIntentValue() {
         observerData()
-        resort_latitude = intent.getDoubleExtra(Constant.RESORT_LATITUDE, 0.0)
-        reosrt_longitude = intent.getDoubleExtra(Constant.RESORT_LONGITUDE, 0.0)
+        resort_latitude = intent.getStringExtra(Constant.RESORT_LATITUDE)?.toDouble() ?: 0.0
+        reosrt_longitude = intent.getStringExtra(Constant.RESORT_LONGITUDE)?.toDouble() ?: 0.0
 
         if(reosrt_longitude == 0.0 || resort_latitude == 0.0){
             Toast.makeText(this, "Không thể lấy vị trí của khu nghỉ dưỡng", Toast.LENGTH_SHORT).show()
