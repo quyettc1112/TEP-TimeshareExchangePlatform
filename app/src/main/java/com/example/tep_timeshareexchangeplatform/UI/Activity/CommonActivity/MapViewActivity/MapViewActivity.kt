@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.NearbyBott
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Map.OverpassResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MapsAmenityType
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMapViewBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -120,6 +121,7 @@ class MapViewActivity : BaseActivity() {
                             title = geoJsonResponse.features[0].properties.name
                             subDescription = geoJsonResponse.features[0].properties.displayName
                         }
+                        marker.showInfoWindow()
                         binding.map.overlays.add(marker)
                         binding.map.controller.animateTo(startPoint, 20.0, 1500)
                         binding.map.invalidate()
@@ -233,12 +235,13 @@ class MapViewActivity : BaseActivity() {
         val geoPoint =
             GeoPoint(overpassResponse.lat, overpassResponse.lon) // Tạo GeoPoint từ tọa độ
 
+        Log.d("MapViewActivity", "${overpassResponse.toString()}")
         // Xóa tất cả các marker trước đó
         markers.forEach { marker ->
             binding.map.overlays.remove(marker)
         }
         markers.clear() // Xóa danh sách marker
-
+        val amenityType = MapsAmenityType.fromValue((overpassResponse.tags.amenity ?: overpassResponse.tags.shop ?: overpassResponse.tags.highway).toString())
         // Tạo marker mới
         val newMarker = Marker(binding.map).apply {
             position = geoPoint
@@ -248,11 +251,13 @@ class MapViewActivity : BaseActivity() {
                 R.drawable.baseline_location_pin_24_blue
             ) // Icon của marker
             title = overpassResponse.tags.name // Tiêu đề cho marker
-            subDescription = overpassResponse.tags.description // Mô tả cho marker
+            subDescription = amenityType?.getDisplayName(binding.root.context) ?: ""
         }
 
         // Thêm marker mới vào danh sách và bản đồ
         markers.add(newMarker)
+        // Hiển thị thông tin của marker ngay lập tức
+        newMarker.showInfoWindow()
         binding.map.overlays.add(newMarker)
 
 
@@ -367,6 +372,7 @@ class MapViewActivity : BaseActivity() {
                 R.drawable.baseline_location_pin_24_blue
             )
             title = "Vị trí hiện tại của bạn"
+
         }
 
         // Thêm Marker vào bản đồ
@@ -376,6 +382,7 @@ class MapViewActivity : BaseActivity() {
         binding.map.controller.setCenter(geoPoint)
         binding.map.controller.setZoom(19.0)
 
+        marker.showInfoWindow()
         // Cập nhật bản đồ
         binding.map.invalidate()
     }

@@ -157,14 +157,14 @@ class MyExchangeDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myExchangePostingDetail.resortName}")
-            setTitleDetail("Phòng ${myExchangePostingDetail.roomName}")
+            setTitle("Chi Tiết Bài Đăng Trao Đổi")
+            setTitleDetail("${myExchangePostingDetail.resortName}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.roomCode
             tvLocation.text = myExchangePostingDetail.location?.displayName ?: "Không có thông tin"
 
             if (myExchangePostingDetail.isVerify) {
@@ -214,7 +214,7 @@ class MyExchangeDetailActivity : BaseActivity() {
         binding.includeDetailBilling.apply {
             llPostingBy.visibility = View.GONE
             tvResortNameDtb.text =
-                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.roomCode
             tvCheckInDate.text = Constant.formatDateByLocale(
                 myExchangePostingDetail.checkinDate,
                 this@MyExchangeDetailActivity
@@ -234,6 +234,7 @@ class MyExchangeDetailActivity : BaseActivity() {
                 .into(imImageTimeshare)
 
         }
+        binding.includeDetailBilling.llCancellationPolicy.visibility = View.GONE
         binding.includeDetailBilling.root.visibility = View.VISIBLE
 
         // Set Amenities
@@ -349,6 +350,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: MyExchangePostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 

@@ -14,6 +14,7 @@ data class MyRentalPostingDetailResponse(
     @SerializedName("roomName") val roomName: String,
     @SerializedName("resortId") val resortId: Int,
     @SerializedName("resortName") val resortName: String,
+    @SerializedName("roomCode") val roomCode: String,
     @SerializedName("location") val location: Location?,
     @SerializedName("isVerify") val isVerify: Boolean,
     @SerializedName("nights") val nights: Long?,
@@ -38,8 +39,8 @@ data class MyRentalPostingDetailResponse(
     data class Location(
         @SerializedName("name") val name: String,
         @SerializedName("displayName") val displayName: String?,
-        @SerializedName("latitude") val latitude: Double?,
-        @SerializedName("longitude") val longitude: Double?,
+        @SerializedName("latitude") val latitude: String?,
+        @SerializedName("longitude") val longitude: String?,
         @SerializedName("country") val country: String,
         @SerializedName("placeId") val placeId: Int?
     )

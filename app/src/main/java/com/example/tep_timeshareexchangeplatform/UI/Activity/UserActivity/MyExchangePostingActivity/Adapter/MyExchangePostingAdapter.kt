@@ -147,7 +147,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
             binding.apply {
                 tvResortName.text = "${item.resortName}"
                 tvRoomName.text =
-                    "Loại Phòng: ${item.unitTypeDTO.title}, Tên Phòng: ${item.roomName}"
+                    "Loại Phòng: ${item.unitTypeDTO.title}"
                 tvLocation.text = item.resortLocationDisplayName ?: "Không có thông tin"
                 tvCheckInDate.text =
                     Constant.formatDateByLocale(item.checkinDate, binding.root.context)

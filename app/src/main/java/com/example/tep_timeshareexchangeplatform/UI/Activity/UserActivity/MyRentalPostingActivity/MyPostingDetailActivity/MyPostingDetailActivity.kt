@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
@@ -67,6 +68,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
         initAdapter()
 
+        eventClickShowMaps()
 
         binding.customToolbar.onStartIconClick = {
             finish()
@@ -118,6 +120,15 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, viewModel.postingDetailResponse.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, viewModel.postingDetailResponse.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
+    }
+
     private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
         // Image List
         bindDataListImage()
@@ -133,8 +144,7 @@ class MyPostingDetailActivity : BaseActivity() {
 
         // Resort Info
         binding.apply {
-            tvResortName.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
+            tvResortName.text = myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.roomCode
             tvLocation.text =
                 myRentalPostingDetailResponse.location?.displayName ?: "Không Có Dữ Liệu"
 
@@ -209,7 +219,7 @@ class MyPostingDetailActivity : BaseActivity() {
             llPostingBy.visibility = View.GONE
             llRoomPricing.visibility = View.VISIBLE
             tvResortNameDtb.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
+                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.roomCode
             tvCheckInDate.text = Constant.formatDateByLocale(
                 myRentalPostingDetailResponse.checkinDate,
                 this@MyPostingDetailActivity
@@ -237,6 +247,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 .placeholder(R.drawable.ripple_effect_white)
                 .error(R.drawable.im_material_mn)
                 .into(imImageTimeshare)
+
 
         }
 
@@ -339,6 +350,7 @@ class MyPostingDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: MyRentalPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 

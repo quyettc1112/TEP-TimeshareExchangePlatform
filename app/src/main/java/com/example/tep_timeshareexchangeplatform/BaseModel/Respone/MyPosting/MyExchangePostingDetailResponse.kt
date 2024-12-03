@@ -15,6 +15,7 @@ data class MyExchangePostingDetailResponse(
   @SerializedName("roomName") val roomName: String,
   @SerializedName("resortId") val resortId: Int,
   @SerializedName("resortName") val resortName: String,
+  @SerializedName("roomCode") val roomCode: String,
   @SerializedName("isVerify") val isVerify: Boolean,
   @SerializedName("nights") val nights: Int,
   @SerializedName("exchangePackageId") val exchangePackageId: Int,

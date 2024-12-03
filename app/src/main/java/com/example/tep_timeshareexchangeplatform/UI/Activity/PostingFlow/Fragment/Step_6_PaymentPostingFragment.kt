@@ -632,7 +632,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
             Constant.EXCHANGER_POSTING_FLOW -> {
                 val exchangeTimeshareDTO = ExchangeTimeshareDTO(
-                    description = "String",
+                    description = postingFlowViewModel.note.value!!,
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
                     exchangePackageId = rentalPackageEnum?.id!!,
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
