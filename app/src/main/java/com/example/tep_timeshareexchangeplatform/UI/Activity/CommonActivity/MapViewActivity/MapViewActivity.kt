@@ -49,8 +49,8 @@ class MapViewActivity : BaseActivity() {
         binding = ActivityMapViewBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        getIntentValue()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
 
         getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
         getInstance().cacheMapTileCount = 20  // Số lượng tile trong bộ nhớ cache
@@ -72,7 +72,7 @@ class MapViewActivity : BaseActivity() {
         mapController.setCenter(startPoint);
 
         eventClickMyLocation()
-        getIntentValue()
+
         eventClickBack()
         eventClickRouteToResort()
 
@@ -80,7 +80,8 @@ class MapViewActivity : BaseActivity() {
     }
 
     private fun getIntentValue() {
-        observerData()
+        resort_latitude = 0.0
+        reosrt_longitude = 0.0
         resort_latitude = intent.getStringExtra(Constant.RESORT_LATITUDE)?.toDouble() ?: 0.0
         reosrt_longitude = intent.getStringExtra(Constant.RESORT_LONGITUDE)?.toDouble() ?: 0.0
 
@@ -89,9 +90,10 @@ class MapViewActivity : BaseActivity() {
             finish()
             return
         }
-
+        observerData()
         callGetReverseGeocodingAPI(resort_latitude, reosrt_longitude)
         callGetOverpassAPI(resort_latitude, reosrt_longitude)
+
 
     }
 
@@ -385,6 +387,15 @@ class MapViewActivity : BaseActivity() {
         marker.showInfoWindow()
         // Cập nhật bản đồ
         binding.map.invalidate()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapsViewModel.geoJsonResponseLiveData.removeObservers(this)
+        mapsViewModel.overpassResponseLiveData.removeObservers(this)
+        mapsViewModel.directionResponseLiveData.removeObservers(this)
+
+
     }
 
     override fun onResume() {

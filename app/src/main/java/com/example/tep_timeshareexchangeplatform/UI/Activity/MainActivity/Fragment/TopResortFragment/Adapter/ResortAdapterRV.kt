@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
+import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.databinding.ItemResortRvBinding
 import java.text.DecimalFormat
 
@@ -18,12 +19,12 @@ class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.
     inner class ResortViewHolder(binding: ItemResortRvBinding): BaseItemViewHolderCF<ResortModelResponse.Content, ItemResortRvBinding>(binding) {
         override fun bind(item: ResortModelResponse.Content) {
             binding.tvResortName.text = item.resortName
-            binding.tvLocation.text = item.address
+            binding.tvLocation.text = item.resortLocationDisplayName ?: item.resortLocationName
 
             binding.tvAvgRating.text = item.averageRating.toString()
             binding.tvRatingCount.text = "Rất Tốt (${item.totalRating})"
 
-            binding.btnPrice.text = "Chỉ Từ ${formatPrice(item.minPrice)} VND"
+            binding.btnPrice.text = "Chỉ Từ ${Constant.formatPriceLong(item.minPrice)} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
@@ -38,11 +39,6 @@ class ResortAdapterRV: BaseAdapter<ResortModelResponse.Content, ResortAdapterRV.
                 .into(binding.imResortImage)
         }
 
-
-        fun formatPrice(price: Int): String {
-            val formatter = DecimalFormat("#,###")
-            return formatter.format(price)
-        }
 
     }
 

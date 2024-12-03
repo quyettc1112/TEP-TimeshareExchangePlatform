@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.CustomDialog.UpdateExchangeBottomDialog
@@ -74,6 +75,9 @@ class MyExchangeDetailActivity : BaseActivity() {
             finish()
         }
         binding.shimmerViewContainer.startShimmer()
+
+
+        eventClickShowMaps()
     }
 
     private fun initAdapter() {
@@ -126,6 +130,16 @@ class MyExchangeDetailActivity : BaseActivity() {
             }
         }
     }
+
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, viewModel.myExchangeDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, viewModel.myExchangeDetail.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
+    }
+
 
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
         // List Image

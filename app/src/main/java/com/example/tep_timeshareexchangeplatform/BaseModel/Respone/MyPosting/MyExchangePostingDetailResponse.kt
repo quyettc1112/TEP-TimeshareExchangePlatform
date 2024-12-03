@@ -36,8 +36,8 @@ data class MyExchangePostingDetailResponse(
   data class Location(
     @SerializedName("name") val name: String,
     @SerializedName("displayName") val displayName: String?,
-    @SerializedName("latitude") val latitude: Double?,
-    @SerializedName("longitude") val longitude: Double?,
+    @SerializedName("latitude") val latitude: String?,
+    @SerializedName("longitude") val longitude: String?,
     @SerializedName("country") val country: String?,
     @SerializedName("placeId") val placeId: Int?
   )
