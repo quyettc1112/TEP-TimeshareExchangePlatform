@@ -111,7 +111,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun initAdapter() {
         unitTypeAdapterPosting.submitList(listOf())
 
-
         kitchenAmenitiesAdapter.apply {
             submitList(Constant.listAmenities)
             onItemChecked = {

@@ -196,6 +196,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: MyTimeshareDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 

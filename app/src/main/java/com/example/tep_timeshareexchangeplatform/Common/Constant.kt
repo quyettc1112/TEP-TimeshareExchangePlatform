@@ -592,7 +592,7 @@ class Constant {
                 isChecked = false,
             ),
             AmenitiesModel(
-                name = "Mạng Internet",
+                name = "Mạng Lan Internet",
                 type = "Giải Trí",
                 isChecked = false,
             ),
