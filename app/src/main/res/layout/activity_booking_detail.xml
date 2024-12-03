@@ -113,6 +113,7 @@
                     <!--// Type Booking-->
                     <LinearLayout
                         android:id="@+id/ll_type_booking_container"
+                        android:visibility="gone"
                         android:background="@drawable/background_strock_blue"
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
@@ -155,7 +156,7 @@
 
                         <LinearLayout
                             android:background="@drawable/ripple_effect_white"
-                            android:layout_margin="5dp"
+
                             android:backgroundTint="@color/blue_header_section"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -230,7 +231,7 @@
 
                         <LinearLayout
                             android:background="@drawable/ripple_effect_white"
-                            android:layout_margin="5dp"
+
                             android:backgroundTint="@color/blue_header_section"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -350,18 +351,48 @@
 
                 <!--// Guest Info-->
                 <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_stroke_around"
                     android:padding="16dp">
+                    <LinearLayout
+                        android:id="@+id/btn_update_booking_exchange"
+                        android:visibility="gone"
+                        android:layout_gravity="right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ripple_effect_white"
+                        android:backgroundTint="@color/primaryColor"
+                        android:clickable="true"
+                        android:gravity="center"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <!-- Icon -->
+                        <ImageView
+                            android:layout_marginStart="10dp"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="Icon chọn ngày"
+                            android:src="@drawable/ic_save" />
+
+                        <!-- Text -->
+                        <TextView
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="Cập Nhật Thông Tin"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                     <!-- Title -->
                     <TextView
                         android:id="@+id/tv_guest_title"
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thông tin khách nhận phòng"
@@ -386,6 +417,7 @@
                     <!-- Full Name Field -->
                     <EditText
                         android:id="@+id/et_full_name"
+                        android:background="@drawable/background_stroke_around"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:enabled="false"
@@ -411,6 +443,7 @@
                     <!-- Phone Number Field -->
                     <EditText
                         android:id="@+id/et_phone_number"
+                        android:background="@drawable/background_stroke_around"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:maxLines="1"
@@ -436,11 +469,11 @@
                     <!-- Email Field -->
                     <EditText
                         android:id="@+id/et_email"
+                        android:background="@drawable/background_stroke_around"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:maxLines="1"
                         android:enabled="false"
-                        android:text="www.tranlenovo123@gmail.com"
                         android:textSize="14sp"
                         android:padding="10dp"
                         app:layout_constraintTop_toBottomOf="@id/et_phone_number"

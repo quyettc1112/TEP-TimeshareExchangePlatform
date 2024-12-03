@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpda
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareUpdateDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.UpdateExchangeBookingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
@@ -300,6 +301,14 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("timeshareId") timeshareId: Int,
         @Body timeshareUpdateDTO: TimeshareUpdateDTO
+    ) : Response<Void>
+
+    // Update Exchange Booking Customer Info
+    @PUT("customer/exchange/booking/primary-guest/{bookingId}")
+    suspend fun updateExchangeBookingCustomerInfo(
+        @Header ("Authorization") token: String,
+        @Path ("bookingId") bookingId: Int,
+        @Body updateExchangeBookingDTO: UpdateExchangeBookingDTO
     ) : Response<Void>
 
 

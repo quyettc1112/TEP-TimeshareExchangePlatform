@@ -15,11 +15,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomFeedbackDialog.CustomFeedbackDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.UpdateExchangeBookingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -42,6 +45,7 @@ class BookingDetailActivity : BaseActivity() {
     private lateinit var token: TokenManager
     private lateinit var notificationHelper: NotificationHelper
     private val viewModel: BookingDetailViewModel by viewModels()
+    private var exchangeBookingId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +61,7 @@ class BookingDetailActivity : BaseActivity() {
         notificationHelper = NotificationHelper(this)
         getIntentData()
         eventClickCancelBooking()
+        eventClickUpdateBookingExchange()
 
         binding.toolbar.onStartIconClick = {
             onBackPressed()
@@ -65,7 +70,7 @@ class BookingDetailActivity : BaseActivity() {
 
     private fun getIntentData() {
         val rentalBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, 0)
-        val exchangeBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, 0)
+        exchangeBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, 0)
 
         if (!token.isLoggedIn()) {
             finish()
@@ -106,7 +111,7 @@ class BookingDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     binding.shimmerViewContainer.hideShimmer()
                     bindDataRental(resources.data!!)
-                    Log.d("Check Data Booking Detail", resources.data.toString())
+                    Log.d("Check Data Booking Detail", resources.data.status.toString())
                 }
 
                 Status.ERROR -> {
@@ -135,7 +140,6 @@ class BookingDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     binding.shimmerViewContainer.hideShimmer()
                     bindDataExchange(resources.data!!)
-                    Log.d("Check Data Booking Detail", resources.data.toString())
                 }
 
                 Status.ERROR -> {
@@ -162,8 +166,14 @@ class BookingDetailActivity : BaseActivity() {
                     showSuccessToast("Hủy đặt phòng thành công")
                     val resultIntent = Intent()
                     Log.d("Checkasfasda", it.data.toString())
-                    resultIntent.putExtra(Constant.DEFAULT_BOOKING_ID, it.data?.id) // Thêm dữ liệu vào Intent
-                    resultIntent.putExtra(Constant.DEFAULT_BOOKING_STATUS, it.data?.status) // Thêm dữ liệu vào Intent
+                    resultIntent.putExtra(
+                        Constant.DEFAULT_BOOKING_ID,
+                        it.data?.id
+                    ) // Thêm dữ liệu vào Intent
+                    resultIntent.putExtra(
+                        Constant.DEFAULT_BOOKING_STATUS,
+                        it.data?.status
+                    ) // Thêm dữ liệu vào Intent
                     setResult(Activity.RESULT_OK, resultIntent) // Trả kết quả về MainActivity
                     notificationHelper.makeNotification(
                         this,
@@ -235,8 +245,32 @@ class BookingDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     Log.d("Check asdasdasd", it.message.toString())
                     it.message?.let {
-                       showFailToast(it)
+                        showFailToast(it)
                     }
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Update Exchange Booking
+        viewModel.updateExchangeBookingInfoResponse.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessToast("Cập nhật thông tin thành công")
+                    viewModel.getMyBookingExchangeDetail(
+                        token.getAccessToken().toString(),
+                        exchangeBookingId
+                    )
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailToast(it.message.toString())
+                    Log.d("Chgeckasfasda", it.message.toString())
                 }
 
                 Status.LOADING -> {
@@ -249,7 +283,10 @@ class BookingDetailActivity : BaseActivity() {
     // Event Click
     private fun eventClickCancelBooking() {
         binding.btnCancelBooking.setOnClickListener {
-            val bottomSheetDialog = BottomSheetDialog(this,  R.style.MyBottomSheetDialogTheme) // Use `requireContext()` if in Fragment
+            val bottomSheetDialog = BottomSheetDialog(
+                this,
+                R.style.MyBottomSheetDialogTheme
+            ) // Use `requireContext()` if in Fragment
 
             // Inflate the bottom sheet layout using View Binding
             val bottomSheetBinding = DialogCancellcationPolicyBinding.inflate(layoutInflater)
@@ -271,7 +308,7 @@ class BookingDetailActivity : BaseActivity() {
                     this@BookingDetailActivity,
                     data?.data?.rentalPosting?.cancellationType.name.toString()
                 )
-                bottomSheetBinding.tvContentCancellationPolicy.text  = refundPolicy
+                bottomSheetBinding.tvContentCancellationPolicy.text = refundPolicy
             }
 
 
@@ -282,6 +319,20 @@ class BookingDetailActivity : BaseActivity() {
             }
 
             bottomSheetDialog.show()
+        }
+    }
+
+    private fun eventClickUpdateBookingExchange() {
+        binding.btnUpdateBookingExchange.setOnClickListener {
+            val dialogUpdateCustomer =
+                UpdateExchangeBookingDialog(this, token,
+                    object : UpdateExchangeBookingDialog.ConfirmCallback {
+                        override fun positiveAction(updateExchangeBookingDTO: UpdateExchangeBookingDTO) {
+                            Log.d("CheckUpdateBooking", updateExchangeBookingDTO.toString())
+                            callUpdateExchangeInfo(updateExchangeBookingDTO)
+                        }
+                    })
+            dialogUpdateCustomer.show()
         }
     }
 
@@ -308,8 +359,7 @@ class BookingDetailActivity : BaseActivity() {
                 MyBookingStatus.fromApiStatus(data.source)?.getDescription(binding.root.context)
 
             // Status
-            bindBookingStatus(data.id,data.status, data.isFeedback, data.source)
-
+            bindBookingStatus(data.id, data.status, data.isFeedback, data.source)
 
         }
 
@@ -320,30 +370,34 @@ class BookingDetailActivity : BaseActivity() {
             etEmail.setText(data.primaryGuestEmail)
         }
 
-        val cancellationType: RefundPolicy?  = RefundPolicy.getRefundPolicyById(data.rentalPosting.cancellationType.id)
+        // Cancellatioon
+        val cancellationType: RefundPolicy? =
+            RefundPolicy.getRefundPolicyById(data.rentalPosting.cancellationType.id)
         Log.d("Check Cancellation Type", cancellationType.toString())
         if (cancellationType?.let {
-                val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") // Định dạng chuỗi tùy chỉnh
-                val checkInDate = LocalDate.parse(data.checkinDate, formatter) // Chuyển String thành LocalDate
+                val formatter =
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy") // Định dạng chuỗi tùy chỉnh
+                val checkInDate =
+                    LocalDate.parse(data.checkinDate, formatter) // Chuyển String thành LocalDate
                 canCancelBooking(checkInDate, it)
             } == true) {
             binding.btnCancelBooking.visibility = View.VISIBLE
+            // Show Cancel Booking
+            showCancelBooking(data.status)
         } else {
             binding.btnCancelBooking.visibility = View.GONE
         }
 
-        // Show Cancel Booking
-        showCancelBooking(data.status)
 
 
-
+        // Type Booking
         if (data.source == "rental") {
-            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking)
+                .into(binding.imBookingType)
         } else {
-            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking)
+                .into(binding.imBookingType)
         }
-
-
 
         // Bind Data Detail Billing
         val binding_detail_billing = binding.includeDetailBilling
@@ -359,9 +413,19 @@ class BookingDetailActivity : BaseActivity() {
             tvLocation.text = data.rentalPosting.roomInfo.unitType.resortAddress
             tvNumberNight.text = data.totalNights.toString()
             tvCheckInDate.text =
-                data.checkinDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
+                data.checkinDate?.let {
+                    Constant.formatDateByLocale(
+                        it,
+                        this@BookingDetailActivity
+                    )
+                }
             tvCheckOutDate.text =
-                data.checkoutDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
+                data.checkoutDate?.let {
+                    Constant.formatDateByLocale(
+                        it,
+                        this@BookingDetailActivity
+                    )
+                }
 
             // Cancel Policy
             binding_detail_billing.apply {
@@ -376,8 +440,10 @@ class BookingDetailActivity : BaseActivity() {
                 }
             }
 
-            tvRoomPricePerNight.text = data.pricePerNights?.let { Constant.formatPriceLong(it) } + " VNĐ"
-            tvEstimatedTotalPrice.text = data.totalPrice?.let { Constant.formatPriceLong(it) } + " VNĐ (${data.totalNights} đêm)"
+            tvRoomPricePerNight.text =
+                data.pricePerNights?.let { Constant.formatPriceLong(it) } + " VNĐ"
+            tvEstimatedTotalPrice.text =
+                data.totalPrice?.let { Constant.formatPriceLong(it) } + " VNĐ (${data.totalNights} đêm)"
             tvFeePrice.text = data.serviceFee?.let { Constant.formatPriceLong(it) } + " VNĐ"
 
             // Image
@@ -387,10 +453,17 @@ class BookingDetailActivity : BaseActivity() {
                 .placeholder(R.drawable.ripple_effect_white)
                 .into(imImageTimeshare)
         }
+
+        // Status
+        bindBookingStatus(data.id, data.status, data.isFeedback, data.source)
+
+        binding.llTypeBookingContainer.visibility = View.VISIBLE
     }
 
     private fun bindDataExchange(data: MyBookingExchangeDetailResponse) {
         // Bind Data Room Reservation
+        Log.d("Check Data Exchange", data.status.toString())
+        Log.d("Check Data Exchange", data.id.toString())
         binding.apply {
             tvRoomReservationCode.text = "Mã đặt phòng: ${data.id}"
 
@@ -411,16 +484,16 @@ class BookingDetailActivity : BaseActivity() {
                 MyBookingStatus.fromApiStatus(data.source)?.getDescription(binding.root.context)
 
             // Status
-            data.isFeedback?.let { bindBookingStatus(data.id,data.status, it, data.source) }
+            bindBookingStatus(data.id, data.status, data.isFeedback ?: false, data.source)
 
 
         }
-
-
         if (data.source == "rental") {
-            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_rental_booking)
+                .into(binding.imBookingType)
         } else {
-            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
+            Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking)
+                .into(binding.imBookingType)
         }
 
         // Bind Data Guest Information
@@ -430,8 +503,9 @@ class BookingDetailActivity : BaseActivity() {
             etEmail.setText(data.primaryGuestEmail)
         }
 
-        binding.includeDetailBilling.root.visibility = View.VISIBLE
+
         // Bind Data Detail Billing
+        binding.includeDetailBilling.root.visibility = View.VISIBLE
         val binding_detail_billing = binding.includeDetailBilling
         binding_detail_billing.apply {
             // Hide Unnecessary View
@@ -445,9 +519,19 @@ class BookingDetailActivity : BaseActivity() {
             tvLocation.text = ""
             tvNumberNight.text = ""
             tvCheckInDate.text =
-                data.checkinDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
+                data.checkinDate?.let {
+                    Constant.formatDateByLocale(
+                        it,
+                        this@BookingDetailActivity
+                    )
+                }
             tvCheckOutDate.text =
-                data.checkoutDate?.let { Constant.formatDateByLocale(it, this@BookingDetailActivity) }
+                data.checkoutDate?.let {
+                    Constant.formatDateByLocale(
+                        it,
+                        this@BookingDetailActivity
+                    )
+                }
 
             // Cancel Policy
             binding_detail_billing.apply {
@@ -466,9 +550,24 @@ class BookingDetailActivity : BaseActivity() {
         }
 
 
+        // Check Is Primary Guest
+        if (data.isPrimaryGuest) {
+            binding.btnUpdateBookingExchange.visibility = View.GONE
+        } else {
+            binding.btnUpdateBookingExchange.visibility = View.VISIBLE
+        }
+
+
+        binding.llTypeBookingContainer.visibility = View.VISIBLE
     }
 
-    private fun bindBookingStatus(bookingId: Int, status: String, isFeedback: Boolean, source: String) {
+    private fun bindBookingStatus(
+        bookingId: Int,
+        status: String,
+        isFeedback: Boolean,
+        source: String
+    ) {
+        Log.d("Check Status", status)
         when (MyBookingStatus.fromApiStatus(status)) {
             MyBookingStatus.BOOKED -> {
                 applyStatusStyle(
@@ -549,7 +648,8 @@ class BookingDetailActivity : BaseActivity() {
                 )
             }
         }
-        binding.tvStatus.text = MyBookingStatus.fromApiStatus(status)?.getDescription(binding.root.context)
+        binding.tvStatus.text =
+            MyBookingStatus.fromApiStatus(status)?.getDescription(binding.root.context)
 
     }
 
@@ -569,6 +669,15 @@ class BookingDetailActivity : BaseActivity() {
 
 
         }
+    }
+
+    private fun callUpdateExchangeInfo(updateExchangeBookingDTO: UpdateExchangeBookingDTO) {
+        val bookingId = viewModel.getMyBookingExchangeDetailResponse.value?.data?.id ?: 0
+        viewModel.updateExchangeBookingInfo(
+            token.getAccessToken().toString(),
+            bookingId,
+            updateExchangeBookingDTO
+        )
     }
 
     private fun callCancelBooking(bookingId: Int) {
@@ -594,9 +703,9 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
-    private fun callSendFeedBackExchange(rating: Int, feedback: String, bookingId: Int){
+    private fun callSendFeedBackExchange(rating: Int, feedback: String, bookingId: Int) {
         if (!token.isLoggedIn()) {
-           showFailToast("Bạn cần đăng nhập để thực hiện chức năng này")
+            showFailToast("Bạn cần đăng nhập để thực hiện chức năng này")
             return
         }
 
@@ -604,7 +713,7 @@ class BookingDetailActivity : BaseActivity() {
         if (feedbackDTO.bookingId !== 0 && feedbackDTO.ratingPoint !== 0) {
             viewModel.postFeedbackExchange(token.getAccessToken().toString(), feedbackDTO)
         } else {
-           showFailToast("Vui lòng nhập đầy đủ thông tin")
+            showFailToast("Vui lòng nhập đầy đủ thông tin")
         }
     }
 
@@ -624,9 +733,10 @@ class BookingDetailActivity : BaseActivity() {
         }
     }
 
-    fun canCancelBooking(checkInDate: LocalDate, refundPolicy: RefundPolicy): Boolean {
+    private fun canCancelBooking(checkInDate: LocalDate, refundPolicy: RefundPolicy): Boolean {
         val today = LocalDate.now() // Ngày hiện tại
-        val allowedCancelDate = checkInDate.minusDays(refundPolicy.duration.toLong()) // Ngày cuối cùng cho phép hủy
+        val allowedCancelDate =
+            checkInDate.minusDays(refundPolicy.duration.toLong()) // Ngày cuối cùng cho phép hủy
 
         // Kiểm tra nếu hôm nay trước hoặc bằng ngày được phép hủy
         return today.isBefore(allowedCancelDate) || today.isEqual(allowedCancelDate)

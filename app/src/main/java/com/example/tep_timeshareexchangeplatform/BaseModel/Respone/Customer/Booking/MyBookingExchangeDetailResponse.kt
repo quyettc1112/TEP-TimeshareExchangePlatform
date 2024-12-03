@@ -23,7 +23,8 @@ data class MyBookingExchangeDetailResponse(
     @SerializedName("nights") val nights: Int?,
     @SerializedName("createdDate") val createdDate: String,
     @SerializedName("updatedDate") val updatedDate: String,
-    @SerializedName("source") val source: String
+    @SerializedName("source") val source: String,
+    @SerializedName("isPrimaryGuest") val isPrimaryGuest: Boolean,
 ) {
     data class RoomInfo(
         @SerializedName("roomInfoCode") val roomInfoCode: String,
