@@ -135,7 +135,7 @@ class PostingFlowViewModel @Inject constructor(
         _endDateTimeshare.value = end?.let { dateFormat.format(Date(it)) }
 
         if (start != null && end != null) {
-            val numberOfDays = ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+            val numberOfDays = ((end - start) / (1000 * 60 * 60 * 24)).toInt() + 1
             _numberOfNightsTimeShare.value = numberOfDays
         } else {
             _numberOfNightsTimeShare.value = 0
@@ -761,6 +761,7 @@ class PostingFlowViewModel @Inject constructor(
 
     // Init
     init {
+        _cancelPolicy.value = 0
         _step.value = initStep
         _currentStepInProgress.value = initStep
         _stepCreateTimeshare.value = 0

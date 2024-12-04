@@ -37,7 +37,7 @@
             <!--// Animation View-->
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="200dp"
                 app:lottie_rawRes="@raw/anim_register"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
@@ -68,7 +68,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/userNameContainer"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    app:helperText="Nhập tên người dùng"
+
                     app:helperTextTextColor="@android:color/holo_red_dark"
                     android:focusable="true"
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="16dp"
-                        android:drawableStart="@drawable/ic_user_name"
+                        android:drawableStart="@drawable/baseline_person_24_6"
                         android:drawablePadding="12dp"
                         android:maxLines="1"
                         android:ems="10"
@@ -93,11 +93,9 @@
                         android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/emailContainer"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    app:helperText="Nhập Email"
                     app:helperTextTextColor="@android:color/holo_red_dark"
                     android:focusable="true"
                     android:layout_width="match_parent"
@@ -111,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="16dp"
-                        android:drawableStart="@drawable/ic_email_30px"
+                        android:drawableStart="@drawable/outline_email_24"
                         android:drawablePadding="12dp"
                         android:maxLines="1"
                         android:ems="10"
@@ -122,11 +120,9 @@
                         android:textSize="16dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passwordContainer"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    app:helperText="Nhập Mật Khẩu"
                     app:helperTextTextColor="@android:color/holo_red_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -143,11 +139,40 @@
                     android:focusable="true"
                     android:layout_height="50dp"
                     android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_password_30px"
+                    android:drawableStart="@drawable/baseline_password_24"
                     android:drawablePadding="12dp"
                     android:ems="10"
                     android:maxLines="1"
                     android:hint="Mật Khẩu"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textSize="16dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_confirm_Container"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    app:helperTextTextColor="@android:color/holo_red_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    app:passwordToggleEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emailContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_password_confirm"
+                    android:layout_width="match_parent"
+                    android:focusable="true"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    android:drawableStart="@drawable/baseline_password_24"
+                    android:drawablePadding="12dp"
+                    android:ems="10"
+                    android:maxLines="1"
+                    android:hint="Xác Nhận Mật Khẩu"
                     android:inputType="textPassword"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
@@ -168,19 +193,37 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
                 tools:layout_editor_absoluteX="20dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <LinearLayout
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="45dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/ripple_effect"
-                    android:backgroundTint="@color/blue_btn_search"
-                    android:fontFamily="@font/app_font_black"
-                    android:text="Đăng Ký"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    android:background="@drawable/ripple_effect_white"
+                    android:backgroundTint="@color/primaryColor"
+                    android:clickable="true"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Icon chọn ngày"
+                        android:src="@drawable/baseline_login_24" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Đăng Ký"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -194,6 +237,7 @@ Chính sách bảo mật"
                     android:textSize="12dp" />
 
             </LinearLayout>
+
 
             <!--// Option Login-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -316,6 +360,7 @@ Chính sách bảo mật"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
+
 
 
         </LinearLayout>

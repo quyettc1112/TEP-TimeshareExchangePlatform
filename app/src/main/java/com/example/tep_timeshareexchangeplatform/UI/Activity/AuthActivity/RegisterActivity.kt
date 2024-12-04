@@ -55,30 +55,14 @@ class RegisterActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Đăng ký thành công",
-                        "Chúc mừng bạn đã đăng ký thành công",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showSuccessToast("Đăng ký thành công", "Chúc mừng bạn đã đăng ký thành công")
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 }
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Đăng ký thất bại",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Đăng ký thất bại", "Lỗi Tạo Tài Khoản")
                 }
             }
         }
@@ -135,6 +119,22 @@ class RegisterActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // Confirm Password TextWatcher
+        binding.edtPasswordConfirm.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                val message = if (s.toString().trim() != binding.edtPassword.text.toString().trim()) {
+                    "Mật khẩu không khớp"
+                } else {
+                    null
+                }
+                binding.passwordConfirmContainer.helperText = message
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {}
+
+        })
+
     }
 
     private fun validateAllFields(): Boolean {
@@ -143,8 +143,10 @@ class RegisterActivity : BaseActivity() {
         val isEmailValid = validator.validateEmail(binding.edtEmail.text.toString().trim()) == null
         val isPasswordValid =
             validator.validatePassword(binding.edtPassword.text.toString().trim()) == null
+        val isConfirmPasswordValid =
+            binding.edtPassword.text.toString().trim() == binding.edtPasswordConfirm.text.toString().trim()
 
-        return isUserNameValid && isEmailValid && isPasswordValid
+        return isUserNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 
     private fun clickHandler() {

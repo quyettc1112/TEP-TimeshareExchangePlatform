@@ -1,7 +1,11 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -75,6 +79,7 @@ class MapViewActivity : BaseActivity() {
 
         eventClickBack()
         eventClickRouteToResort()
+        eventCLickNavigateGoogleMap()
 
 
     }
@@ -233,6 +238,12 @@ class MapViewActivity : BaseActivity() {
         }
     }
 
+    private fun eventCLickNavigateGoogleMap() {
+        binding.ivGoogleMap.setOnClickListener {
+            navigateToRoute(resort_latitude, reosrt_longitude, this)
+        }
+    }
+
     private fun moveMapToLocation(overpassResponse: OverpassResponse.Element) {
         val geoPoint =
             GeoPoint(overpassResponse.lat, overpassResponse.lon) // Tạo GeoPoint từ tọa độ
@@ -358,6 +369,21 @@ class MapViewActivity : BaseActivity() {
             } else {
                 Toast.makeText(this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    fun navigateToRoute(latitude: Double, longitude: Double, context: Context) {
+        // Tạo URI hiển thị tuyến đường
+        val uri = "https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude&travelmode=driving"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri)).apply {
+            setPackage("com.google.android.apps.maps") // Chỉ định Google Maps
+        }
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            // Nếu Google Maps không được cài đặt, mở trình duyệt với URL tương ứng
+            val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            context.startActivity(fallbackIntent)
         }
     }
 

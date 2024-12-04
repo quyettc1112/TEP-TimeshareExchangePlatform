@@ -652,7 +652,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
 
         val postingTimeshareDTO = PostingTimeshareDTO(
-            description = "String",
+            description = "",
             nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
             pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
             timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
@@ -677,7 +677,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             ExchangePackageEnum.getPackageById(postingFlowViewModel.packageStep4.value?.id!!)
 
         val postingTimeshareDTO = ExchangeTimeshareDTO(
-            description = "String",
+            description = postingFlowViewModel.note.value!!,
             nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
             exchangePackageId = rentalPackageEnum?.id!!,
             timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
