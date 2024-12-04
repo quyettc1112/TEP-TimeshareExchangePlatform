@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
@@ -310,6 +311,10 @@ interface CustomerAPIService {
         @Path ("bookingId") bookingId: Int,
         @Body updateExchangeBookingDTO: UpdateExchangeBookingDTO
     ) : Response<Void>
+    @GET("customer/dashboard")
+    suspend fun getDashboardData(
+        @Header ("Authorization") token: String,
+    ) : Response<DashboardDataResponse>
 
 
 

@@ -22,306 +22,510 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
-        <!--Revenue-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
-            android:padding="10dp">
-
-            <!-- Title -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="Lợi nhuận"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <!-- Revenue Section -->
+            android:padding="4dp"
+            android:layout_marginBottom="10dp">
+            <!--Revenue-->
             <LinearLayout
-                android:id="@+id/ll_revenue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <!-- Card 1 -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <!-- Title -->
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/card_background_rv_1"
-                    android:gravity="left"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Lợi nhuận"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-                    <ImageView
-                        android:id="@+id/cardIcon1"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/baseline_attach_money_24" />
-
-                    <TextView
-                        android:id="@+id/titleText1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Doanh thu"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/revenueText1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="₫ 829,840"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Card 2 -->
+                <!-- Revenue Section -->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_revenue"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/card_background_rv_2"
-                    android:gravity="left"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <ImageView
-                        android:id="@+id/cardIcon2"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/baseline_credit_card_24" />
-
-                    <TextView
-                        android:id="@+id/titleText2"
-                        android:layout_width="wrap_content"
+                    <!-- Card 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Chi phí"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_background_rv_1"
+                        android:gravity="left"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/revenueText2"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/cardIcon1"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/baseline_attach_money_24" />
+
+                        <TextView
+                            android:id="@+id/titleText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Doanh thu"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/revenueText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="₫ 829,840"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Card 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="₫ 829,840"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_background_rv_2"
+                        android:gravity="left"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/cardIcon2"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/baseline_credit_card_24" />
+
+                        <TextView
+                            android:id="@+id/titleText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Chi phí"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/revenueText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="₫ 829,840"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <!--Chart-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <!-- Title -->
-            <TextView
+            <!--Chart-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/inter_bold"
-                android:text="Biểu đồ thống kê"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
 
+                <!-- Title -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Biểu đồ thống kê"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:src="@drawable/placeholder_image" />
 
-        <!--Analysis-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="10dp">
+            </LinearLayout>
 
-            <!-- Title -->
-            <TextView
-                android:id="@+id/titleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Thống kê bài đăng"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Grid Layout-->
-            <GridLayout
-                android:id="@+id/statsGrid"
+            <!--Analysis-->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:columnCount="2"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleText">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <!-- First Stat Box: Total Posts -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="#D3D3D3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:fontFamily="@font/inter_bold"
+                    android:text="Thống kê bài đăng"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/totalPostsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tổng bài đăng"
-                        android:textColor="#000"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/totalPostsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textColor="#000"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Second Stat Box: Posts for Rent -->
+                <!-- Analysis Layout-->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/statsLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="#D3D3D3"
-                    android:gravity="center"
+                    android:layout_marginTop="24dp"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="0dp">
 
-                    <TextView
-                        android:id="@+id/postsForRentLabel"
-                        android:layout_width="wrap_content"
+                    <!-- Total Posts -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Số lượng bài đăng cho thuê"
-                        android:textColor="#000"
-                        android:textSize="14sp" />
+                        android:layout_margin="2dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="12dp">
 
-                    <TextView
-                        android:id="@+id/postsForRentCount"
-                        android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <!-- Content Section -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/IconTotalPost"
+                                android:orientation="vertical">
+
+                                <!-- Title -->
+                                <TextView
+                                    android:id="@+id/tvTotalPostLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng số bài đăng"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Number -->
+                                <TextView
+                                    android:id="@+id/tvTotalPost"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="24"
+                                    android:textColor="#3F51B5"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Description -->
+                                <TextView
+                                    android:id="@+id/tvTotalPostDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="80% Increase than before"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:id="@+id/IconTotalPost"
+                                android:layout_width="50dp"
+                                android:layout_height="80dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/post" />
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!-- Posts for Rent -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textColor="#000"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:layout_margin="2dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="12dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <!-- Content Section -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/IconRentalRenter"
+                                android:orientation="vertical">
+
+                                <!-- Title -->
+                                <TextView
+                                    android:id="@+id/tvTotalRentalRenterLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng số người thuê"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Number -->
+                                <TextView
+                                    android:id="@+id/tvTotalRentalRenter"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="20"
+                                    android:textColor="#3F51B5"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Description -->
+                                <TextView
+                                    android:id="@+id/tvTotalRentalRenterDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="80% Increase than before"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:id="@+id/IconRentalRenter"
+                                android:layout_width="50dp"
+                                android:layout_height="80dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/rental" />
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+                    <!-- Posts for Exchange -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="12dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <!-- Content Section -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/IconExchangeRenter"
+                                android:orientation="vertical">
+
+                                <!-- Title -->
+                                <TextView
+                                    android:id="@+id/tvTotalExchangeRenterLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng số người trao đổi"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Number -->
+                                <TextView
+                                    android:id="@+id/tvTotalExchangeRenter"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="30"
+                                    android:textColor="#3F51B5"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Description -->
+                                <TextView
+                                    android:id="@+id/tvExchangeRenterDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="80% Increase than before"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:id="@+id/IconExchangeRenter"
+                                android:layout_width="50dp"
+                                android:layout_height="80dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/exchange" />
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+                    <!-- Requests -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="12dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <!-- Content Section -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/IconTotalRequest"
+                                android:orientation="vertical">
+
+                                <!-- Title -->
+                                <TextView
+                                    android:id="@+id/tvTotalRequestLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng số yêu cầu"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Number -->
+                                <TextView
+                                    android:id="@+id/tvTotalRequest"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="14"
+                                    android:textColor="#3F51B5"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Description -->
+                                <TextView
+                                    android:id="@+id/tvTotalRequestDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="80% Increase than before"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:id="@+id/IconTotalRequest"
+                                android:layout_width="50dp"
+                                android:layout_height="80dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/request" />
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+                    <!-- Bookings -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="12dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp">
+
+                            <!-- Content Section -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/IconTotalBooking"
+                                android:orientation="vertical">
+
+                                <!-- Title -->
+                                <TextView
+                                    android:id="@+id/tvTotalBookingLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tổng số đã thuê"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Number -->
+                                <TextView
+                                    android:id="@+id/tvTotalBooking"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="20"
+                                    android:textColor="#3F51B5"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Description -->
+                                <TextView
+                                    android:id="@+id/tvTotalBookingDesc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="80% Increase than before"
+                                    android:textColor="#808080"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <!-- Icon -->
+                            <ImageView
+                                android:id="@+id/IconTotalBooking"
+                                android:layout_width="50dp"
+                                android:layout_height="80dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/rent" />
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
-
-                <!-- Third Stat Box: Posts for Exchange -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="#D3D3D3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/postsForExchangeLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số lượng bài đăng trao đổi"
-                        android:textColor="#000"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/postsForExchangeCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textColor="#000"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Fourth Stat Box: Requests -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="#D3D3D3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/requestsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số lượng yêu cầu"
-                        android:textColor="#000"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/requestsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textColor="#000"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Fifth Stat Box: Bookings -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:background="#D3D3D3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/bookingsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số lượng đặt thuê"
-                        android:textColor="#000"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/bookingsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123"
-                        android:textColor="#000"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </GridLayout>
-
-
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
