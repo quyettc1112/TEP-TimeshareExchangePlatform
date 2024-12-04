@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting
 
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse.Location
 import com.google.gson.annotations.SerializedName
 
 data class ExchangeDetailResponse(
@@ -12,9 +13,10 @@ data class ExchangeDetailResponse(
     @SerializedName("timeShareId") val timeShareId: Int,
     @SerializedName("roomInfoId") val roomInfoId: Int,
     @SerializedName("roomName") val roomName: String,
+    @SerializedName("roomCode") val roomCode: String,
     @SerializedName("resortId") val resortId: Int,
     @SerializedName("resortName") val resortName: String,
-    @SerializedName("address") val address: String,
+    @SerializedName("location") val location: Location,
     @SerializedName("isVerify") val isVerify: Boolean,
     @SerializedName("nights") val nights: Int,
     @SerializedName("exchangePackageId") val exchangePackageId: Int,
@@ -67,5 +69,14 @@ data class ExchangeDetailResponse(
         @SerializedName("id") val id: Int,
         @SerializedName("name") val name: String,
         @SerializedName("type") val type: String?
+    )
+
+    data class Location(
+        @SerializedName("name") val name: String,
+        @SerializedName("displayName") val displayName: String?,
+        @SerializedName("latitude") val latitude: String?,
+        @SerializedName("longitude") val longitude: String?,
+        @SerializedName("country") val country: String,
+        @SerializedName("placeId") val placeId: String?
     )
 }

@@ -24,6 +24,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.RequestExchangeActivity.RequestExchangeActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
@@ -86,6 +87,7 @@ class ExchangeDetailActivity : BaseActivity() {
         initAdapter()
         getIntentValue()
         setToolBarAction()
+        eventClickShowMaps()
     }
 
     private fun getIntentValue() {
@@ -169,8 +171,8 @@ class ExchangeDetailActivity : BaseActivity() {
 
         // Resort Info
         binding.apply {
-            tvResortName.text = postingDetail.resortName + " | " + postingDetail.unitType.title
-            tvLocation.text = postingDetail.address
+            tvResortName.text = postingDetail.resortName + " | " + postingDetail.roomCode
+            tvLocation.text = postingDetail.location.displayName
 
             if (postingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -204,10 +206,9 @@ class ExchangeDetailActivity : BaseActivity() {
         bindDataAmenities(postingDetail)
 
         // UI DTB
-        // Data for Request
-        // UI DTB
         binding.apply {
-            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvLocationDtb.text = postingDetail.location.displayName
+            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.roomCode
             tvCheckInDateDtb.text =
                 Constant.formatDateByLocale(postingDetail.checkinDate, this@ExchangeDetailActivity)
             tvCheckOutDateDtb.text =
@@ -288,6 +289,7 @@ class ExchangeDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: ExchangeDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 
@@ -359,6 +361,21 @@ class ExchangeDetailActivity : BaseActivity() {
             binding.cvRequestContanerExchange.setOnClickListener {
                 callCheckProfileCustomer()
             }
+        }
+    }
+
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(
+                Constant.RESORT_LATITUDE,
+                exchangeDetailViewModel.exchangeDetail.value?.data?.location?.latitude
+            )
+            intent.putExtra(
+                Constant.RESORT_LONGITUDE,
+                exchangeDetailViewModel.exchangeDetail.value?.data?.location?.longitude
+            )
+            startActivity(intent)
         }
     }
 

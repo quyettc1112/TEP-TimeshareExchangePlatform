@@ -538,6 +538,7 @@
 
                 <!--// Cancel Policy-->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -861,6 +862,7 @@
 
                             <!-- Cancellation Policy -->
                             <LinearLayout
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
@@ -896,6 +898,7 @@
 
                         <!-- Second Section: Room Pricing -->
                         <LinearLayout
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">

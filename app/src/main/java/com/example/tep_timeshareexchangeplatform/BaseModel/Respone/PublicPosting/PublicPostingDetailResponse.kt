@@ -78,6 +78,6 @@ data class PublicPostingDetailResponse(
         @SerializedName("latitude") val latitude: String?,
         @SerializedName("longitude") val longitude: String?,
         @SerializedName("country") val country: String,
-        @SerializedName("placeId") val placeId: Any?
+        @SerializedName("placeId") val placeId: String?
     )
 }

@@ -17,14 +17,14 @@ import com.example.tep_timeshareexchangeplatform.R
 class NotificationHelper(private val context: Context) {
 
     companion object {
-        private const val CHANNEL_ID = "default_channel_id"
+        private const val CHANNEL_ID = "CHANNEL_ID_NOTIFICATION"
         private const val CHANNEL_NAME = "Default Channel"
         private const val CHANNEL_DESCRIPTION = "This is the default notification channel"
         const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1001
     }
 
     init {
-        createNotificationChannel()
+       // createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
@@ -84,13 +84,12 @@ class NotificationHelper(private val context: Context) {
             return
         }
 
-
-
         val channelID = "CHANNEL_ID_NOTIFICATION"
         val builder = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.ic_unwind_logo_25)
             .setContentTitle(title)
             .setContentText(message)
+         //   .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 

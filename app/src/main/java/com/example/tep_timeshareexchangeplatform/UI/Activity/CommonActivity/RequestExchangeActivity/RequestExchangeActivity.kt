@@ -68,7 +68,6 @@ class RequestExchangeActivity : BaseActivity() {
         observeViewModel()
         viewModel.callGetExchangePostingDetail(postingId)
 
-
     }
 
     private fun observeViewModel() {
@@ -186,9 +185,8 @@ class RequestExchangeActivity : BaseActivity() {
             binding.includeExchangeTimehare.apply {
                 // Hide button
                 btnSelect.visibility = View.GONE
-
                 tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomName
+                tvRoomType.text = myTimeshareResponse.roomCode
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(
                         myTimeshareResponse.checkinDate,

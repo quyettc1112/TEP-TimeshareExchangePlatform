@@ -27,6 +27,8 @@ data class ExchangesResponse(
         @SerializedName("roomName") val roomName: String,
         @SerializedName("resortId") val resortId: Int,
         @SerializedName("resortName") val resortName: String,
+        @SerializedName("resortLocationName") val resortLocationName: String,
+        @SerializedName("resortLocationDisplayName") val resortLocationDisplayName: String,
         @SerializedName("address") val address: String,
         @SerializedName("isVerify") val isVerify: Boolean,
         @SerializedName("nights") val nights: Int,
