@@ -152,8 +152,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="pending_pricing">Pending Pricing</string>
     <string name="closed">Closed</string>
 
-    <!--// Posting Status-->
-    <string name="pending_customer">Pending Customer</string>
+
+    <string name="pending_owner">Pending Owner Approval</string>
+    <string name="reject_approval">Rejected by Approval</string>
+    <string name="pending_renter_pricing">Pending Renter Pricing</string>
+    <string name="renter_reject">Rejected by Renter</string>
+    <string name="owner_reject">Rejected by Owner</string>
+    <string name="pending_renter_payment">Pending Renter Payment</string>
+    <string name="pending_owner_payment">Pending Owner Payment</string>
+
 
     <!--// My Booking Status-->
     <string name="booked">Booked</string>

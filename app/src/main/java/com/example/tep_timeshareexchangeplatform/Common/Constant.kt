@@ -88,6 +88,7 @@ class Constant {
         const val DEFAULT_EXCHANGE_REQUEST_ON_POST= "postingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
         const val REQUEST_GET_MY_TIMESHARE = "requestGetMyTimeshare"
+        const val DEFAULT_EXCHANGE_POSTING_ID = "exchangePostingId"
 
         const val DEFAULT_MY_POSTING_RESORT_NAME = "myPostingResortName"
         const val DEFAULT_MY_POSTING_ROOM_NAME = "myPostingRoomName"

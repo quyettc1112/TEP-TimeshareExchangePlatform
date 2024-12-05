@@ -14,14 +14,38 @@ import javax.inject.Inject
 class MyTimeshareViewModel @Inject constructor(
     private val timeshareRepository: TimeshareRepository,
 ): ViewModel() {
+
+    private val _typeCallMyTimeshareList = MutableLiveData<Boolean>()
+    val typeCallMyTimeshareList: MutableLiveData<Boolean> = _typeCallMyTimeshareList
+    fun setTypeCallMyTimeshareList(type: Boolean) {
+        _typeCallMyTimeshareList.value = type
+    }
+
+    fun getTypeCallMyTimeshareList(): Boolean {
+        return _typeCallMyTimeshareList.value ?: false
+    }
+
+    private val _exchangePostingId = MutableLiveData<Int>()
+    val exchangePostingId: MutableLiveData<Int> = _exchangePostingId
+    fun setExchangePostingId(id: Int) {
+        _exchangePostingId.value = id
+    }
+
+
     // Call API get my timeshare list
     private val _myTimeshareList = MutableLiveData<Resource<MyTimeshareResponse>>()
     val myTimeshareList: MutableLiveData<Resource<MyTimeshareResponse>> = _myTimeshareList
     fun getMyTimeshareList(token: String, page: Int, size: Int) {
         viewModelScope.launch {
             _myTimeshareList.postValue(Resource.loading(null))
-            timeshareRepository.getMyTimeshareList(token, page, size).let {
-                _myTimeshareList.postValue(it)
+            if (!getTypeCallMyTimeshareList()) {
+                timeshareRepository.getMyTimeshareList(token, page, size).let {
+                    _myTimeshareList.postValue(it)
+                }
+            } else {
+                timeshareRepository.getMyTimeshareValidExchange(token, page, size, exchangePostingId.value ?: 0).let {
+                    _myTimeshareList.postValue(it)
+                }
             }
         }
     }
@@ -51,6 +75,7 @@ class MyTimeshareViewModel @Inject constructor(
     }
 
     init {
+        _typeCallMyTimeshareList.value = false
         _currentPage.value = 0
     }
 

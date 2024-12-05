@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -43,10 +44,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         getIntentValue()
         initAdapter()
 
-        binding.customToolbar.onStartIconClick = {
+        binding.customToolbar5.onStartIconClick = {
             finish()
         }
-        binding.shimmerViewContainer.startShimmer()
         evenClickApproveExchangeRequest()
 
 
@@ -59,15 +59,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
             observeMyExchangeRequestDetail()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập",   "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
@@ -77,14 +69,17 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
                     bindData(it.data!!)
-                    binding.shimmerViewContainer.hideShimmer()
                     Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
                     Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
-                    when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
+                   /* when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
                             binding.btnAccept.visibility = View.GONE
                         }
+                        MyExchangeRequestStatus.PENDING_OWNER -> {
+                            binding.btnAccept.visibility = View.GONE
+                        }
+
                         MyExchangeRequestStatus.PENDING_CUSTOMER -> {
                             binding.btnAccept.visibility = View.VISIBLE
                         }
@@ -100,22 +95,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
                     } else {
                         binding.btnAccept.visibility = View.VISIBLE
-                    }
+                    }*/
 
 
                 }
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Thất Bại", "Lỗi khi lấy thông tin yêu cầu trao đổi")
                 }
 
                 Status.LOADING -> {
@@ -145,15 +132,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 }
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Thất Bại", "Lỗi khi duyệt yêu cầu trao đổi")
                 }
 
                 Status.LOADING -> {
@@ -168,20 +147,15 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Unit Type
         bindDataUnitType(myExchangeRequestDetail)
 
-        // Custom Toolbar Data
-        binding.customToolbar.apply {
-            setTitle("${myExchangeRequestDetail.exchangePosting.roomInfoResortResortName}")
-            setTitleDetail("Mã phòng: ${myExchangeRequestDetail.exchangePosting.roomInfoRoomInfoCode}")
-        }
-
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myExchangeRequestDetail.exchangePosting.roomInfoResortResortName + " | " + myExchangeRequestDetail.roomInfo.unitType.title
+                myExchangeRequestDetail.exchangePosting.roomInfoResortResortName
+            tvRoomCode.text = myExchangeRequestDetail.roomInfo.location.displayName
             Glide.with(this@MyExchangeRequestDetailActivity)
                 .load(myExchangeRequestDetail.roomInfo.unitType.photos)
-                .into(imageView)
-
+                .into(imImageTimeshare)
+            tvNights.text = myExchangeRequestDetail.exchangePosting.nights.toString() + " đêm"
             if (myExchangeRequestDetail.exchangePosting.isVerify) {
                 llVerify.visibility = View.VISIBLE
             } else {
@@ -189,31 +163,64 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             }
         }
 
+        // Exchanger
+        binding.apply {
+            tvOwnerFullName.text = myExchangeRequestDetail.ownerFullName
+            Glide.with(this@MyExchangeRequestDetailActivity)
+                .load(myExchangeRequestDetail.ownerAvatar)
+                .placeholder(R.drawable.ic_image_tmp_holder)
+                .error(R.drawable.ic_image_tmp_holder)
+                .into(ivOwnerAvatar)
+        }
+
         // Check in Date, Check out Date
         binding.apply {
-            tvCheckinDate.text = Constant.getFormattedDate(
+            tvCheckInDate.text = Constant.formatDateByLocale(
                 myExchangeRequestDetail.startDate,
                 this@MyExchangeRequestDetailActivity
             )
-            tvCheckinDayOfWeek.text =
-                Constant.getDayOfWeek(
-                    myExchangeRequestDetail.startDate,
-                    this@MyExchangeRequestDetailActivity
-                )
-
-
-            tvCheckoutDate.text = Constant.getFormattedDate(
-                myExchangeRequestDetail.endDate,
-                this@MyExchangeRequestDetailActivity
-            )
-            tvCheckoutDayOfWeek.text =
-                Constant.getDayOfWeek(
+            tvCheckOutDate.text =
+                Constant.formatDateByLocale(
                     myExchangeRequestDetail.endDate,
                     this@MyExchangeRequestDetailActivity
                 )
         }
 
-        when (MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)) {
+        // Price Valuation
+        binding.apply {
+            if (myExchangeRequestDetail.priceValuation != null) {
+                etPriceInput.setText(Constant.formatPriceLong(myExchangeRequestDetail.priceValuation))
+            } else {
+                etPriceInput.setText("Không Có Đề Xuất Giá Chênh Lệch")
+            }
+        }
+
+        // Note
+        binding.apply {
+            if (myExchangeRequestDetail.note != null) {
+                etNote.setText(myExchangeRequestDetail.note.toString())
+            } else {
+                etNote.setText("Người Gửi Không Để Lại Lời Nhắn")
+            }
+        }
+
+        // Status
+        bindDataStatus(myExchangeRequestDetail)
+
+
+    }
+
+    private fun bindDataStatus(item : MyExchangeRequestDetailResponse) {
+        // Show Status
+        when (MyExchangeRequestStatus.fromApiStatus(item.status)) {
+            MyExchangeRequestStatus.PENDING_OWNER -> {
+                applyStatusStyle(
+                    this,
+                    R.color.blue_full,
+                    R.color.white
+                )
+            }
+
             MyExchangeRequestStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
                     this,
@@ -222,11 +229,27 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 )
             }
 
-            MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+            MyExchangeRequestStatus.PENDING_RENTER_PRICING -> {
                 applyStatusStyle(
                     this,
-                    R.color.status_awaiting_confirmation_bg,
-                    R.color.status_awaiting_confirmation_text
+                    R.color.white,
+                    R.color.status_pending_approval_text
+                )
+            }
+
+            MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_pending_approval_text
+                )
+            }
+
+            MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_pending_approval_text
                 )
             }
 
@@ -238,7 +261,24 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 )
             }
 
-            MyExchangeRequestStatus.REJECTED -> {
+
+            MyExchangeRequestStatus.REJECT_APPROVAL -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_rejected_text
+                )
+            }
+
+            MyExchangeRequestStatus.RENTER_REJECT -> {
+                applyStatusStyle(
+                    this,
+                    R.color.white,
+                    R.color.status_rejected_text
+                )
+            }
+
+            MyExchangeRequestStatus.OWNER_REJECT -> {
                 applyStatusStyle(
                     this,
                     R.color.white,
@@ -255,15 +295,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 )
             }
         }
+
         binding.tvStatus.text =
-            MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)
-                ?.getDescription(this)
+            MyExchangeRequestStatus.fromApiStatus(item.status)?.getDescription(this)
+                ?: ""
     }
 
     private fun evenClickApproveExchangeRequest() {
-        binding.btnAccept.setOnClickListener {
-            callApproveExchangeRequest()
-        }
+
     }
 
     private fun callApproveExchangeRequest() {
@@ -274,39 +313,13 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: MyExchangeRequestDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
-            tvRoomType.text = "Loại Phòng: " + data.roomInfo.unitType.title
+            btnViewDetail.visibility = View.GONE
+            tvRoomCode.text =  data.roomInfo.roomInfoCode
+            tvRoomType.text =  data.roomInfo.unitType.title
+            llRoomName.visibility = View.GONE
+            llUnityTypeBaseAmeniites.visibility = View.GONE
+            root.visibility = View.VISIBLE
 
-            // Bath
-            tvNumBath.text = data.roomInfo.unitType.bathrooms.toString()
-            tvBed.text = data.roomInfo.unitType.bedrooms.toString()
-
-            // Beds
-            val unitTypeMap = mapOf(
-                "bedsFull" to data.roomInfo.unitType.bedsFull,
-                "bedsKing" to data.roomInfo.unitType.bedsKing,
-                "bedsSofa" to data.roomInfo.unitType.bedsSofa,
-                "bedsMurphy" to data.roomInfo.unitType.bedsMurphy,
-                "bedsQueen" to data.roomInfo.unitType.bedsQueen,
-                "bedsTwin" to data.roomInfo.unitType.bedsTwin
-            )
-            tvNumBed.text = data.roomInfo.unitType.bedrooms.toString()
-            tvBed.text = displayBedsInfo(unitTypeMap)
-
-            // Kitchen
-            tvKitchen.text = data.roomInfo.unitType.kitchen
-            tvNumKitchen.text = 1.toString()
-
-            // Max Guest
-            tvNumPerson.text = data.roomInfo.unitType.sleeps.toString()
-            tvPerson.text =
-                "${data.roomInfo.unitType.sleeps.toString()} người lớn tối đa"
-
-            // Room Policy
-            // Do IT Later
-            // Unit Type Detail
-            btnViewDetail.setOnClickListener {
-                // UnitTypeDetailBottomSheet(this@MyExchangeRequestDetailActivity, data.roomInfo.unitType).show()
-            }
         }
     }
 

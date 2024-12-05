@@ -71,8 +71,9 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Room Type -->
+                <!-- Room Name -->
                 <LinearLayout
+                    android:id="@+id/ll_room_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -147,7 +148,7 @@
 
             <!--// Tiên Ích Phòng-->
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/ll_unity_type_base_ameniites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"

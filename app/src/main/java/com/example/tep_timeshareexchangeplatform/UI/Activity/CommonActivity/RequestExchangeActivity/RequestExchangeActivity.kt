@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -43,6 +44,7 @@ class RequestExchangeActivity : BaseActivity() {
     private val viewModel: RequestExchangeViewModel by viewModels()
     private lateinit var selectMyTimeshareActivityResult: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
+    private var exchangePostingId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,7 @@ class RequestExchangeActivity : BaseActivity() {
         if (postingId == 0) {
             finish()
         }
+        exchangePostingId = postingId
         observeViewModel()
         viewModel.callGetExchangePostingDetail(postingId)
 
@@ -211,7 +214,7 @@ class RequestExchangeActivity : BaseActivity() {
             binding.includeMyTimeshare.btnSelect.visibility = View.GONE
             binding.includeMyTimeshare.apply {
                 tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomName
+                tvRoomType.text = myTimeshareResponse.roomCode
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(
                         myTimeshareResponse.startDate,
@@ -345,6 +348,7 @@ class RequestExchangeActivity : BaseActivity() {
         binding.btnAddMyTimeshare.setOnClickListener {
             val intent = Intent(this, MyTimeshareActivity::class.java)
             intent.putExtra(Constant.REQUEST_GET_MY_TIMESHARE, Constant.REQUEST_GET_MY_TIMESHARE)
+            intent.putExtra(Constant.DEFAULT_EXCHANGE_POSTING_ID, exchangePostingId)
             selectMyTimeshareActivityResult.launch(intent)
         }
     }
@@ -390,23 +394,23 @@ class RequestExchangeActivity : BaseActivity() {
     private fun showErrorToast(message: String) {
         MotionToast.Companion.createColorToast(
             this,
-            "Error",
+            "Thất Bại",
             message,
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            null
+            ResourcesCompat.getFont(this, R.font.inter_bold)
         )
     }
     private fun showSuccessToast(message: String) {
         MotionToast.Companion.createColorToast(
             this,
-            "Success",
+            "Thành Công",
             message,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            null
+            ResourcesCompat.getFont(this, R.font.inter_bold)
         )
     }
 

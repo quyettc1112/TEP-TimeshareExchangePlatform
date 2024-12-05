@@ -16,18 +16,58 @@
         android:backgroundTint="@color/white"
         android:paddingBottom="10dp">
 
+        <!--// Resort Status-->
+        <LinearLayout
+            android:id="@+id/ll_status_container"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/ripple_effect"
+            android:backgroundTint="@color/white"
+            android:padding="5dp"
+            android:translationZ="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_status"
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:saveEnabled="false"
+                app:cardCornerRadius="100dp"
+                app:strokeColor="@color/red_light"
+                app:strokeWidth="8dp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/red_light"
+                android:textSize="12dp" />
+        </LinearLayout>
+
         <!-- Room Image -->
+
+        <!-- Info Icon (Positioned to the top-right of the image) -->
+
         <ImageView
             android:id="@+id/iv_room_Image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder_image"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Info Icon (Positioned to the top-right of the image) -->
         <ImageView
             android:id="@+id/infoIcon"
             android:layout_width="24dp"
@@ -81,42 +121,7 @@
                     android:ellipsize="end"
                     android:layout_weight="1" />
 
-                <!--// Resort Status-->
-                <LinearLayout
-                    android:id="@+id/ll_status_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/ripple_effect"
-                    android:backgroundTint="@color/white"
-                    android:padding="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/card_status"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:background="@color/white"
-                        android:saveEnabled="false"
-                        app:cardCornerRadius="100dp"
-                        app:strokeColor="@color/red_light"
-                        app:strokeWidth="8dp" />
-
-
-                    <TextView
-                        android:id="@+id/tv_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/inter_bold"
-                        android:text="Đã xác nhận"
-                        android:textColor="@color/red_light"
-                        android:textSize="12dp" />
-                </LinearLayout>
             </LinearLayout>
 
 

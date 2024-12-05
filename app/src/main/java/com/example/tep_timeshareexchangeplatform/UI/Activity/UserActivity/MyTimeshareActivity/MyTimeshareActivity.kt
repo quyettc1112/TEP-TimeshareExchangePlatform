@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.MyTimeshareAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.ViewModel.MyTimeshareViewModel
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -61,7 +61,11 @@ class MyTimeshareActivity : BaseActivity() {
 
     private fun getIntentValue() {
         val intent = intent
+
+        // Is Exchange Option
         if (intent.hasExtra(Constant.REQUEST_GET_MY_TIMESHARE)) {
+            myTimeshareViewModel.setExchangePostingId(intent.getIntExtra(Constant.DEFAULT_EXCHANGE_POSTING_ID, 0))
+            myTimeshareViewModel.setTypeCallMyTimeshareList(true)
             myTimeshareAdapter = MyTimeshareAdapter(true)
         } else {
             myTimeshareAdapter = MyTimeshareAdapter(false)

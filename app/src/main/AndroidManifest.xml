@@ -126,7 +126,7 @@
             android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.CommonActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
+            android:name=".UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.ResortDetailActivity.ResortDetail.ResortDetailActivity"
