@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
                 android:id="@+id/constraintLayout13"
                 android:layout_width="match_parent"
@@ -458,8 +457,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"/>
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

@@ -80,31 +80,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
                     Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
-                    /* when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
-                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
-                             binding.btnAccept.visibility = View.GONE
-                         }
-                         MyExchangeRequestStatus.PENDING_OWNER -> {
-                             binding.btnAccept.visibility = View.GONE
-                         }
-
-                         MyExchangeRequestStatus.PENDING_CUSTOMER -> {
-                             binding.btnAccept.visibility = View.VISIBLE
-                         }
-                         MyExchangeRequestStatus.COMPLETED -> {
-                             binding.btnAccept.visibility = View.GONE
-                         }
-                         MyExchangeRequestStatus.REJECTED -> {
-                             binding.btnAccept.visibility = View.GONE
-                         }
-                     }
-                     if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
-                         binding.btnAccept.visibility = View.GONE
-
-                     } else {
-                         binding.btnAccept.visibility = View.VISIBLE
-                     }*/
-
 
                 }
 
