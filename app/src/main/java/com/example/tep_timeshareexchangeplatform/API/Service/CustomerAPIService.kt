@@ -21,6 +21,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
@@ -323,6 +324,15 @@ interface CustomerAPIService {
         @Header ("Authorization") token: String,
         @Path ("requestId") requestId: Int,
     ) : Response<RejectRequestRespone>
+
+    // Exchange Price Valuation
+    @POST("customer/exchange/request/price-valuation/{requestId}")
+    suspend fun exchangePriceValuation(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int,
+        @Query ("priceValuation") priceValuation : Long,
+        @Body String : String
+    ) : Response<ExchangePriceValuationRespone>
 
 
 

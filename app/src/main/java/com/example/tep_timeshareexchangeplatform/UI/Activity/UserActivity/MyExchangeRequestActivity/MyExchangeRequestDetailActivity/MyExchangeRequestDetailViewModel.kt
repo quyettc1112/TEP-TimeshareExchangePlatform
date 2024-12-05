@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -53,6 +53,30 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
             }
         }
     }
+
+
+    private val _exchangePriceValuation = MutableLiveData<Resource<ExchangePriceValuationRespone>>()
+    val exchangePriceValuation: MutableLiveData<Resource<ExchangePriceValuationRespone>> = _exchangePriceValuation
+    fun exchangePriceValuation(token: String, requestId: Int, priceValuatin: Long, note: String) {
+        viewModelScope.launch {
+            _exchangePriceValuation.postValue(Resource.loading(null))
+            customerAPIRepository.exchangePriceValuation(token, requestId, priceValuatin, note).let {
+                _exchangePriceValuation.postValue(it)
+            }
+        }
+    }
+
+    private val _price = MutableLiveData<Long>()
+    val price: MutableLiveData<Long>
+        get() = _price
+
+    fun updatePrice(price: Long) {
+        _price.value = price
+    }
+    init {
+        _price.value = 0
+    }
+
 
 
 }

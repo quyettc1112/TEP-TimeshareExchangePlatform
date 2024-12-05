@@ -24,6 +24,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
@@ -747,6 +748,26 @@ class CustomerAPIRepository @Inject constructor(
     ): Resource<RejectRequestRespone> {
         return try {
             val response = customerAPIService.rejectExchangeRequest("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Exchange Price Valuation
+    suspend fun exchangePriceValuation(
+        token: String,
+        requestId: Int,
+        priceValuation : Long,
+        note: String
+    ): Resource<ExchangePriceValuationRespone> {
+        return try {
+            val response = customerAPIService.exchangePriceValuation("Bearer $token", requestId, priceValuation , note)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
