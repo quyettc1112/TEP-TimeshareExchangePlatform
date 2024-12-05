@@ -259,7 +259,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="shop_toys" translatable="false">Đồ chơi</string>
     <string name="shop_gift" translatable="false">Quà tặng</string>
     <string name="shop_cosmetics" translatable="false">Mỹ phẩm</string>
-
+    <string name="title_activity_test">test</string>
 
 
 </resources>
