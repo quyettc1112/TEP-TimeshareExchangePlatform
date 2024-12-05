@@ -333,6 +333,48 @@ class VNPayActivity : BaseActivity() {
 
         }
 
+        // Create Exchange Request Transation By VNPay
+        viewModel.exchangeRequestTransaction.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                // Intent to Billing Activity
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, MyExchangePostingActivity::class.java)
+                                startActivity(intentToBilling)
+
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        "Tạo yêu cầu trao đổi thất bại",
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
     }
 
     private fun checkPaymentType(
@@ -365,6 +407,10 @@ class VNPayActivity : BaseActivity() {
 
             PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING -> {
                 callAPICreateExchangePostingTransaction(walletTransactionId, packageId)
+            }
+
+            PaymentType.PAYMENT_EXCHANGE_REQUEST -> {
+                callAPICreateExchangeRequestTransaction(walletTransactionId, packageId)
             }
         }
     }
@@ -539,6 +585,11 @@ class VNPayActivity : BaseActivity() {
     private fun callAPICreateExchangePostingTransaction(uuid: String, packageId: Int) {
         val token = TokenManager(this).getAccessToken().toString()
         viewModel.createExchangePostingTransaction(token, uuid, packageId)
+    }
+
+    private fun callAPICreateExchangeRequestTransaction(uuid: String, packageId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.createExchangeRequestTransaction(token, uuid, packageId)
     }
 
 }

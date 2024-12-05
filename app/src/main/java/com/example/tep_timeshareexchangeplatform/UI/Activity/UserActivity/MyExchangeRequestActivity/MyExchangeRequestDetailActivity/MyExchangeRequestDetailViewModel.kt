@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.PaymentResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyExchangeRequestDetailViewModel @Inject constructor(
     private val customerAPIRepository: CustomerAPIRepository,
-    private val walletAPIRepository: WalletAPIRepository
+    private val walletAPIRepository: WalletAPIRepository,
+    private val paymentAPIRepository: PaymentAPIRepository
 ): ViewModel() {
     // Get My Exchange Detail
 
@@ -104,6 +107,19 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
             _paymentExchangeRequest.postValue(Resource.loading(null))
             walletAPIRepository.paymentExchangeRequestWallet(token, requestId).let {
                 _paymentExchangeRequest.postValue(it)
+            }
+        }
+    }
+
+    private val _responseVNPAYUrl = MutableLiveData<Resource<PaymentResponse>>()
+    val responseVNPAYUrl: MutableLiveData<Resource<PaymentResponse>> = _responseVNPAYUrl
+
+    // call API to get response URL
+    fun getResponsePaymentUrl(amount: Long, orderType: String) {
+        viewModelScope.launch {
+            _responseVNPAYUrl.postValue(Resource.loading(null))
+            paymentAPIRepository.getPaymentUrl(amount, orderType).let {
+                _responseVNPAYUrl.postValue(it)
             }
         }
     }

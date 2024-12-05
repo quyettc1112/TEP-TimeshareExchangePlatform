@@ -10,6 +10,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -22,11 +25,13 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.My
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.VNPayActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestDetailBinding
@@ -42,10 +47,11 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangeRequestDetailBinding
     private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val viewModel: MyExchangeRequestDetailViewModel by viewModels()
-
+    private lateinit var paymentResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
     private var selectedExchangeOption: ExchangeOption? = null
     private var selectedCard: MaterialCardView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -70,6 +76,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         eventClickPriceValuation()
         eventClickToolbar()
         eventClickReload()
+        eventClickPayment()
+
+        initActivityResultLauncher()
 
 
     }
@@ -238,8 +247,24 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             }
         }
 
-        // Select Payment Method
-        // Observe Selected Payment Method
+        viewModel.responseVNPAYUrl.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    intentToVNPAYActivity(it.data?.url.toString())
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast("Thao tác thất bại", "Thanh Toán Không Thành Công")
+                }
+            }
+        }
+
     }
 
     private fun bindData(myExchangeRequestDetail: MyExchangeRequestDetailResponse) {
@@ -313,14 +338,22 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Check Owner
         val customerProfile = tokenManager.getProfileInfo()
         val status = MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)
+        // Owner Side
         if (customerProfile?.id != myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER) {
             binding.llRequestAction.visibility = View.VISIBLE
         }
+        if(customerProfile?.id != myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT){
+            binding.llPaymentMethod.visibility = View.VISIBLE
+        }
 
+        // Exchanger Side
         if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING) {
             binding.llRequestAction.visibility = View.VISIBLE
         }
 
+        if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT) {
+            binding.llRequestAction.visibility = View.VISIBLE
+        }
 
     }
 
@@ -454,35 +487,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     private fun evenClickApproveExchangeRequest() {
         binding.btnApproval.setOnClickListener {
-
-            // Check Owner
+            callApproveExchangeRequest()
+            /*// Check Owner
             val customerProfile = tokenManager.getProfileInfo()
             val response = viewModel.myExchangeRequestDetail.value?.data
             val status = MyExchangeRequestStatus.fromApiStatus(response?.status ?: "")
             // Owner
             if (customerProfile?.id != response?.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER) {
-                val priceValuation = response?.priceValuation ?: 0L
-                when {
-                    priceValuation == 0L || priceValuation > 0L -> {
-                        showConfirmDialog(
-                            title = "Chấp Nhận",
-                            message = "Bạn có chắc chắn muốn chấp nhận yêu cầu trao đổi này không?",
-                            positiveButtonTitle = "Chấp Nhận",
-                            negativeButtonTitle = "Hủy",
-                            textButton = "",
-                            callback = object : ConfirmDialog.ConfirmCallback {
-                                override fun negativeAction() {}
-                                override fun positiveAction() {
-                                    callApproveExchangeRequest()
-                                }
-                            },
-                        )
-                    }
-                    priceValuation < 0L -> {
-                        Toast.makeText(this, "Call Payment", Toast.LENGTH_SHORT).show()
-                        showPaymentDialog()
-                    }
-                }
+                callApproveExchangeRequest()
             }
 
             if (customerProfile?.id == response?.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING) {
@@ -508,7 +520,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         showPaymentDialog()
                     }
                 }
-            }
+            }*/
 
 
         }
@@ -552,6 +564,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickPayment() {
+        binding.btnPayment.setOnClickListener {
+            showPaymentDialog()
+        }
+    }
+
     private fun callApproveExchangeRequest() {
         val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         viewModel.approveExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
@@ -588,6 +606,13 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     )
                 }
             },
+        )
+    }
+
+    private fun callPaymentExchangeRequestVNPAY(priceValuation: Long) {
+        viewModel.getResponsePaymentUrl(
+            priceValuation,
+            "Payment Exchangev Request"
         )
     }
 
@@ -767,6 +792,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         binding_dialog.cardVnpay.setOnClickListener {
             selectedCard = binding_dialog.cardVnpay
             viewModel.selectPaymentMethod(PaymentMethod.VNPAY)
+            val priceValuation = viewModel.myExchangeRequestDetail.value?.data?.priceValuation ?: 0
+            callPaymentExchangeRequestVNPAY(abs(priceValuation))
         }
 
         // Hiển thị BottomSheetDialog
@@ -785,6 +812,25 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             tvStatus.setTextColor(context.getColor(textColorRes))
             cardStatus.setStrokeColor(context.getColor(textColorRes))
         }
+    }
+
+    private fun intentToVNPAYActivity(url: String) {
+        val requestId  = viewModel.myExchangeRequestDetail.value?.data?.id
+        val intent = Intent(this, VNPayActivity::class.java)
+        intent.putExtra(Constant.PAYMENT_URL, url)
+        intent.putExtra(Constant.GENERAL_ID_PAYMENT, requestId)
+        intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PAYMENT_EXCHANGE_REQUEST)
+        paymentResultLauncher.launch(intent)
+    }
+
+    private fun initActivityResultLauncher() {
+        paymentResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == RESULT_OK) {
+                    val data: Intent? = result.data
+                    finish()
+                }
+            }
     }
 
     override fun onBackPressed() {

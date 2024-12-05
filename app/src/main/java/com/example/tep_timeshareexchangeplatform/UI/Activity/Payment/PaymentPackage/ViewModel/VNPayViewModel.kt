@@ -113,5 +113,18 @@ class VNPayViewModel @Inject constructor(
     }
 
 
+    // Create Exchange Request Transaction
+    private val _exchangeRequestTransaction = MutableLiveData<Resource<VNPAYPurchaseResponse>>()
+    val exchangeRequestTransaction: MutableLiveData<Resource<VNPAYPurchaseResponse>> = _exchangeRequestTransaction
+    fun createExchangeRequestTransaction(token: String, uuid: String, exchangeId: Int) {
+        viewModelScope.launch {
+            _exchangeRequestTransaction.postValue(Resource.loading(null))
+            walletAPIRepository.createExchangeRequestTransactionByVNPAY(token, uuid, exchangeId).let {
+                _exchangeRequestTransaction.postValue(it)
+            }
+        }
+    }
+
+
 
 }

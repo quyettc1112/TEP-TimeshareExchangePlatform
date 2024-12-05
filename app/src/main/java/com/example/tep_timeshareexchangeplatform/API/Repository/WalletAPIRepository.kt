@@ -274,6 +274,24 @@ class WalletAPIRepository @Inject constructor(
         }
     }
 
+    // Create Exchange Posting Transaction By VNPay
+    suspend fun createExchangeRequestTransactionByVNPAY(
+        token: String,
+        uuid: String,
+        requestId: Int
+    ): Resource<VNPAYPurchaseResponse> {
+        return try {
+            val response = walletAPIService.createExchangeRequestTransactionByVNPAY("Bearer $token", uuid, requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 
 
 }
