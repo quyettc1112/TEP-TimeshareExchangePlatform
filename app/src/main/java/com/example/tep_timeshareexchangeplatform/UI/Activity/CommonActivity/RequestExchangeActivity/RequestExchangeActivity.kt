@@ -259,6 +259,7 @@ class RequestExchangeActivity : BaseActivity() {
     private fun bindDataSpinnerValidYear(validYear: ValidYearResponse) {
         // Chuyển đổi danh sách các năm thành chuỗi (String)
         val yearList = validYear.map { it.toString() }
+        Log.d("YearList", yearList.toString())
 
         // Tạo ArrayAdapter để kết nối dữ liệu với Spinner
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, yearList)
@@ -375,6 +376,7 @@ class RequestExchangeActivity : BaseActivity() {
     }
 
     private fun callGetMyTimeshareDetail(timeShareId: Int) {
+        Log.d("TimeSasdasdashareID", timeShareId.toString())
         viewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), timeShareId)
     }
 

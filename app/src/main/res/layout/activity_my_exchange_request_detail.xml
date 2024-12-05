@@ -123,6 +123,18 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/inter_bold"
+                    android:maxLines="1"
+                    android:text="Timeshare của người gửi yêu cầu"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
                 <!--// Verify Button-->
                 <LinearLayout
                     android:id="@+id/ll_verify"

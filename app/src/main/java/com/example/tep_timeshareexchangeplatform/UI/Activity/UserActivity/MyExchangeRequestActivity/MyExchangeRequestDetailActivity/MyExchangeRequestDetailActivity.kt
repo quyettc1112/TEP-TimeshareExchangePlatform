@@ -135,6 +135,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                                     it.data?.exchangePosting?.id
                                 )
                                 startActivity(intent)
+                                finish()
                             }
 
                         })
@@ -173,6 +174,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                                 startActivity(
                                     intent
                                 )
+                                finish()
                             }
 
                         })
@@ -386,8 +388,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             binding.tvNoPaymentNeededDescription.text =
                 "Bạn sẽ nhận được số tiền chênh lệch để hoàn tất trao đổi."
         }
-
-
 
     }
 
