@@ -104,13 +104,35 @@ class RequestExchangeViewModel @Inject constructor(
     val exchangeRequestResponse: MutableLiveData<Resource<ExchangeRequestResponse>> =
         _exchangeRequestResponse
 
-    fun callExchangeRequest(token: String, postingId: Int, exchangeRequestDTO: ExchangeRequestDTO) {
+    fun callCreateExchangeRequest(token: String, postingId: Int, exchangeRequestDTO: ExchangeRequestDTO) {
         viewModelScope.launch {
             _exchangeRequestResponse.postValue(Resource.loading(null))
             customerAPIRepository.sendExchangeRequest(token, postingId, exchangeRequestDTO).let {
                 _exchangeRequestResponse.postValue(it)
             }
         }
+    }
+
+
+    private val _price = MutableLiveData<Long>()
+    val price: MutableLiveData<Long>
+        get() = _price
+
+    fun updatePrice(price: Long) {
+        _price.value = price
+    }
+
+    private val _priceForRequest = MutableLiveData<Long>()
+    val priceForRequest: MutableLiveData<Long>
+        get() = _priceForRequest
+    fun updatePriceForRequest(price: Long) {
+        _priceForRequest.value = price
+    }
+
+
+
+    init {
+        _price.value = 0
     }
 
 

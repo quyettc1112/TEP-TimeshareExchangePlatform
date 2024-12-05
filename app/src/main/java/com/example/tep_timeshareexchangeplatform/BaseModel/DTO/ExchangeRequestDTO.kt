@@ -15,5 +15,6 @@ data class ExchangeRequestDTO(
     @SerializedName("timeshareId") val timeshareId: Int,
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
-    @SerializedName("exchangePostingId") val exchangePostingId: Int
+    @SerializedName("priceValuation") val priceValuation: Long,
+    @SerializedName("note") val note: String?,
 )

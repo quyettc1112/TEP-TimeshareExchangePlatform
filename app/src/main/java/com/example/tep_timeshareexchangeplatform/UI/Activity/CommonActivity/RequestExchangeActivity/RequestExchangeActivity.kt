@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -25,6 +27,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
@@ -45,6 +48,7 @@ class RequestExchangeActivity : BaseActivity() {
     private lateinit var selectMyTimeshareActivityResult: ActivityResultLauncher<Intent>
     private lateinit var tokenManager: TokenManager
     private var exchangePostingId: Int = 0
+    private var selectedExchangeOption: ExchangeOption? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +64,10 @@ class RequestExchangeActivity : BaseActivity() {
         getIntentData()
         clickIntentToGetMyTimeshare()
         selectMyTimeshareActivityResult = registerSelectMyTimeshareActivityResult()
+        setupTextWatchers()
 
     }
+
     private fun getIntentData() {
         val postingId = intent.getIntExtra(Constant.DEFAULT_POSTING_ID, 0)
         if (postingId == 0) {
@@ -136,8 +142,14 @@ class RequestExchangeActivity : BaseActivity() {
                                 "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiem tra lại",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
-                                        val intent = Intent(this@RequestExchangeActivity, MyTimeshareActivity::class.java)
-                                        intent.putExtra(Constant.REQUEST_GET_MY_TIMESHARE, Constant.REQUEST_GET_MY_TIMESHARE)
+                                        val intent = Intent(
+                                            this@RequestExchangeActivity,
+                                            MyTimeshareActivity::class.java
+                                        )
+                                        intent.putExtra(
+                                            Constant.REQUEST_GET_MY_TIMESHARE,
+                                            Constant.REQUEST_GET_MY_TIMESHARE
+                                        )
                                         selectMyTimeshareActivityResult.launch(intent)
                                     }
                                 })
@@ -147,10 +159,12 @@ class RequestExchangeActivity : BaseActivity() {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast(resources.message.toString())
                 }
+
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -167,16 +181,27 @@ class RequestExchangeActivity : BaseActivity() {
                         finish()
                     }
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast(resources.message.toString())
                 }
+
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
             }
         }
 
+        // Observer Price Per Night
+        viewModel.price.observe(this) { price ->
+            if (viewModel.price.value != null) {
+                val totalPrice = price
+                val value =
+                    "${Constant.formatPriceLong(totalPrice)} VNĐ"
+                binding.etTotalPrice.setText(value)
+            }
+        }
     }
 
     // Function to bind data
@@ -259,9 +284,8 @@ class RequestExchangeActivity : BaseActivity() {
 
                     // Kiểm tra xem startDateString và endDateString có null hay không
                     bindDataCheckInCheckOut(startDateString, endDateString, selectedYear)
-                    binding.btnNext.visibility = View.VISIBLE
-                    sendButtonNextClick()
-
+                    binding.llExchangeMethod.visibility = View.VISIBLE
+                    bindDataExchangePriceOption()
 
                 }
 
@@ -328,22 +352,75 @@ class RequestExchangeActivity : BaseActivity() {
         }
     }
 
+    private fun bindDataExchangePriceOption() {
+        // Lắng nghe sự thay đổi trong RadioGroup
+        binding.radioGroupExchangeOptions.setOnCheckedChangeListener { _, checkedId ->
+            selectedExchangeOption = when (checkedId) {
+                binding.radioPayDifferenceToOwner.id -> ExchangeOption.PAY_DIFFERENCE_TO_OWNER
+                binding.radioOwnerPaysDifference.id -> ExchangeOption.OWNER_PAYS_DIFFERENCE
+                binding.radioNoPaymentNeeded.id -> ExchangeOption.NO_PAYMENT_NEEDED
+                else -> null
+            }
+            selectedExchangeOption?.let {
+                handleExchangeOption(it)
+                binding.btnNext.visibility = View.VISIBLE
+                sendButtonNextClick()
+            }
+        }
+
+    }
+
     private fun callGetValidYearTimeshare(timeShareId: Int) {
         viewModel.getValidYearTimeshare(tokenManager.getAccessToken().toString(), timeShareId)
     }
+
     private fun callGetMyTimeshareDetail(timeShareId: Int) {
         viewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), timeShareId)
     }
-    private fun callSendExchangeRequest(exchangePostingId : Int) {
-        val exchangeRequestDTO = ExchangeRequestDTO (
+
+    private fun callSendExchangeRequest(exchangePostingId: Int, ) {
+        var inputPrice : Long = 0
+        when (selectedExchangeOption) {
+            ExchangeOption.NO_PAYMENT_NEEDED -> {
+                viewModel.updatePrice(0)
+                inputPrice = viewModel.price.value!!
+            }
+
+            ExchangeOption.OWNER_PAYS_DIFFERENCE -> {
+                inputPrice = -viewModel.price.value!!
+            }
+
+            ExchangeOption.PAY_DIFFERENCE_TO_OWNER -> {
+                inputPrice = viewModel.price.value!!
+            }
+
+            else -> {
+                showErrorToast("Vui lòng chọn phương thức trao đổi")
+                return
+            }
+        }
+
+        if (selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && inputPrice == 0L) {
+            showWarningToast("Lỗi","Vui lòng nhập giá trị hợp lệ")
+            return
+        }
+
+
+        val exchangeRequestDTO = ExchangeRequestDTO(
             timeshareId = viewModel.getCurrentTimeshareIdSelected()!!,
             startDate = viewModel.checkinDate.value.toString(),
             endDate = viewModel.checkoutDate.value.toString(),
-            exchangePostingId = exchangePostingId
+            priceValuation = inputPrice,
+            note = binding.etNote.text.toString(),
         )
         Log.d("ExchangeRequestDTOValud", exchangeRequestDTO.toString())
-        viewModel.callExchangeRequest(tokenManager.getAccessToken().toString(), exchangePostingId, exchangeRequestDTO)
+        viewModel.callCreateExchangeRequest(
+            tokenManager.getAccessToken().toString(),
+            exchangePostingId,
+            exchangeRequestDTO
+        )
     }
+
     private fun clickIntentToGetMyTimeshare() {
         binding.btnAddMyTimeshare.setOnClickListener {
             val intent = Intent(this, MyTimeshareActivity::class.java)
@@ -352,6 +429,7 @@ class RequestExchangeActivity : BaseActivity() {
             selectMyTimeshareActivityResult.launch(intent)
         }
     }
+
     private fun registerSelectMyTimeshareActivityResult(): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -367,6 +445,7 @@ class RequestExchangeActivity : BaseActivity() {
             }
         }
     }
+
     private fun formatDateByLocale(date: Date, context: Context): String {
         // Sử dụng PreferenceHelper để lấy ngôn ngữ đã lưu
         val preferenceHelper = PreferenceHelper(context)
@@ -384,12 +463,102 @@ class RequestExchangeActivity : BaseActivity() {
         return dateFormat.format(date)
     }
 
+    private fun handleExchangeOption(option: ExchangeOption) {
+        when (option) {
+            ExchangeOption.PAY_DIFFERENCE_TO_OWNER -> {
+                binding.llPriceInput.visibility = View.VISIBLE
+            }
+
+            ExchangeOption.OWNER_PAYS_DIFFERENCE -> {
+                binding.llPriceInput.visibility = View.VISIBLE
+            }
+
+            ExchangeOption.NO_PAYMENT_NEEDED -> {
+                viewModel.updatePrice(0)
+                binding.llPriceInput.visibility = View.GONE
+            }
+        }
+    }
+
     private fun sendButtonNextClick() {
         binding.btnNext.setOnClickListener {
             callSendExchangeRequest(viewModel.exchangePostingDetail.value?.data?.exchangePostingId!!)
         }
     }
 
+    private fun setupTextWatchers() {
+        // Username TextWatcher
+        binding.etRoomPrice.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+
+            override fun afterTextChanged(s: Editable?) {
+
+
+                // Loại bỏ TextWatcher tạm thời để tránh loop
+                binding.etRoomPrice.removeTextChangedListener(this)
+
+                val input =
+                    s.toString().replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
+
+                if (input.isNotEmpty()) {
+                    // Kiểm tra và loại bỏ số 0 đầu tiên nếu có
+                    var cleanedInput = input
+                    if (cleanedInput.startsWith("0")) {
+                        cleanedInput = cleanedInput.substring(1) // Loại bỏ số 0 đầu tiên
+                    }
+                    val numericValue = input.toLongOrNull() ?: 0
+                    when {
+                        numericValue < 10000 -> {
+                            // Hiển thị helper text nếu số tiền nhỏ hơn 100.000
+                            binding.tilRoomPrice.helperText =
+                                "Số tiền tối thiểu là 10.000"
+                        }
+
+                        numericValue > 100_000_000 -> {
+                            // Hiển thị helper text nếu số tiền lớn hơn 100 Triệu
+                            binding.tilRoomPrice.helperText =
+                                "Số tiền tối đa cho 1 đêm là 100 triệu"
+                        }
+
+                        else -> {
+                            // Ẩn helper text khi số tiền đạt yêu cầu
+                            binding.tilRoomPrice.helperText = null
+                        }
+                    }
+
+                    // Định dạng số tiền và thêm ký tự "đ" ở cuối
+                    val formatted = formatCurrency(cleanedInput) + " đ"
+                    current = formatted
+                    binding.etRoomPrice.setText(formatted)
+                    binding.etRoomPrice.setSelection(formatted.length - 2) // Đặt con trỏ vào vị trí trước "đ"
+                    val amount = binding.etRoomPrice.text.toString()
+                        .replace("[^\\d]".toRegex(), "").toLongOrNull()
+                    if (amount != null) {
+                        if (amount > 0) {
+                            viewModel.updatePrice(amount)
+                            viewModel.updatePriceForRequest(amount)
+                        }
+                    }
+
+                } else {
+                    binding.etTotalPrice.setText(null)
+                }
+
+                // Thêm lại TextWatcher sau khi cập nhật văn bản
+                binding.etRoomPrice.addTextChangedListener(this)
+            }
+
+
+            private fun formatCurrency(input: String): String {
+                return input.reversed().chunked(3).joinToString(".").reversed()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+    }
 
     private fun showErrorToast(message: String) {
         MotionToast.Companion.createColorToast(
@@ -402,6 +571,7 @@ class RequestExchangeActivity : BaseActivity() {
             ResourcesCompat.getFont(this, R.font.inter_bold)
         )
     }
+
     private fun showSuccessToast(message: String) {
         MotionToast.Companion.createColorToast(
             this,
