@@ -13,8 +13,8 @@ import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepositor
 import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.TimeshareRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareDTO
@@ -195,7 +195,7 @@ class PostingFlowViewModel @Inject constructor(
         return if (range != null) {
             val (start, end) = range
             if (start != null && end != null) {
-                ((end - start) / (1000 * 60 * 60 * 24)).toInt()
+                ((end - start) / (1000 * 60 * 60 * 24)).toInt() + 1
             } else {
                 0
             }
@@ -205,16 +205,16 @@ class PostingFlowViewModel @Inject constructor(
     }
 
     // Check Current Province Selected
-    private var _currentProvinceSelected = MutableLiveData<Int>()
-    val currentProvinceSelected: MutableLiveData<Int>
+    private var _currentProvinceSelected = MutableLiveData<Pair<Int, String>>()
+    val currentProvinceSelected: MutableLiveData<Pair<Int, String>>
         get() = _currentProvinceSelected
 
-    fun updateCurrentProvinceSelected(currentProvince: Int) {
+    fun updateCurrentProvinceSelected(currentProvince: Pair<Int, String>) {
         _currentProvinceSelected.value = currentProvince
     }
 
-    fun getCurrentProvinceSelected(): Int {
-        return _currentProvinceSelected.value ?: 0
+    fun getCurrentProvinceSelected(): Pair<Int, String> {
+        return _currentProvinceSelected.value ?: Pair(0, "")
     }
 
 
@@ -659,7 +659,7 @@ class PostingFlowViewModel @Inject constructor(
     val createRentalPosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _postingTimeshareResponse
 
-    fun createRentalPosting(token: String, postingTimeshareResponse: PostingTimeshareDTO) {
+    fun createRentalPosting(token: String, postingTimeshareResponse: RentalPostingDTO) {
         viewModelScope.launch {
             _postingTimeshareResponse.postValue(Resource.loading(null))
             customerAPIRepository.createPosting(token, postingTimeshareResponse).let {
@@ -673,10 +673,10 @@ class PostingFlowViewModel @Inject constructor(
     val createExchangePosting: MutableLiveData<Resource<PostingTimeshareResponse>> =
         _createExchangePosting
 
-    fun createExchangePosting(token: String, exchangeTimeshareDTO: ExchangeTimeshareDTO) {
+    fun createExchangePosting(token: String, exchangePostingDTO: ExchangePostingDTO) {
         viewModelScope.launch {
             _createExchangePosting.postValue(Resource.loading(null))
-            customerAPIRepository.createExchangePosting(token, exchangeTimeshareDTO).let {
+            customerAPIRepository.createExchangePosting(token, exchangePostingDTO).let {
                 _createExchangePosting.postValue(it)
             }
         }
@@ -761,6 +761,7 @@ class PostingFlowViewModel @Inject constructor(
 
     // Init
     init {
+        _note.value = ""
         _cancelPolicy.value = 0
         _step.value = initStep
         _currentStepInProgress.value = initStep

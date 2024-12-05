@@ -366,6 +366,11 @@ class Constant {
             )
         }
 
+        fun formatDateFromLong(dateInMillis: Long, format: String = "yyyy-MM-dd"): String {
+            val date = Date(dateInMillis)
+            val formatter = SimpleDateFormat(format, Locale.getDefault())
+            return formatter.format(date)
+        }
 
 
         private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {

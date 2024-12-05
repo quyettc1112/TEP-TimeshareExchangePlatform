@@ -19,8 +19,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragment
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.PackageModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
@@ -324,6 +324,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
                 Status.ERROR -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
+                    Log.d("CheckkDOO-Create Exchange", response.message.toString())
                     showErrorToast(response.message.toString())
                 }
 
@@ -366,7 +367,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     }
 
-
     // Observe ExchangeOfResortViewModel of Exchange Posting
     private fun observeViewModelExchange() {
         // Exchange Posting Date Range
@@ -399,9 +399,9 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             spinner.isClickable = false
 
             // Kiểm tra nếu provinceId hợp lệ
-            if (provinceId > 0 && provinceId <= provinces.size) {
+            if (provinceId.first != 0) {
                 // Cập nhật Spinner đến vị trí tương ứng với provinceId
-                binding.includeExchangeTime.customSpinnerProvince.setSelection(provinceId - 1)
+                binding.includeExchangeTime.customSpinnerProvince.setSelection(provinceId.first - 1)
             } else {
                 // Nếu không hợp lệ, đặt về vị trí mặc định (ví dụ: vị trí 0)
                 binding.includeExchangeTime.customSpinnerProvince.setSelection(0)
@@ -616,7 +616,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
         when (postingFlowViewModel.typeOfPostingFlow.value) {
             Constant.RENTAL_POSTING_FLOW -> {
-                val postingTimeshareDTO = PostingTimeshareDTO(
+                val rentalPostingDTO = RentalPostingDTO(
                     description = "",
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
                     pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
@@ -627,20 +627,28 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     rentalPackageId = rentalPackageEnum?.id!!,
                     imageUrls = postingFlowViewModel.getUploadedImageUrls()
                 )
-                callCreateRentalPosting(postingTimeshareDTO)
+                callCreateRentalPosting(rentalPostingDTO)
             }
 
             Constant.EXCHANGER_POSTING_FLOW -> {
-                val exchangeTimeshareDTO = ExchangeTimeshareDTO(
-                    description = postingFlowViewModel.note.value!!,
+                val exchangePostingDTO = ExchangePostingDTO(
+                    description = postingFlowViewModel.note.value ?: "",
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
                     exchangePackageId = rentalPackageEnum?.id!!,
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
                     checkinDate = postingFlowViewModel.checkinDateValid.value!!,
                     checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
+                    preferLocation = postingFlowViewModel.getCurrentProvinceSelected().second.toString(),
+                    preferCheckinDate = Constant.formatDateFromLong(
+                        postingFlowViewModel.exchangeDateRange.value?.first!!
+                    ),
+                    preferCheckoutDate = Constant.formatDateFromLong(
+                        postingFlowViewModel.exchangeDateRange.value?.second!!
+                    ),
                     imageUrls = postingFlowViewModel.getUploadedImageUrls()
                 )
-                callCreateExchangePosting(exchangeTimeshareDTO)
+                Log.d("CheckDTO", exchangePostingDTO.toString())
+                callCreateExchangePosting(exchangePostingDTO)
             }
         }
     }
@@ -651,7 +659,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         val rentalPackageEnum =
             RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
 
-        val postingTimeshareDTO = PostingTimeshareDTO(
+        val rentalPostingDTO = RentalPostingDTO(
             description = "",
             nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
             pricePerNights = postingFlowViewModel.pricePerNight.value!!.toInt(),
@@ -662,11 +670,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             rentalPackageId = rentalPackageEnum?.id!!,
             imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
-        Log.d("CheckDTO", postingTimeshareDTO.toString())
+        Log.d("CheckDTO", rentalPostingDTO.toString())
 
         intent.putExtra(Constant.PAYMENT_URL, url)
         intent.putExtra(Constant.GENERAL_ID_PAYMENT, rentalPackageEnum.id)
-        intent.putExtra(Constant.POSTING_TIMESHARE_DTO, postingTimeshareDTO)
+        intent.putExtra(Constant.POSTING_TIMESHARE_DTO, rentalPostingDTO)
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_RENTAL_POSTING)
         paymentResultLauncher.launch(intent)
     }
@@ -676,13 +684,16 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         val rentalPackageEnum =
             ExchangePackageEnum.getPackageById(postingFlowViewModel.packageStep4.value?.id!!)
 
-        val postingTimeshareDTO = ExchangeTimeshareDTO(
-            description = postingFlowViewModel.note.value!!,
+        val postingTimeshareDTO = ExchangePostingDTO(
+            description = postingFlowViewModel.note.value ?: "",
             nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
             exchangePackageId = rentalPackageEnum?.id!!,
             timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
             checkinDate = postingFlowViewModel.checkinDateValid.value!!,
             checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
+            preferLocation = postingFlowViewModel.currentProvinceSelected.value.toString(),
+            preferCheckinDate = postingFlowViewModel.exchangeDateRange.value?.first.toString(),
+            preferCheckoutDate = postingFlowViewModel.exchangeDateRange.value?.second.toString(),
             imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
         Log.d("CheckDTO", postingTimeshareDTO.toString())
@@ -701,17 +712,17 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         postingFlowViewModel.callUploadImages(tokenManager.getAccessToken().toString())
     }
 
-    private fun callCreateRentalPosting(postingTimeshareDTO: PostingTimeshareDTO) {
+    private fun callCreateRentalPosting(rentalPostingDTO: RentalPostingDTO) {
         postingFlowViewModel.createRentalPosting(
             tokenManager.getAccessToken().toString(),
-            postingTimeshareDTO
+            rentalPostingDTO
         )
     }
 
-    private fun callCreateExchangePosting(exchangeTimeshareDTO: ExchangeTimeshareDTO) {
+    private fun callCreateExchangePosting(exchangePostingDTO: ExchangePostingDTO) {
         postingFlowViewModel.createExchangePosting(
             tokenManager.getAccessToken().toString(),
-            exchangeTimeshareDTO
+            exchangePostingDTO
         )
     }
 

@@ -16,8 +16,8 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -154,12 +154,12 @@ class VNPayActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     // Create Rental Posting
                     Log.d("CheckkDOO - Done Rental Posting", it.data.toString())
-                    val postingTimeshareDTO =
-                        intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
-                    if (postingTimeshareDTO != null) {
+                    val rentalPostingDTO =
+                        intent.getParcelableExtra<RentalPostingDTO>(Constant.POSTING_TIMESHARE_DTO)
+                    if (rentalPostingDTO != null) {
                         viewModel.createRentalPosting(
                             tokenManager.getAccessToken().toString(),
-                            postingTimeshareDTO
+                            rentalPostingDTO
                         )
                     }
                 }
@@ -190,7 +190,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     // Create Rental Posting
                     val postingTimeshareDTO =
-                        intent.getParcelableExtra<ExchangeTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
+                        intent.getParcelableExtra<ExchangePostingDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {
                         viewModel.createExchangePosting(
                             tokenManager.getAccessToken().toString(),

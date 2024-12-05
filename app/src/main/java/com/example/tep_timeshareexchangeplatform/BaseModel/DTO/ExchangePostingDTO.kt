@@ -18,13 +18,16 @@ import com.google.gson.annotations.SerializedName
   ]
 }
 */
-data class ExchangeTimeshareDTO(
+data class ExchangePostingDTO(
     @SerializedName("description") val description: String,
     @SerializedName("nights") val nights: Int,
     @SerializedName("exchangePackageId") val exchangePackageId: Int,
     @SerializedName("checkinDate") val checkinDate: String,
     @SerializedName("checkoutDate") val checkoutDate: String,
     @SerializedName("timeshareId") val timeshareId: Int,
+    @SerializedName("preferCheckinDate") val preferCheckinDate: String,
+    @SerializedName("preferCheckoutDate") val preferCheckoutDate: String,
+    @SerializedName("preferLocation") val preferLocation: String,
     @SerializedName("imageUrls") val imageUrls: List<String>
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -34,6 +37,9 @@ data class ExchangeTimeshareDTO(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.createStringArrayList() ?: emptyList()
     ) {
     }
@@ -45,6 +51,9 @@ data class ExchangeTimeshareDTO(
         parcel.writeString(checkinDate)
         parcel.writeString(checkoutDate)
         parcel.writeInt(timeshareId)
+        parcel.writeString(preferCheckinDate)
+        parcel.writeString(preferCheckoutDate)
+        parcel.writeString(preferLocation)
         parcel.writeStringList(imageUrls)
     }
 
@@ -52,12 +61,12 @@ data class ExchangeTimeshareDTO(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<ExchangeTimeshareDTO> {
-        override fun createFromParcel(parcel: Parcel): ExchangeTimeshareDTO {
-            return ExchangeTimeshareDTO(parcel)
+    companion object CREATOR : Parcelable.Creator<ExchangePostingDTO> {
+        override fun createFromParcel(parcel: Parcel): ExchangePostingDTO {
+            return ExchangePostingDTO(parcel)
         }
 
-        override fun newArray(size: Int): Array<ExchangeTimeshareDTO?> {
+        override fun newArray(size: Int): Array<ExchangePostingDTO?> {
             return arrayOfNulls(size)
         }
     }

@@ -3,10 +3,10 @@ package com.example.tep_timeshareexchangeplatform.API.Service
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
@@ -89,7 +89,7 @@ interface CustomerAPIService {
     @POST("customer/rental/posting")
     suspend fun createPosting(
         @Header ("Authorization") token: String,
-        @Body postingDTO: PostingTimeshareDTO
+        @Body postingDTO: RentalPostingDTO
     ) : Response<PostingTimeshareResponse>
 
 
@@ -148,7 +148,7 @@ interface CustomerAPIService {
     @POST("/api/customer/exchange/posting")
     suspend fun createExchangePosting(
         @Header ("Authorization") token: String,
-        @Body postingDTO: ExchangeTimeshareDTO
+        @Body postingDTO: ExchangePostingDTO
     ) : Response<PostingTimeshareResponse>
 
 

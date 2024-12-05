@@ -349,9 +349,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 val selectedProvince = provinces[position]
                 if (selectedProvince != "Chọn Tỉnh Thành") {
                     val provinceId = position + 1
-                    postingFlowViewModel.updateCurrentProvinceSelected(provinceId)
+                    val province = Pair(provinceId, selectedProvince)
+                    postingFlowViewModel.updateCurrentProvinceSelected(province)
                 } else {
-                    postingFlowViewModel.updateCurrentProvinceSelected(0)
+                    postingFlowViewModel.updateCurrentProvinceSelected(Pair(0, ""))
                 }
             }
 
@@ -678,7 +679,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     private fun isProvinceValid() : Boolean {
         val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
-        if (provinceId == 0) {
+        if (provinceId.first == 0) {
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }

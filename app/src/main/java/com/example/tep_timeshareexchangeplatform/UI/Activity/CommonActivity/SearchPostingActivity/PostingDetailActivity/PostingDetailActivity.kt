@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -253,7 +252,6 @@ class PostingDetailActivity : BaseActivity() {
             startActivity(intent)
         }
     }
-
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         binding.cvRequestContaner.visibility = View.VISIBLE

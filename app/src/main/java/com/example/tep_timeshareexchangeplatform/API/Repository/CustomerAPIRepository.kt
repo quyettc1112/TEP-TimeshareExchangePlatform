@@ -6,10 +6,10 @@ import com.example.tep_timeshareexchangeplatform.API.Service.CustomerAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
@@ -144,7 +144,7 @@ class CustomerAPIRepository @Inject constructor(
     // Create posting
     suspend fun createPosting(
         token: String,
-        postingDTO: PostingTimeshareDTO
+        postingDTO: RentalPostingDTO
     ): Resource<PostingTimeshareResponse> {
         return try {
             val response = customerAPIService.createPosting("Bearer $token", postingDTO)
@@ -305,7 +305,7 @@ class CustomerAPIRepository @Inject constructor(
     // Create Exchange Posting
     suspend fun createExchangePosting(
         token: String,
-        postingDTO: ExchangeTimeshareDTO
+        postingDTO: ExchangePostingDTO
     ): Resource<PostingTimeshareResponse> {
         return try {
             val response =
