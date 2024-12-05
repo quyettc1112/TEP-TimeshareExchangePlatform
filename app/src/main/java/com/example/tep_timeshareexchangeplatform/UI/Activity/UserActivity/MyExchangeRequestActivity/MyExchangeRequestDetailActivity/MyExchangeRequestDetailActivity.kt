@@ -33,7 +33,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val viewModel: MyExchangeRequestDetailViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
-    private var exchangePostingid = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -140,7 +139,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
                         })
                 }
-
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Thất Bại", "Lỗi khi duyệt yêu cầu trao đổi")
@@ -340,7 +338,21 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     }
 
     private fun evenClickApproveExchangeRequest() {
-
+        binding.btnApproval.setOnClickListener {
+            showConfirmDialog(
+                title = "Chấp Nhận",
+                message = "Bạn có chắc chắn muốn chấp nhận yêu cầu trao đổi này không?",
+                positiveButtonTitle = "Chấp Nhận",
+                negativeButtonTitle = "Hủy",
+                "",
+                object : ConfirmDialog.ConfirmCallback {
+                    override fun negativeAction() {}
+                    override fun positiveAction() {
+                       callApproveExchangeRequest()
+                    }
+                },
+            )
+        }
     }
 
     private fun eventClickRejectExchangeRequest() {

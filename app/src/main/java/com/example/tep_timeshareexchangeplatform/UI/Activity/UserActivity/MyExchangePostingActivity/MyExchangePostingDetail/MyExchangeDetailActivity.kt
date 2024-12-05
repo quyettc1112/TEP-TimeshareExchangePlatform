@@ -528,7 +528,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
         binding.apply {
             llStatusContainer.visibility = View.VISIBLE
-            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            llStatusContainer.backgroundTintList = context.getColorStateList(backgroundColorRes)
             tvStatus.setTextColor(context.getColor(textColorRes))
             cardStatus.setStrokeColor(context.getColor(textColorRes))
         }
