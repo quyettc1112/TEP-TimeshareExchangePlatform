@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -25,12 +26,14 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestDetailBinding
 import com.example.tep_timeshareexchangeplatform.databinding.DialogExchangePriceValuationBinding
 import com.example.tep_timeshareexchangeplatform.databinding.DialogPaymentExchangePriceValuationBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
@@ -39,12 +42,16 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangeRequestDetailBinding
     private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val viewModel: MyExchangeRequestDetailViewModel by viewModels()
+
     private lateinit var tokenManager: TokenManager
     private var selectedExchangeOption: ExchangeOption? = null
+    private var selectedCard: MaterialCardView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMyExchangeRequestDetailBinding.inflate(layoutInflater)
+        // Sử dụng ViewBinding để inflate layout
+
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -202,6 +209,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 }
             }
         }
+
+        // Select Payment Method
+        // Observe Selected Payment Method
     }
 
     private fun bindData(myExchangeRequestDetail: MyExchangeRequestDetailResponse) {
@@ -686,15 +696,44 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     }
 
     private fun showPaymentDialog() {
-        // Sử dụng ViewBinding để inflate layout
-        val binding = DialogPaymentExchangePriceValuationBinding.inflate(layoutInflater)
+        var binding_dialog = DialogPaymentExchangePriceValuationBinding.inflate(layoutInflater)
         val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.setContentView(binding_dialog.root)
 
+        // Bind data
+        val customerProfile = tokenManager.getProfileInfo()
+        if (customerProfile != null) {
+            if(customerProfile.walletAvailableMoney < abs(viewModel.price.value!!)){
+                binding_dialog.cardUnwind.visibility = View.GONE
+            } else {
+                binding_dialog.cardUnwind.visibility = View.VISIBLE
+                binding_dialog.tvWalletBalance.text = "${Constant.formatPriceLong(customerProfile.walletAvailableMoney)} VNĐ"
+            }
+        }
+
+        binding_dialog.cardUnwind.setOnClickListener {
+            selectedCard = binding_dialog.cardUnwind
+            viewModel.selectPaymentMethod(PaymentMethod.UNWIND)
+        }
+        binding_dialog.cardVnpay.setOnClickListener {
+            selectedCard = binding_dialog.cardVnpay
+            viewModel.selectPaymentMethod(PaymentMethod.VNPAY)
+        }
 
         // Hiển thị BottomSheetDialog
         bottomSheetDialog.show()
     }
+    // Hàm để cập nhật giao diện của CardView
+    private fun updateCardViewAppearance(cardView: MaterialCardView, isSelected: Boolean) {
+        cardView.apply {
+            strokeWidth = if (isSelected) 4 else 0
+            strokeColor = ContextCompat.getColor(
+                this@MyExchangeRequestDetailActivity,
+                if (isSelected) R.color.blue_see_more else R.color.white
+            )
+        }
+    }
+
 
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()

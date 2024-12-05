@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exch
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -73,10 +75,23 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
     fun updatePrice(price: Long) {
         _price.value = price
     }
-    init {
-        _price.value = 0
+
+
+
+    // Biến LiveData để theo dõi phương thức thanh toán
+    private val _selectedPaymentMethod = MutableLiveData<PaymentMethod>()
+    val selectedPaymentMethod: LiveData<PaymentMethod> get() = _selectedPaymentMethod
+
+
+    // Hàm để chọn phương thức thanh toán
+    fun selectPaymentMethod(method: PaymentMethod) {
+        _selectedPaymentMethod.value = method
     }
 
+    init {
+        _price.value = 0
+        _selectedPaymentMethod.value = PaymentMethod.VNPAY
+    }
 
 
 }
