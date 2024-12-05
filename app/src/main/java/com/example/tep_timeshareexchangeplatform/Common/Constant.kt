@@ -22,6 +22,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 class Constant {
 
@@ -132,6 +133,13 @@ class Constant {
 
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
+        }
+
+        fun formatPriceLongAbs(price: Long?): String {
+            if (price == null) return "0"
+
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(abs(price)) // Lấy giá trị tuyệt đối trước khi định dạng
         }
 
         fun formatDateByLocale(dateString: String, context: Context): String {

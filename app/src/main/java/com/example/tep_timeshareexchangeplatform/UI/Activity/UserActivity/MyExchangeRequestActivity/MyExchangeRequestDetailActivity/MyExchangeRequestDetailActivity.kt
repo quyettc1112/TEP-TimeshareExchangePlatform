@@ -139,6 +139,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
                         })
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Thất Bại", "Lỗi khi duyệt yêu cầu trao đổi")
@@ -161,8 +162,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 val intent =
-                                    Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java)
-                                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, data.data?.exchangePosting?.id)
+                                    Intent(
+                                        this@MyExchangeRequestDetailActivity,
+                                        ExchangeRequestOnPostActivity::class.java
+                                    )
+                                intent.putExtra(
+                                    Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,
+                                    data.data?.exchangePosting?.id
+                                )
                                 startActivity(
                                     intent
                                 )
@@ -230,7 +237,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Price Valuation
         binding.apply {
             if (myExchangeRequestDetail.priceValuation != null) {
-                etPriceInput.setText(Constant.formatPriceLong(myExchangeRequestDetail.priceValuation))
+                etPriceInput.setText(Constant.formatPriceLongAbs(myExchangeRequestDetail.priceValuation))
             } else {
                 etPriceInput.setText("Không Có Đề Xuất Giá Chênh Lệch")
             }
@@ -247,6 +254,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
         // Status
         bindDataStatus(myExchangeRequestDetail)
+
+        // Price Valuation
+        bindDataPriceValuation(myExchangeRequestDetail)
 
 
     }
@@ -342,6 +352,45 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 ?: ""
     }
 
+    private fun bindDataUnitType(data: MyExchangeRequestDetailResponse) {
+        // Set Unit Type Of Posting
+        binding.includeUnitType.apply {
+            btnViewDetail.visibility = View.GONE
+            tvRoomCode.text = data.roomInfo.roomInfoCode
+            tvRoomType.text = data.roomInfo.unitType.title
+            llRoomName.visibility = View.GONE
+            llUnityTypeBaseAmeniites.visibility = View.GONE
+            root.visibility = View.VISIBLE
+
+        }
+    }
+
+    private fun bindDataPriceValuation(data: MyExchangeRequestDetailResponse) {
+        if (data.priceValuation == null) {
+            return
+        }
+        if (data.priceValuation == 0L) {
+            binding.tvPriceLabel.text = "Không có đề xuất giá chênh lệch"
+            binding.tvNoPaymentNeededDescription.text =
+                "Cả hai bên không cần thanh toán thêm khoản tiền nào để thực hiện trao đổi."
+        }
+
+        if (data.priceValuation < 0L) {
+            binding.tvPriceLabel.text = "Bạn cần bù thêm tiền để thực hiện trao đổi"
+            binding.tvNoPaymentNeededDescription.text =
+                "Chủ sở hữu đề xuất bạn thanh toán số tiền chênh lệch để hoàn tất trao đổi."
+        }
+
+        if (data.priceValuation > 0L) {
+            binding.tvPriceLabel.text = "Bên yêu cầu trao đổi sẽ bù tiền cho bạn"
+            binding.tvNoPaymentNeededDescription.text =
+                "Bạn sẽ nhận được số tiền chênh lệch để hoàn tất trao đổi."
+        }
+
+
+
+    }
+
     private fun evenClickApproveExchangeRequest() {
         binding.btnApproval.setOnClickListener {
             showConfirmDialog(
@@ -353,7 +402,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 object : ConfirmDialog.ConfirmCallback {
                     override fun negativeAction() {}
                     override fun positiveAction() {
-                       callApproveExchangeRequest()
+                        callApproveExchangeRequest()
                     }
                 },
             )
@@ -378,7 +427,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
     }
 
-    private fun eventClickToolbar () {
+    private fun eventClickToolbar() {
         binding.customToolbar5.onStartIconClick = {
             finish()
         }
@@ -396,24 +445,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         viewModel.rejectExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
     }
 
-    private fun bindDataUnitType(data: MyExchangeRequestDetailResponse) {
-        // Set Unit Type Of Posting
-        binding.includeUnitType.apply {
-            btnViewDetail.visibility = View.GONE
-            tvRoomCode.text = data.roomInfo.roomInfoCode
-            tvRoomType.text = data.roomInfo.unitType.title
-            llRoomName.visibility = View.GONE
-            llUnityTypeBaseAmeniites.visibility = View.GONE
-            root.visibility = View.VISIBLE
-
-        }
-    }
 
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()
     }
 
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+    private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
             "bedsFull" to "Full",
             "bedsKing" to "King",

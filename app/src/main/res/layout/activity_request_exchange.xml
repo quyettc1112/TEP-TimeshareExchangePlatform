@@ -449,7 +449,7 @@
             <!--// Exchange Price Valuation-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ll_exchange_method"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -527,6 +527,21 @@
                                 android:textSize="12sp"
                                 android:textColor="?attr/colorSecondary" />
 
+                            <RadioButton
+                                android:id="@+id/radioOwnerPaysDifference"
+                                android:layout_marginTop="15dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:text="Chủ sở hữu bù tiền" />
+
+                            <TextView
+                                android:id="@+id/tvOwnerPaysDifferenceDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Chủ sở hữu sẽ thanh toán số tiền chênh lệch để hoàn tất trao đổi."
+                                android:paddingStart="10dp"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorSecondary" />
 
                             <RadioButton
                                 android:id="@+id/radioPayDifferenceToOwner"
@@ -544,21 +559,7 @@
                                 android:textSize="12sp"
                                 android:textColor="?attr/colorSecondary" />
 
-                            <RadioButton
-                                android:id="@+id/radioOwnerPaysDifference"
-                                android:layout_marginTop="15dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp"
-                                android:text="Chủ sở hữu bù tiền" />
 
-                            <TextView
-                                android:id="@+id/tvOwnerPaysDifferenceDescription"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Chủ sở hữu sẽ thanh toán số tiền chênh lệch để hoàn tất trao đổi."
-                                android:paddingStart="10dp"
-                                android:textSize="12sp"
-                                android:textColor="?attr/colorSecondary" />
 
 
                         </RadioGroup>
@@ -567,6 +568,7 @@
                         <!-- Layout chứa phần tiền tệ và trường nhập giá -->
                         <LinearLayout
                             android:id="@+id/ll_price_input"
+                            android:layout_marginTop="16dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
