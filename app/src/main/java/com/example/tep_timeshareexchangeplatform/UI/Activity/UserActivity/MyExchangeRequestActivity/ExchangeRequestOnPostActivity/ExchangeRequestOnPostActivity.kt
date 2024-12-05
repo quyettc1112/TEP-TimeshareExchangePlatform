@@ -130,4 +130,14 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             }
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.clearCurrentRequestOnPostList()
+        exchangeRequestOnPostAdapter.apply {
+            submitList(viewModel.getCurrentRequestOnPostList())
+            notifyDataSetChanged()
+        }
+        viewModel.currentPage.value = 0
+    }
 }

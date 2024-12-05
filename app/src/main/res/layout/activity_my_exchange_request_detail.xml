@@ -451,7 +451,8 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_button"
+        android:id="@+id/ll_request_action"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

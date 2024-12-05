@@ -52,6 +52,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
         evenClickApproveExchangeRequest()
         eventClickRejectExchangeRequest()
+        eventClickToolbar()
 
 
     }
@@ -161,13 +162,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Từ chối yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                exchangePostingid = data.data?.exchangePosting?.id ?: 0
-                                val intent = Intent(
-                                    this@MyExchangeRequestDetailActivity,
-                                    ExchangeRequestOnPostActivity::class.java
-                                )
-                                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, data.data?.exchangePosting?.id)
-                                startActivity(Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java))
+                                finish()
                             }
 
                         })
@@ -262,6 +257,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     R.color.white,
                     R.color.blue_full
                 )
+                binding.llRequestAction.visibility = View.VISIBLE
             }
 
             MyExchangeRequestStatus.PENDING_APPROVAL -> {
@@ -303,7 +299,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     R.color.green_verify
                 )
             }
-
 
             MyExchangeRequestStatus.REJECT_APPROVAL -> {
                 applyStatusStyle(
@@ -366,6 +361,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickToolbar () {
+        binding.customToolbar5.onStartIconClick = {
+            finish()
+        }
+
+
+    }
+
     private fun callApproveExchangeRequest() {
         val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         viewModel.approveExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
@@ -423,12 +426,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(
-            this@MyExchangeRequestDetailActivity,
-            ExchangeRequestOnPostActivity::class.java
-        )
-        intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, exchangePostingid)
-        startActivity(Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java))
         finish()
     }
 
