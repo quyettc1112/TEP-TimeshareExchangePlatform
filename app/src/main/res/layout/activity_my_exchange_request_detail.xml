@@ -55,7 +55,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_status"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"

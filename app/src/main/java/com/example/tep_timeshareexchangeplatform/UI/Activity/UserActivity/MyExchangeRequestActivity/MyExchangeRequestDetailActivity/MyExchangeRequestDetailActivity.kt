@@ -12,11 +12,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
@@ -48,6 +50,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             finish()
         }
         evenClickApproveExchangeRequest()
+        eventClickRejectExchangeRequest()
 
 
     }
@@ -59,11 +62,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
             observeMyExchangeRequestDetail()
         } else {
-            showWarningToast("Bạn chưa đăng nhập",   "Vui lòng đăng nhập để xem thông tin")
+            showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
     private fun observeMyExchangeRequestDetail() {
+        // Get Detail
         viewModel.myExchangeRequestDetail.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -72,30 +76,30 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
                     Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
 
-                   /* when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
-                        MyExchangeRequestStatus.PENDING_APPROVAL -> {
-                            binding.btnAccept.visibility = View.GONE
-                        }
-                        MyExchangeRequestStatus.PENDING_OWNER -> {
-                            binding.btnAccept.visibility = View.GONE
-                        }
+                    /* when(MyExchangeRequestStatus.fromApiStatus(it.data.status)!!){
+                         MyExchangeRequestStatus.PENDING_APPROVAL -> {
+                             binding.btnAccept.visibility = View.GONE
+                         }
+                         MyExchangeRequestStatus.PENDING_OWNER -> {
+                             binding.btnAccept.visibility = View.GONE
+                         }
 
-                        MyExchangeRequestStatus.PENDING_CUSTOMER -> {
-                            binding.btnAccept.visibility = View.VISIBLE
-                        }
-                        MyExchangeRequestStatus.COMPLETED -> {
-                            binding.btnAccept.visibility = View.GONE
-                        }
-                        MyExchangeRequestStatus.REJECTED -> {
-                            binding.btnAccept.visibility = View.GONE
-                        }
-                    }
-                    if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
-                        binding.btnAccept.visibility = View.GONE
+                         MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+                             binding.btnAccept.visibility = View.VISIBLE
+                         }
+                         MyExchangeRequestStatus.COMPLETED -> {
+                             binding.btnAccept.visibility = View.GONE
+                         }
+                         MyExchangeRequestStatus.REJECTED -> {
+                             binding.btnAccept.visibility = View.GONE
+                         }
+                     }
+                     if (tokenManager.getProfileInfo()?.id == it.data.ownerId) {
+                         binding.btnAccept.visibility = View.GONE
 
-                    } else {
-                        binding.btnAccept.visibility = View.VISIBLE
-                    }*/
+                     } else {
+                         binding.btnAccept.visibility = View.VISIBLE
+                     }*/
 
 
                 }
@@ -111,6 +115,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             }
         }
 
+        // Approve Exchange Request
         viewModel.approveExchangeRequest.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -124,15 +129,51 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                                     this@MyExchangeRequestDetailActivity,
                                     MyExchangeDetailActivity::class.java
                                 )
-                                intent.putExtra(Constant.DEFAULT_MY_POSTING_ID, it.data?.exchangePosting?.id)
+                                intent.putExtra(
+                                    Constant.DEFAULT_MY_POSTING_ID,
+                                    it.data?.exchangePosting?.id
+                                )
                                 startActivity(intent)
                             }
 
                         })
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Thất Bại", "Lỗi khi duyệt yêu cầu trao đổi")
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Reject Exchange Request
+        viewModel.rejectExchangeRequest.observe(this) { data ->
+            when (data.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this,
+                        "Từ chối yêu cầu trao đổi thành công",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                val intent = Intent(
+                                    this@MyExchangeRequestDetailActivity,
+                                    ExchangeRequestOnPostActivity::class.java
+                                )
+                                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, data.data?.exchangePosting?.id)
+                                startActivity(Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java))
+                            }
+
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast("Thất Bại", "Lỗi khi từ chối yêu cầu trao đổi")
                 }
 
                 Status.LOADING -> {
@@ -210,14 +251,14 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataStatus(item : MyExchangeRequestDetailResponse) {
+    private fun bindDataStatus(item: MyExchangeRequestDetailResponse) {
         // Show Status
         when (MyExchangeRequestStatus.fromApiStatus(item.status)) {
             MyExchangeRequestStatus.PENDING_OWNER -> {
                 applyStatusStyle(
                     this,
-                    R.color.blue_full,
-                    R.color.white
+                    R.color.white,
+                    R.color.blue_full
                 )
             }
 
@@ -305,17 +346,40 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     }
 
+    private fun eventClickRejectExchangeRequest() {
+        binding.btnReject.setOnClickListener {
+            showConfirmDialog(
+                title = "Từ Chối",
+                message = "Bạn có chắc chắn muốn từ chối yêu cầu trao đổi này không?",
+                positiveButtonTitle = "Từ Chối",
+                negativeButtonTitle = "Hủy",
+                "",
+                object : ConfirmDialog.ConfirmCallback {
+                    override fun negativeAction() {}
+                    override fun positiveAction() {
+                        callRejectExchangeRequest()
+                    }
+                },
+            )
+        }
+    }
+
     private fun callApproveExchangeRequest() {
         val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         viewModel.approveExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
+    }
+
+    private fun callRejectExchangeRequest() {
+        val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+        viewModel.rejectExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
     }
 
     private fun bindDataUnitType(data: MyExchangeRequestDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
             btnViewDetail.visibility = View.GONE
-            tvRoomCode.text =  data.roomInfo.roomInfoCode
-            tvRoomType.text =  data.roomInfo.unitType.title
+            tvRoomCode.text = data.roomInfo.roomInfoCode
+            tvRoomType.text = data.roomInfo.unitType.title
             llRoomName.visibility = View.GONE
             llUnityTypeBaseAmeniites.visibility = View.GONE
             root.visibility = View.VISIBLE
@@ -348,7 +412,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
         binding.apply {
             llStatusContainer.visibility = View.VISIBLE
-            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            llStatusContainer.backgroundTintList =
+                ResourcesCompat.getColorStateList(context.resources, backgroundColorRes, null)
             tvStatus.setTextColor(context.getColor(textColorRes))
             cardStatus.setStrokeColor(context.getColor(textColorRes))
         }

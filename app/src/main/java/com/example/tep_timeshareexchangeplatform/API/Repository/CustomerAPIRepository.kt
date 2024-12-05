@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
@@ -727,6 +728,25 @@ class CustomerAPIRepository @Inject constructor(
     ): Resource<DashboardDataResponse> {
         return try {
             val response = customerAPIService.getDashboardData("Bearer $token")
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+
+    // Reject Request Exchange
+    suspend fun rejectExchangeRequest(
+        token: String,
+        requestId: Int
+    ): Resource<RejectRequestRespone> {
+        return try {
+            val response = customerAPIService.rejectExchangeRequest("Bearer $token", requestId)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

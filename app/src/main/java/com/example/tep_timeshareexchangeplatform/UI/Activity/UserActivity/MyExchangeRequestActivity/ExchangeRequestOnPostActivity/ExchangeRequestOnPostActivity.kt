@@ -56,15 +56,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             observeData()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập","Vui lòng đăng nhập để xem thông tin" )
         }
         initAdapter()
         bindDataRequestOnPostList()
@@ -94,15 +86,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message ?: "Có lỗi xảy ra",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi tải dữ liệu", "Không thể tải dữ liệu")
 
                 }
             }

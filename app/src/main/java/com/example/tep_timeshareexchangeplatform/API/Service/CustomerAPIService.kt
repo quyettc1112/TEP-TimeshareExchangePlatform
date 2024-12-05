@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Cust
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
@@ -315,6 +316,13 @@ interface CustomerAPIService {
     suspend fun getDashboardData(
         @Header ("Authorization") token: String,
     ) : Response<DashboardDataResponse>
+
+    // Reject Exchange Request
+    @POST("customer/exchange/request/reject/{requestId}")
+    suspend fun rejectExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int,
+    ) : Response<RejectRequestRespone>
 
 
 

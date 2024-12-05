@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
@@ -37,6 +38,18 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
             _approveExchangeRequest.postValue(Resource.loading(null))
             customerAPIRepository.approveExchangeRequest(token, id).let {
                 _approveExchangeRequest.postValue(it)
+            }
+        }
+    }
+
+    // Call Reject Exchange Request
+    private val _rejectExchangeRequest = MutableLiveData<Resource<RejectRequestRespone>>()
+    val rejectExchangeRequest: MutableLiveData<Resource<RejectRequestRespone>> = _rejectExchangeRequest
+    fun rejectExchangeRequest(token: String, requestId: Int) {
+        viewModelScope.launch {
+            _rejectExchangeRequest.postValue(Resource.loading(null))
+            customerAPIRepository.rejectExchangeRequest(token, requestId).let {
+                _rejectExchangeRequest.postValue(it)
             }
         }
     }
