@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="Yêu cầu trao đổi của tôi"
+        app:showEndIcon="true"
+        app:endIcon="@drawable/baseline_restart_alt_24"
         app:showStartText="false"
         app:layout_constraintTop_toTopOf="parent"/>
 

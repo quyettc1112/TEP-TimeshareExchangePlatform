@@ -62,6 +62,7 @@ class MyExchangeRequestActivity : BaseActivity() {
         }
         initAdapter()
         bindDataMyPostingList()
+        eventClickLoad()
 
         // Đăng ký ActivityResultLauncher
         detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -74,6 +75,17 @@ class MyExchangeRequestActivity : BaseActivity() {
                 }
                 viewModel.currentPage.value = 0
             }
+        }
+    }
+
+    private fun eventClickLoad() {
+        binding.customToolbar.onEndIconClick = {
+            viewModel.clearCurrentRequestList()
+            exchangeAdapter.apply {
+                submitList(viewModel.getCurrentRequestList())
+                notifyDataSetChanged()
+            }
+            viewModel.currentPage.value = 0
         }
     }
 

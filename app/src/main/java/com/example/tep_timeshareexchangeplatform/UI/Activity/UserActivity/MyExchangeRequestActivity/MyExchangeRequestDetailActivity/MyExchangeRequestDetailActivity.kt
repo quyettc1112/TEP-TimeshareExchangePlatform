@@ -352,7 +352,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
 
         if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT) {
-            binding.llRequestAction.visibility = View.VISIBLE
+            binding.llPaymentMethod.visibility = View.VISIBLE
         }
 
     }
