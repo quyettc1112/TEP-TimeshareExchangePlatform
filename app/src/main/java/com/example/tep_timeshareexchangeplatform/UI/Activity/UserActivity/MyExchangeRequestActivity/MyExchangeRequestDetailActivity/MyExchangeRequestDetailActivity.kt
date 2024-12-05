@@ -210,6 +210,34 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             }
         }
 
+        // Payment Exchange Request Wallet
+        viewModel.paymentExchangeRequest.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this,
+                        "Thanh toán thành công",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                setResult(RESULT_OK)
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showErrorToast("Thất Bại", "Lỗi khi thanh toán")
+                    Log.d("PaymentExchangeRequest", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
         // Select Payment Method
         // Observe Selected Payment Method
     }
@@ -543,6 +571,26 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         )
     }
 
+    private fun callPaymentExchangeRequestWallet() {
+        showConfirmDialog(
+            title = "Xác Nhận Thanh Toán",
+            message = "Bạn có chắc chắn muốn thanh toán bằng ví Unwind",
+            positiveButtonTitle = "Thanh Toán",
+            negativeButtonTitle = "Hủy",
+            textButton = "",
+            callback = object : ConfirmDialog.ConfirmCallback {
+                override fun negativeAction() {}
+                override fun positiveAction() {
+                    val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+                    viewModel.paymentExchangeRequest(
+                        tokenManager.getAccessToken().toString(),
+                        requestId,
+                    )
+                }
+            },
+        )
+    }
+
     private fun showExchangeDialog() {
         // Sử dụng View Binding
         val binding_dialog = DialogExchangePriceValuationBinding.inflate(layoutInflater)
@@ -714,6 +762,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         binding_dialog.cardUnwind.setOnClickListener {
             selectedCard = binding_dialog.cardUnwind
             viewModel.selectPaymentMethod(PaymentMethod.UNWIND)
+            callPaymentExchangeRequestWallet()
         }
         binding_dialog.cardVnpay.setOnClickListener {
             selectedCard = binding_dialog.cardVnpay
@@ -723,17 +772,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Hiển thị BottomSheetDialog
         bottomSheetDialog.show()
     }
-    // Hàm để cập nhật giao diện của CardView
-    private fun updateCardViewAppearance(cardView: MaterialCardView, isSelected: Boolean) {
-        cardView.apply {
-            strokeWidth = if (isSelected) 4 else 0
-            strokeColor = ContextCompat.getColor(
-                this@MyExchangeRequestDetailActivity,
-                if (isSelected) R.color.blue_see_more else R.color.white
-            )
-        }
-    }
-
 
     private fun initAdapter() {
         imagePostingAdapter = ImagePostingAdapter()

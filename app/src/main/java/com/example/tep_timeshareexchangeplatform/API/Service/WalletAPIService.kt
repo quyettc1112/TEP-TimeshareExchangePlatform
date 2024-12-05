@@ -133,6 +133,14 @@ interface WalletAPIService {
     ): Response<WalletListResponse>
 
 
+    // Payment Exchange Request Wallet
+    @POST("wallet/wallet/exchange/request")
+    suspend fun paymentExchangeRequestWallet(
+        @Header("Authorization") token: String,
+        @Query("exchangeRequestId") exchangeRequestId: Int
+    ): Response<WalletPurchaseResponse>
+
+
 
 
 

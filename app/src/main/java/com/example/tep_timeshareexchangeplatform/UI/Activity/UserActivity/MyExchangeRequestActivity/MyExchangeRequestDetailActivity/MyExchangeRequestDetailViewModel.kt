@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.WalletAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.MyExchangeRequestDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyExchangeRequestDetailViewModel @Inject constructor(
-    private val customerAPIRepository: CustomerAPIRepository
+    private val customerAPIRepository: CustomerAPIRepository,
+    private val walletAPIRepository: WalletAPIRepository
 ): ViewModel() {
     // Get My Exchange Detail
 
@@ -91,6 +94,18 @@ class MyExchangeRequestDetailViewModel @Inject constructor(
     init {
         _price.value = 0
         _selectedPaymentMethod.value = PaymentMethod.VNPAY
+    }
+
+    // Payment Exchange Request Wallet
+    private val _paymentExchangeRequest = MutableLiveData<Resource<WalletPurchaseResponse>>()
+    val paymentExchangeRequest: MutableLiveData<Resource<WalletPurchaseResponse>> = _paymentExchangeRequest
+    fun paymentExchangeRequest(token: String, requestId: Int) {
+        viewModelScope.launch {
+            _paymentExchangeRequest.postValue(Resource.loading(null))
+            walletAPIRepository.paymentExchangeRequestWallet(token, requestId).let {
+                _paymentExchangeRequest.postValue(it)
+            }
+        }
     }
 
 

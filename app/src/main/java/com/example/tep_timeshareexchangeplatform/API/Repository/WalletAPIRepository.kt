@@ -257,6 +257,23 @@ class WalletAPIRepository @Inject constructor(
         }
     }
 
+    // Payment Exchange Request Wallet
+    suspend fun paymentExchangeRequestWallet(
+        token: String,
+        requestId: Int
+    ): Resource<WalletPurchaseResponse> {
+        return try {
+            val response = walletAPIService.paymentExchangeRequestWallet("Bearer $token", requestId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                Resource.error("Error: ${response.code()}, Message: ${response.errorBody()}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 
 
 }
