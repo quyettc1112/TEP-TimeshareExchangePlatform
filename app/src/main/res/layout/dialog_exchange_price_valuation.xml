@@ -224,6 +224,38 @@
                     android:padding="10dp"
                     android:textSize="14dp" />
 
+                <LinearLayout
+                    android:id="@+id/btn_save"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ripple_effect_white"
+                    android:backgroundTint="@color/primaryColor"
+                    android:clickable="true"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Icon -->
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Icon chọn ngày"
+                        android:src="@drawable/baseline_currency_exchange_24" />
+
+                    <!-- Text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center_vertical"
+                        android:text="Thay Đổi"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestDetailBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogExchangePriceValuationBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,6 +53,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
         evenClickApproveExchangeRequest()
         eventClickRejectExchangeRequest()
+        eventClickPriceValuation()
         eventClickToolbar()
 
 
@@ -427,6 +430,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickPriceValuation() {
+        binding.btnPriceValuation.setOnClickListener {
+            showExchangeDialog()
+        }
+    }
+
     private fun eventClickToolbar() {
         binding.customToolbar5.onStartIconClick = {
             finish()
@@ -443,6 +452,19 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private fun callRejectExchangeRequest() {
         val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         viewModel.rejectExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
+    }
+
+    private fun showExchangeDialog() {
+        // Sử dụng View Binding
+        val binding = DialogExchangePriceValuationBinding.inflate(layoutInflater)
+
+        // Tạo AlertDialog
+        val dialog = AlertDialog.Builder(this)
+            .setView(binding.root)
+            .create()
+
+
+        dialog.show()
     }
 
 
