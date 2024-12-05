@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -31,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyExchangeRequestActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangeRequestBinding
     private lateinit var exchangeAdapter: MyExchangeRequestAdapter
+    private lateinit var detailActivityLauncher: ActivityResultLauncher<Intent>
     private val viewModel: MyExchangeRequestViewModel by viewModels()
 
     companion object {
@@ -59,13 +62,26 @@ class MyExchangeRequestActivity : BaseActivity() {
         }
         initAdapter()
         bindDataMyPostingList()
+
+        // Đăng ký ActivityResultLauncher
+        detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                // Load lại danh sách nếu cần
+                viewModel.clearCurrentRequestList()
+                exchangeAdapter.apply {
+                    submitList(viewModel.getCurrentRequestList())
+                    notifyDataSetChanged()
+                }
+                viewModel.currentPage.value = 0
+            }
+        }
     }
 
     private fun initAdapter() {
         exchangeAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
-            startActivity(intent)
+            detailActivityLauncher.launch(intent)
         }
     }
 

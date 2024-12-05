@@ -16,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:showEndIcon="true"
+        app:endIcon="@drawable/baseline_restart_alt_24"
         android:title="Chi Tiết Yêu Cầu Trao Đổi"
         app:layout_constraintTop_toTopOf="parent"
         app:showStartText="false" />
@@ -383,7 +385,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_bold"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/blue_btn_search"
                         android:textSize="16sp" />
 
                     <TextView
@@ -447,6 +449,8 @@
                         android:background="@drawable/background_stroke_around"
                         android:enabled="false"
                         android:gravity="top"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_bold"
                         android:inputType="textMultiLine"
                         android:padding="10dp"
                         android:textSize="14sp" />

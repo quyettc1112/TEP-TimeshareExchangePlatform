@@ -86,7 +86,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
-                        android:text="Tôi sẽ bù tiền chênh lệch nhưng thay đổi giá" />
+                        android:text="Chủ sở hữu bù giá chênh lệch" />
 
                     <TextView
                         android:id="@+id/tvOwnerPaysDifferenceDescription"
@@ -102,7 +102,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tôi muốn người gửi yêu cầu trao đổi bù tiền chênh lệch cho tôi" />
+                        android:text="Người gửi yêu cầu trao đổi bù tiền chênh lệch" />
 
                     <TextView
                         android:id="@+id/tvPayDifferenceToOwnerDescription"

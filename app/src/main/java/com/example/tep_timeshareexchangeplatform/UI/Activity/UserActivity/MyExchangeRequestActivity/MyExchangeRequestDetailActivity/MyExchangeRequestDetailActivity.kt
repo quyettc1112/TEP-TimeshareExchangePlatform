@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
@@ -20,17 +21,16 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyExchange.My
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyExchangeRequestDetailBinding
 import com.example.tep_timeshareexchangeplatform.databinding.DialogExchangePriceValuationBinding
+import com.example.tep_timeshareexchangeplatform.databinding.DialogPaymentExchangePriceValuationBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
@@ -53,6 +53,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
         getIntentValue()
         initAdapter()
+        observeMyExchangeRequestDetail()
 
         binding.customToolbar5.onStartIconClick = {
             finish()
@@ -61,6 +62,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         eventClickRejectExchangeRequest()
         eventClickPriceValuation()
         eventClickToolbar()
+        eventClickReload()
 
 
     }
@@ -70,7 +72,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
             viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
-            observeMyExchangeRequestDetail()
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
@@ -185,18 +186,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Đề xuất giá chênh lệch thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                val intent = Intent(
-                                    this@MyExchangeRequestDetailActivity,
-                                    MyExchangeDetailActivity::class.java
-                                )
-                                intent.putExtra(
-                                    Constant.DEFAULT_MY_POSTING_ID,
-                                    it.data?.exchangePosting?.id
-                                )
-                                startActivity(intent)
+                                setResult(RESULT_OK)
                                 finish()
                             }
-
                         })
                 }
 
@@ -280,6 +272,17 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Price Valuation
         bindDataPriceValuation(myExchangeRequestDetail)
 
+        // Check Owner
+        val customerProfile = tokenManager.getProfileInfo()
+        val status = MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)
+        if (customerProfile?.id != myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER) {
+            binding.llRequestAction.visibility = View.VISIBLE
+        }
+
+        if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING) {
+            binding.llRequestAction.visibility = View.VISIBLE
+        }
+
 
     }
 
@@ -292,7 +295,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     R.color.white,
                     R.color.blue_full
                 )
-                binding.llRequestAction.visibility = View.VISIBLE
+
             }
 
             MyExchangeRequestStatus.PENDING_APPROVAL -> {
@@ -398,34 +401,78 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
 
         if (data.priceValuation < 0L) {
-            binding.tvPriceLabel.text = "Bạn cần bù thêm tiền để thực hiện trao đổi"
+            binding.tvPriceLabel.text = "Chủ sở hửu sẽ bù tiền cho người gửi yêu cầu trao đổi"
             binding.tvNoPaymentNeededDescription.text =
-                "Chủ sở hữu đề xuất bạn thanh toán số tiền chênh lệch để hoàn tất trao đổi."
+                "Chủ sở hữu đề xuất bạn thanh toán số bù để hoàn tất trao đổi."
         }
 
         if (data.priceValuation > 0L) {
-            binding.tvPriceLabel.text = "Bên yêu cầu trao đổi sẽ bù tiền cho bạn"
+            binding.tvPriceLabel.text = "Người gửi yêu cầu trao đổi sẽ bù tiền cho chủ sở hữu"
             binding.tvNoPaymentNeededDescription.text =
-                "Bạn sẽ nhận được số tiền chênh lệch để hoàn tất trao đổi."
+                "Người gửi yêu cầu trao đổi sẽ thanh toán số tiền bù để hoàn tất trao đổi."
         }
 
     }
 
     private fun evenClickApproveExchangeRequest() {
         binding.btnApproval.setOnClickListener {
-            showConfirmDialog(
-                title = "Chấp Nhận",
-                message = "Bạn có chắc chắn muốn chấp nhận yêu cầu trao đổi này không?",
-                positiveButtonTitle = "Chấp Nhận",
-                negativeButtonTitle = "Hủy",
-                "",
-                object : ConfirmDialog.ConfirmCallback {
-                    override fun negativeAction() {}
-                    override fun positiveAction() {
-                        callApproveExchangeRequest()
+
+            // Check Owner
+            val customerProfile = tokenManager.getProfileInfo()
+            val response = viewModel.myExchangeRequestDetail.value?.data
+            val status = MyExchangeRequestStatus.fromApiStatus(response?.status ?: "")
+            // Owner
+            if (customerProfile?.id != response?.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER) {
+                val priceValuation = response?.priceValuation ?: 0L
+                when {
+                    priceValuation == 0L || priceValuation > 0L -> {
+                        showConfirmDialog(
+                            title = "Chấp Nhận",
+                            message = "Bạn có chắc chắn muốn chấp nhận yêu cầu trao đổi này không?",
+                            positiveButtonTitle = "Chấp Nhận",
+                            negativeButtonTitle = "Hủy",
+                            textButton = "",
+                            callback = object : ConfirmDialog.ConfirmCallback {
+                                override fun negativeAction() {}
+                                override fun positiveAction() {
+                                    callApproveExchangeRequest()
+                                }
+                            },
+                        )
                     }
-                },
-            )
+                    priceValuation < 0L -> {
+                        Toast.makeText(this, "Call Payment", Toast.LENGTH_SHORT).show()
+                        showPaymentDialog()
+                    }
+                }
+            }
+
+            if (customerProfile?.id == response?.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING) {
+                val priceValuation = response?.priceValuation ?: 0L
+                when {
+                    priceValuation == 0L || priceValuation < 0L -> {
+                        showConfirmDialog(
+                            title = "Chấp Nhận",
+                            message = "Bạn có chắc chắn muốn chấp nhận yêu cầu trao đổi này không?",
+                            positiveButtonTitle = "Chấp Nhận",
+                            negativeButtonTitle = "Hủy",
+                            textButton = "",
+                            callback = object : ConfirmDialog.ConfirmCallback {
+                                override fun negativeAction() {}
+                                override fun positiveAction() {
+                                    callApproveExchangeRequest()
+                                }
+                            },
+                        )
+                    }
+                    priceValuation > 0L -> {
+                        Toast.makeText(this, "Call Payment", Toast.LENGTH_SHORT).show()
+                        showPaymentDialog()
+                    }
+                }
+            }
+
+
         }
     }
 
@@ -461,6 +508,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     }
 
+    private fun eventClickReload() {
+        binding.customToolbar5.onEndIconClick = {
+            getIntentValue()
+        }
+    }
+
     private fun callApproveExchangeRequest() {
         val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         viewModel.approveExchangeRequest(tokenManager.getAccessToken().toString(), requestId)
@@ -472,53 +525,58 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     }
 
     private fun callExchangePriceValuation(requestId: Int, priceValuation: Long, note: String) {
-        viewModel.exchangePriceValuation(tokenManager.getAccessToken().toString(), requestId, priceValuation, note)
+        viewModel.exchangePriceValuation(
+            tokenManager.getAccessToken().toString(),
+            requestId,
+            priceValuation,
+            note
+        )
     }
 
     private fun showExchangeDialog() {
         // Sử dụng View Binding
-        val binding = DialogExchangePriceValuationBinding.inflate(layoutInflater)
+        val binding_dialog = DialogExchangePriceValuationBinding.inflate(layoutInflater)
 
         // Tạo AlertDialog
         val dialog = AlertDialog.Builder(this)
-            .setView(binding.root)
+            .setView(binding_dialog.root)
             .create()
 
         // Lắng nghe sự thay đổi trong RadioGroup
-        binding.radioGroupExchangeOptions.setOnCheckedChangeListener { _, checkedId ->
+        binding_dialog.radioGroupExchangeOptions.setOnCheckedChangeListener { _, checkedId ->
             selectedExchangeOption = when (checkedId) {
-                binding.radioPayDifferenceToOwner.id -> ExchangeOption.PAY_DIFFERENCE_TO_OWNER
-                binding.radioOwnerPaysDifference.id -> ExchangeOption.OWNER_PAYS_DIFFERENCE
-                binding.radioNoPaymentNeeded.id -> ExchangeOption.NO_PAYMENT_NEEDED
+                binding_dialog.radioPayDifferenceToOwner.id -> ExchangeOption.PAY_DIFFERENCE_TO_OWNER
+                binding_dialog.radioOwnerPaysDifference.id -> ExchangeOption.OWNER_PAYS_DIFFERENCE
+                binding_dialog.radioNoPaymentNeeded.id -> ExchangeOption.NO_PAYMENT_NEEDED
                 else -> null
             }
             selectedExchangeOption?.let {
                 when (it) {
                     ExchangeOption.PAY_DIFFERENCE_TO_OWNER -> {
-                        binding.llPriceInput.visibility = View.VISIBLE
+                        binding_dialog.llPriceInput.visibility = View.VISIBLE
                     }
 
                     ExchangeOption.OWNER_PAYS_DIFFERENCE -> {
-                        binding.llPriceInput.visibility = View.VISIBLE
+                        binding_dialog.llPriceInput.visibility = View.VISIBLE
                     }
 
                     ExchangeOption.NO_PAYMENT_NEEDED -> {
                         viewModel.updatePrice(0)
-                        binding.llPriceInput.visibility = View.GONE
+                        binding_dialog.llPriceInput.visibility = View.GONE
                     }
                 }
-                binding.btnSave.visibility = View.VISIBLE
+                binding_dialog.btnSave.visibility = View.VISIBLE
 
             }
         }
-        binding.etRoomPrice.addTextChangedListener(object : TextWatcher {
+        binding_dialog.etRoomPrice.addTextChangedListener(object : TextWatcher {
             private var current = ""
 
             override fun afterTextChanged(s: Editable?) {
 
 
                 // Loại bỏ TextWatcher tạm thời để tránh loop
-                binding.etRoomPrice.removeTextChangedListener(this)
+                binding_dialog.etRoomPrice.removeTextChangedListener(this)
 
                 val input =
                     s.toString().replace("[^\\d]".toRegex(), "") // Loại bỏ các ký tự không phải số
@@ -533,28 +591,28 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     when {
                         numericValue < 10000 -> {
                             // Hiển thị helper text nếu số tiền nhỏ hơn 100.000
-                            binding.tilRoomPrice.helperText =
+                            binding_dialog.tilRoomPrice.helperText =
                                 "Số tiền tối thiểu là 10.000"
                         }
 
                         numericValue > 100_000_000 -> {
                             // Hiển thị helper text nếu số tiền lớn hơn 100 Triệu
-                            binding.tilRoomPrice.helperText =
+                            binding_dialog.tilRoomPrice.helperText =
                                 "Số tiền tối đa cho 1 đêm là 100 triệu"
                         }
 
                         else -> {
                             // Ẩn helper text khi số tiền đạt yêu cầu
-                            binding.tilRoomPrice.helperText = null
+                            binding_dialog.tilRoomPrice.helperText = null
                         }
                     }
 
                     // Định dạng số tiền và thêm ký tự "đ" ở cuối
                     val formatted = formatCurrency(cleanedInput) + " đ"
                     current = formatted
-                    binding.etRoomPrice.setText(formatted)
-                    binding.etRoomPrice.setSelection(formatted.length - 2) // Đặt con trỏ vào vị trí trước "đ"
-                    val amount = binding.etRoomPrice.text.toString()
+                    binding_dialog.etRoomPrice.setText(formatted)
+                    binding_dialog.etRoomPrice.setSelection(formatted.length - 2) // Đặt con trỏ vào vị trí trước "đ"
+                    val amount = binding_dialog.etRoomPrice.text.toString()
                         .replace("[^\\d]".toRegex(), "").toLongOrNull()
                     if (amount != null) {
                         if (amount > 0) {
@@ -563,11 +621,11 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     }
 
                 } else {
-                    binding.etTotalPrice.setText(null)
+                    binding_dialog.etTotalPrice.setText(null)
                 }
 
                 // Thêm lại TextWatcher sau khi cập nhật văn bản
-                binding.etRoomPrice.addTextChangedListener(this)
+                binding_dialog.etRoomPrice.addTextChangedListener(this)
             }
 
 
@@ -580,8 +638,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             }
         })
 
-        binding.btnSave.setOnClickListener {
-            var inputPrice : Long = 0
+        binding_dialog.btnSave.setOnClickListener {
+            var inputPrice: Long = 0
             when (selectedExchangeOption) {
                 ExchangeOption.NO_PAYMENT_NEEDED -> {
                     viewModel.updatePrice(0)
@@ -597,33 +655,45 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                 }
 
                 else -> {
-                    showErrorToast("Lỗi","Vui lòng chọn phương thức trao đổi")
+                    showErrorToast("Lỗi", "Vui lòng chọn phương thức trao đổi")
                     return@setOnClickListener
                 }
             }
 
             if (selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && inputPrice == 0L) {
-                showWarningToast("Lỗi","Vui lòng nhập giá trị hợp lệ")
+                showWarningToast("Lỗi", "Vui lòng nhập giá trị hợp lệ")
                 return@setOnClickListener
             }
 
-            if(selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && abs(inputPrice) < 10000){
-                showWarningToast("Lỗi","Số tiền tối thiểu là 10.000")
+            if (selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && abs(inputPrice) < 10000) {
+                showWarningToast("Lỗi", "Số tiền tối thiểu là 10.000")
                 return@setOnClickListener
             }
 
-            if(selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && abs(inputPrice) > 100_000_000){
-                showWarningToast("Lỗi","Số tiền tối đa là 100 triệu")
+            if (selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && abs(inputPrice) > 100_000_000) {
+                showWarningToast("Lỗi", "Số tiền tối đa là 100 triệu")
                 return@setOnClickListener
             }
 
             val requestId = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
-            val note = binding.etNote.text.toString()
+            val note =
+                selectedExchangeOption!!.description + " :" + binding_dialog.etNote.text.toString()
             val priceValuation = inputPrice
             Log.d("PriceValuatisasdon", priceValuation.toString() + " " + requestId + " " + note)
             callExchangePriceValuation(requestId, priceValuation, note)
         }
         dialog.show()
+    }
+
+    private fun showPaymentDialog() {
+        // Sử dụng ViewBinding để inflate layout
+        val binding = DialogPaymentExchangePriceValuationBinding.inflate(layoutInflater)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+
+
+        // Hiển thị BottomSheetDialog
+        bottomSheetDialog.show()
     }
 
     private fun initAdapter() {

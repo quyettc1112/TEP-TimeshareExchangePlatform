@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -35,6 +38,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
     private lateinit var exchangeRequestOnPostAdapter: ExchangeRequestOnPostAdapter
     private val viewModel: ExchangeRequestOnPostViewModel by viewModels()
     private var postingId: Int = 0
+    private lateinit var detailActivityLauncher: ActivityResultLauncher<Intent>
 
     companion object {
         const val POSTING_PAGE_SIZE = 10
@@ -66,13 +70,27 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         }
         initAdapter()
         bindDataRequestOnPostList()
+
+        // Đăng ký ActivityResultLauncher
+        detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
+                // Load lại danh sách
+                viewModel.clearCurrentRequestOnPostList()
+                exchangeRequestOnPostAdapter.apply {
+                    submitList(listOf())
+                    notifyDataSetChanged()
+                }
+                viewModel.currentPage.value = 0
+            }
+        }
     }
 
     private fun initAdapter() {
         exchangeRequestOnPostAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
-            startActivity(intent)
+            detailActivityLauncher.launch(intent)
         }
     }
 
