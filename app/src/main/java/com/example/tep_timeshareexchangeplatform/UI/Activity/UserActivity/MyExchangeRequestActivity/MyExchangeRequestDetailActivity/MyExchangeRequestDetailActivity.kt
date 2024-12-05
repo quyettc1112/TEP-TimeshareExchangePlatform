@@ -160,7 +160,12 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Từ chối yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                finish()
+                                val intent =
+                                    Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java)
+                                intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, data.data?.exchangePosting?.id)
+                                startActivity(
+                                    intent
+                                )
                             }
 
                         })
