@@ -33,6 +33,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
     private lateinit var imagePostingAdapter: ImagePostingAdapter
     private val viewModel: MyExchangeRequestDetailViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
+    private var exchangePostingid = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -160,6 +161,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Từ chối yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
+                                exchangePostingid = data.data?.exchangePosting?.id ?: 0
                                 val intent = Intent(
                                     this@MyExchangeRequestDetailActivity,
                                     ExchangeRequestOnPostActivity::class.java
@@ -418,4 +420,16 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             cardStatus.setStrokeColor(context.getColor(textColorRes))
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(
+            this@MyExchangeRequestDetailActivity,
+            ExchangeRequestOnPostActivity::class.java
+        )
+        intent.putExtra(Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST, exchangePostingid)
+        startActivity(Intent(this@MyExchangeRequestDetailActivity, ExchangeRequestOnPostActivity::class.java))
+        finish()
+    }
+
 }
