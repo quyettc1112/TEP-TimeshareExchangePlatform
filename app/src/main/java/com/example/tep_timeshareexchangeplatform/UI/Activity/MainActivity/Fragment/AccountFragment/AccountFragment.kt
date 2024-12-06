@@ -183,11 +183,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
     }
 
 
-
-
-
-
-
     private fun setUserActivitiesEvent() {
         binding.apply {
             // Chỉnh Ngôn ngữ

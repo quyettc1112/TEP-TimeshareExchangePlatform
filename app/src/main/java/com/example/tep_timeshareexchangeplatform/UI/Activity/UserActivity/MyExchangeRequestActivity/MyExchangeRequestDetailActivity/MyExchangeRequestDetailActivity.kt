@@ -102,8 +102,6 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     bindData(it.data!!)
                     Log.d("MyExchangeRequestDetail", it.data.ownerId.toString())
                     Log.d("MyExchangeRequestDetail", tokenManager.getProfileInfo()?.id.toString())
-
-
                 }
 
                 Status.ERROR -> {
