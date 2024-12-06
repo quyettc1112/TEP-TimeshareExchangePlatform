@@ -37,6 +37,7 @@ class TemporaryCodeFragment : BaseFragment(R.layout.fragment_tempory_code) {
         setOTPView()
         eventClickSendAgain()
         observeViewModel()
+
         return binding.root
     }
 

@@ -20,79 +20,87 @@
         app:showEndIcon="false" />
 
     <LinearLayout
+        android:id="@+id/linearLayout37"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:gravity="center|top"
         android:orientation="vertical"
         android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
         app:layout_constraintTop_toBottomOf="@+id/customToolbar8">
 
         <ImageView
-            android:layout_gravity="center"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_verify_shild"/>
+            android:layout_gravity="center"
+            android:src="@drawable/ic_verify_shild" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nhập Mã Xác Minh"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/inter_bold"
-            android:textSize="16dp"
-            android:layout_marginTop="15dp"/>
+            android:text="Nhập Mã Xác Minh"
+            android:textSize="16dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mã xác minh đã được gửi đến địa chỉ emai"
             android:fontFamily="@font/inter_regular"
+            android:text="Mã xác minh đã được gửi đến địa chỉ emai"
             android:textSize="14dp" />
+
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="quyettcse160862@fpt.edu.vn"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/inter_bold"
-            android:textSize="16dp"
-            android:layout_marginTop="15dp"/>
+            android:text="quyettcse160862@fpt.edu.vn"
+            android:textSize="16dp" />
+
         <in.aabhasjindal.otptextview.OtpTextView
             android:id="@+id/otp_view"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter_bold"
+            android:inputType="text"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:inputType="text"
-            android:fontFamily="@font/inter_bold"
-            app:height="40dp"
-            app:width="40dp"
             app:bar_enabled="true"
             app:bar_height="2dp"
+            app:height="40dp"
             app:length="6"
-            app:otp_text_size="24dp"/>
+            app:otp_text_size="24dp"
+            app:width="40dp" />
 
 
         <LinearLayout
-            android:gravity="center"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
                 android:text="Không nhận được mã xác minh? "
-                android:textSize="14dp"
-                android:fontFamily="@font/inter_regular" />
+                android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tvResend"
-                android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/inter_bold"
                 android:text="Gửi Lại"
                 android:textColor="@color/primaryColor"
-                android:textSize="14dp"
-                android:fontFamily="@font/inter_bold" />
+                android:textSize="14dp" />
 
         </LinearLayout>
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
