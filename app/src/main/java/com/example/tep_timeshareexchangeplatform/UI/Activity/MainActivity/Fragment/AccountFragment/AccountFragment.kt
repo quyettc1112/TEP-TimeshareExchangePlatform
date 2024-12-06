@@ -274,6 +274,8 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 val intent = Intent(requireContext(), MyInfoActivity::class.java)
                 resultLauncher.launch(intent)
             }
+
+
         }
 
     }

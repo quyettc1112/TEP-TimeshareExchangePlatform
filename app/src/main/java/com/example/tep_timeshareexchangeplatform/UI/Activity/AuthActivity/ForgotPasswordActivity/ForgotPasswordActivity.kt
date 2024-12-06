@@ -2,7 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.Forgo
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -10,8 +10,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.HomeFragment.HomeFragment
-import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.TopResortFragment.TopResortFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ForgotPasswordActivity.Fragment.EmailFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ForgotPasswordActivity.Fragment.NewPasswordFragment
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ForgotPasswordActivity.Fragment.TemporaryCodeFragment
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class ForgotPasswordActivity : BaseActivity() {
     private lateinit var binding: ActivityForgotPasswordBinding
     private lateinit var FragmentAdapter: FragmentAdapter
+    private val viewModel : ForgotPasswordViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,22 +33,29 @@ class ForgotPasswordActivity : BaseActivity() {
             insets
         }
         setUpScreenViewPager()
+
+        viewModel.viewPagerPosition.observe(this) { position ->
+            binding.vp2Main.setCurrentItem(position, true) // Cập nhật vị trí
+        }
+
     }
 
     private fun setUpScreenViewPager() {
         val listFragment: ArrayList<Fragment> = ArrayList()
-        listFragment.add(HomeFragment())
-        listFragment.add(TopResortFragment())
+        listFragment.add(EmailFragment())
+        listFragment.add(NewPasswordFragment())
+        listFragment.add(TemporaryCodeFragment())
 
 
         FragmentAdapter = FragmentAdapter(this, listFragment)
         binding.vp2Main.apply {
             adapter = FragmentAdapter
             isUserInputEnabled = false
-            offscreenPageLimit = 5
+            offscreenPageLimit = 2
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    viewModel.setViewPagerPosition(position)
                 }
             })
         }

@@ -191,6 +191,8 @@ dependencies {
     // PhotoView
     implementation ("com.github.chrisbanes:PhotoView:2.0.0")
 
+    // Pin View
+    implementation ("com.github.aabhasr1:OtpView:v1.1.2")
 
 
 

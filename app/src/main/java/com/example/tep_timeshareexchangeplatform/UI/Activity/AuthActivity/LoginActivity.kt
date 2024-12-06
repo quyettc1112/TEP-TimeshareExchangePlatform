@@ -66,6 +66,8 @@ class LoginActivity : BaseActivity() {
 
         // Handle login button click
         clickLoginButton()
+
+        eventClickForgotPassword()
     }
 
     // Observe login response LiveData

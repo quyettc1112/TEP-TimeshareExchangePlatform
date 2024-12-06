@@ -51,4 +51,36 @@ class AuthAPIRepository @Inject constructor(
         }
     }
 
+    // function to call API to send email forgot password
+    suspend fun forgotPassword(email: String): Resource<Void> {
+        return try {
+            val response = authAPIService.forgotPassword(email)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                // Use ErrorHandler to parse the error message
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: $errorMessage", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // function to call API to reset password
+    suspend fun resetPassword(email: String, token: String, newPassword: String): Resource<Void> {
+        return try {
+            val response = authAPIService.resetPassword(email, token, newPassword)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                // Use ErrorHandler to parse the error message
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: $errorMessage", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 }

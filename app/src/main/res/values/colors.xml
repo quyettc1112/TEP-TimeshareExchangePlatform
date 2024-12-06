@@ -11,6 +11,8 @@
     <color name="regular_price_color">#cbcbcb</color>
     <color name="inactive_text_color">#8D8D8D</color>
     <color name="background_splash_color">#FF6C2F</color>
+    <color name="transparent">#00000000</color>
+    <color name="grey">#a9a9a9</color>
 
     <color name="background_header_color">@color/primaryColor</color>
 

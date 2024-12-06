@@ -7,6 +7,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.Register
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthAPIService {
 
@@ -15,5 +16,17 @@ interface AuthAPIService {
 
     @POST("auth/register")
     suspend fun register(@Body registerDTO: RegisterDTO): Response<RegisterResponse>
+
+    // Send Email Forgot Password
+    @POST("auth/forgot-password")
+    suspend fun forgotPassword(
+        @Query("email") email: String): Response<Void>
+
+    // Call API Reset Password
+    @POST("auth/reset-password")
+    suspend fun resetPassword(
+        @Query("email") email: String,
+        @Query("token") token : String,
+        @Query("newPassword") newPassword : String): Response<Void>
 
 }
