@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
@@ -273,6 +274,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             llMyProfileInfo.setOnClickListener {
                 val intent = Intent(requireContext(), MyInfoActivity::class.java)
                 resultLauncher.launch(intent)
+            }
+
+            // Account
+            llAccountSecurity.setOnClickListener {
+                startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
             }
 
 

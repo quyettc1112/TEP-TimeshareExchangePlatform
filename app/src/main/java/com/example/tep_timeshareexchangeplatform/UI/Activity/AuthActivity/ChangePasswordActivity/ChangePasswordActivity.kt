@@ -21,7 +21,9 @@ import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.Until.Validator.Validator
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityChangePasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChangePasswordActivity : BaseActivity() {
     private lateinit var binding: ActivityChangePasswordBinding
     private val authViewModel : AuthViewModel by viewModels()
@@ -66,7 +68,12 @@ class ChangePasswordActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    showWarningToast("Có lỗi xảy ra", "Không Thể Đổi Mật Khẩu")
+                    if (it.message!!.contains("401")) {
+                        showWarningToast("Có lỗi xảy ra", "Không thể đổi mật khẩu")
+                    } else {
+                        showWarningToast("Có lỗi xảy ra", it.message.toString())
+                    }
+                    Log.d("ChangePasswordActiviasdty", "observeData: ${it.message}")
                 }
             }
         }
@@ -81,6 +88,7 @@ class ChangePasswordActivity : BaseActivity() {
                     binding.edtPasswordNew.text.toString().trim(),
                     binding.edtPasswordNewConfirm.text.toString().trim()
                 )
+
                 callChangePasswordAPI(changePasswordDTO)
             }
         }

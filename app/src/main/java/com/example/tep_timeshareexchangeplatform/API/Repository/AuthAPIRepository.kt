@@ -87,7 +87,7 @@ class AuthAPIRepository @Inject constructor(
     // Funtion call API to change password
     suspend fun changePassword(token: String, changePasswordDTO: ChangePasswordDTO): Resource<Void> {
         return try {
-            val response = authAPIService.changePassword(token, changePasswordDTO)
+            val response = authAPIService.changePassword("Bearer $token", changePasswordDTO)
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
