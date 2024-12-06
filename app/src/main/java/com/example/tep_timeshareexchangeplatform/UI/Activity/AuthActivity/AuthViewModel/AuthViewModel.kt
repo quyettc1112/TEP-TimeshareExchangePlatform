@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ChangePasswordDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RegisterDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
@@ -67,6 +68,17 @@ class AuthViewModel @Inject constructor(
             _profileCustomerInfoResponse.postValue(Resource.loading(null))
             val result = customerAPIRepository.getCustomerProfile(token)
             _profileCustomerInfoResponse.postValue(result)
+        }
+    }
+
+    // Customer Change Password
+    private val _changePasswordResponse = MutableLiveData<Resource<Void>>()
+    val changePasswordResponse: LiveData<Resource<Void>> get() = _changePasswordResponse
+    fun changePassword(token: String, changePasswordDTO: ChangePasswordDTO) {
+        viewModelScope.launch {
+            _changePasswordResponse.postValue(Resource.loading(null))
+            val result = authAPIRepository.changePassword(token,changePasswordDTO)
+            _changePasswordResponse.postValue(result)
         }
     }
 
