@@ -5,51 +5,20 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-/**
-{
-"timeShareId": 1,
-"resortName": "Khách sạn Cương Quyết Ngầu Nhất An Giang",
-"roomCode": "123",
-"roomName": "cc",
-"roomId": 2,
-"resortAddress": "Premier Pearl Hotel Vung Tau toa lac tai khu vuc / thanh pho Phuong 2. /n",
-"resortId": 1,
-"startDate": "24-08-2019",
-"endDate": "24-08-2019",
-"unitType": {
-"id": 1,
-"title": "Phòng Queen",
-"area": "string",
-"bathrooms": 0,
-"bedrooms": 0,
-"bedsFull": 0,
-"bedsKing": 0,
-"bedsSofa": 0,
-"bedsMurphy": 0,
-"bedsQueen": 0,
-"bedsTwin": 0,
-"buildingsOption": "string",
-"description": "string",
-"kitchen": "string",
-"photos": "string",
-"sleeps": 0,
-"view": "string"
-}
-}
- */
-
 data class MyTimeshareDetailResponse(
     @SerializedName("timeShareId") val timeShareId: Int,
     @SerializedName("resortName") val resortName: String,
     @SerializedName("roomCode") val roomCode: String,
     @SerializedName("roomName") val roomName: String,
     @SerializedName("roomId") val roomId: Int,
-    @SerializedName("resortAddress") val resortAddress: String,
+    @SerializedName("startYear") val startYear: Int,
+    @SerializedName("endYear") val endYear: Int,
     @SerializedName("resortId") val resortId: Int,
     @SerializedName("resortImage") val resortImage: String,
     @SerializedName("startDate") val startDate: String,
     @SerializedName("endDate") val endDate: String,
     @SerializedName("unitType") val unitType: UnitType,
+    @SerializedName("location") val location: Location,
     @SerializedName("roomAmenities") val roomAmenities: List<RoomAmenity>
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -58,15 +27,26 @@ data class MyTimeshareDetailResponse(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt(),
-        parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         TODO("unitType"),
-        TODO("roomAmenities")
+        TODO("roomAmenities"),
+        TODO("location")
     ) {
     }
+
+    data class Location(
+        @SerializedName("name") val name: String,
+        @SerializedName("displayName") val displayName: Any?,
+        @SerializedName("latitude") val latitude: String,
+        @SerializedName("longitude") val longitude: String,
+        @SerializedName("country") val country: String,
+        @SerializedName("placeId") val placeId: Any?
+    )
 
     data class UnitType(
         @SerializedName("id") val id: Int,
@@ -100,7 +80,8 @@ data class MyTimeshareDetailResponse(
         parcel.writeString(roomCode)
         parcel.writeString(roomName)
         parcel.writeInt(roomId)
-        parcel.writeString(resortAddress)
+        parcel.writeInt(startYear)
+        parcel.writeInt(endYear)
         parcel.writeInt(resortId)
         parcel.writeString(resortImage)
         parcel.writeString(startDate)
@@ -121,3 +102,4 @@ data class MyTimeshareDetailResponse(
         }
     }
 }
+

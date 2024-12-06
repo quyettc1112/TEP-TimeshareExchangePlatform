@@ -36,4 +36,13 @@ interface TimeshareAPIService {
         @Header ("Authorization") token: String,
         @Path("timeShareID") timeshareId: Int
     ): Response<MyTimeshareDetailResponse>
+
+    // Get My Timeshare Valid Exchange
+    @GET("customer/timeshares/valid-exchange")
+    suspend fun getMyTimeshareValidExchange(
+        @Header ("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("exchangePostingId") exchangePostingId : Int,
+    ): Response<MyTimeshareResponse>
 }

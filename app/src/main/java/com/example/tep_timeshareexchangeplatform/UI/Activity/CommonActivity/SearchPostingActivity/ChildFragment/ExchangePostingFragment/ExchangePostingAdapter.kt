@@ -32,7 +32,7 @@ class ExchangePostingAdapter(tokenManager: TokenManager) :
                 .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
             binding.tvTimeshareName.text = item.resortName
-            binding.tvLocation.text = item.address
+            binding.tvLocation.text = item.resortLocationDisplayName
             binding.tvCheckInDate.text =
                 Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text =

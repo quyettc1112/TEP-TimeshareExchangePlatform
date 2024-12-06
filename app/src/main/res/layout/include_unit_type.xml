@@ -38,8 +38,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Room Type -->
+                <!-- Room Code -->
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:maxLines="1"
+                        android:layout_weight="0.7"
+                        android:text="Mã Phòng"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_room_code"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Room Name -->
+                <LinearLayout
+                    android:id="@+id/ll_room_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -50,12 +84,12 @@
                         android:id="@+id/tv_title_unit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="1"
                         android:layout_weight="0.7"
-                        android:text="Chi Tiết Phòng"
+                        android:text="Tên Phòng"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -85,10 +119,11 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
                         android:layout_weight="0.7"
                         android:text="Loại Phòng"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_room_type"
@@ -113,7 +148,7 @@
 
             <!--// Tiên Ích Phòng-->
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/ll_unity_type_base_ameniites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"

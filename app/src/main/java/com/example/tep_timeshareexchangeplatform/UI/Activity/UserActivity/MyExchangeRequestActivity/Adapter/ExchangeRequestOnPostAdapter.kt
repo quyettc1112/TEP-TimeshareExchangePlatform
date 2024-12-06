@@ -31,7 +31,7 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
             // Posting Info
             binding.apply {
                 tvOwnerFullName.text = "${item.ownerFullName}"
-                if(item.startDate != null && item.endDate != null){
+                if (item.startDate != null && item.endDate != null) {
                     tvCheckInDate.text =
                         Constant.formatDateByLocale(item.startDate, binding.root.context)
                     tvCheckOutDate.text =
@@ -44,21 +44,35 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                     .placeholder(R.drawable.ripple_effect_white)
                     .into(binding.ivOwnerAvatar)
                 //Resort photo
-                item.roomInfo.unitType?.photos?.let {
-                    Glide.with(binding.root.context)
-                        .load(item.roomInfo.unitType.photos ?: "")
-                        .error(R.drawable.ic_image_tmp_holder)
-                        .placeholder(R.drawable.ripple_effect_white)
-                        .into(binding.ivRoomImage)
-                }
+
+                Glide.with(binding.root.context)
+                    .load(item.roomInfo.unitTypePhotos ?: "")
+                    .error(R.drawable.ic_image_tmp_holder)
+                    .placeholder(R.drawable.ripple_effect_white)
+                    .into(binding.ivRoomImage)
+
             }
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
 
+            applyStatus(item)
+
+
+
+        }
+        private fun applyStatus(item: ExchangeRequestOnPostResponse.Content) {
             // Show Status
             when (MyExchangeRequestStatus.fromApiStatus(item.status)) {
+                MyExchangeRequestStatus.PENDING_OWNER -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.blue_full,
+                        R.color.white
+                    )
+                }
+
                 MyExchangeRequestStatus.PENDING_APPROVAL -> {
                     applyStatusStyle(
                         context,
@@ -67,11 +81,27 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                     )
                 }
 
-                MyExchangeRequestStatus.PENDING_CUSTOMER -> {
+                MyExchangeRequestStatus.PENDING_RENTER_PRICING -> {
                     applyStatusStyle(
                         context,
-                        R.color.status_awaiting_confirmation_bg,
-                        R.color.status_awaiting_confirmation_text
+                        R.color.white,
+                        R.color.status_pending_approval_text
+                    )
+                }
+
+                MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_pending_approval_text
+                    )
+                }
+
+                MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_pending_approval_text
                     )
                 }
 
@@ -83,7 +113,24 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                     )
                 }
 
-                MyExchangeRequestStatus.REJECTED -> {
+
+                MyExchangeRequestStatus.REJECT_APPROVAL -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_rejected_text
+                    )
+                }
+
+                MyExchangeRequestStatus.RENTER_REJECT -> {
+                    applyStatusStyle(
+                        context,
+                        R.color.white,
+                        R.color.status_rejected_text
+                    )
+                }
+
+                MyExchangeRequestStatus.OWNER_REJECT -> {
                     applyStatusStyle(
                         context,
                         R.color.white,
@@ -100,10 +147,11 @@ class ExchangeRequestOnPostAdapter(var context: ExchangeRequestOnPostActivity) :
                     )
                 }
             }
-            binding.tvStatus.text = MyExchangeRequestStatus.fromApiStatus(item.status)?.getDescription(context)
 
+            binding.tvStatus.text =
+                MyExchangeRequestStatus.fromApiStatus(item.status)?.getDescription(context)
+                    ?: ""
         }
-
 
 
         private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {

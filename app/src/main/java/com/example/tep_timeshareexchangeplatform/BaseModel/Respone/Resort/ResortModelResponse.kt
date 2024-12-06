@@ -22,9 +22,13 @@ data class ResortModelResponse(
     data class Content(
         @SerializedName("id") val id: Int,
         @SerializedName("resortName") val resortName: String,
+        @SerializedName("resortLocationName") val resortLocationName: String?,
+        @SerializedName("resortLocationDisplayName") val resortLocationDisplayName: String?,
+        @SerializedName("resortLocationLatitude") val resortLocationLatitude: String?,
+        @SerializedName("resortLocationLongitude") val resortLocationLongitude: String?,
         @SerializedName("logo") val logo: String,
-        @SerializedName("minPrice") val minPrice: Int,
-        @SerializedName("maxPrice") val maxPrice: Int,
+        @SerializedName("minPrice") val minPrice: Long,
+        @SerializedName("maxPrice") val maxPrice: Long,
         @SerializedName("status") val status: String,
         @SerializedName("address") val address: String,
         @SerializedName("timeshareCompanyId") val timeshareCompanyId: Int,
@@ -36,8 +40,12 @@ data class ResortModelResponse(
             parcel.readInt(),
             parcel.readString().toString(),
             parcel.readString().toString(),
-            parcel.readInt(),
-            parcel.readInt(),
+            parcel.readString().toString(),
+            parcel.readString().toString(),
+            parcel.readString().toString(),
+            parcel.readString().toString(),
+            parcel.readLong(),
+            parcel.readLong(),
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readInt(),
@@ -54,9 +62,13 @@ data class ResortModelResponse(
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(id)
             dest.writeString(resortName)
+            dest.writeString(resortLocationName)
+            dest.writeString(resortLocationDisplayName)
+            dest.writeString(resortLocationLatitude)
+            dest.writeString(resortLocationLongitude)
             dest.writeString(logo)
-            dest.writeInt(minPrice)
-            dest.writeInt(maxPrice)
+            dest.writeLong(minPrice)
+            dest.writeLong(maxPrice)
             dest.writeString(status)
             dest.writeString(address)
             dest.writeInt(timeshareCompanyId)

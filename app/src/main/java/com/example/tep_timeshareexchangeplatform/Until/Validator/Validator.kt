@@ -64,4 +64,13 @@ class Validator {
             }
         }
     }
+
+    // Validate confirm password
+    fun validateConfirmPassword(password: String, confirmPassword: String): String? {
+        return when {
+            confirmPassword.isEmpty() -> "Xác nhận mật khẩu không được để trống"
+            confirmPassword != password -> "Xác nhận mật khẩu không khớp"
+            else -> null  // Return null if valid
+        }
+    }
 }

@@ -2,29 +2,38 @@ package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort
 
 
 import com.google.gson.annotations.SerializedName
+
 data class ResortDetailModelResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("resortName") val resortName: String,
     @SerializedName("logo") val logo: String,
     @SerializedName("minPrice") val minPrice: Int,
     @SerializedName("maxPrice") val maxPrice: Int,
-    @SerializedName("status") val status: String,
-    @SerializedName("address") val address: String,
+    @SerializedName("status") val status: String?,
+    @SerializedName("location") val location: Location,
     @SerializedName("timeshareCompanyId") val timeshareCompanyId: Int,
     @SerializedName("description") val description: String,
     @SerializedName("resortAmenityList") val resortAmenityList: List<ResortAmenity>,
     @SerializedName("isActive") val isActive: Boolean,
     @SerializedName("unitTypeDtoList") val unitTypeDtoList: List<UnitTypeDto>,
     @SerializedName("feedbackList") val feedbackList: List<Feedback>,
-    @SerializedName("averageRating") val averageRating: Float,
-    @SerializedName("totalRating") val totalRating: Int,
+    @SerializedName("averageRating") val averageRating: Float?,
+    @SerializedName("totalRating") val totalRating: Int?,
     @SerializedName("imageUrls") val imageUrls: List<String>
 ) {
+    data class Location(
+        @SerializedName("name") val name: String,
+        @SerializedName("displayName") val displayName: String,
+        @SerializedName("latitude") val latitude: String,
+        @SerializedName("longitude") val longitude: String,
+        @SerializedName("country") val country: Any?,
+        @SerializedName("placeId") val placeId: String
+    )
+
     data class ResortAmenity(
         @SerializedName("name") val name: String,
         @SerializedName("type") val type: String,
-        @SerializedName("free") val free: Boolean,
-
+        @SerializedName("free") val free: Boolean
     )
 
     data class UnitTypeDto(
@@ -48,15 +57,15 @@ data class ResortDetailModelResponse(
         @SerializedName("sleeps") val sleeps: Int,
         @SerializedName("view") val view: String,
         @SerializedName("isActive") val isActive: Boolean,
-        @SerializedName("unitTypeAmenitiesList") val unitTypeAmenitiesList: List<UnitTypeAmenities>
+        @SerializedName("unitTypeAmenitiesList") val unitTypeAmenitiesList: List<UnitTypeAmenities?>
     ) {
         data class UnitTypeAmenities(
             @SerializedName("name") val name: String,
             @SerializedName("type") val type: String?,
             @SerializedName("isActive") val isActive: Boolean
         )
-    }
 
+    }
     data class Feedback(
         @SerializedName("ratingPoint") val ratingPoint: Int,
         @SerializedName("comment") val comment: String,

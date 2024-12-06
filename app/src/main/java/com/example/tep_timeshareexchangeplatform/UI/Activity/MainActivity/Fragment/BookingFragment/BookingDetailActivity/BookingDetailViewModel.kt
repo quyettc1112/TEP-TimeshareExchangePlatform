@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.UpdateExchangeBookingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
@@ -86,6 +87,20 @@ class BookingDetailViewModel @Inject constructor(
             }
         }
     }
+    
+    // Call API Update Customer Info
+    private var _updateExchangeBookingInfoResponse = MutableLiveData<Resource<Void>>()
+    val updateExchangeBookingInfoResponse: LiveData<Resource<Void>> = _updateExchangeBookingInfoResponse
+    fun updateExchangeBookingInfo(token: String, bookingId: Int, updateExchangeBookingDTO: UpdateExchangeBookingDTO) {
+        viewModelScope.launch {
+            _updateExchangeBookingInfoResponse.postValue(Resource.loading(null))
+            customerAPIRepository.updateExchangeBookingCustomerInfo(token, bookingId, updateExchangeBookingDTO).let {
+                _updateExchangeBookingInfoResponse.postValue(it)
+            }
+        }
+    }
+
+
 
 
 }

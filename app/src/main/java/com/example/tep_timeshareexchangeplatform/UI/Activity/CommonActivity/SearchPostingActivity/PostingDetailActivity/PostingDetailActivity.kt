@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -26,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.OwnerInfoActivity.OwnerInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberInfoDialog
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentRentalActivity.PaymentRentalActivity
@@ -80,6 +80,7 @@ class PostingDetailActivity : BaseActivity() {
         // Set up the action for the button
         eventClickToolBarAction()
         eventClickRequestButton()
+        eventClickShowMaps()
 
     }
 
@@ -167,6 +168,7 @@ class PostingDetailActivity : BaseActivity() {
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
                     }
                 }
+
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -228,11 +230,26 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun eventClickRequestButton() {
         binding.ctrRequestButton.setOnClickListener {
-            if(!tokenManager.isLoggedIn()) {
+            if (!tokenManager.isLoggedIn()) {
                 showWarningToast("Bạn Chưa Đăng Nhập", "Vui Lòng Đăng Nhập Để Thực Hiện Thao Tác")
                 startActivity(Intent(this, LoginActivity::class.java))
             }
             callCheckProfileCustomer()
+        }
+    }
+
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(
+                Constant.RESORT_LATITUDE,
+                postingDetailViewModel.postingDetail.value?.data?.location?.latitude
+            )
+            intent.putExtra(
+                Constant.RESORT_LONGITUDE,
+                postingDetailViewModel.postingDetail.value?.data?.location?.longitude
+            )
+            startActivity(intent)
         }
     }
 
@@ -248,8 +265,8 @@ class PostingDetailActivity : BaseActivity() {
 
         // Resort Info
         binding.apply {
-            tvResortName.text = postingDetail.resortName + " | " + postingDetail.unitType.title
-            tvLocation.text = postingDetail.address
+            tvResortName.text = postingDetail.resortName
+            tvLocation.text = postingDetail.location.displayName ?: postingDetail.location.name
 
             if (postingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE

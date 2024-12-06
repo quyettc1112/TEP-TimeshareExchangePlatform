@@ -66,7 +66,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.151"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
                 <!--   // Member Ship Contaner-->

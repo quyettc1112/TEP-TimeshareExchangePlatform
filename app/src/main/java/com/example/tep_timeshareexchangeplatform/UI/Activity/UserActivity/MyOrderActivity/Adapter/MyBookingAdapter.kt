@@ -13,40 +13,44 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyBookingStatus
+import com.example.tep_timeshareexchangeplatform.databinding.ItemBookingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyBookingBinding
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyBookinglistBinding
 
-class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter.MyOrderViewHolder>() {
+class MyBookingAdapter :
+    BaseAdapter<MyBookingResponse.Content, MyBookingAdapter.MyOrderViewHolder>() {
 
     var onItemClick: ((MyBookingResponse.Content) -> Unit)? = null
     var onFeedbackClick: ((MyBookingResponse.Content) -> Unit)? = null
 
-    inner class MyOrderViewHolder(binding: ItemMyBookinglistBinding) :
-        BaseItemViewHolderCF<MyBookingResponse.Content, ItemMyBookinglistBinding>(binding) {
+    inner class MyOrderViewHolder(binding: ItemBookingBinding) :
+        BaseItemViewHolderCF<MyBookingResponse.Content, ItemBookingBinding>(binding) {
         override fun bind(item: MyBookingResponse.Content) {
-
 
             binding.tvTimeshareName.text = "${item.resortName}"
             binding.tvCheckinDate.text =
                 item.checkinDate?.let { Constant.formatDateByLocale(it, binding.root.context) }
-            binding.tvCheckoutDate.text =
+                    ?: "Không Có Thông Tin"
+            binding.tvCheckOutDate.text =
                 item.checkoutDate?.let { Constant.formatDateByLocale(it, binding.root.context) }
+                    ?: "Không Có Thông Tin"
+
+
             binding.tvTimeshareType.text = item.unitTypeTitle
             Glide.with(binding.root.context).load(item.logo).into(binding.imImageTimeshare)
 
-            binding.tvBookingTupe.text = MyBookingStatus.fromApiStatus(item.source)?.getDescription(binding.root.context)
+            binding.tvBookingTupe.text =
+                MyBookingStatus.fromApiStatus(item.source)?.getDescription(binding.root.context)
 
 
             if (item.source == "rental") {
-                Glide.with(binding.root.context).load(R.drawable.ic_rental_booking).into(binding.imBookingType)
+                Glide.with(binding.root.context).load(R.drawable.ic_rental_booking)
+                    .into(binding.imBookingType)
             } else {
-                Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking).into(binding.imBookingType)
+                Glide.with(binding.root.context).load(R.drawable.ic_exchange_booking)
+                    .into(binding.imBookingType)
             }
 
-
-            /*${binding.root.context.getString(R.string.guests)}*/
-            binding.tvGuestEmail.text = "${item.primaryGuestEmail}"
-            binding.tvGuestPhone.text = "SĐT: ${item.primaryGuestPhone}"
 
             when (MyBookingStatus.fromApiStatus(item.status)) {
                 MyBookingStatus.BOOKED -> {
@@ -56,6 +60,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.white
                     )
                 }
+
                 MyBookingStatus.CHECK_IN -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -63,6 +68,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.white
                     )
                 }
+
                 MyBookingStatus.CHECKOUT -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -70,6 +76,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.white
                     )
                 }
+
                 MyBookingStatus.NO_SHOW -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -77,6 +84,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.status_unknown_text
                     )
                 }
+
                 MyBookingStatus.CANCELED -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -84,6 +92,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.white
                     )
                 }
+
                 MyBookingStatus.REFUND -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -91,6 +100,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.white
                     )
                 }
+
                 MyBookingStatus.PAYMENT_COMPLETED -> {
                     applyStatusStyle(
                         binding.root.context,
@@ -98,6 +108,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                         R.color.status_pending_approval_text
                     )
                 }
+
                 else -> {
                     // Default or unknown status case
                     applyStatusStyle(
@@ -107,12 +118,22 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
                     )
                 }
             }
-            binding.tvStatus.text = MyBookingStatus.fromApiStatus(item.status)?.getDescription(binding.root.context)
+            binding.tvStatus.text =
+                MyBookingStatus.fromApiStatus(item.status)?.getDescription(binding.root.context)
 
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
+
+            // Check Guest Is Null
+            if (item.primaryGuestName.isNullOrEmpty() || item.primaryGuestPhone.isNullOrEmpty() || item.primaryGuestEmail.isNullOrEmpty()) {
+                binding.llUpdateInfo.visibility = View.VISIBLE
+            } else {
+                binding.llUpdateInfo.visibility = View.GONE
+            }
+
+
         }
 
         private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
@@ -152,7 +173,7 @@ class MyBookingAdapter : BaseAdapter<MyBookingResponse.Content, MyBookingAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyOrderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMyBookinglistBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemBookingBinding.inflate(layoutInflater, parent, false)
         return MyOrderViewHolder(binding)
     }
 

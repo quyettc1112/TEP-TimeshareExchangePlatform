@@ -8,22 +8,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.paging.LOGGER
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
-import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.FeedbackListActivity.FeedbackListActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.UnitTypeAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ResortAmenityAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.ReviewAdapter
@@ -76,12 +72,11 @@ class ResortDetailActivity : BaseActivity() {
         initAdapter()
 
         eventClickViewAllFeedback()
+        eventClickBack()
+        eventClickShowMaps()
 
         // Observe Data
         observeData()
-
-
-
     }
 
     private fun observeData() {
@@ -90,6 +85,7 @@ class ResortDetailActivity : BaseActivity() {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
+
                 Status.SUCCESS -> {
                     resources.data?.let { resortDetail ->
                         // Set Resort Detail Info
@@ -104,26 +100,16 @@ class ResortDetailActivity : BaseActivity() {
                         // Action Event
                         setTypeRoomClickAction()
                         setButtonSelectRoomClick()
-                        bindDataCustomToolBar(resortDetail.resortName)
                     }
                     hideLoadingWaiting()
                 }
+
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorDialog(resources.message.toString(), "")
 
                 }
             }
-        }
-    }
-
-    private fun bindDataCustomToolBar(resortName: String? = null) {
-        binding.customToolbar.onStartIconClick = {
-            onBackPressed()
-        }
-        binding.customToolbar.apply {
-            setTitle(resortName ?: "")
-            isShowStartText(false)
         }
     }
 
@@ -151,12 +137,65 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
+    private fun setButtonSelectRoomClick() {
+        binding.btnSelectRoom.setOnClickListener {
+            val intent = Intent(this, PostingOfResortActivity::class.java)
+            intent.putExtra(
+                Constant.RESORT_NAME,
+                resortDetailViewModel.resortDetail.value?.data?.resortName
+            )
+            intent.putExtra(Constant.RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
+            startActivity(intent)
+        }
+
+    }
+
     private fun eventClickViewAllFeedback() {
         binding.tvSeeMoreReview.setOnClickListener {
             val intent = Intent(this, FeedbackListActivity::class.java)
-            intent.putExtra(Constant.DEFAULT_RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
-            intent.putExtra(Constant.AVG_RATING, resortDetailViewModel.resortDetail.value?.data?.averageRating)
-            intent.putExtra(Constant.TOTAL_RATING, resortDetailViewModel.resortDetail.value?.data?.totalRating)
+            intent.putExtra(
+                Constant.DEFAULT_RESORT_ID,
+                resortDetailViewModel.resortDetail.value?.data?.id
+            )
+            intent.putExtra(
+                Constant.AVG_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.averageRating
+            )
+            intent.putExtra(
+                Constant.TOTAL_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.totalRating
+            )
+            startActivity(intent)
+        }
+        binding.tvSeeMoreReviewTop.setOnClickListener {
+            val intent = Intent(this, FeedbackListActivity::class.java)
+            intent.putExtra(
+                Constant.DEFAULT_RESORT_ID,
+                resortDetailViewModel.resortDetail.value?.data?.id
+            )
+            intent.putExtra(
+                Constant.AVG_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.averageRating
+            )
+            intent.putExtra(
+                Constant.TOTAL_RATING,
+                resortDetailViewModel.resortDetail.value?.data?.totalRating
+            )
+            startActivity(intent)
+        }
+    }
+
+    private fun eventClickBack() {
+        binding.cvBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
             startActivity(intent)
         }
     }
@@ -165,19 +204,21 @@ class ResortDetailActivity : BaseActivity() {
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
             tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
-            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.address
-            tvMinPrice.text = "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
-            tvDescription.text = resortDetailViewModel.resortDetail.value?.data?.description.toString()
+            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.location?.displayName ?: "Không Có Dữ Liệu"
+            tvMinPrice.text =
+                "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
+            tvDescription.text =
+                resortDetailViewModel.resortDetail.value?.data?.description.toString()
             if (resortDetailModelResponse.isActive) {
                 llVerify.visibility = View.VISIBLE
             } else {
                 llVerify.visibility = View.GONE
-                tvFindMore.visibility = View.GONE
             }
 
             tvAvgRating.text = resortDetailModelResponse.averageRating.toString()
             tvTotalRating.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
-
+            tvAvgRatingTop.text = resortDetailModelResponse.averageRating.toString()
+            tvRatingCountTop.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
         }
     }
 
@@ -207,7 +248,8 @@ class ResortDetailActivity : BaseActivity() {
 
         imagePostingAdapter.submitList(imageList)
         if (imageList.size == 1) {
-            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManagerCheck =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerViewResortImage.apply {
                 adapter = imagePostingAdapter
                 layoutManager = layoutManagerCheck
@@ -231,15 +273,12 @@ class ResortDetailActivity : BaseActivity() {
 
     }
 
-    fun formatPrice(price: Int): String {
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(price)
-    }
     private fun bindDataUnitType(resorts: List<ResortDetailModelResponse.UnitTypeDto>) {
         unitTypeAdapter.submitList(resorts)
         binding.rvResortRoomType.apply {
             adapter = unitTypeAdapter
-            layoutManager = LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@ResortDetailActivity, LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -294,15 +333,6 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
-    private fun setButtonSelectRoomClick() {
-        binding.btnSelectRoom.setOnClickListener {
-            val intent = Intent(this, PostingOfResortActivity::class.java)
-            intent.putExtra(Constant.RESORT_NAME, resortDetailViewModel.resortDetail.value?.data?.resortName)
-            intent.putExtra(Constant.RESORT_ID, resortDetailViewModel.resortDetail.value?.data?.id)
-            startActivity(intent)
-        }
-
-    }
     private fun bindDataReviewResort(listReview: List<ResortDetailModelResponse.Feedback>) {
         reviewAdapter.submitList(listReview)
         binding.rvReview.apply {
@@ -310,11 +340,9 @@ class ResortDetailActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@ResortDetailActivity)
         }
     }
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
-    fun mapToUnitTypeBase(unitTypeDto: ResortDetailModelResponse.UnitTypeDto): UnitTypeBase {
+
+
+    private fun mapToUnitTypeBase(unitTypeDto: ResortDetailModelResponse.UnitTypeDto): UnitTypeBase {
         return UnitTypeBase(
             id = unitTypeDto.id,
             title = unitTypeDto.title,
@@ -338,14 +366,15 @@ class ResortDetailActivity : BaseActivity() {
             isActive = unitTypeDto.isActive,
             unitTypeAmenitiesDTOS = unitTypeDto.unitTypeAmenitiesList.map { amenity ->
                 UnitTypeBase.UnitTypeAmenitiesDTOS(
-                    name = amenity.name,
-                    type = amenity.type,
-                    isActive = amenity.isActive
+                    name = amenity?.name ?: "",
+                    type = amenity?.type,
+                    isActive = amenity?.isActive
                 )
             }
         )
     }
-    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ResortDetailModelResponse.ResortAmenity>): List<AmenitiesModel> {
+
+    private fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<ResortDetailModelResponse.ResortAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
                 name = roomAmenity.name,
@@ -355,6 +384,15 @@ class ResortDetailActivity : BaseActivity() {
         }
     }
 
+    private fun formatPrice(price: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(price)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 
 
 }

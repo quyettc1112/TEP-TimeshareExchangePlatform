@@ -20,10 +20,10 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
     inner class ResortViewHolder(binding: ItemResortBinding): BaseItemViewHolderCF<ResortModelResponse.Content, ItemResortBinding>(binding) {
         override fun bind(item: ResortModelResponse.Content) {
             binding.tvResortName.text = item.resortName
-            binding.tvLocation.text = item.address
+            binding.tvLocation.text = item.resortLocationDisplayName ?: item.resortLocationName
 
 
-            binding.btnPrice.text = "Chỉ Từ ${formatPrice(item.minPrice)} VND"
+            binding.btnPrice.text = "Chỉ Từ ${Constant.formatPriceLong(item.minPrice)} VND"
 
             binding.root.setOnClickListener {
                 onItemClick?.let { it1 -> it1(item) }
@@ -37,11 +37,6 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
                 .load(item.logo)
                 .into(binding.imResortImage)
 
-        }
-
-        fun formatPrice(price: Int): String {
-            val formatter = DecimalFormat("#,###")
-            return formatter.format(price)
         }
 
 

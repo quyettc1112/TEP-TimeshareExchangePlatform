@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -40,6 +41,7 @@ class ImageListActivity : BaseActivity() {
 
         // Set up RecyclerView with LinearLayoutManager
         setUpImageList(imagePosition, listImage)
+        Log.d("ImageListasdasdsdfsdfsd", listImage.size.toString())
         setToolbarEvent()
 
     }

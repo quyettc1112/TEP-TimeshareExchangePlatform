@@ -51,7 +51,4 @@ class ExchangeRequestOnPostViewModel @Inject constructor(
         _currentRequestOnPostList.clear()
     }
 
-    init {
-        _currentPage.value = 0
-    }
 }

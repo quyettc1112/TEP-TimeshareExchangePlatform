@@ -70,5 +70,25 @@ class TimeshareRepository @Inject constructor(
         }
     }
 
+    // Get My Timeshare Valid Exchange
+    suspend fun getMyTimeshareValidExchange(
+        auth: String,
+        page: Int,
+        size: Int,
+        exchangePostingId: Int
+    ): Resource<MyTimeshareResponse> {
+        return try {
+            val response = timeshareAPIService.getMyTimeshareValidExchange("Bearer $auth", page, size, exchangePostingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: $errorMessage", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 
 }

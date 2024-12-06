@@ -1,7 +1,8 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MyTimeshareDetailAcitivity
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareDetailAcitivity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -20,8 +21,10 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.Unit
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.Adapter.ImageAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -66,11 +69,13 @@ class MyTimeshareDetailActivity : BaseActivity() {
         initAdapter()
         observeViewModel()
         setEventButtonRequestClick()
+        eventClickShowUpdateBottomSheet()
+        eventClickShowMaps()
     }
 
     private fun observeViewModel() {
         myTimeshareDetailViewModel.myTimeshareDetail.observe(this) {
-            when (it.status) {
+            when (it?.status) {
                 Status.LOADING -> {
                     showLoadingWaiting(true)
                 }
@@ -84,16 +89,11 @@ class MyTimeshareDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Error",
-                        "Error ${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_thin)
-                    )
+                    showErrorToast("Lỗi Khi Tải Dữ Liệu", "Không thể tải dữ liệu")
+                    Log.d("ErrorMyTimeshare", it.message.toString())
                 }
+
+                null -> {}
             }
         }
     }
@@ -104,18 +104,21 @@ class MyTimeshareDetailActivity : BaseActivity() {
         val myTimeshareId = intent.getIntExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE, 0)
         val token = TokenManager(this).getAccessToken()
         if (myTimeshareId == 0 || token == null) {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Error",
-                "Error when get data",
-                MotionToastStyle.ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(this, R.font.inter_thin)
-            )
+            showErrorToast("Lỗi", "Không có Id Timeshare")
             return
         } else {
+            Log.d("MyTimeshareIdasasd", myTimeshareId.toString())
             myTimeshareDetailViewModel.getMyTimeshareDetail(token, myTimeshareId)
+        }
+    }
+
+    private fun eventClickShowUpdateBottomSheet() {
+        myTimeshareDetailViewModel.resetAllValue()
+        binding.customToolbar.onEndIconClick = {
+            val updateTimeshareBottomDialog = UpdateTimeshareBottomDialog(
+                myTimeshareDetailViewModel = myTimeshareDetailViewModel
+            )
+            updateTimeshareBottomDialog.show(supportFragmentManager, "UpdateTimeshareBottomDialog")
         }
     }
 
@@ -145,6 +148,12 @@ class MyTimeshareDetailActivity : BaseActivity() {
                 )
         }
 
+        // Custom Toolbar Data
+        binding.customToolbar.apply {
+            setTitle("Chi Tiết Timeshare")
+            setTitleDetail("${myTimeshareDetailResponse.resortName}")
+        }
+
         // Image
         Glide.with(this)
             .load(myTimeshareDetailResponse.resortImage)
@@ -152,29 +161,42 @@ class MyTimeshareDetailActivity : BaseActivity() {
             .placeholder(R.drawable.ripple_effect_white)
             .into(binding.ivTimeshareDetail)
 
+        // Resort Name, Location
         binding.apply {
-            binding.customToolbar.apply {
-                setTitle("${myTimeshareDetailResponse.unitType.title}")
-                setTitleDetail("${myTimeshareDetailResponse.startDate} đến ${myTimeshareDetailResponse.endDate}")
-
-            }
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
-            tvLocation.text = myTimeshareDetailResponse.resortAddress.toString()
+            tvLocation.text = (myTimeshareDetailResponse.location.displayName ?: "Không Có Thông Tin").toString()
         }
+
+        // Unit Type
         bindDataUnitType(myTimeshareDetailResponse)
+
+        // Amenities
         bindDataAmenities(myTimeshareDetailResponse)
+
 
         binding.cvRequestContaner.visibility = View.GONE
 
+        // Valid Year
+        binding.spValidStarYear.setText(myTimeshareDetailResponse.startYear.toString())
+        binding.spValidEndYear.setText(myTimeshareDetailResponse.endYear.toString())
 
 
+    }
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
     }
 
 
     private fun bindDataUnitType(data: MyTimeshareDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 
@@ -214,31 +236,11 @@ class MyTimeshareDetailActivity : BaseActivity() {
         }
     }
 
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
-        val bedTypes = listOf(
-            "bedsFull" to "Full",
-            "bedsKing" to "King",
-            "bedsSofa" to "Sofa",
-            "bedsMurphy" to "Murphy",
-            "bedsQueen" to "Queen",
-            "bedsTwin" to "Twin"
-        )
-
-        val bedsList = bedTypes.mapNotNull { (key, label) ->
-            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
-            if (count > 0) "$count giường $label" else null
-        }.joinToString(", ")
-
-        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
-    }
-
-
     private fun bindDataAmenities(data: MyTimeshareDetailResponse) {
         featuresAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
         entertainmentAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
         kitchenAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
         policyAdapter.submitOriginalList(mapRoomAmenitiesToAmenitiesModel(data.roomAmenities))
-
 
 
         val binding = binding.includeAmenities
@@ -287,8 +289,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         }
 
 
-
-
     }
 
     private fun setEventButtonRequestClick() {
@@ -326,7 +326,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         }
 
     }
-
 
     private fun intentValueToPostingFlow(myTimeshareResponse: MyTimeshareResponse.Content) {
         val intent = Intent()
@@ -370,7 +369,25 @@ class MyTimeshareDetailActivity : BaseActivity() {
         autoScrollHelper.pauseAutoScroll()
     }
 
-    fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+    private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+        val bedTypes = listOf(
+            "bedsFull" to "Full",
+            "bedsKing" to "King",
+            "bedsSofa" to "Sofa",
+            "bedsMurphy" to "Murphy",
+            "bedsQueen" to "Queen",
+            "bedsTwin" to "Twin"
+        )
+
+        val bedsList = bedTypes.mapNotNull { (key, label) ->
+            val count = unitTypeMap[key] as? Int ?: 0 // Ép kiểu thành Int
+            if (count > 0) "$count giường $label" else null
+        }.joinToString(", ")
+
+        return if (bedsList.isNotEmpty()) bedsList else "Không có giường"
+    }
+
+    private fun mapRoomAmenitiesToAmenitiesModel(roomAmenities: List<MyTimeshareDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return roomAmenities.map { roomAmenity ->
             AmenitiesModel(
                 name = roomAmenity.name,
@@ -379,6 +396,7 @@ class MyTimeshareDetailActivity : BaseActivity() {
             )
         }
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

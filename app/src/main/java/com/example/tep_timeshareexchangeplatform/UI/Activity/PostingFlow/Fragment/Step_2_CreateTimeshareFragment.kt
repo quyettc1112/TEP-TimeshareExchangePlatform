@@ -111,7 +111,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     private fun initAdapter() {
         unitTypeAdapterPosting.submitList(listOf())
 
-
         kitchenAmenitiesAdapter.apply {
             submitList(Constant.listAmenities)
             onItemChecked = {
@@ -1081,7 +1080,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                         etNightsCount.setText("0")
                     }
 
-                    val validEndYearList = yearList.filter { it > selectedStartYear }
+                    val validEndYearList = yearList.filter { it >= selectedStartYear }
                     val endYearAdapter = ArrayAdapter(
                         requireContext(),
                         android.R.layout.simple_spinner_item,

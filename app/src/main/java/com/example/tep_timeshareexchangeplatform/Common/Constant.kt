@@ -22,6 +22,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 class Constant {
 
@@ -61,6 +62,9 @@ class Constant {
         const val DEFAULT_RESORT_ID = "resortId"
         const val DEFAULT_RESORT_SEARCHED_SELECTION = "resortSearchedSelection"
 
+        const val RESORT_LATITUDE = "resortLatitude"
+        const val RESORT_LONGITUDE = "resortLongitude"
+
         const val DEFAULT_PACKAGE_SELECTION = "packageSelection"
 
         const val PAYMENT_URL = "paymentUrl"
@@ -85,6 +89,7 @@ class Constant {
         const val DEFAULT_EXCHANGE_REQUEST_ON_POST= "postingId"
         const val PAYMENT_METHOD_TYPE = "paymentMethod"
         const val REQUEST_GET_MY_TIMESHARE = "requestGetMyTimeshare"
+        const val DEFAULT_EXCHANGE_POSTING_ID = "exchangePostingId"
 
         const val DEFAULT_MY_POSTING_RESORT_NAME = "myPostingResortName"
         const val DEFAULT_MY_POSTING_ROOM_NAME = "myPostingRoomName"
@@ -128,6 +133,13 @@ class Constant {
 
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
+        }
+
+        fun formatPriceLongAbs(price: Long?): String {
+            if (price == null) return "0"
+
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(abs(price)) // Lấy giá trị tuyệt đối trước khi định dạng
         }
 
         fun formatDateByLocale(dateString: String, context: Context): String {
@@ -363,6 +375,11 @@ class Constant {
             )
         }
 
+        fun formatDateFromLong(dateInMillis: Long, format: String = "yyyy-MM-dd"): String {
+            val date = Date(dateInMillis)
+            val formatter = SimpleDateFormat(format, Locale.getDefault())
+            return formatter.format(date)
+        }
 
 
         private fun unitTypeAmenities(unitType: MyExchangePostingDetailResponse.UnitType): List<UnitTypeModel.UnitTypeAmenitiesDTOS> {
@@ -589,7 +606,7 @@ class Constant {
                 isChecked = false,
             ),
             AmenitiesModel(
-                name = "Mạng Internet",
+                name = "Mạng Lan Internet",
                 type = "Giải Trí",
                 isChecked = false,
             ),

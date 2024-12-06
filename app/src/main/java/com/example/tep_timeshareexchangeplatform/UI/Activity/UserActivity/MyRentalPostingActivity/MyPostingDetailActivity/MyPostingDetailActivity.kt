@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRen
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -13,25 +14,23 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.CustomeDialog.UpdateRentalBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RefundPolicy
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
-import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingDetailBinding
@@ -69,6 +68,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
         initAdapter()
 
+        eventClickShowMaps()
 
         binding.customToolbar.onStartIconClick = {
             finish()
@@ -110,6 +110,7 @@ class MyPostingDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
+                    Log.e("MyPostingDetailActivityasd", "observeMyPostingDetail: ${it.message}")
                 }
 
                 Status.LOADING -> {
@@ -119,24 +120,33 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, viewModel.postingDetailResponse.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, viewModel.postingDetailResponse.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
+    }
+
     private fun bindData(myRentalPostingDetailResponse: MyRentalPostingDetailResponse) {
         // Image List
-        bindDataListImage(myRentalPostingDetailResponse.imageUrls)
+        bindDataListImage()
 
         // Amenities
         bindDataAmenities(myRentalPostingDetailResponse)
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("Chi Tiết Bài Đăng")
+            setTitle("Chi Tiết Bài Đăng Cho Thuê")
             setTitleDetail("${myRentalPostingDetailResponse.resortName}")
         }
 
         // Resort Info
         binding.apply {
-            tvResortName.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
-            tvLocation.text = myRentalPostingDetailResponse.address
+            tvResortName.text = myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.roomCode
+            tvLocation.text =
+                myRentalPostingDetailResponse.location?.displayName ?: "Không Có Dữ Liệu"
 
             if (myRentalPostingDetailResponse.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -207,9 +217,9 @@ class MyPostingDetailActivity : BaseActivity() {
         // UI DTB
         binding.includeDetailBilling.apply {
             llPostingBy.visibility = View.GONE
-            llRoomPricing.visibility = View.GONE
+            llRoomPricing.visibility = View.VISIBLE
             tvResortNameDtb.text =
-                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.unitType.title
+                myRentalPostingDetailResponse.resortName + " | " + myRentalPostingDetailResponse.roomCode
             tvCheckInDate.text = Constant.formatDateByLocale(
                 myRentalPostingDetailResponse.checkinDate,
                 this@MyPostingDetailActivity
@@ -225,17 +235,19 @@ class MyPostingDetailActivity : BaseActivity() {
                 tvEstimatedTotalPrice.text = "Đang Chờ Xác Nhận"
             } else {
                 tvRoomPricePerNight.text =
-                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} đ"
+                    "${myRentalPostingDetailResponse.pricePerNights?.let { formatPriceLong(it) }} VNĐ"
                 tvEstimatedTotalPrice.text =
-                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} đ"
+                    "${myRentalPostingDetailResponse.totalPrice?.let { formatPriceLong(it) }} VNĐ"
             }
-            tvLocation.text = myRentalPostingDetailResponse.address
+            tvLocation.text =
+                myRentalPostingDetailResponse.location?.displayName ?: "Không Có Dữ Liệu"
 
             Glide.with(binding.root.context)
                 .load(myRentalPostingDetailResponse.unitType.photos)
                 .placeholder(R.drawable.ripple_effect_white)
                 .error(R.drawable.im_material_mn)
                 .into(imImageTimeshare)
+
 
         }
 
@@ -244,8 +256,7 @@ class MyPostingDetailActivity : BaseActivity() {
         // Set Amenities
         facilityAdapter.submitList(listOf())
 
-
-
+        // Set Status
         when (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)) {
             MyPostingStatus.PENDING_APPROVAL -> {
                 applyStatusStyle(
@@ -316,12 +327,30 @@ class MyPostingDetailActivity : BaseActivity() {
             MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status)
                 ?.getDescription(this)
 
-    }
 
+        // Show Update Status
+        if (MyPostingStatus.fromApiStatus(myRentalPostingDetailResponse.status) == MyPostingStatus.PROCESSING) {
+            binding.apply {
+                customToolbar.isShowEndIcon(true)
+                customToolbar.onEndIconClick = {
+                    showUpdateRentalDialog()
+                }
+            }
+        } else {
+            binding.apply {
+                customToolbar.isShowEndIcon(false)
+            }
+        }
+
+        // Description
+        binding.etNote.setText(myRentalPostingDetailResponse.description)
+
+    }
 
     private fun bindDataUnitType(data: MyRentalPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 
@@ -416,54 +445,50 @@ class MyPostingDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataListImage(imageList: List<String>) {
+    private fun bindDataListImage() {
         // List Destination
+        imagePostingAdapter = ImagePostingAdapter()
 
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    return when (position) {
-                        0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        else -> {
-                            SpannedGridLayoutManager.SpanInfo(1, 1)
+        imagePostingAdapter.submitList(viewModel.getImageList())
+
+        val layoutManagerCheck = if (viewModel.getImageList().size == 1) {
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            SpannedGridLayoutManager(
+                object : SpannedGridLayoutManager.GridSpanLookup {
+                    override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                        // Conditions for 2x2 items
+                        return when (position) {
+                            0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            else -> {
+                                SpannedGridLayoutManager.SpanInfo(1, 1)
+                            }
                         }
                     }
-                }
-            },
-            4,  // number of columns
-            1f // how big is default item
-        )
-
-        imagePostingAdapter.submitList(imageList)
-        if (imageList.size == 1) {
-            val layoutManagerCheck = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = layoutManagerCheck
-            }
-        } else {
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = manager
-            }
+                },
+                4,  // number of columns
+                1f // how big is default item
+            )
         }
-
+        binding.recyclerViewResortImage.apply {
+            adapter = imagePostingAdapter
+            layoutManager = layoutManagerCheck
+        }
         imagePostingAdapter.onItemClickListener = { position ->
             val intent = Intent(this@MyPostingDetailActivity, ImageListActivity::class.java)
             intent.putExtra(Constant.IMAGE_POSITION, position)
             intent.putStringArrayListExtra(
                 Constant.IMAGE_LIST,
-                ArrayList(imageList)
+                ArrayList(viewModel.getImageList())
             )
             startActivity(intent)
         }
-
+        imagePostingAdapter.submitList(viewModel.getImageList())
     }
 
     override fun onDestroy() {
@@ -471,7 +496,15 @@ class MyPostingDetailActivity : BaseActivity() {
         autoScrollHelper.pauseAutoScroll()
     }
 
-    fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
+    private fun showUpdateRentalDialog() {
+        viewModel.resetUpdateRentalResponse()
+        val updateRentalBottomDialog = UpdateRentalBottomDialog(
+            myRentalDetailViewModel = viewModel
+        )
+        updateRentalBottomDialog.show(supportFragmentManager, "UpdateExchangeBottomDialog")
+    }
+
+    private fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
             "bedsFull" to "Full",
             "bedsKing" to "King",
@@ -498,7 +531,7 @@ class MyPostingDetailActivity : BaseActivity() {
         }
     }
 
-    fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
+    private fun mapToAmenitiesModel(amenities: List<MyRentalPostingDetailResponse.RoomAmenity>): List<AmenitiesModel> {
         return amenities.map { amenity ->
             AmenitiesModel(
                 name = amenity.name,

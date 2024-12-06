@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
@@ -32,6 +35,8 @@ class MyExchangePostingActivity : BaseActivity() {
     private val viewModel: MyExchangePostingViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
     private var itemPosition = 0
+
+
 
     companion object {
         const val POSTING_PAGE_SIZE = 10

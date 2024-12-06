@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -21,8 +22,10 @@ import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayou
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.mapExchangeToUnitTypeBase
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.MapViewActivity.MapViewActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.Adapter.AmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.ResortDetailActivity.ResortDetail.ImageListActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.CustomDialog.UpdateExchangeBottomDialog
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
@@ -45,7 +48,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangDetailBinding
-    private var imagePostingAdapter = ImagePostingAdapter()
+    private lateinit var imagePostingAdapter : ImagePostingAdapter
     private var facilityAdapter = AmenitiesAdapter()
     private val viewModel: MyExchangeDetailViewModel by viewModels()
     private var postingId: Int = 0
@@ -72,13 +75,13 @@ class MyExchangeDetailActivity : BaseActivity() {
             finish()
         }
         binding.shimmerViewContainer.startShimmer()
+
+
+        eventClickShowMaps()
     }
 
     private fun initAdapter() {
         facilityAdapter.submitList(listOf())
-        imagePostingAdapter.apply {
-            submitList(listOf())
-        }
 
         featuresAdapter.submitOriginalList(listOf())
         entertainmentAdapter.submitOriginalList(listOf())
@@ -95,15 +98,7 @@ class MyExchangeDetailActivity : BaseActivity() {
             viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Bạn chưa đăng nhập",
-                "Vui lòng đăng nhập để xem thông tin",
-                MotionToastStyle.INFO,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                null
-            )
+            showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
         }
     }
 
@@ -118,15 +113,7 @@ class MyExchangeDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Lỗi",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showErrorToast("Lỗi Tải Dữ Liệu", "Không thể lấy thông tin bài đăng")
                 }
 
                 Status.LOADING -> {
@@ -136,12 +123,19 @@ class MyExchangeDetailActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickShowMaps() {
+        binding.llSeeMap.setOnClickListener {
+            val intent = Intent(this, MapViewActivity::class.java)
+            intent.putExtra(Constant.RESORT_LATITUDE, viewModel.myExchangeDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, viewModel.myExchangeDetail.value?.data?.location?.longitude)
+            startActivity(intent)
+        }
+    }
+
+
     private fun bindData(myExchangePostingDetail: MyExchangePostingDetailResponse) {
-        // BindDAta Package
-        /* bindPackageData(myExchangePostingDetail.exchangePackageName)
- */
         // List Image
-        bindDataListImage(myExchangePostingDetail.imageUrls)
+        bindDataListImage()
 
         // Unit Type
         bindDataUnitType(myExchangePostingDetail)
@@ -169,15 +163,15 @@ class MyExchangeDetailActivity : BaseActivity() {
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
-            setTitle("${myExchangePostingDetail.resortName}")
-            setTitleDetail("Phòng ${myExchangePostingDetail.roomName}")
+            setTitle("Chi Tiết Bài Đăng Trao Đổi")
+            setTitleDetail("${myExchangePostingDetail.resortName}")
         }
 
         // Resort Info
         binding.apply {
             tvResortName.text =
-                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
-            tvLocation.text = myExchangePostingDetail.address
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.roomCode
+            tvLocation.text = myExchangePostingDetail.location?.displayName ?: "Không có thông tin"
 
             if (myExchangePostingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -222,12 +216,11 @@ class MyExchangeDetailActivity : BaseActivity() {
             }
         }
 
-
         // UI DTB
         binding.includeDetailBilling.apply {
             llPostingBy.visibility = View.GONE
             tvResortNameDtb.text =
-                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.unitType.title
+                myExchangePostingDetail.resortName + " | " + myExchangePostingDetail.roomCode
             tvCheckInDate.text = Constant.formatDateByLocale(
                 myExchangePostingDetail.checkinDate,
                 this@MyExchangeDetailActivity
@@ -237,7 +230,7 @@ class MyExchangeDetailActivity : BaseActivity() {
                 this@MyExchangeDetailActivity
             )
             tvNumberNight.text = "${myExchangePostingDetail.nights} đêm"
-            tvLocation.text = myExchangePostingDetail.address
+            tvLocation.text = myExchangePostingDetail.location?.displayName ?: "Không có thông tin"
 
             llRoomPricing.visibility = View.GONE
             Glide.with(binding.root.context)
@@ -247,11 +240,11 @@ class MyExchangeDetailActivity : BaseActivity() {
                 .into(imImageTimeshare)
 
         }
+        binding.includeDetailBilling.llCancellationPolicy.visibility = View.GONE
         binding.includeDetailBilling.root.visibility = View.VISIBLE
 
         // Set Amenities
         facilityAdapter.submitList(listOf())
-
 
         // Show Status
         when (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)) {
@@ -340,12 +333,30 @@ class MyExchangeDetailActivity : BaseActivity() {
             MyPostingStatus.fromApiStatus(myExchangePostingDetail.status)
                 ?.getDescription(this)
 
+        // Show Update Status
+        if (MyPostingStatus.fromApiStatus(myExchangePostingDetail.status) == MyPostingStatus.PROCESSING) {
+            binding.apply {
+                customToolbar.isShowEndIcon(true)
+                customToolbar.onEndIconClick = {
+                    showUpdateExchangeDialog()
+                }
+            }
+        } else {
+            binding.apply {
+                customToolbar.isShowEndIcon(false)
+            }
+        }
+
+        // Description
+        binding.etNote.setText(myExchangePostingDetail.description)
+
 
     }
 
     private fun bindDataUnitType(data: MyExchangePostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 
@@ -440,57 +451,61 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
-    private fun bindDataListImage(imageList: List<String>) {
+    private fun bindDataListImage() {
         // List Destination
+        imagePostingAdapter = ImagePostingAdapter()
 
-        val manager = SpannedGridLayoutManager(
-            object : SpannedGridLayoutManager.GridSpanLookup {
-                override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
-                    // Conditions for 2x2 items
-                    return when (position) {
-                        0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
-                        else -> {
-                            SpannedGridLayoutManager.SpanInfo(1, 1)
+        imagePostingAdapter.submitList(viewModel.getImageList())
+
+        val layoutManagerCheck = if (viewModel.getImageList().size == 1) {
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            SpannedGridLayoutManager(
+                object : SpannedGridLayoutManager.GridSpanLookup {
+                    override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                        // Conditions for 2x2 items
+                        return when (position) {
+                            0 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            1 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                            2 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            3 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            4 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            5 -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                            else -> {
+                                SpannedGridLayoutManager.SpanInfo(1, 1)
+                            }
                         }
                     }
-                }
-            },
-            4,  // number of columns
-            1f // how big is default item
-        )
-
-        imagePostingAdapter.submitList(imageList)
-        if (imageList.size == 1) {
-            val layoutManagerCheck =
-                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = layoutManagerCheck
-            }
-        } else {
-            binding.recyclerViewResortImage.apply {
-                adapter = imagePostingAdapter
-                layoutManager = manager
-            }
+                },
+                4,  // number of columns
+                1f // how big is default item
+            )
         }
-
+        binding.recyclerViewResortImage.apply {
+            adapter = imagePostingAdapter
+            layoutManager = layoutManagerCheck
+        }
         imagePostingAdapter.onItemClickListener = { position ->
             val intent = Intent(this@MyExchangeDetailActivity, ImageListActivity::class.java)
             intent.putExtra(Constant.IMAGE_POSITION, position)
             intent.putStringArrayListExtra(
                 Constant.IMAGE_LIST,
-                ArrayList(imageList)
+                ArrayList(viewModel.getImageList())
             )
             startActivity(intent)
         }
+        imagePostingAdapter.submitList(viewModel.getImageList())
 
     }
 
+    private fun showUpdateExchangeDialog() {
+        viewModel.resetUpdateExchangeResponse()
+        val updateExchangeBottomDialog = UpdateExchangeBottomDialog(
+            description = binding.etNote.text.toString(),
+            myExchangeDetailViewModel = viewModel
+        )
+        updateExchangeBottomDialog.show(supportFragmentManager, "UpdateExchangeBottomDialog")
+    }
 
     fun displayBedsInfo(unitTypeMap: Map<String, Any>): String {
         val bedTypes = listOf(
@@ -513,7 +528,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun applyStatusStyle(context: Context, backgroundColorRes: Int, textColorRes: Int) {
         binding.apply {
             llStatusContainer.visibility = View.VISIBLE
-            llStatusContainer.setBackgroundColor(context.getColor(backgroundColorRes))
+            llStatusContainer.backgroundTintList = context.getColorStateList(backgroundColorRes)
             tvStatus.setTextColor(context.getColor(textColorRes))
             cardStatus.setStrokeColor(context.getColor(textColorRes))
         }

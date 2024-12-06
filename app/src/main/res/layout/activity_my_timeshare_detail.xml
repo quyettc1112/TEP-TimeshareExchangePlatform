@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/primary_background_F9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_background_F9"
     tools:context=".UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity">
 
     <!--// Custom Toolbar-->
@@ -15,27 +15,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:title="Chi Tiết Timeshare"
+        app:endIcon="@drawable/ic_posting_update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:showTitleDetail="true"
-        app:showStartText="false" />
+        app:showEndIcon="true"
+        app:showStartText="false"
+        app:showTitleDetail="true" />
 
     <!--// Timeshare Detail-->
     <ScrollView
-        android:visibility="visible"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/customToolbar">
 
         <!--// Layout Container for Timeshare Detail-->
         <LinearLayout
-            android:background="@color/primary_background_F9"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/primary_background_F9"
+            android:orientation="vertical">
 
             <!--// Timeshare Detail Image-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,19 +57,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--// Resort Info and Map-->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/white"
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_resort_info"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
                 android:paddingTop="10dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="10dp"
-                android:layout_height="wrap_content">
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp">
 
                 <!--// Resort Name-->
                 <TextView
                     android:id="@+id/tvResortName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_extrabold"
                     android:textColor="@color/black"
@@ -77,10 +81,10 @@
                 <!--// Resort Type-->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/materialCardView4"
-                    android:visibility="gone"
                     android:layout_width="90dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="15dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvResortName"
@@ -97,10 +101,8 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-
-
                 <!--// Location-->
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,72 +113,121 @@
                     tools:layout_editor_absoluteX="20dp">
 
                     <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:id="@+id/imageView5"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="left|center"
                         android:layout_weight="0.5"
-                        android:src="@drawable/ic_location" />
+                        android:padding="2dp"
+                        android:src="@drawable/ic_resort_location"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvLocation"
+                        android:id="@+id/tv_location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center"
                         android:layout_weight="9"
-                        android:fontFamily="@font/inter_light"
+                        android:fontFamily="@font/inter_medium"
                         android:maxLines="2"
                         android:paddingStart="5dp"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_see_map"
+                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_see_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:src="@drawable/ic_maps"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/im_map"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_maps"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_location_see_map"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
+                            android:paddingStart="5dp"
+                            android:text="Bản Đồ"
+                            android:textColor="#F23161"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/im_map"
+                            app:layout_constraintStart_toEndOf="@+id/imageView5"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <!--// Ngày nhận phòng-->
             <LinearLayout
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:background="@color/white"
                 android:gravity="center"
-                android:weightSum="10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="5dp"
+                android:weightSum="10">
 
                 <!-- Check-in Date Section -->
                 <LinearLayout
-                    android:layout_weight="4.5"
                     android:layout_width="0dp"
-                    android:background="@drawable/ripple_effect_white"
                     android:layout_height="match_parent"
+                    android:layout_weight="4.5"
+                    android:background="@drawable/ripple_effect_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <!-- Label for Check-in Date -->
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
                             android:text="Ngày Nhận Phòng"
                             android:textColor="@color/gray_text"
                             android:textSize="12sp" />
+
                         <ImageView
-                            android:src="@drawable/ic_check_in"
                             android:layout_width="20dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_check_in" />
 
 
                     </LinearLayout>
@@ -188,8 +239,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:maxLines="1"
                         android:fontFamily="@font/inter_bold"
+                        android:maxLines="1"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -207,40 +258,42 @@
 
                 <!-- Arrow Icon -->
                 <ImageView
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
 
                 <!-- Check-out Date Section -->
                 <LinearLayout
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:layout_weight="4.5"
                     android:layout_width="0dp"
-                    android:background="@drawable/ripple_effect_white"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="4.5"
+                    android:background="@drawable/ripple_effect_white"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <!-- Label for Check-in Date -->
                     <LinearLayout
-                        android:gravity="center"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_regular"
+                            android:maxLines="1"
                             android:text="Ngày Trả Phòng"
                             android:textColor="@color/gray_text"
                             android:textSize="12sp" />
+
                         <ImageView
-                            android:src="@drawable/ic_check_out"
                             android:layout_width="20dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_check_out" />
 
                     </LinearLayout>
 
@@ -250,8 +303,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:maxLines="1"
                         android:fontFamily="@font/inter_bold"
+                        android:maxLines="1"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -267,12 +320,134 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!--// Available Year-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <!-- Available Start Year -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Năm bắt đầu cho thuê &amp; trao đổi"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_light"
+                            android:text="Thời điểm bắt đầu hiệu lực giao dịch cho thuê hoặc trao đổi Timeshare của bạn"
+                            android:textColor="@android:color/black"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="3"
+                        app:strokeColor="@color/blue_btn_search"
+                        app:strokeWidth="1dp">
+
+                        <EditText
+                            android:id="@+id/sp_valid_star_year"
+                            android:layout_width="match_parent"
+                            android:enabled="false"
+                            android:textColor="@color/black"
+                            android:layout_height="40dp"
+                            android:paddingStart="10dp"
+                            android:textSize="12dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/background_stroke_around"
+                            />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </LinearLayout>
+
+                <!-- Available Year -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Năm kết thúc hiệu lực Timeshare"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_light"
+                            android:text="Thời điểm hết hạn sử dụng Timeshare."
+                            android:textColor="@android:color/black"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="3"
+                        app:strokeColor="@color/blue_btn_search"
+                        app:strokeWidth="1dp">
+
+                        <EditText
+                            android:id="@+id/sp_valid_end_year"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:enabled="false"
+                            android:textColor="@color/black"
+                            android:paddingStart="10dp"
+                            android:textSize="12dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/background_stroke_around" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!--// Unit Type-->
             <LinearLayout
-                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
                 <include
                     android:id="@+id/include_unit_type"
                     layout="@layout/include_unit_type"
@@ -315,6 +490,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
                     <include
                         android:id="@+id/include_amenities"
                         layout="@layout/include_amenities" />
@@ -327,13 +503,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="2dp"
+                android:background="@color/white"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:paddingTop="10dp"
+                android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
-                android:background="@color/white">
+                android:visibility="gone">
                 <!-- // Suggest Title-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout8"
@@ -357,50 +533,53 @@
 
                 <!--// Room Terms-->
                 <com.google.android.flexbox.FlexboxLayout
-                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
                     <LinearLayout
-                        android:layout_marginEnd="20dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_no_pet"/>
+                            android:src="@drawable/ic_no_pet" />
+
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cấm vật nuôi"/>
+                            android:layout_marginTop="5dp"
+                            android:text="Cấm vật nuôi" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginEnd="10dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_no_smooking"/>
+                            android:src="@drawable/ic_no_smooking" />
+
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cấm hút thuốc"/>
+                            android:layout_marginTop="5dp"
+                            android:text="Cấm hút thuốc" />
 
                     </LinearLayout>
 
                 </com.google.android.flexbox.FlexboxLayout>
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -410,7 +589,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
         </LinearLayout>
     </ScrollView>
@@ -419,8 +598,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_request_contaner"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -429,19 +608,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/background_stroke_around"
+            android:backgroundTint="@color/primary_background_F9"
             android:paddingStart="20dp"
             android:paddingTop="5dp"
-            android:paddingEnd="20dp"
-            android:background="@drawable/background_stroke_around"
-            android:backgroundTint="@color/primary_background_F9">
+            android:paddingEnd="20dp">
             <!--// See All-->
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/ll_see_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -450,8 +629,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:textColor="@color/blue_see_more"
-                    android:text="Thu nhỏ" />
+                    android:text="Thu nhỏ"
+                    android:textColor="@color/blue_see_more" />
 
                 <ImageView
                     android:id="@+id/im_expanded"
@@ -464,26 +643,26 @@
             <!--// Price-->
             <TextView
                 android:id="@+id/tv_price"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
                 android:text="325.000 đ / 1 đêm "
                 android:textColor="@color/black"
                 android:textSize="16dp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!--// Date -->
             <TextView
                 android:id="@+id/tv_date"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
                 android:text="19 tháng 8, 2024 - 23 tháng 8, 2024"
                 android:textColor="@color/black"
                 android:textSize="14dp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
@@ -498,7 +677,7 @@
                 android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" >
+                app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -518,20 +697,14 @@
                         android:textColor="@color/white" />
 
 
-
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.cardview.widget.CardView>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

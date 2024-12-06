@@ -1,22 +1,29 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.CustomerDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeRequestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ProfileDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingUpdateDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RoomAmenitiesDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SentRequestDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.TimeshareUpdateDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.UpdateExchangeBookingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.CancelBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangeRequestResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.RejectRequestRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.PricingSupportResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
@@ -84,7 +91,7 @@ interface CustomerAPIService {
     @POST("customer/rental/posting")
     suspend fun createPosting(
         @Header ("Authorization") token: String,
-        @Body postingDTO: PostingTimeshareDTO
+        @Body postingDTO: RentalPostingDTO
     ) : Response<PostingTimeshareResponse>
 
 
@@ -143,7 +150,7 @@ interface CustomerAPIService {
     @POST("/api/customer/exchange/posting")
     suspend fun createExchangePosting(
         @Header ("Authorization") token: String,
-        @Body postingDTO: ExchangeTimeshareDTO
+        @Body postingDTO: ExchangePostingDTO
     ) : Response<PostingTimeshareResponse>
 
 
@@ -273,6 +280,59 @@ interface CustomerAPIService {
         @Path ("postingId") postingId: Int,
         @Body sentRequestDTO: SentRequestDTO
     ) : Response<Void>
+
+
+    // Update Exchange Posting
+    @PUT("customer/exchange/{postingId}")
+    suspend fun updateExchangePosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body exchangePostingUpdateDTO: ExchangePostingUpdateDTO
+    ) : Response<Void>
+
+    // Update Rental Posting
+    @PUT("customer/rental/{postingId}")
+    suspend fun updateRentalPosting(
+        @Header ("Authorization") token: String,
+        @Path ("postingId") postingId: Int,
+        @Body rentalPostingUpdateDTO: RentalPostingUpdateDTO
+    ) : Response<Void>
+
+    // Update Timeshare
+    @PUT("customer/{timeshareId}")
+    suspend fun updateTimeshare(
+        @Header ("Authorization") token: String,
+        @Path ("timeshareId") timeshareId: Int,
+        @Body timeshareUpdateDTO: TimeshareUpdateDTO
+    ) : Response<Void>
+
+    // Update Exchange Booking Customer Info
+    @PUT("customer/exchange/booking/primary-guest/{bookingId}")
+    suspend fun updateExchangeBookingCustomerInfo(
+        @Header ("Authorization") token: String,
+        @Path ("bookingId") bookingId: Int,
+        @Body updateExchangeBookingDTO: UpdateExchangeBookingDTO
+    ) : Response<Void>
+    @GET("customer/dashboard")
+    suspend fun getDashboardData(
+        @Header ("Authorization") token: String,
+    ) : Response<DashboardDataResponse>
+
+    // Reject Exchange Request
+    @POST("customer/exchange/request/reject/{requestId}")
+    suspend fun rejectExchangeRequest(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int,
+    ) : Response<RejectRequestRespone>
+
+    // Exchange Price Valuation
+    @POST("customer/exchange/request/price-valuation/{requestId}")
+    suspend fun exchangePriceValuation(
+        @Header ("Authorization") token: String,
+        @Path ("requestId") requestId: Int,
+        @Query ("priceValuation") priceValuation : Long,
+        @Body String : String
+    ) : Response<ExchangePriceValuationRespone>
 
 
 

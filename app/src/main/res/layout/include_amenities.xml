@@ -31,16 +31,16 @@
                     android:id="@+id/title_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/black"
                     android:text="Tiện Nghi"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rvAmenities" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvFeatures"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
@@ -51,16 +51,17 @@
                     android:id="@+id/title_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/black"
                     android:text="Giải trí"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rvAmenities" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAmenities_entertainment"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
@@ -71,11 +72,11 @@
                     android:id="@+id/title_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter_bold"
                     android:text="Bếp"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,6 +84,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvKitchen"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
@@ -93,15 +95,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/inter_bold"
                     android:text="Chính sách"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rvAmenities_entertainment" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvPolicy"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"

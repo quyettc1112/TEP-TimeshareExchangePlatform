@@ -2,7 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="20dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
@@ -28,7 +28,7 @@
             android:id="@+id/tvSuccessTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gửi thành công"
+            android:text="Thành Công"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"

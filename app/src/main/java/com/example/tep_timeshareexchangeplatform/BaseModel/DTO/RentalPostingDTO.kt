@@ -17,7 +17,7 @@ import com.google.gson.annotations.SerializedName
   "rentalPackageId": 0
 }
 */
-data class PostingTimeshareDTO(
+data class RentalPostingDTO(
     @SerializedName("description") val description: String,
     @SerializedName("nights") val nights: Int,
     @SerializedName("pricePerNights") val pricePerNights: Int,
@@ -58,12 +58,12 @@ data class PostingTimeshareDTO(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<PostingTimeshareDTO> {
-        override fun createFromParcel(parcel: Parcel): PostingTimeshareDTO {
-            return PostingTimeshareDTO(parcel)
+    companion object CREATOR : Parcelable.Creator<RentalPostingDTO> {
+        override fun createFromParcel(parcel: Parcel): RentalPostingDTO {
+            return RentalPostingDTO(parcel)
         }
 
-        override fun newArray(size: Int): Array<PostingTimeshareDTO?> {
+        override fun newArray(size: Int): Array<RentalPostingDTO?> {
             return arrayOfNulls(size)
         }
     }

@@ -16,8 +16,8 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangeTimeshareDTO
-import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.PostingTimeshareDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ExchangePostingDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RentalPostingDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Payment.VNPayResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -154,12 +154,12 @@ class VNPayActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     // Create Rental Posting
                     Log.d("CheckkDOO - Done Rental Posting", it.data.toString())
-                    val postingTimeshareDTO =
-                        intent.getParcelableExtra<PostingTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
-                    if (postingTimeshareDTO != null) {
+                    val rentalPostingDTO =
+                        intent.getParcelableExtra<RentalPostingDTO>(Constant.POSTING_TIMESHARE_DTO)
+                    if (rentalPostingDTO != null) {
                         viewModel.createRentalPosting(
                             tokenManager.getAccessToken().toString(),
-                            postingTimeshareDTO
+                            rentalPostingDTO
                         )
                     }
                 }
@@ -190,7 +190,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     // Create Rental Posting
                     val postingTimeshareDTO =
-                        intent.getParcelableExtra<ExchangeTimeshareDTO>(Constant.POSTING_TIMESHARE_DTO)
+                        intent.getParcelableExtra<ExchangePostingDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {
                         viewModel.createExchangePosting(
                             tokenManager.getAccessToken().toString(),
@@ -333,6 +333,48 @@ class VNPayActivity : BaseActivity() {
 
         }
 
+        // Create Exchange Request Transation By VNPay
+        viewModel.exchangeRequestTransaction.observe(this) {
+            when (it.status) {
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+
+                Status.SUCCESS -> {
+                    hideLoadingWaiting()
+                    showSuccessDialog(
+                        this@VNPayActivity,
+                        "Payment Success",
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                // Intent to FInsish Activity
+                                val intent = intent
+                                setResult(RESULT_OK, intent)
+                                // Intent to Billing Activity
+                                val intentToBilling =
+                                    Intent(this@VNPayActivity, MyExchangePostingActivity::class.java)
+                                startActivity(intentToBilling)
+
+                                // Finish Activity
+                                finish()
+                            }
+                        })
+                }
+
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailedDialog(
+                        this@VNPayActivity,
+                        "Tạo yêu cầu trao đổi thất bại",
+                        it.message.toString(),
+                        object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                finish()
+                            }
+                        })
+                }
+            }
+        }
     }
 
     private fun checkPaymentType(
@@ -365,6 +407,10 @@ class VNPayActivity : BaseActivity() {
 
             PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING -> {
                 callAPICreateExchangePostingTransaction(walletTransactionId, packageId)
+            }
+
+            PaymentType.PAYMENT_EXCHANGE_REQUEST -> {
+                callAPICreateExchangeRequestTransaction(walletTransactionId, packageId)
             }
         }
     }
@@ -539,6 +585,11 @@ class VNPayActivity : BaseActivity() {
     private fun callAPICreateExchangePostingTransaction(uuid: String, packageId: Int) {
         val token = TokenManager(this).getAccessToken().toString()
         viewModel.createExchangePostingTransaction(token, uuid, packageId)
+    }
+
+    private fun callAPICreateExchangeRequestTransaction(uuid: String, packageId: Int) {
+        val token = TokenManager(this).getAccessToken().toString()
+        viewModel.createExchangeRequestTransaction(token, uuid, packageId)
     }
 
 }

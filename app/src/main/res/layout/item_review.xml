@@ -20,6 +20,7 @@
             android:isIndicator="true"
             android:numStars="5"
             android:rating="4.5"
+            android:progressTint="@color/yellow600"
             android:stepSize="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

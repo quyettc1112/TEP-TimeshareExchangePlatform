@@ -133,6 +133,23 @@ interface WalletAPIService {
     ): Response<WalletListResponse>
 
 
+    // Payment Exchange Request Wallet
+    @POST("wallet/wallet/exchange/request")
+    suspend fun paymentExchangeRequestWallet(
+        @Header("Authorization") token: String,
+        @Query("exchangeRequestId") exchangeRequestId: Int
+    ): Response<WalletPurchaseResponse>
+
+
+    // Create Exchange Posting Transaction
+    @POST("wallet/vnpay/exchange/request")
+    suspend fun createExchangeRequestTransactionByVNPAY(
+        @Header("Authorization") token: String,
+        @Query("uuid") uuid: String,
+        @Query("requestId") requestId : Int
+    ): Response<VNPAYPurchaseResponse>
+
+
 
 
 

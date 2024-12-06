@@ -164,7 +164,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         myBookingAdapter.submitList(listOf())
         myBookingAdapter.onItemClick = {
             val intent = Intent(requireContext(), BookingDetailActivity::class.java)
-            if(it.source == "rental") {
+            if (it.source == "rental") {
                 intent.putExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, it.bookingId)
             } else {
                 intent.putExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, it.bookingId)
@@ -196,7 +196,10 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
         if (!tokenManager.isLoggedIn()) {
-            (activity as MainActivity).showErrorToast("Lỗi", "Bạn cần đăng nhập để thực hiện chức năng này")
+            (activity as MainActivity).showErrorToast(
+                "Lỗi",
+                "Bạn cần đăng nhập để thực hiện chức năng này"
+            )
 
             return
         }
@@ -258,7 +261,11 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
                     } catch (e: UnsupportedOperationException) {
                         e.printStackTrace()
-                        Toast.makeText(requireContext(), "Không thể cập nhật danh sách", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Không thể cập nhật danh sách",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

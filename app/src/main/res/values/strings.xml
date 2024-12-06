@@ -152,8 +152,15 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="pending_pricing">Pending Pricing</string>
     <string name="closed">Closed</string>
 
-    <!--// Posting Status-->
-    <string name="pending_customer">Pending Customer</string>
+
+    <string name="pending_owner">Pending Owner Approval</string>
+    <string name="reject_approval">Rejected by Approval</string>
+    <string name="pending_renter_pricing">Pending Renter Pricing</string>
+    <string name="renter_reject">Rejected by Renter</string>
+    <string name="owner_reject">Rejected by Owner</string>
+    <string name="pending_renter_payment">Pending Renter Payment</string>
+    <string name="pending_owner_payment">Pending Owner Payment</string>
+
 
     <!--// My Booking Status-->
     <string name="booked">Booked</string>
@@ -195,6 +202,71 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="tab_text_2" translatable="false">Thanh Toán</string>
     <string name="tab_text_3" translatable="false">Nhận Tiền</string>
     <string name="large_text" translatable="false">Settings</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+
+    <string name="amenity_school" translatable="false">Trường học</string>
+    <string name="amenity_hospital" translatable="false">Bệnh viện</string>
+    <string name="amenity_restaurant" translatable="false">Nhà hàng</string>
+    <string name="amenity_cafe" translatable="false">Quán cà phê</string>
+    <string name="amenity_bar" translatable="false">Quán bar</string>
+    <string name="amenity_parking" translatable="false">Bãi đỗ xe</string>
+    <string name="amenity_bank" translatable="false">Ngân hàng</string>
+    <string name="amenity_atm" translatable="false">ATM</string>
+    <string name="amenity_bus_station" translatable="false">Trạm xe buýt</string>
+    <string name="amenity_fuel" translatable="false">Trạm xăng</string>
+    <string name="amenity_library" translatable="false">Thư viện</string>
+    <string name="amenity_post_office" translatable="false">Bưu điện</string>
+    <string name="amenity_police" translatable="false">Cảnh sát</string>
+    <string name="amenity_fire_station" translatable="false">Trạm cứu hỏa</string>
+    <string name="amenity_place_of_worship" translatable="false">Nơi thờ cúng</string>
+    <string name="amenity_toilets" translatable="false">Nhà vệ sinh</string>
+    <string name="amenity_fountain" translatable="false">Đài phun nước</string>
+    <string name="amenity_townhall" translatable="false">Tòa thị chính</string>
+    <string name="amenity_cinema" translatable="false">Rạp chiếu phim</string>
+    <string name="amenity_theatre" translatable="false">Nhà hát</string>
+    <string name="amenity_park" translatable="false">Công viên</string>
+    <string name="amenity_playground" translatable="false">Khu vui chơi</string>
+    <string name="amenity_sports_centre" translatable="false">Trung tâm thể thao</string>
+    <string name="amenity_stadium" translatable="false">Sân vận động</string>
+    <string name="amenity_marketplace" translatable="false">Chợ</string>
+    <string name="amenity_supermarket" translatable="false">Siêu thị</string>
+    <string name="amenity_pharmacy" translatable="false">Nhà thuốc</string>
+    <string name="amenity_bicycle_rental" translatable="false">Cho thuê xe đạp</string>
+    <string name="amenity_car_rental" translatable="false">Cho thuê xe ô tô</string>
+    <string name="amenity_hotel" translatable="false">Khách sạn</string>
+    <string name="amenity_motel" translatable="false">Nhà nghỉ</string>
+    <string name="amenity_guest_house" translatable="false">Nhà khách</string>
+    <string name="amenity_information" translatable="false">Thông tin du lịch</string>
+    <string name="amenity_college" translatable="false">Cao đẳng</string>
+    <string name="amenity_university" translatable="false">Đại học</string>
+    <string name="amenity_kindergarten" translatable="false">Nhà trẻ</string>
+    <string name="amenity_research_institute" translatable="false">Viện nghiên cứu</string>
+    <string name="amenity_clinic" translatable="false">Phòng khám</string>
+    <string name="amenity_charging_station" translatable="false">Trạm sạc</string>
+    <string name="amenity_community_centre" translatable="false">Trung tâm cộng đồng</string>
+    <string name="amenity_recycling" translatable="false">Trạm tái</string>
+
+    <string name="shop_convenience" translatable="false">Cửa hàng tiện lợi</string>
+    <string name="shop_bakery" translatable="false">Tiệm bánh</string>
+    <string name="shop_butcher" translatable="false">Cửa hàng thịt</string>
+    <string name="shop_beverages" translatable="false">Đồ uống</string>
+    <string name="shop_deli" translatable="false">Thực phẩm chế biến</string>
+    <string name="shop_alcohol" translatable="false">Cửa hàng rượu</string>
+    <string name="shop_clothes" translatable="false">Cửa hàng quần áo</string>
+    <string name="shop_shoes" translatable="false">Cửa hàng giày</string>
+    <string name="shop_jewelry" translatable="false">Trang sức</string>
+    <string name="shop_electronics" translatable="false">Điện tử</string>
+    <string name="shop_mobile_phone" translatable="false">Điện thoại</string>
+    <string name="shop_furniture" translatable="false">Nội thất</string>
+    <string name="shop_hardware" translatable="false">Dụng cụ sửa chữa</string>
+    <string name="shop_garden_centre" translatable="false">Làm vườn</string>
+    <string name="shop_pet" translatable="false">Thú cưng</string>
+    <string name="shop_books" translatable="false">Hiệu sách</string>
+    <string name="shop_stationery" translatable="false">Văn phòng phẩm</string>
+    <string name="shop_toys" translatable="false">Đồ chơi</string>
+    <string name="shop_gift" translatable="false">Quà tặng</string>
+    <string name="shop_cosmetics" translatable="false">Mỹ phẩm</string>
+    <string name="title_activity_test">test</string>
 
 
 </resources>

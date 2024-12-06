@@ -2,17 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="5dp"
-    android:layout_marginEnd="5dp"
-    android:layout_width="wrap_content"
+    android:layout_margin="5dp"
+    android:layout_width="80dp"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/im_facilitie"
+        android:padding="2dp"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/ic_air_conditioner"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,14 +20,18 @@
         android:id="@+id/tv_facilitie_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Điều hoà nhiệt độ"
-        android:textColor="@color/black"
-        android:textSize="12dp"
-        android:layout_marginStart="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:fontFamily="@font/inter_medium"
+        android:maxLines="2"
+        android:textAlignment="center"
+        android:text="Điều hoà nhiệt độ asdias"
+        android:textColor="@color/black"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/im_facilitie"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/im_facilitie" />
 
     
 

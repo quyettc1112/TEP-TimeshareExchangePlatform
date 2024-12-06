@@ -43,6 +43,15 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottiePlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:lottie_rawRes="@raw/anim_loading_more"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -27,7 +27,7 @@ class HomePostingAdapter : BaseAdapter<PublicPostingResponse.Content, HomePostin
                 .error(R.drawable.ic_error_)
                 .into(binding.imImageTimeshare)
             binding.tvResortName.text = item.resortName
-            binding.tvLocation.text = item.address
+            binding.tvLocation.text = item.resortLocationDisplayName
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
             binding.tvNights.text = "${item.nights} đêm"

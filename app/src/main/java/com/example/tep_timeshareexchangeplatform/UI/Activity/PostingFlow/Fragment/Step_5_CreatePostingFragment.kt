@@ -72,6 +72,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     ): View? {
         binding = FragmentCreatePostingBinding.inflate(inflater, container, false)
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
+
+        postingFlowViewModel.updateCancelPolicy(0)
+
+
         observeViewModel()
         setEventChangeMyTimeshare()
         bindDataSpinnerCancellationPolicy()
@@ -345,9 +349,10 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                 val selectedProvince = provinces[position]
                 if (selectedProvince != "Chọn Tỉnh Thành") {
                     val provinceId = position + 1
-                    postingFlowViewModel.updateCurrentProvinceSelected(provinceId)
+                    val province = Pair(provinceId, selectedProvince)
+                    postingFlowViewModel.updateCurrentProvinceSelected(province)
                 } else {
-                    postingFlowViewModel.updateCurrentProvinceSelected(0)
+                    postingFlowViewModel.updateCurrentProvinceSelected(Pair(0, ""))
                 }
             }
 
@@ -659,6 +664,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         binding.includePaymentMethod12.tilRoomPrice.error = null
         return true
     }
+
     private fun isDateExchangeValid() : Boolean {
         val numberOfNights = postingFlowViewModel.getNumberOfExchangeNights()
         if (numberOfNights == 0) {
@@ -673,7 +679,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
 
     private fun isProvinceValid() : Boolean {
         val provinceId = postingFlowViewModel.getCurrentProvinceSelected()
-        if (provinceId == 0) {
+        if (provinceId.first == 0) {
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }

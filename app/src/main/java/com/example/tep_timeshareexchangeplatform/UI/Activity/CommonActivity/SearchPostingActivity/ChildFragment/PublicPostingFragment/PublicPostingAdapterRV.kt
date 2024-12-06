@@ -25,7 +25,7 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
                 .error(R.drawable.ic_image_tmp_holder)
                 .into(binding.imImageTimeshare)
             binding.tvTimeshareName.text = item.resortName
-            binding.tvLocation.text = item.address
+            binding.tvLocation.text = item.resortLocationDisplayName
             binding.tvCheckInDate.text = Constant.formatDateByLocale(item.checkinDate, binding.root.context)
             binding.tvCheckOutDate.text = Constant.formatDateByLocale(item.checkoutDate, binding.root.context)
             binding.tvNights.text = "${item.nights} đêm"
@@ -34,9 +34,6 @@ class PublicPostingAdapterRV : BaseAdapter<PublicPostingResponse.Content, Public
             } else {
                 binding.llVerify.visibility = View.GONE
             }
-
-
-
 
             binding.tvPrice.text = "${formatPrice(item.pricePerNights)} VNĐ"
 

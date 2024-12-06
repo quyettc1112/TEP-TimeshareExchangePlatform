@@ -33,6 +33,7 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
 
             binding.tvStatus.text = MyPostingStatus.fromApiStatus(item.status)?.getDescription(context)
 
+
             binding.btnHidePosting.setOnClickListener {
                 val position = adapterPosition
                 onHidePostingClick?.invoke(item)  // Callback với item
@@ -146,8 +147,8 @@ class MyExchangePostingAdapter(var context: MyExchangePostingActivity) :
             binding.apply {
                 tvResortName.text = "${item.resortName}"
                 tvRoomName.text =
-                    "Loại Phòng: ${item.unitTypeDTO.title}, Tên Phòng: ${item.roomName}"
-                tvLocation.text = item.address
+                    "Loại Phòng: ${item.unitTypeDTO.title}"
+                tvLocation.text = item.resortLocationDisplayName ?: "Không có thông tin"
                 tvCheckInDate.text =
                     Constant.formatDateByLocale(item.checkinDate, binding.root.context)
                 tvCheckOutDate.text =
