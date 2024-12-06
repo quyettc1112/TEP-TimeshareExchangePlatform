@@ -23,6 +23,9 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".ZTest.ui.WebView"
+            android:exported="true" />
+        <activity
             android:name=".UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity"
             android:exported="true" />
         <activity
