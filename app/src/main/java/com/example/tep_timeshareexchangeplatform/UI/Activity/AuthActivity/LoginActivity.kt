@@ -71,6 +71,7 @@ class LoginActivity : BaseActivity() {
         eventClickForgotPassword()
 
         eventClickGoogle()
+
     }
 
     // Observe login response LiveData
@@ -203,9 +204,11 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun eventClickGoogle() {
-        val authUrl = "https://unwind.id.vn/oauth2/authorization/google"
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authUrl))
-        startActivity(browserIntent)
+        binding.llLoginGoogle.setOnClickListener {
+            val authUrl = "https://unwind.id.vn/oauth2/authorization/google"
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authUrl))
+            startActivity(browserIntent)
+        }
     }
 
     private fun eventClickForgotPassword() {
