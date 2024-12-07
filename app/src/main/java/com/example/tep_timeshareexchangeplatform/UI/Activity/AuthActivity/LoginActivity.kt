@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -68,6 +69,9 @@ class LoginActivity : BaseActivity() {
         clickLoginButton()
 
         eventClickForgotPassword()
+
+        eventClickGoogle()
+
     }
 
     // Observe login response LiveData
@@ -196,6 +200,14 @@ class LoginActivity : BaseActivity() {
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun eventClickGoogle() {
+        binding.llLoginGoogle.setOnClickListener {
+            val authUrl = "https://unwind.id.vn/oauth2/authorization/google"
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authUrl))
+            startActivity(browserIntent)
         }
     }
 
