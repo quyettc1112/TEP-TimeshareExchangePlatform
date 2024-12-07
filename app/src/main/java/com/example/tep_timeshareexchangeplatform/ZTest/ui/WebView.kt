@@ -1,7 +1,15 @@
 package com.example.tep_timeshareexchangeplatform.ZTest.ui
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +20,11 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityWebViewBind
 
 class WebView : BaseActivity() {
     private lateinit var binding: ActivityWebViewBinding
+
+    companion object {
+        const val UNWIND_OAUTH2 = "https://unwind.id.vn/oauth2/authorization/google"
+        const val OAUTH_SUCCESS = "http://35.247.160.131/api/auth/oauth2-success"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +37,28 @@ class WebView : BaseActivity() {
             insets
         }
 
-        // Cấu hình WebView
-        binding.webView.settings.javaScriptEnabled = true
-        binding.webView.settings.domStorageEnabled = true
+        // Xử lý Deep Link từ Intent
+        handleDeepLink(intent)
 
-        // Đảm bảo mở URL trong WebView, không phải trình duyệt bên ngoài
-        binding.webView.webViewClient = WebViewClient()
+    }
 
-        // Tải URL Đăng Nhập Google
-        binding.webView.loadUrl("https://accounts.google.com/signin")
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent) {
+        val data: Uri? = intent.data
+        data?.let {
+            // Lấy giá trị token từ query parameter
+            val token = it.getQueryParameter("token")
+            if (token != null) {
+                Toast.makeText(this, "Access Token: $token", Toast.LENGTH_LONG).show()
+                // Thực hiện các hành động với token, ví dụ: lưu token hoặc gọi API
+            } else {
+                Toast.makeText(this, "No token received", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
