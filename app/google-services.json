@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "685904756369",
+    "project_id": "unwind-7cfdb",
+    "storage_bucket": "unwind-7cfdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685904756369:android:da4e93f1dd5a27ffc3c930",
+        "android_client_info": {
+          "package_name": "com.example.tep_timeshareexchangeplatform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClPxaFSKrdJSPDu6TLcn-DJiNg-OizHCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

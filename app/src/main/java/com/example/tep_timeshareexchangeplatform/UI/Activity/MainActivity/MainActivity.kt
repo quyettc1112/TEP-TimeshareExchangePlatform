@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -24,6 +25,8 @@ import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -35,6 +38,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
+    private var FCMToken: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +57,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         checkUserStateLog()
         changeLangEvent()
         setUpBottomNav()
+        getFCMToken()
 
     }
 
@@ -61,6 +66,14 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
     }
 
 
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                FCMToken = task.result
+                Log.d("CheckTokenCurrent", FCMToken.toString())
+            } else FCMToken = ""
+        }
+    }
 
     /**
      * Check User State Log
