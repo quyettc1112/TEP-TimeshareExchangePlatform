@@ -26,6 +26,8 @@ data class MyRentalPostingDetailResponse(
     @SerializedName("rentalPackageName") val rentalPackageName: String,
     @SerializedName("rentalPackageDuration") val rentalPackageDuration: String,
     @SerializedName("rentalPackageDescription") val rentalPackageDescription: String,
+    @SerializedName("priceValuation") val priceValuation: Long?,
+    @SerializedName("staffRefinementPrice") val staffRefinementPrice: Long?,
     @SerializedName("checkinDate") val checkinDate: String,
     @SerializedName("checkoutDate") val checkoutDate: String,
     @SerializedName("status") val status: String,
