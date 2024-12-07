@@ -20,6 +20,8 @@ import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivitySplashBinding
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +30,7 @@ class SplashActivity : BaseActivity() {
     private lateinit var bindind: ActivitySplashBinding
     private val splashViewModel: SplashViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
+    private var FCMToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +45,7 @@ class SplashActivity : BaseActivity() {
             insets
         }
         observeViewModel()
-
+        getFCMToken()
 
         // Load the animations
         val logoAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_scale)
@@ -70,19 +73,23 @@ class SplashActivity : BaseActivity() {
                     handlerLooper()
                     Log.d("CheckJwtUserValid", "observeViewModel: ${response.data}")
                 }
-
                 Status.ERROR -> {
-                    if (response.message?.contains("404") == true) {
-                        tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
-                        handlerLooper()
-                    }
-                    Log.d("CheckJwtUserValid", "observeViewModel: ${response.message}")
+                    tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+                    handlerLooper()
                 }
             }
         }
 
     }
-
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                FCMToken = task.result
+                tokenManager.saveFCMToken(FCMToken.toString())
+                Log.d("CheckTokenCurrentasdasdasdasd", FCMToken.toString())
+            } else FCMToken = ""
+        }
+    }
 
 
     private fun handlerLooper() {
@@ -97,7 +104,6 @@ class SplashActivity : BaseActivity() {
         if (tokenManager.isLoggedIn()) {
             tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
             splashViewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
-
         } else {
             tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
             handlerLooper()

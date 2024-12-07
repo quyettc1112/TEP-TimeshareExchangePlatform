@@ -21,7 +21,6 @@ class FCMNotificationService : FirebaseMessagingService() {
         if (remoteMessage.data.size > 0) {
             val title = remoteMessage.data["title"]
             val content = remoteMessage.data["content"]
-
             makeNotification(title, content)
             Log.d("CheckMessageRespone", (remoteMessage.data.toString()))
         }
@@ -29,7 +28,6 @@ class FCMNotificationService : FirebaseMessagingService() {
         if (remoteMessage.notification != null) {
             val title = remoteMessage.notification!!.title
             val content = remoteMessage.notification!!.body
-
             makeNotification(title, content)
         }
     }

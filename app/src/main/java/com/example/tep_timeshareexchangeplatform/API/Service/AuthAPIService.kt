@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.API.Service
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ChangePasswordDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RegisterDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SaveTokenDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.RegisterResponse
 import retrofit2.Response
@@ -39,5 +40,12 @@ interface AuthAPIService {
         @Header("Authorization") token: String,
         @Body changePasswordDTO: ChangePasswordDTO
     ): Response<Void>
+
+    // SAve FCM Token
+    @POST("notification/subcribe-token")
+    suspend fun saveFCMToken(
+        @Header("Authorization") token: String,
+        @Body saveTokenDTO: SaveTokenDTO
+    ): Response<Boolean>
 
 }

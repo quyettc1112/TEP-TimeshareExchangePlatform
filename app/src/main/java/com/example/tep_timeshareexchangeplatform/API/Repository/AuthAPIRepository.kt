@@ -6,6 +6,7 @@ import com.example.tep_timeshareexchangeplatform.API.Service.AuthAPIService
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.ChangePasswordDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.LoginDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.RegisterDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SaveTokenDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.LoginResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.User.RegisterResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
@@ -85,7 +86,10 @@ class AuthAPIRepository @Inject constructor(
     }
 
     // Funtion call API to change password
-    suspend fun changePassword(token: String, changePasswordDTO: ChangePasswordDTO): Resource<Void> {
+    suspend fun changePassword(
+        token: String,
+        changePasswordDTO: ChangePasswordDTO
+    ): Resource<Void> {
         return try {
             val response = authAPIService.changePassword("Bearer $token", changePasswordDTO)
             if (response.isSuccessful) {
@@ -99,5 +103,22 @@ class AuthAPIRepository @Inject constructor(
             Resource.error("Network Error: ${e.message}", null)
         }
     }
+
+    // Save FCM Token
+    suspend fun saveFCMToken(token: String, saveTokenDTO: SaveTokenDTO): Resource<Boolean> {
+        return try {
+            val response = authAPIService.saveFCMToken("Bearer $token", saveTokenDTO)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                // Use ErrorHandler to parse the error message
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: $errorMessage", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
 
 }

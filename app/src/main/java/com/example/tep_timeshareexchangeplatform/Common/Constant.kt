@@ -47,6 +47,8 @@ class Constant {
         const val DEFAULT_SELECTION_LOCATION_KEY_POSTING_FLOW = "selectedRoomTypePostingFlow"
         const val DEFAULT_SELECTION_MY_TIMESHARE = "selectedMyTimeharePostingFlow"
 
+        const val FCM_TOKEN_KEY = "fcmToken"
+
         const val RESORT_NAME = "resortName"
         const val RESORT_ID = "resortId"
 
