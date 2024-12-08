@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.CustomDialog.ConfirmDialog
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SaveTokenDTO
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.FragmentAdapter
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.AccountFragment.AccountFragment
@@ -22,8 +25,11 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragme
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
 import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -32,9 +38,9 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var FragmentAdapter: FragmentAdapter
-
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
+    private var FCMToken: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,18 +54,45 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             insets
         }
         tokenManager = TokenManager(this)
+        getFCMToken()
 
         // Check User is logged in or not, member or customer
-        checkUserStateLog()
+       // checkUserStateLog()
         changeLangEvent()
         setUpBottomNav()
-
+        observeViewModel()
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
     }
 
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                FCMToken = task.result
+                tokenManager.saveFCMToken(FCMToken.toString())
+                Log.d("CheckTokenCurrentasdasdasdasd", FCMToken.toString())
+            } else FCMToken = ""
+        }
+    }
+
+    private fun observeViewModel() {
+        mainViewModel.saveFCMToken.observe(this){
+            when(it.status) {
+                Status.SUCCESS -> {
+                    Log.d("SaveTokenSuccess", it.data.toString())
+                }
+                Status.ERROR -> {
+                    Log.d("SaveTokenSuccess", it.message.toString())
+                }
+                Status.LOADING -> {
+                    Log.d("SaveTokenSuccess", "Loading")
+                }
+            }
+        }
+
+    }
 
 
     /**
@@ -92,18 +125,25 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             }
         }
+
     }
 
     // Check User is logged in or not
     fun checkUserLoggedIn() {
-        val tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn()) {
             // Decode JWT token to JWTPayloadModel
             val jwtPayloadModel =
                 JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             // Save tokens to shared preferences
             jwtPayloadModel?.let { mainViewModel.updateUser(it) }
+            callSaveFCMToken(jwtPayloadModel!!.userId, tokenManager.getFCMToken().toString())
         }
+    }
+
+    private fun callSaveFCMToken(userID: Int, FCMToken: String) {
+        val saveTokenDTO = SaveTokenDTO(userID, FCMToken)
+        Log.d("SaveTokenSuccess", saveTokenDTO.toString())
+        mainViewModel.saveFCMToken(tokenManager.getAccessToken().toString(), saveTokenDTO)
     }
 
 
@@ -179,6 +219,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
      */
     override fun onResume() {
         super.onResume()
+
         checkUserLoggedIn()
         checkUserStateLog()
         //mainViewModel.resetCurrentMyBookingPage()
@@ -205,8 +246,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         )
 
     }
-
-
 
 
 }

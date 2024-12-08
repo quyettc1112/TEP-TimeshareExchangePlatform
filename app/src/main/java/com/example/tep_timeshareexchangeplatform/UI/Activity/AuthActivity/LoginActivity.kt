@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -66,6 +67,11 @@ class LoginActivity : BaseActivity() {
 
         // Handle login button click
         clickLoginButton()
+
+        eventClickForgotPassword()
+
+        eventClickGoogle()
+
     }
 
     // Observe login response LiveData
@@ -88,15 +94,12 @@ class LoginActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "${resource.status}",
-                        "${resource.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_thin)
-                    );
+                    if(resource.message?.contains("401") == true) {
+                        showWarningToast("Đăng Nhập Thất Bại", "Email hoặc mật khẩu không chính xác")
+                    }
+                    if(resource.message?.contains("404") == true) {
+                        showWarningToast("Đăng Nhập Thất Bại", "Người dùng không tồn tại")
+                    }
                     tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
                 }
             }
@@ -194,6 +197,14 @@ class LoginActivity : BaseActivity() {
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun eventClickGoogle() {
+        binding.llLoginGoogle.setOnClickListener {
+            val authUrl = "https://unwind.id.vn/oauth2/authorization/google"
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authUrl))
+            startActivity(browserIntent)
         }
     }
 

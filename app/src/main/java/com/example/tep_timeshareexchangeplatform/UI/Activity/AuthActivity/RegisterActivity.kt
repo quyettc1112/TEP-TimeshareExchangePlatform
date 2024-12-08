@@ -1,9 +1,11 @@
 package com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +45,7 @@ class RegisterActivity : BaseActivity() {
         customToolbarEvent()
         clickHandler()
         requestRegister()
+        eventClickGoogle()
     }
 
 
@@ -62,7 +65,11 @@ class RegisterActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    showErrorToast("Đăng ký thất bại", "Lỗi Tạo Tài Khoản")
+                    if(it.message?.contains("400") == true) {
+                        showWarningToast("Lỗi Tạo Tài Khoản", "Email Đã Được Sử Dụng")
+                    } else {
+                        showWarningToast("Đăng ký thất bại", "Lỗi Tạo Tài Khoản")
+                    }
                 }
             }
         }
@@ -145,13 +152,20 @@ class RegisterActivity : BaseActivity() {
             validator.validatePassword(binding.edtPassword.text.toString().trim()) == null
         val isConfirmPasswordValid =
             binding.edtPassword.text.toString().trim() == binding.edtPasswordConfirm.text.toString().trim()
-
         return isUserNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 
     private fun clickHandler() {
         binding.tvSignUp.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+    }
+
+    private fun eventClickGoogle() {
+        binding.llLoginGoogle.setOnClickListener {
+            val authUrl = "https://unwind.id.vn/oauth2/authorization/google"
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(authUrl))
+            startActivity(browserIntent)
         }
     }
 

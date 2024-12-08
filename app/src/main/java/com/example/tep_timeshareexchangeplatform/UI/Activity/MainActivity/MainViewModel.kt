@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tep_timeshareexchangeplatform.API.Repository.AuthAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.FeedbackDTO
+import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.SaveTokenDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val customerAPIRepository: CustomerAPIRepository
+    private val customerAPIRepository: CustomerAPIRepository,
+    private val authAPIRepository: AuthAPIRepository
 ) : ViewModel() {
 
     /**
@@ -194,6 +197,24 @@ class MainViewModel @Inject constructor(
         _roomCount.value = 1
         _adultCount.value = 1
     }
+
+
+    /**
+     * Call API Save FCM Token
+     *
+     */
+    private val _saveFCMToken = MutableLiveData<Resource<Boolean>>()
+    val saveFCMToken: LiveData<Resource<Boolean>> = _saveFCMToken
+    fun saveFCMToken(token: String, saveTokenDTO: SaveTokenDTO) {
+        viewModelScope.launch {
+            _saveFCMToken.postValue(Resource.loading(null))
+            authAPIRepository.saveFCMToken(token, saveTokenDTO).let {
+                _saveFCMToken.postValue(it)
+            }
+        }
+    }
+
+
 
 
 

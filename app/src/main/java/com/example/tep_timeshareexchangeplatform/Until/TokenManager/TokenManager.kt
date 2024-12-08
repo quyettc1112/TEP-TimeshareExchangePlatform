@@ -103,6 +103,22 @@ class TokenManager(private val context: Context) {
         }
     }
 
+    // Lưu hoặc cập nhật FCM token
+    fun saveFCMToken(token: String) {
+        sharedPreferences.edit().putString(Constant.FCM_TOKEN_KEY, token).apply()
+    }
+
+    // Lấy FCM token
+    fun getFCMToken(): String? {
+        return sharedPreferences.getString(Constant.FCM_TOKEN_KEY, null)
+    }
+
+    // Xóa FCM token
+    fun deleteFCMToken() {
+        sharedPreferences.edit().remove(Constant.FCM_TOKEN_KEY).apply()
+    }
+
+
     // Xoá thông tin khách hàng khỏi SharedPreferences
     fun clearProfileInfo() {
         val editor = sharedPreferences.edit()

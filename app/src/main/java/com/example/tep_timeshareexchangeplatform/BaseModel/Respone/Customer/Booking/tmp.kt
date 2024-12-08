@@ -4,7 +4,7 @@ package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Boo
 import com.google.gson.annotations.SerializedName
 
 
-data class MyBookingRentalDetailResponse(
+data class tmp(
     @SerializedName("id") val id: Int,
     @SerializedName("rentalPosting") val rentalPosting: RentalPosting,
     @SerializedName("status") val status: String,
@@ -17,11 +17,11 @@ data class MyBookingRentalDetailResponse(
     @SerializedName("isFeedback") val isFeedback: Boolean,
     @SerializedName("renterFullLegalName") val renterFullLegalName: String,
     @SerializedName("renterLegalPhone") val renterLegalPhone: String,
-    @SerializedName("renterLegalAvatar") val renterLegalAvatar: String?,
-    @SerializedName("serviceFee") val serviceFee: Long,
-    @SerializedName("totalPrice") val totalPrice: Long?,
-    @SerializedName("totalNights") val totalNights: Long?,
-    @SerializedName("pricePerNights") val pricePerNights: Long?,
+    @SerializedName("renterLegalAvatar") val renterLegalAvatar: Any?,
+    @SerializedName("serviceFee") val serviceFee: Int,
+    @SerializedName("totalPrice") val totalPrice: Int,
+    @SerializedName("totalNights") val totalNights: Int,
+    @SerializedName("pricePerNights") val pricePerNights: Int,
     @SerializedName("createdDate") val createdDate: String,
     @SerializedName("updatedDate") val updatedDate: String,
     @SerializedName("source") val source: String
@@ -62,7 +62,7 @@ data class MyBookingRentalDetailResponse(
                 @SerializedName("bedsQueen") val bedsQueen: Int,
                 @SerializedName("bedsTwin") val bedsTwin: Int,
                 @SerializedName("buildingsOption") val buildingsOption: Any?,
-                @SerializedName("price") val price: Long?,
+                @SerializedName("price") val price: Int,
                 @SerializedName("description") val description: String,
                 @SerializedName("kitchen") val kitchen: String,
                 @SerializedName("photos") val photos: String,
@@ -80,7 +80,7 @@ data class MyBookingRentalDetailResponse(
                     @SerializedName("latitude") val latitude: String,
                     @SerializedName("longitude") val longitude: String,
                     @SerializedName("country") val country: String,
-                    @SerializedName("placeId") val placeId: Long?
+                    @SerializedName("placeId") val placeId: Any?
                 )
             }
         }

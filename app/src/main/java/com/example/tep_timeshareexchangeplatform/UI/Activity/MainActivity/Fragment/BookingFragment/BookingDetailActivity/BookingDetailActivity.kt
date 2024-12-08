@@ -409,8 +409,8 @@ class BookingDetailActivity : BaseActivity() {
 
             // Bind Data
             tvResortNameDtb.text =
-                data.rentalPosting.roomInfo.unitType.resortResortName + " - " + data.rentalPosting.roomInfo.unitType.title
-            tvLocation.text = data.rentalPosting.roomInfo.unitType.resortAddress
+                data.rentalPosting.roomInfo.unitType.resortResortName + " - Mã Phòng: " + data.rentalPosting.roomInfo.roomInfoCode
+            tvLocation.text = data.rentalPosting.roomInfo.unitType.location.displayName
             tvNumberNight.text = data.totalNights.toString()
             tvCheckInDate.text =
                 data.checkinDate?.let {
@@ -452,6 +452,7 @@ class BookingDetailActivity : BaseActivity() {
                 .error(R.drawable.im_material_mn)
                 .placeholder(R.drawable.ripple_effect_white)
                 .into(imImageTimeshare)
+            binding.includeDetailBilling.llRoomPricing.visibility = View.VISIBLE
         }
 
         // Status

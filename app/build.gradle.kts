@@ -5,6 +5,7 @@ plugins {
     id ("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -34,6 +35,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    configurations.all {
+        exclude(module = "proto-google-common-protos")
+        exclude(module = "protolite-well-known-types")
+        exclude(module = "protobuf-lite")
+        exclude(module = "protobuf-javalite")
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -41,6 +49,8 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
+
     packagingOptions {
         resources {
             excludes += setOf(
@@ -126,6 +136,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-storage")
 
+    implementation("com.google.firebase:firebase-messaging:23.0.0") {
+        exclude(module = "proto-google-common-protos")
+        exclude(module = "protolite-well-known-types")
+        exclude(module = "protobuf-lite")
+        exclude(module = "protobuf-javalite")
+    }
+
     // =================== Google Services ===========================
 
 
@@ -191,6 +208,10 @@ dependencies {
     // PhotoView
     implementation ("com.github.chrisbanes:PhotoView:2.0.0")
 
+    // Pin View
+    implementation ("com.github.aabhasr1:OtpView:v1.1.2")
+    //MPChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
 

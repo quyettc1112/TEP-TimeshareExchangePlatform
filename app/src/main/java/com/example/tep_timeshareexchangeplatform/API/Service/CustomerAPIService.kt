@@ -19,6 +19,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DailySummaryDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
@@ -46,6 +47,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.Date
 
 interface CustomerAPIService {
 
@@ -334,6 +336,13 @@ interface CustomerAPIService {
         @Body String : String
     ) : Response<ExchangePriceValuationRespone>
 
+    //Daily Summary
+    @GET("customer/daily-summary")
+    suspend fun getDailySummaryData(
+        @Header ("Authorization") token: String,
+        @Query ("startDate") startDate: String,
+        @Query ("endDate") endDate: String,
+    ) : Response<DailySummaryDataResponse>
 
 
 

@@ -13,6 +13,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
@@ -544,12 +545,12 @@ class VNPayActivity : BaseActivity() {
     private fun showFailed(responseCodeEnum: VnpResponseCode) {
         MotionToast.Companion.createToast(
             this@VNPayActivity,
-            "PaymentResult ${responseCodeEnum.code}",
+            "Thạnh Toán Thất Bại Code: " + responseCodeEnum,
             responseCodeEnum.getString(this@VNPayActivity),
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_TOP,
             MotionToast.LONG_DURATION,
-            null
+            ResourcesCompat.getFont(this@VNPayActivity, R.font.inter_bold)
         )
         showFailedDialog(
             this@VNPayActivity,
