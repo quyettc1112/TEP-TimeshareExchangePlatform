@@ -28,6 +28,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType.*
+import com.example.tep_timeshareexchangeplatform.Until.JwtDetach.JwtDecoder
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
@@ -35,6 +36,7 @@ import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper.Compan
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityNotificationBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,8 +103,29 @@ class NotificationActivity : BaseActivity() {
         }
 
 
-    }
+        // Call Mark Read API
+        viewModel.markAllReadResponse.observe(this) { resources ->
+            when (resources.status) {
+                Status.SUCCESS -> {
+                    resources.data?.let {
+                        hideLoadingWaiting()
+                        notificationAdapter.markAllAsRead()
+                        Snackbar.make(binding.root, "Đánh dấu đã đọc thành công", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
 
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showWarningToast("Đánh Dấu Đã Đọc", "Đánh dấu thất bại")
+                    Log.d("PublicPostingFragmenasdasdat", "observeViewModel: ${resources.message}")
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+    }
 
     private fun initAdapter() {
         notificationAdapter.submitList(listOf())
@@ -110,6 +133,9 @@ class NotificationActivity : BaseActivity() {
             if(it.entityId != null) {
                 Log.d("NotificationActivity", "initAdapter: ${it.entityId}")
                 navigateToActivity(it)
+            }
+            if(it.isRead == false) {
+                viewModel.callMarkReadAPI(tokenManager.getAccessToken().toString(), it.id)
             }
         }
 
@@ -171,6 +197,20 @@ class NotificationActivity : BaseActivity() {
     private fun eventClickToolbar() {
         binding.customToolbar7.onStartIconClick = {
             onBackPressed()
+        }
+
+        binding.customToolbar7.onEndIconClick = {
+            callMarkReadAll()
+
+        }
+    }
+
+    private fun callMarkReadAll() {
+        val jwtPayloadModel =
+            JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
+        if (jwtPayloadModel != null) {
+            Toast.makeText(this, "Đánh dấu đã đọc tất cả", Toast.LENGTH_SHORT).show()
+            viewModel.callMarkAllReadAPI(tokenManager.getAccessToken().toString(), jwtPayloadModel.userId)
         }
     }
 
@@ -261,6 +301,16 @@ class NotificationActivity : BaseActivity() {
         intent?.let {
             startActivity(it)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.clearCurrentNotificationList()
+        notificationAdapter.apply {
+            submitList(listOf())
+            notifyDataSetChanged()
+        }
+        viewModel.currentNotificationPage.value = 0
     }
 
 

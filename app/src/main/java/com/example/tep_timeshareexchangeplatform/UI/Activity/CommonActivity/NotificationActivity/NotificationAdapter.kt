@@ -50,6 +50,12 @@ class NotificationAdapter :
 
     }
 
+    // Hàm cập nhật tất cả phần tử thành isRead = true
+    fun markAllAsRead() {
+        val updatedList = differ.currentList.map { it.copy(isRead = true) }
+        submitList(updatedList)
+    }
+
     override fun differCallBack(): DiffUtil.ItemCallback<NotificationResponse.Content> {
         return object : DiffUtil.ItemCallback<NotificationResponse.Content>() {
             override fun areItemsTheSame(
