@@ -389,7 +389,6 @@ class BookingDetailActivity : BaseActivity() {
         }
 
 
-
         // Type Booking
         if (data.source == "rental") {
             Glide.with(binding.root.context).load(R.drawable.ic_rental_booking)
