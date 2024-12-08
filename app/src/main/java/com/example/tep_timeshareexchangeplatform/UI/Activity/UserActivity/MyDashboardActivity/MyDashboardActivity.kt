@@ -90,8 +90,6 @@ class MyDashboardActivity : BaseActivity() {
                     startDate = null
                     binding.startDateEditText.text.clear()
                 }
-                getIntentValue()
-                Log.d("ENDDATE", startDate.toString() + endDate.toString())
             }
 
         binding.startDateEditText.setOnClickListener {
@@ -122,7 +120,6 @@ class MyDashboardActivity : BaseActivity() {
                 selectedDate.time
             )
 
-            Log.d("ENDDATE1", startDate.toString() + endDate.toString())
             binding.endDateEditText.setText(
                 SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(selectedDate.time)
             )
@@ -193,7 +190,6 @@ class MyDashboardActivity : BaseActivity() {
                     startDate!!,
                     endDate!!
                 )
-                Log.d("ENDDATEC", startDate.toString() + endDate.toString())
             }
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
