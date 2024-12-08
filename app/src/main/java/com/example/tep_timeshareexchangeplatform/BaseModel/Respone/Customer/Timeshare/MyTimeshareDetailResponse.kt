@@ -19,7 +19,8 @@ data class MyTimeshareDetailResponse(
     @SerializedName("endDate") val endDate: String,
     @SerializedName("unitType") val unitType: UnitType,
     @SerializedName("location") val location: Location,
-    @SerializedName("roomAmenities") val roomAmenities: List<RoomAmenity>
+    @SerializedName("roomAmenities") val roomAmenities: List<RoomAmenity>,
+    @SerializedName("verify") val verify: Boolean
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -35,7 +36,8 @@ data class MyTimeshareDetailResponse(
         parcel.readString().toString(),
         TODO("unitType"),
         TODO("roomAmenities"),
-        TODO("location")
+        TODO("location"),
+        parcel.readByte() != 0.toByte()
     ) {
     }
 
@@ -86,6 +88,7 @@ data class MyTimeshareDetailResponse(
         parcel.writeString(resortImage)
         parcel.writeString(startDate)
         parcel.writeString(endDate)
+        parcel.writeByte(if (verify) 1 else 0)
     }
 
     override fun describeContents(): Int {

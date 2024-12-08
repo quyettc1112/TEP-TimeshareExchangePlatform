@@ -69,7 +69,6 @@ class MyTimeshareDetailActivity : BaseActivity() {
         initAdapter()
         observeViewModel()
         setEventButtonRequestClick()
-        eventClickShowUpdateBottomSheet()
         eventClickShowMaps()
     }
 
@@ -165,7 +164,8 @@ class MyTimeshareDetailActivity : BaseActivity() {
         binding.apply {
             // Resort Name, Location
             tvResortName.text = myTimeshareDetailResponse.resortName.toString()
-            tvLocation.text = (myTimeshareDetailResponse.location.displayName ?: "Không Có Thông Tin").toString()
+            tvLocation.text =
+                (myTimeshareDetailResponse.location.displayName ?: "Không Có Thông Tin").toString()
         }
 
         // Unit Type
@@ -181,13 +181,29 @@ class MyTimeshareDetailActivity : BaseActivity() {
         binding.spValidStarYear.setText(myTimeshareDetailResponse.startYear.toString())
         binding.spValidEndYear.setText(myTimeshareDetailResponse.endYear.toString())
 
+        // verify
+        if (myTimeshareDetailResponse.verify) {
+            binding.llVerify.visibility = View.VISIBLE
+
+        } else {
+            eventClickShowUpdateBottomSheet()
+            binding.llVerify.visibility = View.GONE
+        }
+
 
     }
+
     private fun eventClickShowMaps() {
         binding.llSeeMap.setOnClickListener {
             val intent = Intent(this, MapViewActivity::class.java)
-            intent.putExtra(Constant.RESORT_LATITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.latitude)
-            intent.putExtra(Constant.RESORT_LONGITUDE, myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.longitude)
+            intent.putExtra(
+                Constant.RESORT_LATITUDE,
+                myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.latitude
+            )
+            intent.putExtra(
+                Constant.RESORT_LONGITUDE,
+                myTimeshareDetailViewModel.myTimeshareDetail.value?.data?.location?.longitude
+            )
             startActivity(intent)
         }
     }
