@@ -67,7 +67,7 @@ data class NotificationResponse(
         @SerializedName("userId") val userId: Int,
         @SerializedName("type") val type: String,
         @SerializedName("role") val role: Any?,
-        @SerializedName("entityId") val entityId: Any?
+        @SerializedName("entityId") val entityId: Int?
     )
 
     data class Pageable(

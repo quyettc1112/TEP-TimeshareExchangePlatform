@@ -132,6 +132,7 @@ class Constant {
         fun formatPriceLong(price: Long?): String {
             if (price == null) return "0"
 
+
             val formatter = DecimalFormat("#,###")
             return formatter.format(price)
         }
@@ -714,112 +715,6 @@ class Constant {
                 }
         }
 
-        val notificationList = listOf(
-            NotificationModel(
-                title = "Unwind Thông Báo",
-                typeNotification = NotificationType.NOTIFICATION, // Loại thông báo
-                description = "Chào mừng bạn đến với Unwind! Hãy khám phá và tận hưởng những trải nghiệm tuyệt vời cùng các dịch vụ đẳng cấp mà chúng tôi mang đến.",
-                iconResId = R.raw.anim_notification, // Thay thế bằng icon thực tế của bạn
-                timestamp = "5 phút trước",
-                isRead = false
-            ),
-            NotificationModel(
-                title = "Bạn đã nạp tiền vào ví Unwind",
-                typeNotification = NotificationType.DEPOSIT, // Loại thông báo
-                description = "Bạn đã nạp thành công 1.470.000 VNĐ vào ví Unwind. Nhấn để kiểm tra chi tiết giao dịch của bạn ngay bây giờ.",
-                iconResId = R.raw.anim_deposit, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 phút trước",
-                isRead = false
-            ),
-
-            NotificationModel(
-                title = "Bài Đăng Được Chấp Nhận",
-                typeNotification = NotificationType.ACCEPT_POSTING, // Loại thông báo
-                description = "Bài đăng của bạn đã được duyệt thành công bởi hệ thống. Hãy truy cập ngay để theo dõi lượng quan tâm và quản lý bài viết hiệu quả hơn.",
-                iconResId = R.raw.anim_accept_posting, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 giờ trước",
-                isRead = false
-            ),
-
-            NotificationModel(
-                title = "Bài Đăng Bị Từ Chối",
-                typeNotification = NotificationType.REJECT_POSTING, // Loại thông báo
-                description = "Rất tiếc, bài viết của bạn đã bị từ chối bởi hệ thống. Hãy kiểm tra kỹ nội dung bài viết, chỉnh sửa theo hướng dẫn và gửi lại để được xem xét.",
-                iconResId = R.raw.anim_reject_posting, // Thay thế bằng icon thực tế của bạn
-                timestamp = "20/08/2024",
-                isRead = false
-            ),
-
-            NotificationModel(
-                title = "Đặt Phòng Thành Công",
-                typeNotification = NotificationType.DONE_BOOKING, // Loại thông báo
-                description = "Chúc mừng bạn đã đặt phòng thành công tại Resort Vinpearl. Nhấn vào đây để xem thông tin đầy đủ.",
-                iconResId = R.raw.anim_done_booking, // Thay thế bằng icon thực tế của bạn
-                timestamp = "20/08/2024",
-                isRead = false
-            ),
-
-            NotificationModel(
-                title = "Gia Hạn Gói Thành Viên Thành Công",
-                typeNotification = NotificationType.MEMBERSHIP, // Loại thông báo
-                description = "Bạn đã gia hạn thành công gói Membership của mình. Nhấn để xem thông tin chi tiết về gói thành viên của bạn.",
-                iconResId = R.raw.anim_membership, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 ngày trước",
-                isRead = false
-            ),
-            NotificationModel(
-                title = "Unwind Thông Báo",
-                typeNotification = NotificationType.NOTIFICATION, // Loại thông báo
-                description = "Chào mừng bạn đến với Unwind!! Hãy khám phá và tận hưởng những trải nghiệm tuyệt vời cùng các dịch vụ đẳng cấp mà chúng tôi mang đến.",
-                iconResId = R.raw.anim_notification, // Thay thế bằng icon thực tế của bạn
-                timestamp = "5 phút trước",
-                isRead = true
-            ),
-            NotificationModel(
-                title = "Bạn đã nạp tiền vào ví Unwind",
-                typeNotification = NotificationType.DEPOSIT, // Loại thông báo
-                description = "Bạn đã nạp thành công 1.470.000 VNĐ vào ví Unwind. Nhấn để kiểm tra chi tiết giao dịch của bạn ngay bây giờ.",
-                iconResId = R.raw.anim_deposit, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 phút trước",
-                isRead = true
-            ),
-
-            NotificationModel(
-                title = "Bài Đăng Được Chấp Nhận",
-                typeNotification = NotificationType.ACCEPT_POSTING, // Loại thông báo
-                description = "Bài đăng của bạn đã được duyệt thành công bởi hệ thống. Hãy truy cập ngay để theo dõi lượng quan tâm và quản lý bài viết hiệu quả hơn.",
-                iconResId = R.raw.anim_accept_posting, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 giờ trước",
-                isRead = true
-            ),
-
-            NotificationModel(
-                title = "Bài Đăng Bị Từ Chối",
-                typeNotification = NotificationType.REJECT_POSTING, // Loại thông báo
-                description = "Rất tiếc, bài viết của bạn đã bị từ chối bởi hệ thống. Hãy kiểm tra kỹ nội dung bài viết, chỉnh sửa theo hướng dẫn và gửi lại để được xem xét.",
-                iconResId = R.raw.anim_reject_posting, // Thay thế bằng icon thực tế của bạn
-                timestamp = "20/08/2024",
-                isRead = true
-            ),
-
-            NotificationModel(
-                title = "Đặt Phòng Thành Công",
-                typeNotification = NotificationType.DONE_BOOKING, // Loại thông báo
-                description = "Chúc mừng bạn đã đặt phòng thành công tại Resort Vinpearl. Đừng quên kiểm tra các chi tiết đặt phòng để có trải nghiệm lưu trú tốt nhất. Nhấn vào đây để xem thông tin đầy đủ.",
-                iconResId = R.raw.anim_done_booking, // Thay thế bằng icon thực tế của bạn
-                timestamp = "20/08/2024",
-                isRead = true
-            ),
-
-            NotificationModel(
-                title = "Gia Hạn Gói Thành Viên Thành Công",
-                typeNotification = NotificationType.MEMBERSHIP, // Loại thông báo
-                description = "Bạn đã gia hạn thành công gói Membership của mình. Những quyền lợi ưu đãi sẽ được áp dụng ngay lập tức. Nhấn để xem thông tin chi tiết về gói thành viên của bạn.",
-                iconResId = R.raw.anim_membership, // Thay thế bằng icon thực tế của bạn
-                timestamp = "1 ngày trước",
-                isRead = true
-            )
-        )
 
     }
 }

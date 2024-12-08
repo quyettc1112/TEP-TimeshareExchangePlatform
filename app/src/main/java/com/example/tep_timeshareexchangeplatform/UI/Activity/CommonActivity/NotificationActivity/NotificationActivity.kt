@@ -2,6 +2,7 @@ package com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Not
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -17,9 +18,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Notification.NotificationResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
+import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType.*
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
@@ -34,7 +42,7 @@ class NotificationActivity : BaseActivity() {
     private lateinit var binding: ActivityNotificationBinding
     private val notificationAdapter = NotificationAdapter()
     private lateinit var notificationHelper: NotificationHelper
-    private val viewModel : NotificationViewModel by viewModels()
+    private val viewModel: NotificationViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +61,7 @@ class NotificationActivity : BaseActivity() {
         eventClickOptionNotificationSetting()
         notificationHelper = NotificationHelper(this)
         eventClickToolbar()
-        if (tokenManager.isLoggedIn()){
+        if (tokenManager.isLoggedIn()) {
             observeViewModel()
         } else {
             finish()
@@ -71,11 +79,13 @@ class NotificationActivity : BaseActivity() {
                         notificationAdapter.submitList(viewModel.getCurrentNotificationList())
                     }
                 }
+
                 Status.ERROR -> {
                     binding.lottieAnimationView.visibility = View.GONE
                     showWarningToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
                     Log.d("PublicPostingFragmenasdasdat", "observeViewModel: ${resources.message}")
                 }
+
                 Status.LOADING -> {
                     binding.lottieAnimationView.visibility = View.VISIBLE
                 }
@@ -83,7 +93,11 @@ class NotificationActivity : BaseActivity() {
         }
 
         viewModel.currentNotificationPage.observe(this) {
-            viewModel.callGetNotificationAPI(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+            viewModel.callGetNotificationAPI(
+                tokenManager.getAccessToken().toString(),
+                it,
+                PAGE_SIZE
+            )
         }
 
 
@@ -93,7 +107,10 @@ class NotificationActivity : BaseActivity() {
     private fun initAdapter() {
         notificationAdapter.submitList(listOf())
         notificationAdapter.onItemClick = {
-            Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show()
+            if(it.entityId != null) {
+                Log.d("NotificationActivity", "initAdapter: ${it.entityId}")
+                navigateToActivity(it)
+            }
         }
 
     }
@@ -104,7 +121,8 @@ class NotificationActivity : BaseActivity() {
                 LinearLayoutManager(this@NotificationActivity, LinearLayoutManager.VERTICAL, false)
             adapter = notificationAdapter
         }
-        binding.recyclerViewNotification.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerViewNotification.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -126,7 +144,7 @@ class NotificationActivity : BaseActivity() {
 
     private fun eventClickOptionNotificationSetting() {
         binding.ivClose.setOnClickListener {
-          binding.optionOpenNotification.visibility = View.GONE
+            binding.optionOpenNotification.visibility = View.GONE
         }
 
         binding.tvSetting.setOnClickListener {
@@ -199,6 +217,50 @@ class NotificationActivity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    private fun navigateToActivity(item: NotificationResponse.Content) {
+        val notificationType = NotificationType.fromKey(item.type)
+        val intent : Intent = when (notificationType) {
+            // User Booking
+            RENTAL_BOOKING -> {
+                Log.d("NRENTAL_BOOKING"  , "navigateToActivity: ${item.entityId}")
+                Intent(this, BookingDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, item.entityId)
+                }
+
+            }
+            EXCHANGE_BOOKING -> {
+                Log.d("BRUHNEXCHANGE_BOOKING"  , "navigateToActivity: ${item.entityId}")
+                Intent(this, BookingDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, item.entityId)
+                }
+            }
+            // Posting
+            RENTAL_POSTING -> {
+                Log.d("BRUHNRENTAL_POSTING"  , "navigateToActivity: ${item.entityId}")
+                Intent(this, MyPostingDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_MY_POSTING_ID, item.entityId ?: 0)
+                }
+            }
+            EXCHANGE_POSTING -> {
+                Log.d("BRUHNEXCHANGE_POSTING"  , "navigateToActivity: ${item.entityId}")
+                Intent(this, MyExchangeDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_MY_POSTING_ID, item.entityId ?: 0)
+                }
+            }
+            EXCHANGE_REQUEST -> {
+                Log.d("BRUHNEXCHANGE_REQUEST"  , "navigateToActivity: ${item.entityId}")
+                Intent(this, MyExchangeDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_POSTING_ID, item.entityId ?: 0)
+                }
+            }
+            null -> TODO()
+        }
+
+        intent?.let {
+            startActivity(it)
+        }
     }
 
 

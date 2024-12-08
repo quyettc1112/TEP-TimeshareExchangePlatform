@@ -22,7 +22,6 @@ class NotificationAdapter :
         BaseItemViewHolderCF<NotificationResponse.Content, ItemNotificationBinding>(binding) {
         override fun bind(item: NotificationResponse.Content) {
 
-
             if (item.isRead) {
                 binding.main.backgroundTintList = ContextCompat.getColorStateList(
                     binding.root.context,
@@ -44,51 +43,11 @@ class NotificationAdapter :
             // Title
             binding.titleNotification.text = item.title
 
-            // Type Notification
-         //   bindDataTypeNotification(item)
-
-
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
-
-
         }
 
-       /* private fun bindDataTypeNotification(item: NotificationResponse.Content) {
-            when (item.typeNotification) {
-                NotificationType.NOTIFICATION -> {
-                    binding.titleNotification.text = NotificationType.NOTIFICATION.notificationType
-                    binding.btnViewDetail.visibility = View.GONE
-                }
-
-                NotificationType.DEPOSIT -> {
-                    binding.titleNotification.text = NotificationType.DEPOSIT.notificationType
-                    binding.btnViewDetail.visibility = View.VISIBLE
-
-                }
-
-                NotificationType.REJECT_POSTING -> {
-                    binding.titleNotification.text = NotificationType.REJECT_POSTING.notificationType
-                    binding.btnViewDetail.visibility = View.GONE
-                }
-
-                NotificationType.ACCEPT_POSTING -> {
-                    binding.titleNotification.text = NotificationType.ACCEPT_POSTING.notificationType
-                    binding.btnViewDetail.visibility = View.VISIBLE
-                }
-
-                NotificationType.DONE_BOOKING -> {
-                    binding.titleNotification.text = NotificationType.DONE_BOOKING.notificationType
-                    binding.btnViewDetail.visibility = View.VISIBLE
-                }
-
-                NotificationType.MEMBERSHIP -> {
-                    binding.titleNotification.text = NotificationType.MEMBERSHIP.notificationType
-                    binding.btnViewDetail.visibility = View.GONE
-                }
-            }
-        }*/
     }
 
     override fun differCallBack(): DiffUtil.ItemCallback<NotificationResponse.Content> {
