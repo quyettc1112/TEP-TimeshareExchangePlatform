@@ -94,15 +94,12 @@ class LoginActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "${resource.status}",
-                        "${resource.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        ResourcesCompat.getFont(this, R.font.inter_thin)
-                    );
+                    if(resource.message?.contains("401") == true) {
+                        showWarningToast("Đăng Nhập Thất Bại", "Email hoặc mật khẩu không chính xác")
+                    }
+                    if(resource.message?.contains("404") == true) {
+                        showWarningToast("Đăng Nhập Thất Bại", "Người dùng không tồn tại")
+                    }
                     tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
                 }
             }
