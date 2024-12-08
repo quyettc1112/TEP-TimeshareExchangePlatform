@@ -90,6 +90,7 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_POSTING_ID, 0)
+        Log.d("CheckPostingDetailData", "getIntentValue: $intent")
         if (intent == 0) {
             finish()
         }
@@ -116,15 +117,6 @@ class PostingDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
                 }
             }
         }
@@ -301,6 +293,7 @@ class PostingDetailActivity : BaseActivity() {
 
         // Cancel Policy
         binding.apply {
+            llCancellationPolicy.visibility = View.VISIBLE
             if (postingDetail.cancelType.toString() == "null") {
                 tvCancelPolicy.text = "Không có"
                 tvCancelPolicyDtb.text = "Không có"
@@ -333,6 +326,9 @@ class PostingDetailActivity : BaseActivity() {
                 .placeholder(R.drawable.ic_image_tmp_holder)
                 .error(R.drawable.ic_image_tmp_holder)
                 .into(binding.imImageTimeshare)
+
+            binding.llPriceRoom.visibility = View.VISIBLE
+
         }
 
         // Data for Request
@@ -469,6 +465,7 @@ class PostingDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: PublicPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 

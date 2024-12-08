@@ -223,6 +223,8 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
         checkUserLoggedIn()
         checkUserStateLog()
         //mainViewModel.resetCurrentMyBookingPage()
+
+
     }
 
     @SuppressLint("MissingSuperCall")

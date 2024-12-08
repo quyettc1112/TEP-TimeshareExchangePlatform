@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/primary_background_F9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_background_F9"
     tools:context=".UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity">
 
     <!--// Custom Toolbar-->
@@ -18,52 +17,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:showTitleDetail="true"
-        app:showStartText="false" />
+        app:showStartText="false"
+        app:showTitleDetail="true" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
 
         <!--// Timeshare Detail-->
         <ScrollView
-            android:visibility="visible"
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/customToolbar">
 
             <!--// Layout Container for Timeshare Detail-->
             <LinearLayout
-                android:background="@color/primary_background_F9"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/primary_background_F9"
+                android:orientation="vertical">
 
 
-                    <!--// Timeshare Detail Image-->
-                    <androidx.core.widget.NestedScrollView
+                <!--// Timeshare Detail Image-->
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="305dp"
+                    android:fillViewport="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewResortImage"
                         android:layout_width="match_parent"
-                        android:layout_height="305dp"
-                        android:fillViewport="true"
+                        android:layout_height="match_parent"
+                        android:isScrollContainer="false"
+                        android:nestedScrollingEnabled="false"
+                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerViewResortImage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:isScrollContainer="false"
-                            android:nestedScrollingEnabled="false"
-                            android:scrollbars="none"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.core.widget.NestedScrollView>
-
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.core.widget.NestedScrollView>
 
 
                 <!--// Resort Info and Map-->
@@ -269,45 +268,47 @@
 
                 <!--// Ngày nhận phòng-->
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:background="@color/white"
                     android:gravity="center"
-                    android:weightSum="10"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:weightSum="10">
 
                     <!-- Check-in Date Section -->
                     <LinearLayout
-                        android:layout_weight="4.5"
                         android:layout_width="0dp"
-                        android:background="@drawable/ripple_effect_white"
                         android:layout_height="match_parent"
+                        android:layout_weight="4.5"
+                        android:background="@drawable/ripple_effect_white"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <!-- Label for Check-in Date -->
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
                                 android:fontFamily="@font/inter_regular"
+                                android:maxLines="1"
                                 android:text="Ngày Nhận Phòng"
                                 android:textColor="@color/gray_text"
                                 android:textSize="12sp" />
+
                             <ImageView
-                                android:src="@drawable/ic_check_in"
                                 android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_check_in" />
 
 
                         </LinearLayout>
@@ -319,8 +320,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -338,40 +339,42 @@
 
                     <!-- Arrow Icon -->
                     <ImageView
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
 
                     <!-- Check-out Date Section -->
                     <LinearLayout
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_weight="4.5"
                         android:layout_width="0dp"
-                        android:background="@drawable/ripple_effect_white"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_marginStart="10dp"
+                        android:layout_weight="4.5"
+                        android:background="@drawable/ripple_effect_white"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <!-- Label for Check-in Date -->
                         <LinearLayout
-                            android:gravity="center"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
                                 android:fontFamily="@font/inter_regular"
+                                android:maxLines="1"
                                 android:text="Ngày Trả Phòng"
                                 android:textColor="@color/gray_text"
                                 android:textSize="12sp" />
+
                             <ImageView
-                                android:src="@drawable/ic_check_out"
                                 android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_check_out" />
 
                         </LinearLayout>
 
@@ -381,8 +384,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:maxLines="1"
                             android:fontFamily="@font/inter_bold"
+                            android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -400,9 +403,10 @@
 
                 <!--// Unit Type-->
                 <LinearLayout
-                    android:layout_marginTop="2dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp">
+
                     <include
                         android:id="@+id/include_unit_type"
                         layout="@layout/include_unit_type"
@@ -446,6 +450,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
                         <include
                             android:id="@+id/include_amenities"
                             layout="@layout/include_amenities" />
@@ -458,13 +463,13 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="2dp"
+                    android:background="@color/white"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
                     android:paddingBottom="20dp"
-                    android:background="@color/white">
+                    android:visibility="gone">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout8"
@@ -488,65 +493,69 @@
 
                     <!--// Room Terms-->
                     <com.google.android.flexbox.FlexboxLayout
-                        android:layout_marginTop="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
                         <LinearLayout
-                            android:layout_marginEnd="20dp"
-                            android:orientation="vertical"
-                            android:gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
                             <ImageView
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
-                                android:src="@drawable/ic_no_pet"/>
+                                android:src="@drawable/ic_no_pet" />
+
                             <TextView
-                                android:layout_marginTop="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Cấm vật nuôi"/>
+                                android:layout_marginTop="5dp"
+                                android:text="Cấm vật nuôi" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_marginEnd="10dp"
-                            android:orientation="vertical"
-                            android:gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
                             <ImageView
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
-                                android:src="@drawable/ic_no_smooking"/>
+                                android:src="@drawable/ic_no_smooking" />
+
                             <TextView
-                                android:layout_marginTop="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Cấm hút thuốc"/>
+                                android:layout_marginTop="5dp"
+                                android:text="Cấm hút thuốc" />
 
                         </LinearLayout>
 
                     </com.google.android.flexbox.FlexboxLayout>
 
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Cancel Policy-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:visibility="gone"
+                    android:id="@+id/ll_cancellation_policy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:background="@color/white"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
                     android:paddingBottom="20dp"
-                    android:background="@color/white">
+                    android:visibility="gone">
                     <!-- // Suggest Title-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout9"
@@ -571,31 +580,28 @@
                     <!--// Cancel Policy Content-->
                     <TextView
                         android:id="@+id/tv_cancel_policy"
-                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter_light"
                         android:text="Không có chính sách hủy"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
 
 
-
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--// Resort Review-->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:background="@color/white"
                     android:minHeight="300dp"
-                    android:visibility="gone"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:paddingTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:paddingEnd="20dp"
+                    android:visibility="gone">
 
                     <!--// Review Scrore-->
                     <TextView
@@ -604,9 +610,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_semibold"
                         android:text="4.5"
-                        android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="30dp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -641,13 +647,13 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_review"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:nestedScrollingEnabled="false"
                         android:layout_height="300dp"
+                        android:layout_marginTop="10dp"
                         android:maxHeight="250dp"
-                        tools:listitem="@layout/item_review"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_review_score">
+                        app:layout_constraintTop_toBottomOf="@+id/tv_review_score"
+                        tools:listitem="@layout/item_review">
 
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -668,13 +674,13 @@
 
                 <!--// Detail Billing-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingTop="10dp"
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp">
+                    android:layout_marginTop="2dp"
+                    android:background="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp">
 
 
                     <!-- // Image-->
@@ -712,8 +718,8 @@
                             android:id="@+id/tvResortName_dtb"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
                             android:fontFamily="@font/inter_bold"
+                            android:maxLines="2"
                             android:text="Flamingo Dai Lai | Studio King"
                             android:textColor="@color/black"
                             android:textSize="16dp"
@@ -862,11 +868,11 @@
 
                             <!-- Cancellation Policy -->
                             <LinearLayout
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:paddingTop="4dp"
+                                android:visibility="gone"
                                 android:weightSum="2">
 
                                 <TextView
@@ -898,10 +904,11 @@
 
                         <!-- Second Section: Room Pricing -->
                         <LinearLayout
-                            android:visibility="gone"
+                            android:id="@+id/ll_price_room"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <!-- Room Price Per Night -->
                             <LinearLayout
@@ -980,12 +987,12 @@
                             <!-- User Image -->
                             <ImageView
                                 android:id="@+id/im_owner_info"
-                                android:visibility="gone"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/ic_user_default_avt"
+                                android:layout_marginEnd="8dp"
                                 android:scaleType="centerCrop"
-                                android:layout_marginEnd="8dp"/>
+                                android:src="@drawable/ic_user_default_avt"
+                                android:visibility="gone" />
 
                             <!-- User Details -->
                             <LinearLayout
@@ -1014,11 +1021,11 @@
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
 
                             <!-- Payment Method Section -->
@@ -1077,7 +1084,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
             </LinearLayout>
         </ScrollView>
@@ -1086,10 +1093,10 @@
     <!--// Bottom Button-->
     <LinearLayout
         android:id="@+id/cv_request_contaner"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:background="@drawable/ripple_effect_white"
         android:layout_height="wrap_content"
+        android:background="@drawable/ripple_effect_white"
+        android:visibility="gone"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -1098,10 +1105,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
             android:paddingStart="20dp"
             android:paddingTop="5dp"
-            android:paddingEnd="20dp"
-            android:backgroundTint="@color/white">
+            android:paddingEnd="20dp">
 
 
             <LinearLayout
@@ -1197,7 +1204,6 @@
             </LinearLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -1206,7 +1212,6 @@
     <!--// Bottom Button-->
     <LinearLayout
         android:id="@+id/cv_request_contaner_exchange"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_margin="20dp"
@@ -1217,6 +1222,7 @@
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/shimmer_view_container">
 
         <!-- Icon -->
@@ -1238,11 +1244,6 @@
             android:textSize="16sp" />
 
     </LinearLayout>
-
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

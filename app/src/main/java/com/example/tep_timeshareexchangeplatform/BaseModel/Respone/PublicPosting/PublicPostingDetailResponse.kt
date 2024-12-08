@@ -12,6 +12,7 @@ data class PublicPostingDetailResponse(
     @SerializedName("timeShareId") val timeShareId: Int,
     @SerializedName("roomInfoId") val roomInfoId: Int,
     @SerializedName("roomName") val roomName: String,
+    @SerializedName("roomCode") val roomCode: String,
     @SerializedName("resortId") val resortId: Int,
     @SerializedName("resortName") val resortName: String,
     @SerializedName("location") val location: Location,
