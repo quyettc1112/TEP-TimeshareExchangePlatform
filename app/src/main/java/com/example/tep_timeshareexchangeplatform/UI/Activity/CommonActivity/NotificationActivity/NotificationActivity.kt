@@ -4,31 +4,45 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
+import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper
 import com.example.tep_timeshareexchangeplatform.Until.NotificationHelper.Companion.NOTIFICATION_PERMISSION_REQUEST_CODE
+import com.example.tep_timeshareexchangeplatform.Until.Status
+import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityNotificationBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NotificationActivity : BaseActivity() {
     private lateinit var binding: ActivityNotificationBinding
     private val notificationAdapter = NotificationAdapter()
     private lateinit var notificationHelper: NotificationHelper
+    private val viewModel : NotificationViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        tokenManager = TokenManager(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -38,19 +52,46 @@ class NotificationActivity : BaseActivity() {
         setNotificationAdapter()
         eventClickOptionNotificationSetting()
         notificationHelper = NotificationHelper(this)
-        checkPermission()
-        binding.btnTestNotification.setOnClickListener {
-            notificationHelper.makeNotification(
-                this,
-                "Thông Báo Quan Trọng",
-                "Đây là thông báo quan trọng"
-            )
+        eventClickToolbar()
+        if (tokenManager.isLoggedIn()){
+            observeViewModel()
+        } else {
+            finish()
         }
+        checkPermission()
+    }
+
+    private fun observeViewModel() {
+        viewModel.notificationResponse.observe(this) { resources ->
+            when (resources.status) {
+                Status.SUCCESS -> {
+                    binding.lottieAnimationView.visibility = View.GONE
+                    resources.data?.let {
+                        viewModel.loadMoreNotifications(it.content)
+                        notificationAdapter.submitList(viewModel.getCurrentNotificationList())
+                    }
+                }
+                Status.ERROR -> {
+                    binding.lottieAnimationView.visibility = View.GONE
+                    showWarningToast("Lỗi Tải Dữ Liệu", "Vui lòng thử lại sau")
+                    Log.d("PublicPostingFragmenasdasdat", "observeViewModel: ${resources.message}")
+                }
+                Status.LOADING -> {
+                    binding.lottieAnimationView.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        viewModel.currentNotificationPage.observe(this) {
+            viewModel.callGetNotificationAPI(tokenManager.getAccessToken().toString(), it, PAGE_SIZE)
+        }
+
+
     }
 
 
     private fun initAdapter() {
-        notificationAdapter.submitList(Constant.notificationList)
+        notificationAdapter.submitList(listOf())
         notificationAdapter.onItemClick = {
             Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show()
         }
@@ -63,7 +104,24 @@ class NotificationActivity : BaseActivity() {
                 LinearLayoutManager(this@NotificationActivity, LinearLayoutManager.VERTICAL, false)
             adapter = notificationAdapter
         }
+        binding.recyclerViewNotification.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastCompletelyVisibleItem =
+                    layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
 
+                val totalElementOfAPI =
+                    viewModel.notificationResponse.value?.data?.totalElements ?: 0
+                val currentListSizeOfAdapter = notificationAdapter.differ.currentList.size
+
+
+                if (lastCompletelyVisibleItem == totalItemCount - 1 && currentListSizeOfAdapter < totalElementOfAPI) {
+                    viewModel.incrementCurrentNotificationPage()
+                }
+            }
+        })
     }
 
     private fun eventClickOptionNotificationSetting() {
@@ -91,6 +149,13 @@ class NotificationActivity : BaseActivity() {
 
 
     }
+
+    private fun eventClickToolbar() {
+        binding.customToolbar7.onStartIconClick = {
+            onBackPressed()
+        }
+    }
+
 
     private fun checkPermission() {
         // Kiểm tra trạng thái quyền POST_NOTIFICATIONS
@@ -129,6 +194,11 @@ class NotificationActivity : BaseActivity() {
 
     private fun showRequestPermissionUI() {
         binding.optionOpenNotification.visibility = View.VISIBLE
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 

@@ -9,29 +9,19 @@ import com.airbnb.lottie.LottieDrawable
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.NotificationModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Notification.NotificationResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
 import com.example.tep_timeshareexchangeplatform.databinding.ItemNotificationBinding
 
 class NotificationAdapter :
-    BaseAdapter<NotificationModel, NotificationAdapter.NotificationViewHolder>() {
-    var onItemClick: ((NotificationModel) -> Unit)? = null
+    BaseAdapter<NotificationResponse.Content, NotificationAdapter.NotificationViewHolder>() {
+    var onItemClick: ((NotificationResponse.Content) -> Unit)? = null
 
     inner class NotificationViewHolder(binding: ItemNotificationBinding) :
-        BaseItemViewHolderCF<NotificationModel, ItemNotificationBinding>(binding) {
-        override fun bind(item: NotificationModel) {
-            // Is Read
-           /* if (item.isRead){
-                binding.notificationItem.backgroundTintList =
-                    ContextCompat.getColorStateList(binding.root.context, R.color.gray_400)
-                binding.optionNotification.setImageResource(R.drawable.baseline_more_horiz_24)
-            }
-            else {
-                binding.notificationItem.backgroundTintList =
-                    ContextCompat.getColorStateList(binding.root.context, R.color.white)
-                binding.optionNotification.setImageResource(R.drawable.ic_seen)
+        BaseItemViewHolderCF<NotificationResponse.Content, ItemNotificationBinding>(binding) {
+        override fun bind(item: NotificationResponse.Content) {
 
-            }*/
 
             if (item.isRead) {
                 binding.main.backgroundTintList = ContextCompat.getColorStateList(
@@ -46,18 +36,16 @@ class NotificationAdapter :
             }
 
             // Time
-            binding.timeNotification.text = item.timestamp
+            binding.timeNotification.text = item.createdAt
 
             // Description
-            binding.descriptionNotification.text = item.description
+            binding.descriptionNotification.text = item.content
 
             // Title
             binding.titleNotification.text = item.title
 
             // Type Notification
-            bindDataTypeNotification(item)
-
-
+         //   bindDataTypeNotification(item)
 
 
             binding.root.setOnClickListener {
@@ -67,7 +55,7 @@ class NotificationAdapter :
 
         }
 
-        private fun bindDataTypeNotification(item: NotificationModel) {
+       /* private fun bindDataTypeNotification(item: NotificationResponse.Content) {
             when (item.typeNotification) {
                 NotificationType.NOTIFICATION -> {
                     binding.titleNotification.text = NotificationType.NOTIFICATION.notificationType
@@ -100,21 +88,21 @@ class NotificationAdapter :
                     binding.btnViewDetail.visibility = View.GONE
                 }
             }
-        }
+        }*/
     }
 
-    override fun differCallBack(): DiffUtil.ItemCallback<NotificationModel> {
-        return object : DiffUtil.ItemCallback<NotificationModel>() {
+    override fun differCallBack(): DiffUtil.ItemCallback<NotificationResponse.Content> {
+        return object : DiffUtil.ItemCallback<NotificationResponse.Content>() {
             override fun areItemsTheSame(
-                oldItem: NotificationModel,
-                newItem: NotificationModel
+                oldItem: NotificationResponse.Content,
+                newItem: NotificationResponse.Content
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: NotificationModel,
-                newItem: NotificationModel
+                oldItem: NotificationResponse.Content,
+                newItem: NotificationResponse.Content
             ): Boolean {
                 return oldItem == newItem
             }
