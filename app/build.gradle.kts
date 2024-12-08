@@ -191,6 +191,8 @@ dependencies {
     // PhotoView
     implementation ("com.github.chrisbanes:PhotoView:2.0.0")
 
+    //MPChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
 

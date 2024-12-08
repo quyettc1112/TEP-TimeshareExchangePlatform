@@ -27,6 +27,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainVi
 import com.example.tep_timeshareexchangeplatform.Until.AutoScrollViewPagerHelper
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.GridAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogDetailActivity.BlogDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.BlogListActivity.BlogListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.PostingDetailActivity.PostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.SearchPostingActivity
@@ -329,6 +330,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         binding.tvBlogSeeMore.setOnClickListener {
             val intent = Intent(requireContext(), BlogListActivity::class.java)
             startActivity(intent)
+        }
+        blogAdapter.let {
+            it.onItemClick = {
+                val intent = Intent(requireContext(), BlogDetailActivity::class.java)
+                intent.putExtra(Constant.DEFAULT_BLOG_ID, it.id)
+                startActivity(intent)
+            }
         }
     }
 
