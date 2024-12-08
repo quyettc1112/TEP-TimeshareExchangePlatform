@@ -169,6 +169,10 @@ class MainViewModel @Inject constructor(
         return _currentMyBookingList
     }
 
+    fun clearCurrentMyBookingList() {
+        _currentMyBookingList.clear()
+    }
+
     /**
      * Call API To POST FeedBack
      *
@@ -184,11 +188,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-    fun clearCurrentMyBookingList() {
-        _currentMyBookingList.clear()
-        _currentMyBookingPage.value = 0
-    }
 
 
     fun resetCurrentMyBookingPage() {

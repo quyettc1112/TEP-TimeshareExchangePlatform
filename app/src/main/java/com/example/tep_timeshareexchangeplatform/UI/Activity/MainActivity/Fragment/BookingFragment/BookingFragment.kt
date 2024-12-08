@@ -62,7 +62,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         tokenManager = TokenManager(requireContext())
         eventClickNotification()
         checkLogin()
-        eventClickRefresh()
 
 
         return binding.root
@@ -74,7 +73,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             binding.llLoadingContainer.visibility = View.VISIBLE
         } else {
             myBookingAdapter.submitList(listOf())
-            viewModel.clearCurrentMyBookingList()
             observeData()
             setOrderList()
         }
@@ -145,14 +143,12 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                             }
                         })
                 }
-
                 Status.ERROR -> {
                     (activity as MainActivity).apply {
                         hideLoadingWaiting()
                         showErrorToast("Lỗi", "Lỗi Khi Gửi Phản Hồi")
                     }
                 }
-
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
                 }
@@ -187,20 +183,12 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
         }
     }
 
-    private fun eventClickRefresh() {
-        binding.btnRefresh.setOnClickListener {
-            myBookingAdapter.submitList(listOf())
-            viewModel.clearCurrentMyBookingList()
-        }
-    }
-
     private fun callSendFeedBack(rating: Int, feedback: String, bookingId: Int) {
         if (!tokenManager.isLoggedIn()) {
             (activity as MainActivity).showErrorToast(
                 "Lỗi",
                 "Bạn cần đăng nhập để thực hiện chức năng này"
             )
-
             return
         }
 
@@ -240,6 +228,13 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             binding.llListContianer.visibility = View.GONE
             binding.llLoadingContainer.visibility = View.VISIBLE
             binding.tvDescription.text = "Bạn cần đăng nhập để xem thông tin đặt phòng"
+        } else {
+            viewModel.clearCurrentMyBookingList()
+            myBookingAdapter.apply {
+                submitList(listOf())
+                notifyDataSetChanged()
+            }
+            viewModel.currentMyBookingPage.value = 0
         }
 
     }
@@ -251,14 +246,10 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             if (result.resultCode == Activity.RESULT_OK) {
                 val bookingStatus = result.data?.getStringExtra(Constant.DEFAULT_BOOKING_STATUS)
                 val bookingId = result.data?.getIntExtra(Constant.DEFAULT_BOOKING_ID, 0)
-                Log.d("BookingFragmeasdasdnt", "Booking Status: $bookingStatus")
-                Log.d("BookingFragmeasdasdnt", "Booking ID: $bookingId")
                 if (bookingId != null && bookingStatus != null) {
                     try {
                         myBookingAdapter.updateItemStatus(bookingId, bookingStatus)
                         viewModel.updateBookingItemById(bookingId, bookingStatus)
-
-
                     } catch (e: UnsupportedOperationException) {
                         e.printStackTrace()
                         Toast.makeText(
