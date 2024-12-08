@@ -151,10 +151,82 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:src="@drawable/placeholder_image" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="2dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Start Date EditText -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="2dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="20dp">
+
+                        <!-- Start Date EditText -->
+                        <EditText
+                            android:id="@+id/startDateEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Ngày bắt đầu"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:padding="10dp" />
+
+                        <!-- Calendar Icon (ImageView) -->
+                        <ImageView
+                            android:id="@+id/calendarStartIcon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/baseline_calendar_month_24"
+                            android:layout_marginStart="8dp"
+                            android:clickable="true"
+                            android:focusable="false" />
+                    </LinearLayout>
+
+                    <!-- End Date EditText -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="2dp"
+                        android:gravity="center_vertical">
+
+                        <!-- End Date EditText -->
+                        <EditText
+                            android:id="@+id/endDateEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Ngày kết thúc"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:padding="10dp" />
+
+                        <!-- Calendar Icon (ImageView) -->
+                        <ImageView
+                            android:id="@+id/calendarEndIcon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/baseline_calendar_month_24"
+                            android:layout_marginStart="8dp"
+                            android:clickable="true"
+                            android:focusable="false" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
 
             </LinearLayout>
 
@@ -229,14 +301,14 @@
                                     android:textStyle="bold" />
 
                                 <!-- Description -->
-                                <TextView
-                                    android:id="@+id/tvTotalPostDesc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="80% Increase than before"
-                                    android:textColor="#808080"
-                                    android:textSize="14sp" />
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvTotalPostDesc"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="4dp"-->
+<!--                                    android:text="80% Increase than before"-->
+<!--                                    android:textColor="#808080"-->
+<!--                                    android:textSize="14sp" />-->
                             </LinearLayout>
 
                             <!-- Icon -->
@@ -298,14 +370,14 @@
                                     android:textStyle="bold" />
 
                                 <!-- Description -->
-                                <TextView
-                                    android:id="@+id/tvTotalRentalRenterDesc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="80% Increase than before"
-                                    android:textColor="#808080"
-                                    android:textSize="14sp" />
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvTotalRentalRenterDesc"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="4dp"-->
+<!--                                    android:text="80% Increase than before"-->
+<!--                                    android:textColor="#808080"-->
+<!--                                    android:textSize="14sp" />-->
                             </LinearLayout>
 
                             <!-- Icon -->
@@ -366,14 +438,14 @@
                                     android:textStyle="bold" />
 
                                 <!-- Description -->
-                                <TextView
-                                    android:id="@+id/tvExchangeRenterDesc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="80% Increase than before"
-                                    android:textColor="#808080"
-                                    android:textSize="14sp" />
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvExchangeRenterDesc"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="4dp"-->
+<!--                                    android:text="80% Increase than before"-->
+<!--                                    android:textColor="#808080"-->
+<!--                                    android:textSize="14sp" />-->
                             </LinearLayout>
 
                             <!-- Icon -->
@@ -434,14 +506,14 @@
                                     android:textStyle="bold" />
 
                                 <!-- Description -->
-                                <TextView
-                                    android:id="@+id/tvTotalRequestDesc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="80% Increase than before"
-                                    android:textColor="#808080"
-                                    android:textSize="14sp" />
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvTotalRequestDesc"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="4dp"-->
+<!--                                    android:text="80% Increase than before"-->
+<!--                                    android:textColor="#808080"-->
+<!--                                    android:textSize="14sp" />-->
                             </LinearLayout>
 
                             <!-- Icon -->
@@ -502,14 +574,14 @@
                                     android:textStyle="bold" />
 
                                 <!-- Description -->
-                                <TextView
-                                    android:id="@+id/tvTotalBookingDesc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="80% Increase than before"
-                                    android:textColor="#808080"
-                                    android:textSize="14sp" />
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvTotalBookingDesc"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginTop="4dp"-->
+<!--                                    android:text="80% Increase than before"-->
+<!--                                    android:textColor="#808080"-->
+<!--                                    android:textSize="14sp" />-->
                             </LinearLayout>
 
                             <!-- Icon -->

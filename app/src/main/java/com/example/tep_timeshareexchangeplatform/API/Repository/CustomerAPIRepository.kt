@@ -22,6 +22,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.CustomerInfoResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DailySummaryDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DashboardDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ApproveExchangeResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Exchange.ExchangePriceValuationRespone
@@ -43,6 +44,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimesh
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.Until.ErrorHandler
 import com.example.tep_timeshareexchangeplatform.Until.Resource
+import java.util.Date
 import javax.inject.Inject
 
 class CustomerAPIRepository @Inject constructor(
@@ -763,11 +765,16 @@ class CustomerAPIRepository @Inject constructor(
     suspend fun exchangePriceValuation(
         token: String,
         requestId: Int,
-        priceValuation : Long,
+        priceValuation: Long,
         note: String
     ): Resource<ExchangePriceValuationRespone> {
         return try {
-            val response = customerAPIService.exchangePriceValuation("Bearer $token", requestId, priceValuation , note)
+            val response = customerAPIService.exchangePriceValuation(
+                "Bearer $token",
+                requestId,
+                priceValuation,
+                note
+            )
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {
@@ -779,4 +786,23 @@ class CustomerAPIRepository @Inject constructor(
         }
     }
 
+    //Daily Summary
+    suspend fun getDailySummaryData(
+        token: String,
+        startDate: String,
+        endDate: String
+    ): Resource<DailySummaryDataResponse> {
+        return try {
+            val response =
+                customerAPIService.getDailySummaryData("Bearer $token", startDate, endDate)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
 }

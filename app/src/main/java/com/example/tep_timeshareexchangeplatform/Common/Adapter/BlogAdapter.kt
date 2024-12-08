@@ -7,9 +7,11 @@ import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.databinding.ItemBlogBinding
 
 class BlogAdapter : BaseAdapter<BlogResponse.Content, BlogAdapter.BlogViewHolder> (){
+    var onItemClick: ((BlogResponse.Content) -> Unit)? = null
 
     inner class BlogViewHolder(binding: ItemBlogBinding) : BaseItemViewHolderCF<BlogResponse.Content, ItemBlogBinding> (binding) {
         override fun bind(item: BlogResponse.Content) {
@@ -17,7 +19,9 @@ class BlogAdapter : BaseAdapter<BlogResponse.Content, BlogAdapter.BlogViewHolder
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.imgBlogThumbnail)
-
+            binding.root.setOnClickListener {
+                onItemClick?.let { it1 -> it1(item) }
+            }
         }
 
     }

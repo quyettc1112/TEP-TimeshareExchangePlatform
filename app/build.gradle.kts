@@ -82,7 +82,6 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.annotation)
-    implementation(libs.firebase.inappmessaging.display)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -211,6 +210,8 @@ dependencies {
 
     // Pin View
     implementation ("com.github.aabhasr1:OtpView:v1.1.2")
+    //MPChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
 
