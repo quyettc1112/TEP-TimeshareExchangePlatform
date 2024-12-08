@@ -54,6 +54,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
             insets
         }
         tokenManager = TokenManager(this)
+        getFCMToken()
 
         // Check User is logged in or not, member or customer
        // checkUserStateLog()
@@ -64,6 +65,16 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+    }
+
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                FCMToken = task.result
+                tokenManager.saveFCMToken(FCMToken.toString())
+                Log.d("CheckTokenCurrentasdasdasdasd", FCMToken.toString())
+            } else FCMToken = ""
+        }
     }
 
     private fun observeViewModel() {
@@ -114,12 +125,6 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
                 mainViewModel.setUserLogState(UserLogState.LOGGED_OUT)
             }
         }
-        if (userLogState != UserLogState.LOGGED_OUT) {
-            val FCMToken = tokenManager.getFCMToken()
-            if (FCMToken != null) {
-                callSaveFCMToken(customerProfileInfo!!.id, FCMToken)
-            }
-        }
 
     }
 
@@ -131,6 +136,7 @@ class MainActivity : BaseActivity(), OnBottomNavVisibilityListener {
                 JwtDecoder().parseJwtUsingGson(tokenManager.getAccessToken().toString())
             // Save tokens to shared preferences
             jwtPayloadModel?.let { mainViewModel.updateUser(it) }
+            callSaveFCMToken(jwtPayloadModel!!.userId, tokenManager.getFCMToken().toString())
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.tep_timeshareexchangeplatform.ZTest.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -20,6 +21,8 @@ import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastSt
 import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.ActivityWebViewBinding
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,7 +48,7 @@ class WebView : BaseActivity() {
             insets
         }
         tokenManager = TokenManager(this)
-
+        getFCMToken()
         // Xử lý Deep Link từ Intent
         handleDeepLink(intent)
 
@@ -74,6 +77,15 @@ class WebView : BaseActivity() {
                     tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
                     intentToMain()
                 }
+            }
+        }
+    }
+
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                tokenManager.saveFCMToken(task.result)
+                Log.d("CheckTokenCurrentasdasdasdasd", task.result.toString())
             }
         }
     }
