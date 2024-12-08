@@ -252,7 +252,7 @@ class NotificationActivity : BaseActivity() {
             EXCHANGE_REQUEST -> {
                 Log.d("BRUHNEXCHANGE_REQUEST"  , "navigateToActivity: ${item.entityId}")
                 Intent(this, MyExchangeDetailActivity::class.java).apply {
-                    putExtra(Constant.DEFAULT_POSTING_ID, item.entityId ?: 0)
+                    putExtra(Constant.DEFAULT_MY_POSTING_ID, item.entityId ?: 0)
                 }
             }
             null -> TODO()
