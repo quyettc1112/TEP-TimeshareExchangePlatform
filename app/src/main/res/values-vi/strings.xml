@@ -118,7 +118,7 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="vnp_payment_timeout">Giao dịch không thành công do: Đã hết hạn chờ thanh toán. Xin quý khách vui lòng thực hiện lại giao dịch.</string>
     <string name="vnp_account_blocked">Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng bị khóa.</string>
     <string name="vnp_otp_incorrect">Giao dịch không thành công do Quý khách nhập sai mật khẩu xác thực giao dịch (OTP). Xin quý khách vui lòng thực hiện lại giao dịch.</string>
-    <string name="vnp_unsuccessful_transaction">Giao dịch thành công do: Khách hàng hủy giao dịch</string>
+    <string name="vnp_unsuccessful_transaction">Giao dịch không thành công do: Khách hàng hủy giao dịch</string>
     <string name="vnp_insufficient_funds">Giao dịch không thành công do: Tài khoản của quý khách không đủ số dư để thực hiện giao dịch.</string>
     <string name="vnp_daily_limit_exceeded">Giao dịch không thành công do: Tài khoản của Quý khách đã vượt quá hạn mức giao dịch trong ngày.</string>
     <string name="vnp_bank_maintenance">Ngân hàng thanh toán đang bảo trì.</string>
