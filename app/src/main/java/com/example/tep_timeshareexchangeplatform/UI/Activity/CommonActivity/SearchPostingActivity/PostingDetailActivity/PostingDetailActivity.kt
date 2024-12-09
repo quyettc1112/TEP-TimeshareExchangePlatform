@@ -309,7 +309,7 @@ class PostingDetailActivity : BaseActivity() {
 
         // UI DTB
         binding.apply {
-            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvResortNameDtb.text = postingDetail.resortName + " | Mã Phòng: " + postingDetail.roomCode
             tvCheckInDateDtb.text =
                 Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
             tvCheckOutDateDtb.text =
@@ -320,7 +320,7 @@ class PostingDetailActivity : BaseActivity() {
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
-
+            tvLocationDtb.text = postingDetail.location.displayName ?: postingDetail.location.name
             Glide.with(this@PostingDetailActivity)
                 .load(postingDetail.unitType.photos)
                 .placeholder(R.drawable.ic_image_tmp_holder)
