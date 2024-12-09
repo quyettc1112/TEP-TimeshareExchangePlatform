@@ -166,6 +166,25 @@ class BookingDetailActivity : BaseActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
+                    viewModel.callGetCustomerProfile(token.getAccessToken().toString())
+                }
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailToast(it.message.toString())
+                    Log.d("Chgeckasfasda", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Fetch Customer Profile
+        viewModel.getCustomerProfileResponse.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    token.saveProfileInfo(it.data!!)
                     showSuccessToast("Hủy đặt phòng thành công")
                     val resultIntent = Intent()
                     Log.d("Checkasfasda", it.data.toString())
@@ -175,7 +194,7 @@ class BookingDetailActivity : BaseActivity() {
                     ) // Thêm dữ liệu vào Intent
                     resultIntent.putExtra(
                         Constant.DEFAULT_BOOKING_STATUS,
-                        it.data?.status
+                        viewModel.cancelBookingResponse.value?.data?.status
                     ) // Thêm dữ liệu vào Intent
                     setResult(Activity.RESULT_OK, resultIntent) // Trả kết quả về MainActivity
                     notificationHelper.makeNotification(
@@ -196,7 +215,10 @@ class BookingDetailActivity : BaseActivity() {
                     showLoadingWaiting(true)
                 }
             }
+
         }
+
+
         // Posting feedback
         viewModel.feedbackRentalResponse.observe(this) {
             when (it.status) {

@@ -148,15 +148,10 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    if (it.message!!.contains("400")) {
+                        (activity as PaymentRentalActivity).showWarningToast("Thất Bại", "Phòng đã được đặt bởi người khác")
+                        (activity as PaymentRentalActivity).finish()
+                    }
                 }
             }
         }
@@ -170,31 +165,15 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.SUCCESS -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thành Công",
-                        "Thanh Toán thành công",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
                     callAPICreateBooking()
-
-
                 }
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    if (it.message!!.contains("400")) {
+                        (activity as PaymentRentalActivity).showWarningToast("Thất Bại", "Phòng đã được đặt bởi người khác")
+                        (activity as PaymentRentalActivity).finish()
+                    }
                 }
             }
         }
@@ -214,7 +193,6 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                         tokenManager.saveProfileInfo(it.data)
                     }
-
                     (activity as PaymentRentalActivity).showSuccessDialog(
                         requireContext(),
                         "Chúc mừng bạn đã đặt phòng thành công. Vui lòng kiểm tra thông tin đặt phòng trong mục lịch sử đặt phòng",
