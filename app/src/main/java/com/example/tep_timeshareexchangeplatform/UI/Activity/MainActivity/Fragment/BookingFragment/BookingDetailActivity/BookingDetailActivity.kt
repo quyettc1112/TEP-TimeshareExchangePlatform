@@ -69,7 +69,9 @@ class BookingDetailActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
+
         val rentalBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, 0)
+        Log.d("Check Data Booking Detail", rentalBookingId.toString())
         exchangeBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, 0)
 
         if (!token.isLoggedIn()) {
@@ -117,6 +119,7 @@ class BookingDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     binding.shimmerViewContainer.visibility = View.GONE
                     binding.shimmerViewContainer.stopShimmer()
+                    Log.d("Check Data Booking Detail", resources.message.toString())
                     MotionToast.createToast(
                         this,
                         "Error",

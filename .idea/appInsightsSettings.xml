@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.tep_timeshareexchangeplatform" />
+                  <option name="mobileSdkAppId" value="1:685904756369:android:da4e93f1dd5a27ffc3c930" />
+                  <option name="projectId" value="unwind-7cfdb" />
+                  <option name="projectNumber" value="685904756369" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
