@@ -541,7 +541,7 @@ class BookingDetailActivity : BaseActivity() {
             // Bind Data
             tvResortNameDtb.text =
                 data.roomInfo.unitType.resortName + " - " + data.roomInfo.unitType.title
-            tvLocation.text = ""
+            tvLocation.text = data.roomInfo.unitType.location.displayName
             tvNumberNight.text = ""
             tvCheckInDate.text =
                 data.checkinDate?.let {

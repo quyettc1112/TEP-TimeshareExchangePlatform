@@ -710,7 +710,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         if (resortModelResponse != null) {
             binding.let {
                 it.tvResortName.text = resortModelResponse.resortName
-                it.tvLocation.text = resortModelResponse.address
+                it.tvLocation.text = resortModelResponse.resortLocationDisplayName
                 Glide.with(requireContext())
                     .load(resortModelResponse.logo)
                     .placeholder(R.drawable.ripple_effect)

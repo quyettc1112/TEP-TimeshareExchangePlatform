@@ -35,8 +35,8 @@ class LocationActivity : BaseActivity() {
     private val locationList = listOf(
         "Hồ Chí Minh", "Vũng Tàu", "Đà Lạt", "Phan Thiết", "Quy Nhơn", "Phú Quốc",
         "Đà Nẵng", "Nha Trang", "Hà Nội", "Sa Pa", "Hạ Long", "Hội An",
-        "Hải Phòng", "Singapore", "Bangkok", "Phuket", "Kuala Lumpur",
-        "Seoul", "Tokyo", "Bali"
+        "Hải Phòng", "Cần Thơ", "Buôn Ma Thuột", "Đồng Nai", "Bà Rịa - Vũng Tàu",
+        "Bình Dương", "Bình Thuận", "Bình Định", "Bạc Liêu", "Bắc Ninh", "Bến Tre",
     )
     private val locationAdapter  = LocationAdapter()
     private val resortSearchedAdapter  = ResortSearchedAdapter()

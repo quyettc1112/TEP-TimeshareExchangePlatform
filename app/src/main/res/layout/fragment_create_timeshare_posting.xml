@@ -702,7 +702,7 @@
                             android:fontFamily="@font/inter_medium"
                             android:maxWidth="300dp"
                             android:padding="5dp"
-                            android:text="4. Tiện ích phòng của bạn"
+                            android:text="3. Tiện ích phòng của bạn"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"

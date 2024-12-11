@@ -259,7 +259,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
 
-            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.roomCode
 
         }
 
