@@ -767,6 +767,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             val priceValuation = inputPrice
             Log.d("PriceValuatisasdon", priceValuation.toString() + " " + requestId + " " + note)
             callExchangePriceValuation(requestId, priceValuation, note)
+            dialog.dismiss()
         }
         dialog.show()
     }
