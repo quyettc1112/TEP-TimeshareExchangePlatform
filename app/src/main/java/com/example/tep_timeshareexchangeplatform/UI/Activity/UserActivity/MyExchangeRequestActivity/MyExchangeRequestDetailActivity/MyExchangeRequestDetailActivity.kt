@@ -87,6 +87,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
+            Log.d("MyExchangeRequestDasadsetail", intent.toString())
             viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
