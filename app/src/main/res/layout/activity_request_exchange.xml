@@ -33,82 +33,226 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <!--// Exchange Timeshare-->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
+            <!--// Content UMy Timeshare-->
+
+            <!--// Request Info-->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                app:cardCornerRadius="17dp"
-                app:cardElevation="4dp">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter_bold"
+                android:maxLines="1"
+                android:text="Thông Tin Timeshare Cần Trao Đổi"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+            <LinearLayout
+                android:id="@+id/ll_content_exchange_timshare"
+                android:layout_width="match_parent"
+                android:paddingTop="15dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view_exchange"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    app:lottie_rawRes="@raw/anim_loading_more"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"/>
+                <include
+                    android:visibility="gone"
+                    android:id="@+id/include_exchange_timehare"
+                    layout="@layout/item_my_timeshare_v2" />
+                <!--// Prefer Location-->
+                <LinearLayout
+                    android:id="@+id/ll_prefer_exchange"
+                    android:visibility="visible"
+                    android:layout_margin="2dp"
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_effect"
+                    android:backgroundTint="@color/white"
+                    android:elevation="3dp">
 
-                    <!--// Title Text-->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/crl_unit_type_info"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ripple_effect_white"
-                        android:backgroundTint="@color/blue_header_section"
-                        android:padding="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-
-
-                        <TextView
-                            android:id="@+id/titleTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/inter_medium"
-                            android:maxWidth="300dp"
-                            android:padding="5dp"
-                            android:text="Thông tin Timeshare trao đổi"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!--// Content UMy Timeshare-->
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Nhu cầu mong muốn trao đổi"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tv_prefer_exchang_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Tỉnh/Thành Phố: An Giạng"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Khoản thời gian mong muốn trao đổi"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <!--// Ngày nhận phòng-->
                     <LinearLayout
-                        android:id="@+id/ll_content_exchange_timshare"
-                        android:layout_width="0dp"
-                        android:paddingTop="15dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
                         android:gravity="center"
-                        android:visibility="visible"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/crl_unit_type_info">
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:weightSum="10">
 
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/animation_view_exchange"
-                            android:layout_width="match_parent"
+                        <!-- Check-in Date Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            app:lottie_rawRes="@raw/anim_loading_more"
-                            app:lottie_loop="true"
-                            app:lottie_autoPlay="true"/>
-                        <include
-                            android:visibility="gone"
-                            android:id="@+id/include_exchange_timehare"
-                            layout="@layout/item_my_timeshare" />
+                            android:layout_weight="4.5"
+                            android:background="@drawable/ripple_effect_white"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!-- Label for Check-in Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:maxLines="1"
+                                    android:text="Ngày Nhận Phòng"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_check_in" />
+
+
+                            </LinearLayout>
+
+
+                            <!-- Check-in Date -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkin_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <!-- Check-in Day -->
+
+                            <TextView
+                                android:id="@+id/tv_prefer_checkin_dayOfWeek"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_light"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Arrow Icon -->
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
+
+                        <!-- Check-out Date Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="4.5"
+                            android:background="@drawable/ripple_effect_white"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!-- Label for Check-in Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:maxLines="1"
+                                    android:text="Ngày Trả Phòng"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_check_out" />
+
+                            </LinearLayout>
+
+                            <!-- Check-out Date -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkout_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <!-- Check-out Day -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkout_dayOfWeek"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_light"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
 
             <!--// Exchange Timeshare-->
             <com.google.android.material.card.MaterialCardView

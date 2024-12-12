@@ -65,6 +65,7 @@ class RequestExchangeActivity : BaseActivity() {
         clickIntentToGetMyTimeshare()
         selectMyTimeshareActivityResult = registerSelectMyTimeshareActivityResult()
         setupTextWatchers()
+        eventClickToolbar()
 
     }
 
@@ -87,8 +88,8 @@ class RequestExchangeActivity : BaseActivity() {
                     binding.animationViewExchange.visibility = View.GONE
                     resources.data?.let {
                         bindDatsPostingExchange(it)
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                     }
+                    Log.d("ExchangePoasdasdstingDetail", resources.data?.exchangePostingId.toString())
                 }
 
                 Status.ERROR -> {
@@ -205,29 +206,32 @@ class RequestExchangeActivity : BaseActivity() {
     }
 
     // Function to bind data
-    private fun bindDatsPostingExchange(myTimeshareResponse: ExchangeDetailResponse) {
-        if (myTimeshareResponse == null) {
+    private fun bindDatsPostingExchange(exchangeDetailResponse: ExchangeDetailResponse) {
+        if (exchangeDetailResponse == null) {
             binding.includeExchangeTimehare.root.visibility = View.GONE
         } else {
             binding.includeExchangeTimehare.root.visibility = View.VISIBLE
             binding.includeExchangeTimehare.apply {
                 // Hide button
                 btnSelect.visibility = View.GONE
-                tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomCode
+                tvTitle.text = "Loại phòng: "
+                tvResortName.text = exchangeDetailResponse.resortName + " | " + exchangeDetailResponse.roomCode
+                tvRoomType.text = exchangeDetailResponse.unitType.title
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(
-                        myTimeshareResponse.checkinDate,
+                        exchangeDetailResponse.checkinDate,
                         this@RequestExchangeActivity
                     )
                 tvCheckOutDate.text =
                     Constant.formatDateByLocale(
-                        myTimeshareResponse.checkoutDate,
+                        exchangeDetailResponse.checkoutDate,
                         this@RequestExchangeActivity
                     )
-                Glide.with(binding.root.context).load(myTimeshareResponse.unitType.photos)
-                    .into(imResortImage)
+                Glide.with(binding.root.context).load(exchangeDetailResponse.unitType.photos)
+                    .into(imImageTimeshare)
             }
+
+            bindDataPreferExchange(exchangeDetailResponse)
         }
     }
 
@@ -367,6 +371,28 @@ class RequestExchangeActivity : BaseActivity() {
                 binding.btnNext.visibility = View.VISIBLE
                 sendButtonNextClick()
             }
+        }
+
+    }
+
+    private fun bindDataPreferExchange(exchangeDetailResponse: ExchangeDetailResponse) {
+        binding.apply {
+            llPreferExchange.visibility = View.VISIBLE
+            tvPreferExchangLocation.text ="Tỉnh/Thành Phố: " +  exchangeDetailResponse.preferLocation ?: ""
+            tvPreferCheckinDate.text =
+                exchangeDetailResponse.preferCheckinDate?.let { Constant.getFormattedDate(it, this@RequestExchangeActivity) }
+            tvPreferCheckoutDate.text =
+                exchangeDetailResponse.preferCheckoutDate?.let { Constant.getFormattedDate(it, this@RequestExchangeActivity) }
+            tvPreferCheckinDayOfWeek.text =
+                exchangeDetailResponse.preferCheckinDate?.let { Constant.getDayOfWeek(it, this@RequestExchangeActivity) }
+            tvPreferCheckoutDayOfWeek.text =
+                exchangeDetailResponse.preferCheckoutDate?.let { Constant.getDayOfWeek(it, this@RequestExchangeActivity) }
+        }
+    }
+
+    private fun eventClickToolbar() {
+        binding.customToolbar2.onStartIconClick = {
+            onBackPressed()
         }
 
     }
@@ -586,4 +612,8 @@ class RequestExchangeActivity : BaseActivity() {
         )
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

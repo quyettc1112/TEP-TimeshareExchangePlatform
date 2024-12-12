@@ -22,7 +22,6 @@ class MyTimeshareAdapter (isExchange: Boolean): BaseAdapter<MyTimeshareResponse.
         BaseItemViewHolderCF<MyTimeshareResponse.Content, ItemMyTimeshareV2Binding>(binding) {
         override fun bind(item: MyTimeshareResponse.Content) {
             // Hide Unessary View
-
             binding.tvResortName.text = item.resortName
             binding.tvRoomType.text =  item.roomCode
             binding.tvCheckinDate.text = Constant.formatDateByLocale(item.startDate, binding.root.context)
