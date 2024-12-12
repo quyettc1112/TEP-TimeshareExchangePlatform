@@ -121,15 +121,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    (activity as PaymentRentalActivity).showWarningToast("Thất Bại", getString(R.string.msg_payment_url_failed))
                 }
             }
         }
@@ -297,7 +289,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 binding.scrollView.post {
                     binding.scrollView.scrollTo(0, binding.llPolicy.top)
                 }
-                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui lòng đồng ý với điều khoản và chính sách của chúng tôi")
+                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", getString(R.string.msg_accept_terms))
             }
 
             paymentMethodProcess()
@@ -335,7 +327,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 // Show error message or keep focus on the invalid field
                 Toast.makeText(
                     requireContext(),
-                    "Vui lòng chọn phương thức thanh toán!",
+                    getString(R.string.msg_no_payment_method),
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TEP-TimeshareExchangePlatform</string>
     <string name="ellipsis">&#8230;</string>
     <string name="default_notify_title">Message</string>
@@ -176,6 +176,51 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
         <item>Option 2</item>
         <item>Option 3</item>
     </string-array>
+
+
+    <!--// Message-->
+    <string name="msg_load_data_error" tools:ignore="ExtraTranslation">Lỗi tải dữ liệu</string>
+    <string name="msg_no_data" tools:ignore="ExtraTranslation">Không có dữ liệu</string>
+    <string name="msg_cannot_load_data" tools:ignore="ExtraTranslation">Không thể tải dữ liệu</string>
+    <string name="msg_please_fill_all_info" tools:ignore="ExtraTranslation">Vui lòng nhập đầy đủ thông tin</string>
+
+    <string name="msg_login_failed" tools:ignore="ExtraTranslation">Đăng Nhập Thất Bại</string>
+    <string name="msg_login_successful" tools:ignore="ExtraTranslation">Đăng Nhập Thành Công</string>
+    <string name="msg_register_successful" tools:ignore="ExtraTranslation">Tạo Tài Khoản Thành Công</string>
+
+    <string name="msg_need_login" tools:ignore="ExtraTranslation">Bạn cần đăng nhập để thực hiện chức năng này</string>
+    <string name="msg_need_customer_profile" tools:ignore="ExtraTranslation">Bạn Cần Cung Cấp Hồ Sơ Khách Hàng</string>
+
+    <string name="msg_accept_terms" tools:ignore="ExtraTranslation">Vui Lòng Chấp Nhận Điều Khoản</string>
+
+    <string name="msg_request_successful" tools:ignore="ExtraTranslation">Gửi Yêu Cầu Thành Công</string>
+    <string name="msg_create_timeshare_successful" tools:ignore="ExtraTranslation">Tạo Timeshare Thành Công</string>
+
+    <string name="msg_booking_cancelled" tools:ignore="ExtraTranslation">Đặt phòng của bạn đã được hủy thành công</string>
+    <string name="msg_exchange_request_sent" tools:ignore="ExtraTranslation">Gửi yêu cầu trao đổi thành công, Chờ phản hồi từ chủ bài đăng</string>
+
+    <string name="msg_invalid_timeshare_years" tools:ignore="ExtraTranslation">Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiểm tra lại</string>
+    <string name="msg_payment_url_failed" tools:ignore="ExtraTranslation">Không thể tạo URL thanh toán</string>
+    <string name="msg_invalid_amount" tools:ignore="ExtraTranslation">Vui lòng nhập số tiền hợp lệ</string>
+
+    <string name="msg_fetch_room_list_failed" tools:ignore="ExtraTranslation">Lỗi khi lấy danh sách phòng của Resort</string>
+    <string name="msg_empty_room_list" tools:ignore="ExtraTranslation">Danh sách phòng trống</string>
+    <string name="msg_select_nights" tools:ignore="ExtraTranslation">Hãy chọn số đêm lưu trú</string>
+    <string name="msg_select_room_type" tools:ignore="ExtraTranslation">Hãy Chọn Loại Phòng Của Bạn</string>
+    <string name="msg_select_exchange_date" tools:ignore="ExtraTranslation">Vui lòng chọn ngày trao đổi</string>
+    <string name="msg_select_province" tools:ignore="ExtraTranslation">Vui lòng chọn tỉnh thành</string>
+
+    <string name="msg_payment_successful" tools:ignore="ExtraTranslation">Thanh toán thành công</string>
+    <string name="msg_post_successful" tools:ignore="ExtraTranslation">Đăng bài thành công</string>
+    <string name="msg_no_payment_method" tools:ignore="ExtraTranslation">Chưa chọn phương thức thanh toán</string>
+
+    <string name="msg_price_change_successful" tools:ignore="ExtraTranslation">Thay Đổi Mức Giá Thành Công</string>
+    <string name="msg_hide_post_successful" tools:ignore="ExtraTranslation">Ẩn bài đăng thành công</string>
+
+    <string name="msg_error_occurred" tools:ignore="ExtraTranslation">Có lỗi xảy ra</string>
+    <string name="msg_confirm_hide_post" tools:ignore="ExtraTranslation">Bạn có chắc chắn muốn ẩn bài đăng này không?</string>
+    <string name="msg_no_posts" tools:ignore="ExtraTranslation">Bạn chưa có bài đăng nào</string>
+
 
 
 </resources>

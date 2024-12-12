@@ -359,7 +359,7 @@ class MyInfoActivity : BaseActivity() {
         // Show Success Toast
         MotionToast.createColorToast(
             this,
-            "Success",
+            "Thành Công",
             message,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,

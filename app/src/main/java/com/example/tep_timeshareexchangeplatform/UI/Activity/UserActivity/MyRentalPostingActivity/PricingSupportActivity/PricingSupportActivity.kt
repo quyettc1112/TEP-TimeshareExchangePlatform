@@ -79,7 +79,7 @@ class PricingSupportActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this,
-                        "Thay Đổi Mức Giá Thành Công",
+                        getString(R.string.msg_price_change_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: android.view.View?) {
                                 val intent = Intent()
@@ -93,15 +93,7 @@ class PricingSupportActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showWarningToast("Lỗi", "Lỗi khi thay đổi giá")
                 }
             }
         }
@@ -176,15 +168,7 @@ class PricingSupportActivity : BaseActivity() {
                         false
                     )
                 } else {
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Error",
-                        "Vui lòng đăng nhập để thực hiện chức năng này",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showWarningToast("Lỗi Đăng Nhập", getString(R.string.msg_need_login))
                 }
             }
         }
@@ -218,15 +202,7 @@ class PricingSupportActivity : BaseActivity() {
                 )
                 dialog.dismiss()
             } else {
-                MotionToast.createColorToast(
-                    this,
-                    "Error",
-                    "Vui lòng nhập giá tiền hợp lệ",
-                    MotionToastStyle.WARNING,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(this, R.font.inter_bold)
-                )
+                showWarningToast("Lỗi", getString(R.string.msg_invalid_amount))
             }
         }
         dialog.show()
@@ -350,15 +326,7 @@ class PricingSupportActivity : BaseActivity() {
                 }
                 dialog.dismiss()
             } else {
-                MotionToast.Companion.createColorToast(
-                    this,
-                    "Error",
-                    "Vui lòng đăng nhập để thực hiện chức năng này",
-                    MotionToastStyle.ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(this, R.font.inter_bold)
-                )
+                showWarningToast("Lỗi Đăng Nhập", getString(R.string.msg_need_login))
             }
         }
         dialog.show()

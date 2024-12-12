@@ -108,7 +108,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     resources.data?.let {
                         if (it.isEmpty()) {
                             (activity as PostingFlowActivity).showInfoDialog(requireContext(),
-                                "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiem tra lại",
+                                getString(R.string.msg_invalid_timeshare_years),
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
                                         postingFlowViewModel.resetSteps()
@@ -671,7 +671,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }
-            showInfoToast("Vui lòng chọn ngày trao đổi")
+            showInfoToast(getString(R.string.msg_select_exchange_date))
             return false
         }
         return true
@@ -683,7 +683,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             binding.scrollView.post {
                 binding.scrollView.smoothScrollTo(0, binding.crlPricePerNight.top)
             }
-            showInfoToast("Vui lòng chọn tỉnh thành")
+            showInfoToast(getString(R.string.msg_select_province))
             return false
         }
         return true

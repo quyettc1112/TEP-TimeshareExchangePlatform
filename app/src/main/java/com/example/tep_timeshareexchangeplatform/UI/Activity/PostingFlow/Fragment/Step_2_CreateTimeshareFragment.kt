@@ -982,12 +982,12 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                showWarningToast("Cảnh Báo", "Hãy Điền Đầy Đủ Thông Tin")
+                showWarningToast("Cảnh Báo", getString(R.string.msg_please_fill_all_info))
                 return@setOnClickListener
             }
 
             if (postingFlowViewModel.unitTypeSelectionOptionNo.value == null) {
-                showErrorToast("Thất Bại", "Hãy Chọn Loại Phòng Của Bạn")
+                showErrorToast("Thất Bại", getString(R.string.msg_select_room_type))
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.includeUnitTypeNo.rvUnitType.top)
                 }
@@ -1182,7 +1182,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         if (tokenManager.getAccessToken().toString() != null && timeshareDTO != null) {
             callCreateTimeshare(timeshareDTO)
         } else {
-            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.msg_need_login), Toast.LENGTH_SHORT).show()
         }
     }
 
