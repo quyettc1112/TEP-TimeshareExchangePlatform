@@ -265,7 +265,7 @@ class NotificationActivity : BaseActivity() {
         val intent : Intent = when (notificationType) {
             // User Booking
             RENTAL_BOOKING -> {
-                Log.d("NRENTAL_BOOKING"  , "navigateToActivity: ${item.entityId}")
+                Log.d("BRUHNRENTAL_BOOKING"  , "navigateToActivity: ${item.entityId}")
                 Intent(this, BookingDetailActivity::class.java).apply {
                     putExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, item.entityId)
                 }
