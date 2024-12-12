@@ -30,6 +30,8 @@ class MyExchangeRequestAdapter(var context: MyExchangeRequestActivity) :
 
             // Posting Info
             binding.apply {
+                tvRoomCode.text = item.exchangePosting.roomInfoRoomInfoCode
+                tvRoomType.text = item.exchangePosting.roomInfoUnitTypeTitle
                 resortName.text = "${item.exchangePosting.roomInfoResortResortName}"
                 if(item.startDate != null && item.endDate != null) {
                     checkInDate.text =
