@@ -50,6 +50,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangDetailBinding
     private lateinit var imagePostingAdapter : ImagePostingAdapter
     private var facilityAdapter = AmenitiesAdapter()
+    private lateinit var tokenManager: TokenManager
     private val viewModel: MyExchangeDetailViewModel by viewModels()
     private var postingId: Int = 0
 
@@ -63,6 +64,7 @@ class MyExchangeDetailActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityMyExchangDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        tokenManager = TokenManager(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -93,9 +95,8 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
         postingId = intent;
-        val token = TokenManager(this)
-        if (token.isLoggedIn() && token.getAccessToken() != null) {
-            viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
+        if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
+            viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
@@ -542,5 +543,11 @@ class MyExchangeDetailActivity : BaseActivity() {
                 isChecked = false // Mặc định là chưa được chọn
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+        viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
     }
 }
