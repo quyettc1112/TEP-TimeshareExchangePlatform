@@ -202,7 +202,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    showSuccessToast(getString(R.string.msg_payment_successful))
+                    showSuccessToast("Thanh toán thành công")
                     // Payment Success, Call Create Upload Image and get new Balance same time
                     callRequestCreateImageList()
                     callGetNewBalance()
@@ -230,7 +230,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             when (response.status) {
                 Status.SUCCESS -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
-                    showSuccessToast(getString(R.string.msg_payment_successful))
+                    showSuccessToast("Thanh toán thành công")
                     // Payment Success, Call Create Upload Image and get new Balance same time
                     callRequestCreateImageList()
                     callGetNewBalance()
@@ -275,7 +275,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        getString(R.string.msg_post_successful),
+                        "Đăng bài thành công",
                         View.OnClickListener {
                             startActivity(Intent(requireContext(), MyPostingActivity::class.java))
                             requireActivity().finish()
@@ -308,7 +308,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        getString(R.string.msg_post_successful),
+                        "Đăng bài thành công",
                         View.OnClickListener {
                             startActivity(
                                 Intent(
@@ -734,7 +734,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun requestButtonClick() {
         binding.ctrRequestButton.setOnClickListener {
             if (!binding.cbAgreement.isChecked) {
-                showInfoToast(getString(R.string.msg_accept_terms))
+                "Vui Lòng Chấp Nhận Điều Khoản"
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.llAgreement.top)
                 }
@@ -784,7 +784,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
 
             else -> {
-                showErrorToast(getString(R.string.msg_no_payment_method))
+                showErrorToast("Chưa chọn phương thức thanh toán")
             }
         }
     }

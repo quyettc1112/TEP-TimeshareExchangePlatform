@@ -121,7 +121,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    (activity as PaymentRentalActivity).showWarningToast("Thất Bại", getString(R.string.msg_payment_url_failed))
+                    (activity as PaymentRentalActivity).showWarningToast("Thất Bại","Không thể tạo URL thanh toán")
                 }
             }
         }
@@ -289,7 +289,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 binding.scrollView.post {
                     binding.scrollView.scrollTo(0, binding.llPolicy.top)
                 }
-                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", getString(R.string.msg_accept_terms))
+                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui Lòng Chấp Nhận Điều Khoản")
             }
 
             paymentMethodProcess()
@@ -327,7 +327,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 // Show error message or keep focus on the invalid field
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.msg_no_payment_method),
+                    "Chưa chọn phương thức thanh toán",
                     Toast.LENGTH_SHORT
                 ).show()
             }
