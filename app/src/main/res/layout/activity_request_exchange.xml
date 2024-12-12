@@ -593,7 +593,7 @@
             <!--// Exchange Price Valuation-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ll_exchange_method"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

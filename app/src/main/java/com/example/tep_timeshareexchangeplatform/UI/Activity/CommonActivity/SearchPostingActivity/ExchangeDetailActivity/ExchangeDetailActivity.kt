@@ -231,7 +231,6 @@ class ExchangeDetailActivity : BaseActivity() {
 
         eventClickRequestButton(postingDetail)
 
-
     }
 
     private fun bindDataAmenities(data: ExchangeDetailResponse) {
