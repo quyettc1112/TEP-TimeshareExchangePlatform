@@ -25,6 +25,7 @@ import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.SearchPostingActivity.ChildFragment.PublicPostingFragment.PublicPostingFragment.Companion.PAGE_SIZE
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.Fragment.BookingFragment.BookingDetailActivity.BookingDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestDetailActivity.MyExchangeRequestDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingDetailActivity.MyPostingDetailActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType.*
@@ -291,8 +292,8 @@ class NotificationActivity : BaseActivity() {
             }
             EXCHANGE_REQUEST -> {
                 Log.d("BRUHNEXCHANGE_REQUEST"  , "navigateToActivity: ${item.entityId}")
-                Intent(this, MyExchangeDetailActivity::class.java).apply {
-                    putExtra(Constant.DEFAULT_MY_POSTING_ID, item.entityId ?: 0)
+                Intent(this, MyExchangeRequestDetailActivity::class.java).apply {
+                    putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, item.entityId ?: 0)
                 }
             }
             null -> TODO()

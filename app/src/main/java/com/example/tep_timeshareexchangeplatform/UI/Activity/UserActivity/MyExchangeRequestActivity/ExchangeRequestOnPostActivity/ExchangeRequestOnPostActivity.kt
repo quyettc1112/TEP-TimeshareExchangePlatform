@@ -50,7 +50,11 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityExchangeRequestOnPostBinding.inflate(layoutInflater)
         exchangeRequestOnPostAdapter = ExchangeRequestOnPostAdapter(this)
-
+        viewModel.clearCurrentRequestOnPostList()
+        exchangeRequestOnPostAdapter.apply {
+            submitList(viewModel.getCurrentRequestOnPostList())
+            notifyDataSetChanged()
+        }
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

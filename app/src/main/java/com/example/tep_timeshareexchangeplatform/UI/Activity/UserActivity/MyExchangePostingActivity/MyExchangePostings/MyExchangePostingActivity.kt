@@ -63,7 +63,6 @@ class MyExchangePostingActivity : BaseActivity() {
         initAdapter()
         bindDataMyPostingList()
 
-
     }
 
     private fun initAdapter() {
