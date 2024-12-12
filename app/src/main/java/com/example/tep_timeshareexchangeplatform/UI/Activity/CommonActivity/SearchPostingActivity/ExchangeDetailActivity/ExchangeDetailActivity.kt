@@ -226,6 +226,9 @@ class ExchangeDetailActivity : BaseActivity() {
 
         }
 
+        // Prefer Exchange
+        bindDataPreferExchange(postingDetail)
+
         eventClickRequestButton(postingDetail)
 
 
@@ -332,6 +335,21 @@ class ExchangeDetailActivity : BaseActivity() {
                 val unitTypeDataDialog = UnitTypeDataDialog.newInstance(unitTypeBase)
                 unitTypeDataDialog.show(supportFragmentManager, "UnitTypeDataDialog")
             }
+        }
+    }
+
+    private fun bindDataPreferExchange(exchangeDetailResponse: ExchangeDetailResponse) {
+        binding.apply {
+            llPreferExchange.visibility = View.VISIBLE
+            tvPreferExchangLocation.text ="Tỉnh/Thành Phố: " +  exchangeDetailResponse.preferLocation ?: ""
+            tvPreferCheckinDate.text =
+                exchangeDetailResponse.preferCheckinDate?.let { Constant.getFormattedDate(it, this@ExchangeDetailActivity) }
+            tvPreferCheckoutDate.text =
+                exchangeDetailResponse.preferCheckoutDate?.let { Constant.getFormattedDate(it, this@ExchangeDetailActivity) }
+            tvPreferCheckinDayOfWeek.text =
+                exchangeDetailResponse.preferCheckinDate?.let { Constant.getDayOfWeek(it, this@ExchangeDetailActivity) }
+            tvPreferCheckoutDayOfWeek.text =
+                exchangeDetailResponse.preferCheckoutDate?.let { Constant.getDayOfWeek(it, this@ExchangeDetailActivity) }
         }
     }
 
