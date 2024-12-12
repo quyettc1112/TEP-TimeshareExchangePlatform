@@ -63,6 +63,17 @@ class MainViewModel @Inject constructor(
         _customerProfileInfo.value = customerProfileResponse
     }
 
+    // Call Get User Profile
+    private val _customerProfileResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val customerProfileResponse: LiveData<Resource<CustomerProfileResponse>> get() = _customerProfileResponse
+    fun getCustomerProfile(token: String) {
+        viewModelScope.launch {
+            _customerProfileResponse.postValue(Resource.loading(null))
+            val result = customerAPIRepository.getCustomerProfile(token)
+            _customerProfileResponse.postValue(result)
+        }
+    }
+
 
     /**
      * Tracking Date Range
@@ -212,6 +223,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+
 
 
 
