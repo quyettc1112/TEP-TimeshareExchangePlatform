@@ -96,6 +96,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 Status.SUCCESS -> {
                     resources.data?.let {
                         mainViewModel.setCustomerInfo(it)
+                        tokenManager.saveProfileInfo(it)
                     }
                 }
                 Status.ERROR -> {}

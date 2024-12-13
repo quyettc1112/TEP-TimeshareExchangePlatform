@@ -115,6 +115,7 @@ class MyExchangeDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Lỗi Tải Dữ Liệu", "Không thể lấy thông tin bài đăng")
+                    Log.d("MyExchangeDetailActivityasda", "observeMyPostingDetail: ${it.message}")
                 }
 
                 Status.LOADING -> {
