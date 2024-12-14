@@ -275,7 +275,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        "Đăng bài thành công",
+                        getString(R.string.msg_post_successful),
                         View.OnClickListener {
                             startActivity(Intent(requireContext(), MyPostingActivity::class.java))
                             requireActivity().finish()
@@ -308,7 +308,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        "Đăng bài thành công",
+                        getString(R.string.msg_post_successful),
                         View.OnClickListener {
                             startActivity(
                                 Intent(

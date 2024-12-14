@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
@@ -352,6 +353,9 @@ class MyExchangeDetailActivity : BaseActivity() {
         // Description
         binding.etNote.setText(myExchangePostingDetail.description)
 
+        // Prefer Exchange
+        bindDataPreferExchange(myExchangePostingDetail)
+
 
     }
 
@@ -453,6 +457,7 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
+
     private fun bindDataListImage() {
         // List Destination
         imagePostingAdapter = ImagePostingAdapter()
@@ -499,6 +504,43 @@ class MyExchangeDetailActivity : BaseActivity() {
         imagePostingAdapter.submitList(viewModel.getImageList())
 
     }
+
+    private fun bindDataPreferExchange(exchangeDetailResponse: MyExchangePostingDetailResponse) {
+        binding.apply {
+            llPreferExchange.visibility = View.VISIBLE
+            tvPreferExchangLocation.text =
+                "Tỉnh/Thành Phố: " + exchangeDetailResponse.preferLocation ?: ""
+            tvPreferCheckinDate.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckoutDate.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckinDayOfWeek.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckoutDayOfWeek.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+        }
+    }
+
 
     private fun showUpdateExchangeDialog() {
         viewModel.resetUpdateExchangeResponse()

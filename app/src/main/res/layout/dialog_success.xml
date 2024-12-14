@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:layout_margin="20dp"
+        android:padding="10dp"
         android:background="@drawable/ripple_effect_white"
         android:gravity="center">
 

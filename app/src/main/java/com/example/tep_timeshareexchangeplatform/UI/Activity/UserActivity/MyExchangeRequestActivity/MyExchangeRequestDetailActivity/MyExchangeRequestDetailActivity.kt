@@ -206,7 +206,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this,
-                        "Thanh toán thành công",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 setResult(RESULT_OK)

@@ -69,7 +69,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -113,7 +113,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -227,7 +227,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -270,7 +270,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -345,7 +345,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity

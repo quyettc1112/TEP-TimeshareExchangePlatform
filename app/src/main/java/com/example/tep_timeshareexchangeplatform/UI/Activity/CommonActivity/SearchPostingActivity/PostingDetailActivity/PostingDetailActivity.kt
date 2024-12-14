@@ -247,6 +247,7 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         binding.cvRequestContaner.visibility = View.VISIBLE
+        binding.llPreferExchange.visibility = View.GONE
 
         // Custom Toolbar Data
         binding.customToolbar.apply {

@@ -69,11 +69,10 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         }
         initAdapter()
         bindDataRequestOnPostList()
-
+        eventClickToolbar()
         // Đăng ký ActivityResultLauncher
         detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
                 // Load lại danh sách
                 viewModel.clearCurrentRequestOnPostList()
                 exchangeRequestOnPostAdapter.apply {
@@ -85,6 +84,12 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         }
     }
 
+    private fun eventClickToolbar() {
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
+    }
+
     private fun initAdapter() {
         exchangeRequestOnPostAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
@@ -92,7 +97,6 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             detailActivityLauncher.launch(intent)
         }
     }
-
 
     private fun observeData() {
         viewModel.myExchangeRequestOnPostList.observe(this) {
@@ -124,7 +128,6 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             )
         }
     }
-
 
     private fun bindDataRequestOnPostList() {
         binding.requestOnPost.apply {

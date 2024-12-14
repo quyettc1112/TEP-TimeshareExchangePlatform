@@ -36,8 +36,6 @@ class MyExchangePostingActivity : BaseActivity() {
     private lateinit var tokenManager: TokenManager
     private var itemPosition = 0
 
-
-
     companion object {
         const val POSTING_PAGE_SIZE = 10
     }
@@ -62,7 +60,13 @@ class MyExchangePostingActivity : BaseActivity() {
         }
         initAdapter()
         bindDataMyPostingList()
+        eventClickToolbar()
+    }
 
+    private fun eventClickToolbar() {
+        binding.customToolbar.onStartIconClick = {
+            finish()
+        }
     }
 
     private fun initAdapter() {
