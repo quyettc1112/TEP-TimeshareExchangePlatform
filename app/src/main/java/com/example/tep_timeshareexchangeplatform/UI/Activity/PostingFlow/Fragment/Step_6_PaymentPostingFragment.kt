@@ -548,7 +548,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         } else {
             binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
             binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
-            Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
         }
     }
 
