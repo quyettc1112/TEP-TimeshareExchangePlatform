@@ -502,7 +502,6 @@ class PostingFlowViewModel @Inject constructor(
 
     fun clearCurrentMyTimeshareList() {
         _currentMyTimeshareList.clear()
-        _currentMyTimesharePage.value = 0
     }
 
     private val _isStep3Visible = MutableLiveData<Boolean>()
@@ -706,8 +705,6 @@ class PostingFlowViewModel @Inject constructor(
 
     fun resetData() {
         // Reset tất cả các LiveData hoặc MutableLiveData trong ExchangeOfResortViewModel
-        _currentMyTimesharePage.value = 0
-        _currentMyTimeshareList.clear()
         step.value = 1 // hoặc giá trị mặc định ban đầu
         // Reset các giá trị khác nếu cần
     }
