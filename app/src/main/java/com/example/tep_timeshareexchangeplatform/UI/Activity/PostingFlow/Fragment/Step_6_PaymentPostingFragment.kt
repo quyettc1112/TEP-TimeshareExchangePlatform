@@ -325,7 +325,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 Status.ERROR -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     Log.d("CheckkDOO-Create Exchange", response.message.toString())
-                    showErrorToast(response.message.toString())
+                    showErrorToast("Lỗi tạo bài đăng trao đổi")
                 }
 
                 Status.LOADING -> {
@@ -801,24 +801,24 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Error",
+            "Thất Bại",
             string,
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
     private fun showSuccessToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Success",
+            "Thành Công",
             string,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
