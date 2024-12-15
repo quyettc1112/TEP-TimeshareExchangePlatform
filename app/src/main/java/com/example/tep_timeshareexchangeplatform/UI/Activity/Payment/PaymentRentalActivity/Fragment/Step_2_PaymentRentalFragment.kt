@@ -18,7 +18,6 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -58,7 +57,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
         checkTokenValid()
         observeData()
         onPaymentMethodSelected()
-        requestButtonClick()
+        eventClickPaymentRental()
         initActivityResultLauncher()
         return binding.root
     }
@@ -269,7 +268,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
     }
 
-    private fun requestButtonClick() {
+    private fun eventClickPaymentRental() {
         binding.ctrRequestButton.setOnClickListener {
             val isFormValid = validateGuestInfo(
                 binding.etFullName,
@@ -290,6 +289,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                     binding.scrollView.scrollTo(0, binding.llPolicy.top)
                 }
                 (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui Lòng Chấp Nhận Điều Khoản")
+                return@setOnClickListener
             }
 
             paymentMethodProcess()

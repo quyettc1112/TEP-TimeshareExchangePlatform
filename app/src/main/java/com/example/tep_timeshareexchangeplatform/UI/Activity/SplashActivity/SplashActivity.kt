@@ -74,7 +74,7 @@ class SplashActivity : BaseActivity() {
                     Log.d("CheckJwtUserValid", "observeViewModel: ${response.data}")
                 }
                 Status.ERROR -> {
-                    tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_USER)
+                    tokenManager.saveUserLogState(UserLogState.LOGGED_OUT)
                     handlerLooper()
                 }
             }

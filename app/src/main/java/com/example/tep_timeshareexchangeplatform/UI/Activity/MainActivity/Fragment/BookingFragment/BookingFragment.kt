@@ -48,7 +48,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeBookingDetailLauncher()
         initAdapter()
 
 
@@ -166,7 +165,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             } else {
                 intent.putExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, it.bookingId)
             }
-            bookingDetailLauncher.launch(intent)
+            startActivity(intent)
         }
 
         myBookingAdapter.onFeedbackClick = {
@@ -214,13 +213,9 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
                 val totalItemCount = layoutManager.itemCount
                 val totalPages = viewModel.myBooking.value?.data?.totalPages ?: 0
                 if (lastCompletelyVisibleItem == (totalItemCount - 1) && viewModel.currentMyBookingPage.value!! < totalPages - 1) {
-                    viewModel.incrementCurrentMyBookingPage()
-                    Toast.makeText(requireContext(), "Load More", Toast.LENGTH_SHORT).show()
-                }
+                    viewModel.incrementCurrentMyBookingPage() }
             }
         })
-
-
     }
 
     override fun onResume() {
@@ -238,30 +233,6 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
             viewModel.currentMyBookingPage.value = 0
         }
 
-    }
-
-    private fun initializeBookingDetailLauncher() {
-        bookingDetailLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val bookingStatus = result.data?.getStringExtra(Constant.DEFAULT_BOOKING_STATUS)
-                val bookingId = result.data?.getIntExtra(Constant.DEFAULT_BOOKING_ID, 0)
-                if (bookingId != null && bookingStatus != null) {
-                    try {
-                        myBookingAdapter.updateItemStatus(bookingId, bookingStatus)
-                        viewModel.updateBookingItemById(bookingId, bookingStatus)
-                    } catch (e: UnsupportedOperationException) {
-                        e.printStackTrace()
-                        Toast.makeText(
-                            requireContext(),
-                            "Không thể cập nhật danh sách",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
     }
 
 

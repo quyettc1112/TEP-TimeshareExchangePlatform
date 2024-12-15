@@ -122,12 +122,12 @@ class BookingDetailActivity : BaseActivity() {
                     Log.d("Check Data Booking Detail", resources.message.toString())
                     MotionToast.createToast(
                         this,
-                        "Error",
+                        "Lỗi Tải Dữ Liệu",
                         resources.message.toString(),
-                        MotionToastStyle.ERROR,
+                        MotionToastStyle.WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        null
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                 }
             }
@@ -150,12 +150,12 @@ class BookingDetailActivity : BaseActivity() {
                     binding.shimmerViewContainer.stopShimmer()
                     MotionToast.createToast(
                         this,
-                        "Error",
+                        "Lỗi Tải Dữ Liệu",
                         resources.message.toString(),
-                        MotionToastStyle.ERROR,
+                        MotionToastStyle.WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        null
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                 }
             }
@@ -186,17 +186,7 @@ class BookingDetailActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     token.saveProfileInfo(it.data!!)
                     showSuccessToast("Hủy đặt phòng thành công")
-                    val resultIntent = Intent()
                     Log.d("Checkasfasda", it.data.toString())
-                    resultIntent.putExtra(
-                        Constant.DEFAULT_BOOKING_ID,
-                        it.data?.id
-                    ) // Thêm dữ liệu vào Intent
-                    resultIntent.putExtra(
-                        Constant.DEFAULT_BOOKING_STATUS,
-                        viewModel.cancelBookingResponse.value?.data?.status
-                    ) // Thêm dữ liệu vào Intent
-                    setResult(Activity.RESULT_OK, resultIntent) // Trả kết quả về MainActivity
                     notificationHelper.makeNotification(
                         this,
                         "Hủy đặt phòng thành công",

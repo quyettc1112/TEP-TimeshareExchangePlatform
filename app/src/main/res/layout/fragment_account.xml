@@ -655,8 +655,8 @@
                         android:layout_gravity="left|center"
                         android:layout_weight="6"
                         android:fontFamily="@font/inter_extrabold"
-                        android:paddingStart="20dp"
-                        android:text="@string/help_center"
+                        android:paddingStart="10dp"
+                        android:text="Gia Hạn Thành Viên"
                         android:textColor="@color/blue_btn_search"
                         android:textSize="16dp" />
 
