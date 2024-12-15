@@ -98,6 +98,7 @@ class BookingFragment : BaseFragment(R.layout.fragment_booking) {
 
                 Status.ERROR -> {
                     resources.message?.let {
+                        Log.d("BookingFasdasdadsragment", "observeData: $it")
                         (activity as MainActivity).showErrorToast("Lỗi", "Không thể tải dữ liệu")
 
                     }

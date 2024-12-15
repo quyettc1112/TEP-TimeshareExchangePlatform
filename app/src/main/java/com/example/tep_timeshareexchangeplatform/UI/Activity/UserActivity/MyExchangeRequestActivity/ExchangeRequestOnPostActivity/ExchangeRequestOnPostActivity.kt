@@ -70,18 +70,6 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         initAdapter()
         bindDataRequestOnPostList()
         eventClickToolbar()
-        // Đăng ký ActivityResultLauncher
-        detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                // Load lại danh sách
-                viewModel.clearCurrentRequestOnPostList()
-                exchangeRequestOnPostAdapter.apply {
-                    submitList(listOf())
-                    notifyDataSetChanged()
-                }
-                viewModel.currentPage.value = 0
-            }
-        }
     }
 
     private fun eventClickToolbar() {
@@ -94,7 +82,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         exchangeRequestOnPostAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
-            detailActivityLauncher.launch(intent)
+            startActivity(intent)
         }
     }
 
@@ -161,7 +149,7 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         super.onResume()
         viewModel.clearCurrentRequestOnPostList()
         exchangeRequestOnPostAdapter.apply {
-            submitList(viewModel.getCurrentRequestOnPostList())
+            submitList(listOf())
             notifyDataSetChanged()
         }
         viewModel.currentPage.value = 0

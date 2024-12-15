@@ -30,6 +30,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExch
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -345,19 +346,21 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
         val isOwner = customerProfile?.id == myExchangeRequestDetail.ownerId
 
-// Xử lý hiển thị llRequestAction
         binding.llRequestAction.visibility = when {
             !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER -> View.VISIBLE
             isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING -> View.VISIBLE
+            !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> View.VISIBLE
+            isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> View.VISIBLE
             else -> View.GONE
         }
 
-// Xử lý hiển thị llPaymentMethod
         binding.llPaymentMethod.visibility = when {
             !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> View.VISIBLE
             isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> View.VISIBLE
             else -> View.GONE
         }
+
+        checkPricingAble(myExchangeRequestDetail)
     }
 
     private fun bindDataStatus(item: MyExchangeRequestDetailResponse) {
@@ -485,6 +488,31 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             binding.tvNoPaymentNeededDescription.text =
                 "Người gửi yêu cầu trao đổi sẽ thanh toán số tiền bù để hoàn tất trao đổi."
         }
+
+    }
+
+    private fun checkPricingAble(data: MyExchangeRequestDetailResponse) {
+        val statusEP = data?.exchangePosting!!.status
+        val statusRE = data?.status
+        // Trường hợp bài đăng dđã được chấp nhân. Không thể thực hiện chấp nhận/ từ chối hay thay đổi mức giá
+        if (statusEP == MyPostingStatus.ACCEPTED.apiStatus && statusRE != MyExchangeRequestStatus.PENDING_APPROVAL.apiStatus) {
+            binding.llRequestAction.visibility = View.GONE
+            showInfoDialog(
+                this,
+                "Bạn đang có yêu cầu đã được chấp nhận, không thể thực hiện Chấp Nhận/ Từ chối hay thay đổi mức giá",
+                object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+
+                    }
+                }
+            )
+        }
+
+        if (statusEP == MyPostingStatus.COMPLETED.apiStatus){
+            binding.llRequestAction.visibility = View.GONE
+        }
+
+
 
     }
 
