@@ -1,5 +1,6 @@
 package com.example.tep_timeshareexchangeplatform.API.Service
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Policy.PolicyResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
@@ -69,6 +70,12 @@ interface PublicPostingAPIService {
         @Query("pageSize") pageSize: Int,
         @Query("resortName") resortName: String,
     ): Response<ExchangesResponse>
+
+
+    // Policy API
+    @GET("public/policy/all")
+    suspend fun getAllPolicy(): Response<PolicyResponse>
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity
 
 import android.app.Activity
 import android.content.Intent
@@ -32,7 +32,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingBi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPostingActivity : BaseActivity() {
+class MyRentalPostingListActivity : BaseActivity() {
     private lateinit var binding: ActivityMyPostingBinding
     private val viewModel: MyPostingViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
@@ -249,7 +249,7 @@ class MyPostingActivity : BaseActivity() {
             adapter = myPostingAdapter
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@MyPostingActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this@MyRentalPostingListActivity, LinearLayoutManager.VERTICAL, false)
         }
 
         // Scroll Listener

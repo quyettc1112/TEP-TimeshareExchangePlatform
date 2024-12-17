@@ -37,6 +37,10 @@ class ResortAdapter: BaseAdapter<ResortModelResponse.Content, ResortAdapter.Reso
                 .load(item.logo)
                 .into(binding.imResortImage)
 
+            binding.tvRatingAvg.text = item.averageRating.toString()
+            binding.tvNumRating.text = "Rất Tốt (${item.totalRating})"
+
+
         }
 
 

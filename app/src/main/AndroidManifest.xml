@@ -23,15 +23,22 @@
         android:theme="@style/Base.Theme.TEPTimeshareExchangePlatform"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Activity.CommonActivity.PolicyActivity.PolicyActivity"
+            android:exported="false" />
+        <activity
             android:name=".ZTest.ui.WebView"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="unwind" android:host="auth" android:path="/callback"/>
-            </intent-filter>
 
+                <data
+                    android:host="auth"
+                    android:path="/callback"
+                    android:scheme="unwind" />
+            </intent-filter>
         </activity>
 
         <service
@@ -41,7 +48,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
         <activity
             android:name=".UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity"
@@ -150,7 +156,7 @@
             android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.PricingSupportActivity.PricingSupportActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity"
+            android:name=".UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity"
             android:exported="true" />
         <activity
             android:name=".UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareDetailAcitivity.MyTimeshareDetailActivity"

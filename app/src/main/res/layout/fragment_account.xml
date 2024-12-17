@@ -513,6 +513,7 @@
 
                     <!--// My Favorite-->
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="5dp"
@@ -731,7 +732,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="left|center"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_info" />
+                        android:src="@drawable/ic_question_mark" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -740,7 +741,7 @@
                         android:layout_weight="8"
                         android:fontFamily="@font/inter_semibold"
                         android:paddingStart="20dp"
-                        android:text="@string/term_policy"
+                        android:text="Câu Hỏi Thường Gặp"
                         android:textSize="16dp" />
 
                     <ImageView
@@ -755,6 +756,7 @@
 
                 <!--// Privacy Policie and Button-->
                 <LinearLayout
+                    android:id="@+id/ll_privacy_policy"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="5dp"
@@ -791,6 +793,7 @@
                 <!--// Lang Setting-->
                 <LinearLayout
                     android:id="@+id/ll_setting_lang"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="5dp"

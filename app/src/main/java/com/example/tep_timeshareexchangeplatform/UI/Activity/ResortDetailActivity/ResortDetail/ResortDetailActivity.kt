@@ -215,10 +215,10 @@ class ResortDetailActivity : BaseActivity() {
                 llVerify.visibility = View.GONE
             }
 
-            tvAvgRating.text = resortDetailModelResponse.averageRating.toString()
-            tvTotalRating.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
-            tvAvgRatingTop.text = resortDetailModelResponse.averageRating.toString()
-            tvRatingCountTop.text = resortDetailModelResponse.totalRating.toString() + " đánh giá"
+            tvAvgRating.text = (resortDetailModelResponse.averageRating ?: "0").toString()
+            tvTotalRating.text = (resortDetailModelResponse.totalRating ?: "0").toString() + " đánh giá"
+            tvAvgRatingTop.text = (resortDetailModelResponse.averageRating ?: "0").toString()
+            tvRatingCountTop.text = (resortDetailModelResponse.totalRating ?: "0").toString() + " đánh giá"
         }
     }
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -19,6 +18,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthAc
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.PolicyActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
@@ -26,7 +26,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyDash
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
@@ -232,7 +232,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 startActivity(
                     Intent(
                         requireContext(),
-                        MyPostingActivity::class.java
+                        MyRentalPostingListActivity::class.java
                     )
                 )
             }
@@ -293,6 +293,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
             // Account
             llAccountSecurity.setOnClickListener {
                 startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
+            }
+
+            // Policy
+            llPrivacyPolicy.setOnClickListener {
+                startActivity(Intent(requireContext(), PolicyActivity::class.java))
             }
 
 
