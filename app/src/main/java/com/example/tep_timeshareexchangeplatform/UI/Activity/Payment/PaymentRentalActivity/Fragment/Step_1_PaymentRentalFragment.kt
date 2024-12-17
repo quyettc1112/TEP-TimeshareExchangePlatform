@@ -70,6 +70,9 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
 
+        binding.customToolbar.onStartIconClick = {
+            requireActivity().finish()
+        }
         // Resort Info
         binding.apply {
             tvResortName.text = postingDetail.resortName + " | " + postingDetail.roomCode

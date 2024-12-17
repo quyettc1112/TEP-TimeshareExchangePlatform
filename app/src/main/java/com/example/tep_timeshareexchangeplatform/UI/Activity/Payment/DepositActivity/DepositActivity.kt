@@ -53,7 +53,7 @@ class DepositActivity : BaseActivity() {
             finish()
         }
         binding.tvWalletBalancel.text = tokenManager.getProfileInfo()
-            ?.let { Constant.formatPriceLong(it.walletAvailableMoney) } + " đ"
+            ?.let { Constant.formatPriceLong(it.walletAvailableMoney) } + " VNĐ"
     }
 
 

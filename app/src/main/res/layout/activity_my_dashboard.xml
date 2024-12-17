@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Doanh thu"
+                            android:text="Tiền Nhận"
                             android:textColor="@android:color/white"
                             android:textSize="14sp" />
 
@@ -87,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="₫ 829,840"
+                            android:text=""
                             android:textColor="@android:color/white"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -115,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Chi phí"
+                            android:text="Tiền Chi"
                             android:textColor="@android:color/white"
                             android:textSize="14sp" />
 
@@ -124,7 +124,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="₫ 829,840"
+                            android:text=""
                             android:textColor="@android:color/white"
                             android:textSize="24sp"
                             android:textStyle="bold" />

@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.FAQActivity
@@ -216,12 +217,21 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
             // Hỗ trợ
             llHelpCenter.setOnClickListener {
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        MemberShipActivity::class.java
+                if (tokenManager.isLoggedIn()) {
+                    startActivity(
+                        Intent(
+                            requireContext(),
+                            MemberShipActivity::class.java
+                        )
                     )
-                )
+                } else {
+                    startActivity(
+                        Intent(
+                            requireContext(),
+                            LoginActivity::class.java
+                        )
+                    )
+                }
             }
 
             binding.toolblarCustome.onEndIconClick = {
