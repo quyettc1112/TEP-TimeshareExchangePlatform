@@ -18,6 +18,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthAc
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.FAQActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.PolicyActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
@@ -300,6 +301,10 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 startActivity(Intent(requireContext(), PolicyActivity::class.java))
             }
 
+            // FAQ
+            llFaq.setOnClickListener {
+                startActivity(Intent(requireContext(), FAQActivity::class.java))
+            }
 
         }
 

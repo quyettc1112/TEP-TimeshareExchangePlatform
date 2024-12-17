@@ -8,6 +8,7 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.example.tep_timeshareexchangeplatform.API.Repository.CustomerAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PaymentAPIRepository
+import com.example.tep_timeshareexchangeplatform.API.Repository.PublicPostingAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.PublicResortAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.RoomAPIRepository
 import com.example.tep_timeshareexchangeplatform.API.Repository.StorageAPIRepository
@@ -31,6 +32,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PostingTimesh
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.PostRoomRespone
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyTimeshareResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Timeshare.MyPostingTimeshareResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.FAQ.FAQResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletPurchaseResponse
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
@@ -48,6 +50,7 @@ import javax.inject.Inject
 class PostingFlowViewModel @Inject constructor(
     private val roomAPIRepository: RoomAPIRepository,
     private val publicResortAPIRepository: PublicResortAPIRepository,
+    private val publicPostingAPIRepository: PublicPostingAPIRepository,
     private val timeshareRepository: TimeshareRepository,
     private val customerAPIRepository: CustomerAPIRepository,
     private val paymentAPIRepository: PaymentAPIRepository,
@@ -121,6 +124,9 @@ class PostingFlowViewModel @Inject constructor(
             _stepCreateTimeshare.value = currentTask
         }
     }
+
+
+
 
     // ----------------------------------------------------------//
     private val _startDateTimeshare = MutableLiveData<String>()
@@ -755,6 +761,20 @@ class PostingFlowViewModel @Inject constructor(
         return _listImageResponse.value?.data ?: emptyList()
     }
 
+
+    // ----------------------------------------------------------//
+    // Call Get FAQ
+    private val _faqResponse = MutableLiveData<Resource<FAQResponse>>()
+    val faqResponse: MutableLiveData<Resource<FAQResponse>>
+        get() = _faqResponse
+    fun callGetAllFAQ() {
+        viewModelScope.launch {
+            _faqResponse.postValue(Resource.loading(null))
+            publicPostingAPIRepository.getFAQ().let {
+                _faqResponse.postValue(it)
+            }
+        }
+    }
 
     // Init
     init {
