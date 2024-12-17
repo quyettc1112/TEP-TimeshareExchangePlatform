@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivity
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
@@ -132,6 +133,7 @@ class PricingSupportActivity : BaseActivity() {
         val checkInDate = intent.getStringExtra(Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE) ?: ""
         val checkOutDate = intent.getStringExtra(Constant.DEFAULT_MY_POSTING_CHECK_OUT_DATE) ?: ""
         val nights = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_NIGHT, 0)
+        val photos = intent.getStringExtra(Constant.DEFAULT_MY_POSTING_IMAGE) ?: ""
 
         // Kiểm tra và lấy dữ liệu theo Package
         val staffRefinementPrice = intent.getLongExtra(Constant.staffRefinementPrice, 0)
@@ -147,7 +149,8 @@ class PricingSupportActivity : BaseActivity() {
             checkOutDate,
             staffRefinementPrice,
             priceValuation,
-            nights
+            nights,
+            photos
 
         )
     }
@@ -292,7 +295,6 @@ class PricingSupportActivity : BaseActivity() {
             tvCheckInDate.text = postingData.checkInDate
             tvCheckOutDate.text = postingData.checkOutDate
             tvNumberNight.text = postingData.nights.toString()
-
             if (rentalPackageEnum == RentalPackageEnum.PREMIUM_SERVICE.packageModel) {
                 tvRoomPricePerNight.text =
                     Constant.formatPriceLong(postingData.staffRefinementPrice!!) + "VND"
@@ -303,6 +305,11 @@ class PricingSupportActivity : BaseActivity() {
                 tvEstimatedTotalPrice.text =
                     Constant.formatPriceLong(postingData.priceValuation!! * postingData.nights) + " VND"
             }
+
+            Glide.with(this@PricingSupportActivity)
+                .load(postingData.photos)
+                .placeholder(R.drawable.ripple_effect_white)
+                .into(imImageTimeshare)
         }
 
         bindingDialog.btnAcceptPrice.setOnClickListener {
@@ -350,6 +357,7 @@ class PricingSupportActivity : BaseActivity() {
         val checkOutDate: String,
         val staffRefinementPrice: Long?,
         val priceValuation: Long?,
-        val nights: Int
+        val nights: Int,
+        val photos: String?
     )
 }

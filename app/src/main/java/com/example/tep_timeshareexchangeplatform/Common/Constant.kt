@@ -97,6 +97,7 @@ class Constant {
         const val DEFAULT_MY_POSTING_ROOM_NAME = "myPostingRoomName"
         const val DEFAULT_MY_POSTING_CHECK_IN_DATE = "myPostingCheckInDate"
         const val DEFAULT_MY_POSTING_CHECK_OUT_DATE = "myPostingCheckOutDate"
+        const val DEFAULT_MY_POSTING_IMAGE = "myPostingImage"
         const val staffRefinementPrice = "staffRefinementPrice"
         const val priceValuation = "priceValuation"
         const val DEFAULT_MY_POSTING_NIGHT = "myPostingNight"

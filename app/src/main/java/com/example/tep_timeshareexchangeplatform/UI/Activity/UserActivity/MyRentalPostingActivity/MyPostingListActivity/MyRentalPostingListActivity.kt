@@ -192,6 +192,9 @@ class MyRentalPostingListActivity : BaseActivity() {
             // Room Name
             intent.putExtra(Constant.DEFAULT_MY_POSTING_ROOM_NAME, it.roomName)
 
+            // Image
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_IMAGE, it.unitTypeDTO.photos)
+
             // Check In Date
             intent.putExtra(
                 Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE,
