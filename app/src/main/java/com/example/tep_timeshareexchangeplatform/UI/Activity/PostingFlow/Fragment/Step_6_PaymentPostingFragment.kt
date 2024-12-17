@@ -445,8 +445,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
 
         binding.apply {
-            tvPostingFee.text = "${formatPrice(packageModel.price)} đ"
-            tvTotalAmount.text = "${formatPrice(packageModel.price)} đ"
+            tvPostingFee.text = "${formatPrice(packageModel.price)} VNĐ"
+            tvTotalAmount.text = "${formatPrice(packageModel.price)} VNĐ"
 
             // Lấy ngày hiện tại
             val calendar = Calendar.getInstance()
@@ -495,7 +495,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun bindDataWalletInfo() {
         if (tokenManager.isLoggedIn()) {
             val availableMoney = tokenManager.getProfileInfo()?.walletAvailableMoney
-            binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} đ"
+            binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} VNĐ"
             availableMoney?.let { money ->
                 postingFlowViewModel.packageStep4.value?.price?.let { price ->
                     if (money < price) {
@@ -541,9 +541,9 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         if (pricePerNight.toInt() != 0) {
             val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!.toInt()
             binding.includeDetailBilling.tvEstimatedTotalPrice.text =
-                "${Constant.formatPriceLong(totalPrice)}đ / ${postingFlowViewModel.numberOfNights.value} đêm"
+                "${Constant.formatPriceLong(totalPrice)} VNĐ / ${postingFlowViewModel.numberOfNights.value} đêm"
             binding.includeDetailBilling.tvRoomPricePerNight.text =
-                "${Constant.formatPriceLong(pricePerNight)}đ / 1 đêm"
+                "${Constant.formatPriceLong(pricePerNight)} VNĐ / 1 đêm"
         } else {
             binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
             binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")

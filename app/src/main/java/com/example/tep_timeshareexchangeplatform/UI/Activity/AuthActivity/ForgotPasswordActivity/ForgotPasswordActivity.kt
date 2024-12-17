@@ -38,6 +38,7 @@ class ForgotPasswordActivity : BaseActivity() {
             binding.vp2Main.setCurrentItem(position, true) // Cập nhật vị trí
         }
 
+
     }
 
     private fun setUpScreenViewPager() {

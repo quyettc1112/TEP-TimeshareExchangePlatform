@@ -18,7 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_fillter"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
         android:background="@color/white"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
         android:id="@+id/rv_my_posting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:paddingStart="10dp"
         android:paddingTop="5dp"
         android:paddingEnd="10dp"

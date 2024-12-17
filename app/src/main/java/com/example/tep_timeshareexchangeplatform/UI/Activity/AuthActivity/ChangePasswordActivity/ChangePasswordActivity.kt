@@ -51,6 +51,7 @@ class ChangePasswordActivity : BaseActivity() {
         eventClickNext()
         eventClickToolbar()
         observeData()
+
     }
 
     private fun observeData() {
@@ -95,7 +96,7 @@ class ChangePasswordActivity : BaseActivity() {
     }
 
     private fun eventClickToolbar() {
-        binding.customToolbar8.onEndIconClick =  {
+        binding.customToolbar.onStartIconClick =  {
             finish()
         }
     }

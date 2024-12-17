@@ -181,7 +181,7 @@
                             android:layout_gravity="left|center"
                             android:layout_weight="9"
                             android:fontFamily="@font/inter_medium"
-                            android:maxLines="2"
+                            android:maxLines="3"
                             android:paddingStart="5dp"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
