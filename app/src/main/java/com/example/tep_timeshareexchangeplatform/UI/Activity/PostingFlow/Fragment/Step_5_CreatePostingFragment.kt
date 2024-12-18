@@ -65,7 +65,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager(requireContext())
         initializeLaunchers()
-
+        postingFlowViewModel.updateCancelPolicy(0)
     }
 
     override fun onCreateView(
@@ -73,8 +73,8 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     ): View? {
         binding = FragmentCreatePostingBinding.inflate(inflater, container, false)
         binding.includeMyTimeshare.btnSelect.visibility = View.GONE
-
         postingFlowViewModel.updateCancelPolicy(0)
+
 
 
         observeViewModel()
@@ -190,6 +190,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
     }
 
     private fun bindDataSpinnerCancellationPolicy() {
+        postingFlowViewModel.updateCancelPolicy(0)
         val refundPolicies = RefundPolicy.entries.toTypedArray() // Lấy danh sách tất cả các enum
         val spinnerAdapter = object :
             ArrayAdapter<RefundPolicy>(requireContext(), R.layout.spinner_item, refundPolicies) {
@@ -212,7 +213,6 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
         }
         binding.customSpinnerViewDiretion.adapter = spinnerAdapter
         binding.customSpinnerViewDiretion.setSelection(0)
-        postingFlowViewModel.updateCancelPolicy(0)
         binding.customSpinnerViewDiretion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
