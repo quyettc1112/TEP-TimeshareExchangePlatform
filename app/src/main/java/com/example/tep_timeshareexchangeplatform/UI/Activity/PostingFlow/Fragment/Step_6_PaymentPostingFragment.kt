@@ -610,10 +610,11 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
 
     private fun routingWalletByTypePosting() {
         // Call Create Posting
-        val rentalPackageEnum =
-            RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+
         when (postingFlowViewModel.typeOfPostingFlow.value) {
             Constant.RENTAL_POSTING_FLOW -> {
+                val rentalPackageEnum =
+                    RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
                 val rentalPostingDTO = RentalPostingDTO(
                     description = "",
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
@@ -629,10 +630,12 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
 
             Constant.EXCHANGER_POSTING_FLOW -> {
+                val exchangePackageEnum =
+                    ExchangePackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
                 val exchangePostingDTO = ExchangePostingDTO(
                     description = postingFlowViewModel.note.value ?: "",
                     nights = postingFlowViewModel.numberOfNights.value!!.toInt(),
-                    exchangePackageId = rentalPackageEnum?.id!!,
+                    exchangePackageId = exchangePackageEnum?.id!!,
                     timeshareId = postingFlowViewModel.myTimeshareModelSelected.value?.timeShareId!!,
                     checkinDate = postingFlowViewModel.checkinDateValid.value!!,
                     checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
@@ -650,7 +653,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             }
         }
     }
-
 
     private fun intentToVNPAYActivity_RentalPosting(url: String) {
         val intent = Intent(requireContext(), VNPayActivity::class.java)
@@ -690,8 +692,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             checkinDate = postingFlowViewModel.checkinDateValid.value!!,
             checkoutDate = postingFlowViewModel.checkoutDateValid.value!!,
             preferLocation = postingFlowViewModel.currentProvinceSelected.value.toString(),
-            preferCheckinDate = postingFlowViewModel.exchangeDateRange.value?.first.toString(),
-            preferCheckoutDate = postingFlowViewModel.exchangeDateRange.value?.second.toString(),
+            preferCheckinDate =Constant.formatDateFromLong( postingFlowViewModel.exchangeDateRange.value?.first!!),
+            preferCheckoutDate = Constant.formatDateFromLong(postingFlowViewModel.exchangeDateRange.value?.second!!),
             imageUrls = postingFlowViewModel.getUploadedImageUrls()
         )
         Log.d("CheckDTO", postingTimeshareDTO.toString())
@@ -702,7 +704,6 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         intent.putExtra(Constant.PAYMENT_METHOD_TYPE, PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING)
         paymentResultLauncher.launch(intent)
     }
-
 
     // Send Request
     // Send Request To Create Image List
@@ -741,12 +742,25 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
             // Get Payment Method
             val paymentMethod = postingFlowViewModel.selectedPaymentMethod.value
 
-            // Get Package Enum
-            val rentalPackageEnum =
-                RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+            when (postingFlowViewModel.typeOfPostingFlow.value) {
+                Constant.RENTAL_POSTING_FLOW -> {
+                    // Get Package Enum
+                    val rentalPackageEnum =
+                        RentalPackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+                    // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
+                    paymentTypeHanldeFlow(paymentMethod, rentalPackageEnum)
+                }
 
-            // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
-            paymentTypeHanldeFlow(paymentMethod, rentalPackageEnum)
+                Constant.EXCHANGER_POSTING_FLOW -> {
+                    // Get Package Enum
+                    val exchangePackageEnum =
+                        ExchangePackageEnum.getPackageByName(postingFlowViewModel.packageStep4.value?.name.toString())
+                    // Check Payment Method, Call API to get Payment URL or Check Wallet Balance
+                    paymentTypeHanldeFlow(paymentMethod, exchangePackageEnum)
+                }
+            }
+
+
         }
 
     }

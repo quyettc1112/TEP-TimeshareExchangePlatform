@@ -149,7 +149,7 @@ interface CustomerAPIService {
     ) : Response<MyExchangePostingDetailResponse>
 
     // Posting Exchange Posting
-    @POST("/api/customer/exchange/posting")
+    @POST("customer/exchange/posting")
     suspend fun createExchangePosting(
         @Header ("Authorization") token: String,
         @Body postingDTO: ExchangePostingDTO

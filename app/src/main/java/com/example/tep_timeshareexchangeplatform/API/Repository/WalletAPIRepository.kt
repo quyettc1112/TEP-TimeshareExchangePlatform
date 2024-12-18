@@ -185,7 +185,7 @@ class WalletAPIRepository @Inject constructor(
     }
 
     // Create Exchange Posting Transcation
-    suspend fun createExchangePostingTransaction(
+    suspend fun createExchangePostingTransactionVNPAY(
         token: String,
         uuid: String,
         exchangePackageId: Int

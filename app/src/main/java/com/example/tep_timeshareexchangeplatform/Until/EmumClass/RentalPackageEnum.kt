@@ -61,7 +61,7 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
         PackageModel(
             id = 2,
             name = "Gói Nâng Cao",
-            price = 179000,
+            price = 199000,
             description = "Unwind cung cấp hệ thống đặt chỗ trực tuyến.",
             duration = 2,  // Thời gian sử dụng là 1 tháng
             type = "Standard",
@@ -79,7 +79,7 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
         PackageModel(
             id = 3,
             name = "Gói Premium",
-            price = 199000,
+            price = 239000,
             description = "Unwind hỗ trợ quảng cáo và quản lý toàn bộ quá trình cho thuê.",
             duration = 12,  // Thời gian sử dụng là 1 tháng
             type = "Premium",

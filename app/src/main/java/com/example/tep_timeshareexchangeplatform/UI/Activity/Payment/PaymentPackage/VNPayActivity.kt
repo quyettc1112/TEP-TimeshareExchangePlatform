@@ -193,6 +193,7 @@ class VNPayActivity : BaseActivity() {
                     val postingTimeshareDTO =
                         intent.getParcelableExtra<ExchangePostingDTO>(Constant.POSTING_TIMESHARE_DTO)
                     if (postingTimeshareDTO != null) {
+                        Log.d("CheckkDOO - Done Exchange Posting", postingTimeshareDTO.toString())
                         viewModel.createExchangePosting(
                             tokenManager.getAccessToken().toString(),
                             postingTimeshareDTO
@@ -204,7 +205,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showFailedDialog(
                         this@VNPayActivity,
-                        "Tạo bài đăng trao đổi thất bại",
+                        "Tạo bài đăng trao đổi thất bại - VNPAY",
                         it.message.toString() + "Create Transaction",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -289,9 +290,10 @@ class VNPayActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
+                    Log.d("CheckkDOO - Done Exchange Posting", it.message.toString())
                     showFailedDialog(
                         this@VNPayActivity,
-                        "Tạo bài đăng trao đổi thất bại",
+                        "Tạo bài đăng trao đổi thất bại - Create Exchange Posting",
                         it.message.toString(),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
@@ -407,7 +409,8 @@ class VNPayActivity : BaseActivity() {
             }
 
             PaymentType.PURCHASE_PACKAGE_EXCHANGE_POSTING -> {
-                callAPICreateExchangePostingTransaction(walletTransactionId, packageId)
+                Log.d("CheckkDOO - Done Exchange Posting", walletTransactionId + " - " + packageId)
+                callAPICreateExchangePostingTransactionVNPAY(walletTransactionId, packageId)
             }
 
             PaymentType.PAYMENT_EXCHANGE_REQUEST -> {
@@ -583,9 +586,9 @@ class VNPayActivity : BaseActivity() {
         viewModel.createRentalPostingTransaction(token, uuid, packageId)
     }
 
-    private fun callAPICreateExchangePostingTransaction(uuid: String, packageId: Int) {
+    private fun callAPICreateExchangePostingTransactionVNPAY(uuid: String, packageId: Int) {
         val token = TokenManager(this).getAccessToken().toString()
-        viewModel.createExchangePostingTransaction(token, uuid, packageId)
+        viewModel.createExchangePostingTransactionVNPAY(token, uuid, packageId)
     }
 
     private fun callAPICreateExchangeRequestTransaction(uuid: String, packageId: Int) {

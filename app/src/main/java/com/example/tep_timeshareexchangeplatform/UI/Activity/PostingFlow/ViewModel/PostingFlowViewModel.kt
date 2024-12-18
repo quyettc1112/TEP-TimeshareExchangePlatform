@@ -637,7 +637,7 @@ class PostingFlowViewModel @Inject constructor(
     fun createExchangePostingTransactionByWallet(token: String, exchangePackageId: Int) {
         viewModelScope.launch {
             _createExchangePostingByWallet.postValue(Resource.loading(null))
-            walletAPIRepository.purchasePackagePostingWallet(token, exchangePackageId).let {
+            walletAPIRepository.createExchangePostingTransactionByWallet(token, exchangePackageId).let {
                 _createExchangePostingByWallet.postValue(it)
             }
         }

@@ -75,7 +75,7 @@ interface WalletAPIService {
     suspend fun createExchangePostingTransactionByVNPAY(
         @Header("Authorization") token: String,
         @Query("uuid") uuid: String,
-        @Query("postingId") postingId: Int
+        @Query("packageId") postingId: Int
     ): Response<VNPAYPurchaseResponse>
 
     // Purchase Package Posting By Wallet
@@ -90,7 +90,7 @@ interface WalletAPIService {
     @POST("wallet/wallet/exchange/posting")
     suspend fun createExchangePostingTransactionByWallet(
         @Header ("Authorization") token: String,
-        @Query("postingId") postingId : Int
+        @Query("packageId") packageId : Int
     ) : Response<WalletPurchaseResponse>
 
 
