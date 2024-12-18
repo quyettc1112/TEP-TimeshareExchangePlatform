@@ -62,12 +62,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         callAPIGetData()
         gridAdapter = GridAdapter(Constant.destiantionList) { destinationModel ->
-            // Xử lý sự kiện khi item được click
-            Toast.makeText(
-                requireContext(),
-                "Clicked: ${destinationModel.destinationName}",
-                Toast.LENGTH_SHORT
-            ).show()
+
         }
 
         publicsPostingAdapter.submitList(listOf())

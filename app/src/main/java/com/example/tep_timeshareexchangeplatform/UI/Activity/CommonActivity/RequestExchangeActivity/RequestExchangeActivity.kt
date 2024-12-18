@@ -97,7 +97,6 @@ class RequestExchangeActivity : BaseActivity() {
                 }
 
                 Status.ERROR -> {
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
                     showErrorToast(resources.message.toString())
                     binding.animationViewExchange.visibility = View.GONE
                 }
@@ -619,7 +618,6 @@ class RequestExchangeActivity : BaseActivity() {
             ExchangePackageEnum.getPackageById(viewModel.exchangePostingDetail.value?.data?.exchangePackageId!!)
         when (exchangePackageEnum) {
             ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
-                Toast.makeText(this, "Gói Co bản", Toast.LENGTH_SHORT).show()
                 binding.llExchangeMethod.visibility = View.GONE
                 binding.llPriceInput.visibility = View.GONE
                 binding.btnNext.visibility = View.VISIBLE
@@ -629,7 +627,6 @@ class RequestExchangeActivity : BaseActivity() {
             }
 
             ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
-                Toast.makeText(this, "Gói Nâng Cao", Toast.LENGTH_SHORT).show()
                 binding.llExchangeMethod.visibility = View.VISIBLE
                 bindDataExchangePriceOption()
             }
