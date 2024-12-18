@@ -335,10 +335,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    (activity as PostingFlowActivity).showErrorDialog(
-                        "${roomModel.message}",
-                        "Back"
-                    )
+                    if(roomModel.message!!.contains("400")) {
+                        (activity as PostingFlowActivity).showErrorDialog(
+                            "Mã Phòng Đã Tồn Tại",
+                            "Quay lại"
+                        )
+                    } else {
+                        (activity as PostingFlowActivity).showErrorToast("Lỗi Khi Tạo Phòng","Lỗi Khi Tạo Phòng")
+                    }
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                 }
             }
