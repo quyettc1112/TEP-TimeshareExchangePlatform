@@ -12,10 +12,11 @@ data class MyExchangeRequestDetailResponse(
     @SerializedName("endDate") val endDate: String,
     @SerializedName("status") val status: String,
     @SerializedName("exchangePosting") val exchangePosting: ExchangePosting,
-    @SerializedName("note") val note: Any?,
+    @SerializedName("note") val note: String?,
     @SerializedName("createdDate") val createdDate: String,
     @SerializedName("updatedDate") val updatedDate: String,
     @SerializedName("priceValuation") val priceValuation: Long?,
+    @SerializedName("exchangePackageId") val exchangePackageId: Int?,
     @SerializedName("isActive") val isActive: Boolean
 ) {
     data class RoomInfo(

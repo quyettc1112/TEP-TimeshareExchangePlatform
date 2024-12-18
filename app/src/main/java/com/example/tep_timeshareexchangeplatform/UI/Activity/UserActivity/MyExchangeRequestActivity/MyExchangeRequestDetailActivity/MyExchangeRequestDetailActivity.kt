@@ -29,6 +29,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPack
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
@@ -361,6 +362,26 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         }
 
         checkPricingAble(myExchangeRequestDetail)
+
+        // Check Exchange Package
+        val exchangePackage = myExchangeRequestDetail.exchangePackageId?.let {
+            ExchangePackageEnum.getPackageById(
+                it
+            )
+
+        }
+        when (exchangePackage) {
+            ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
+                binding.btnPriceValuation.visibility = View.GONE
+            }
+
+            ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
+                binding.btnPriceValuation.visibility = View.VISIBLE
+            }
+
+        }
+
+
     }
 
     private fun bindDataStatus(item: MyExchangeRequestDetailResponse) {
