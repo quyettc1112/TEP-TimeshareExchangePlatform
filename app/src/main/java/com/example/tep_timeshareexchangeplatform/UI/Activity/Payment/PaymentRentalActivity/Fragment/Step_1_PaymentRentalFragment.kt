@@ -70,9 +70,12 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
             setTitleDetail("${postingDetail.checkinDate} đến ${postingDetail.checkoutDate}")
         }
 
+        binding.customToolbar.onStartIconClick = {
+            requireActivity().finish()
+        }
         // Resort Info
         binding.apply {
-            tvResortName.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvResortName.text = postingDetail.resortName + " | " + postingDetail.roomCode
             tvLocation.text = postingDetail.location.displayName ?: postingDetail.location.name
             if (postingDetail.isVerify) {
                 llVerify.visibility = View.VISIBLE
@@ -102,7 +105,7 @@ class Step_1_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_1__paym
         // Set Unit Type Of Posting
         binding.apply {
             tvRoomName.text =
-                "Chi Tiết Phòng | ${postingDetail.unitType.title} #${postingDetail.roomName}"
+                "Chi Tiết Phòng | ${postingDetail.unitType.title} | ${postingDetail.roomCode}"
 
             // Bath
             tvNumBath.text = postingDetail.unitType.bathrooms.toString()

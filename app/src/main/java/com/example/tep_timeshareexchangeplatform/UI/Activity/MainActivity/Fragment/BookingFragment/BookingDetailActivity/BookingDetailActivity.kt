@@ -69,7 +69,9 @@ class BookingDetailActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
+
         val rentalBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_RENTAL, 0)
+        Log.d("Check Data Booking Detail", rentalBookingId.toString())
         exchangeBookingId = intent.getIntExtra(Constant.DEFAULT_MY_BOOKING_EXCHANGE, 0)
 
         if (!token.isLoggedIn()) {
@@ -117,14 +119,15 @@ class BookingDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     binding.shimmerViewContainer.visibility = View.GONE
                     binding.shimmerViewContainer.stopShimmer()
+                    Log.d("Check Data Booking Detail", resources.message.toString())
                     MotionToast.createToast(
                         this,
-                        "Error",
+                        "Lỗi Tải Dữ Liệu",
                         resources.message.toString(),
-                        MotionToastStyle.ERROR,
+                        MotionToastStyle.WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        null
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                 }
             }
@@ -147,12 +150,12 @@ class BookingDetailActivity : BaseActivity() {
                     binding.shimmerViewContainer.stopShimmer()
                     MotionToast.createToast(
                         this,
-                        "Error",
+                        "Lỗi Tải Dữ Liệu",
                         resources.message.toString(),
-                        MotionToastStyle.ERROR,
+                        MotionToastStyle.WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.LONG_DURATION,
-                        null
+                        ResourcesCompat.getFont(this, R.font.inter_bold)
                     )
                 }
             }
@@ -163,18 +166,27 @@ class BookingDetailActivity : BaseActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
+                    viewModel.callGetCustomerProfile(token.getAccessToken().toString())
+                }
+                Status.ERROR -> {
+                    hideLoadingWaiting()
+                    showFailToast(it.message.toString())
+                    Log.d("Chgeckasfasda", it.message.toString())
+                }
+
+                Status.LOADING -> {
+                    showLoadingWaiting(true)
+                }
+            }
+        }
+
+        // Fetch Customer Profile
+        viewModel.getCustomerProfileResponse.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    token.saveProfileInfo(it.data!!)
                     showSuccessToast("Hủy đặt phòng thành công")
-                    val resultIntent = Intent()
                     Log.d("Checkasfasda", it.data.toString())
-                    resultIntent.putExtra(
-                        Constant.DEFAULT_BOOKING_ID,
-                        it.data?.id
-                    ) // Thêm dữ liệu vào Intent
-                    resultIntent.putExtra(
-                        Constant.DEFAULT_BOOKING_STATUS,
-                        it.data?.status
-                    ) // Thêm dữ liệu vào Intent
-                    setResult(Activity.RESULT_OK, resultIntent) // Trả kết quả về MainActivity
                     notificationHelper.makeNotification(
                         this,
                         "Hủy đặt phòng thành công",
@@ -193,7 +205,10 @@ class BookingDetailActivity : BaseActivity() {
                     showLoadingWaiting(true)
                 }
             }
+
         }
+
+
         // Posting feedback
         viewModel.feedbackRentalResponse.observe(this) {
             when (it.status) {
@@ -389,7 +404,6 @@ class BookingDetailActivity : BaseActivity() {
         }
 
 
-
         // Type Booking
         if (data.source == "rental") {
             Glide.with(binding.root.context).load(R.drawable.ic_rental_booking)
@@ -517,7 +531,7 @@ class BookingDetailActivity : BaseActivity() {
             // Bind Data
             tvResortNameDtb.text =
                 data.roomInfo.unitType.resortName + " - " + data.roomInfo.unitType.title
-            tvLocation.text = ""
+            tvLocation.text = data.roomInfo.unitType.location.displayName
             tvNumberNight.text = ""
             tvCheckInDate.text =
                 data.checkinDate?.let {

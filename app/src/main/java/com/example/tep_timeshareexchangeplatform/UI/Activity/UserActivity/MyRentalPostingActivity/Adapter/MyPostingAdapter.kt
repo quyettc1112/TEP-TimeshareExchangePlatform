@@ -8,17 +8,16 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseAdapter
 import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseItemViewHolderCF
-import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingsResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingsResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.databinding.ItemMyPostingBinding
 import java.text.DecimalFormat
 
-class MyPostingAdapter(var context: MyPostingActivity) :
+class MyPostingAdapter(var context: MyRentalPostingListActivity) :
     BaseAdapter<MyRentalPostingsResponse.Content, MyPostingAdapter.MyPostingViewHolder>() {
 
 

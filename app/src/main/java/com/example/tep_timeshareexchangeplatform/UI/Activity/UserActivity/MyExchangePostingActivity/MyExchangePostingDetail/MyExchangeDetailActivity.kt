@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseActivi
 import com.example.tep_timeshareexchangeplatform.AppConfig.CustomView.RoomSelectionDialog.UnitTypeDataDialog
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.AmenitiesModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImageAmenitiesAdapter.RoomAmenitiesAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.ImagePostingAdapter
 import com.example.tep_timeshareexchangeplatform.Common.Adapter.SpannedGridLayoutManager.SpannedGridLayoutManager
@@ -50,6 +51,7 @@ class MyExchangeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityMyExchangDetailBinding
     private lateinit var imagePostingAdapter : ImagePostingAdapter
     private var facilityAdapter = AmenitiesAdapter()
+    private lateinit var tokenManager: TokenManager
     private val viewModel: MyExchangeDetailViewModel by viewModels()
     private var postingId: Int = 0
 
@@ -63,6 +65,7 @@ class MyExchangeDetailActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityMyExchangDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        tokenManager = TokenManager(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -93,9 +96,8 @@ class MyExchangeDetailActivity : BaseActivity() {
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
         postingId = intent;
-        val token = TokenManager(this)
-        if (token.isLoggedIn() && token.getAccessToken() != null) {
-            viewModel.getCustomerExchangeDetail(token.getAccessToken().toString(), intent)
+        if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
+            viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
             observeMyPostingDetail()
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
@@ -114,6 +116,7 @@ class MyExchangeDetailActivity : BaseActivity() {
                 Status.ERROR -> {
                     hideLoadingWaiting()
                     showErrorToast("Lỗi Tải Dữ Liệu", "Không thể lấy thông tin bài đăng")
+                    Log.d("MyExchangeDetailActivityasda", "observeMyPostingDetail: ${it.message}")
                 }
 
                 Status.LOADING -> {
@@ -350,6 +353,9 @@ class MyExchangeDetailActivity : BaseActivity() {
         // Description
         binding.etNote.setText(myExchangePostingDetail.description)
 
+        // Prefer Exchange
+        bindDataPreferExchange(myExchangePostingDetail)
+
 
     }
 
@@ -451,6 +457,7 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
+
     private fun bindDataListImage() {
         // List Destination
         imagePostingAdapter = ImagePostingAdapter()
@@ -498,6 +505,43 @@ class MyExchangeDetailActivity : BaseActivity() {
 
     }
 
+    private fun bindDataPreferExchange(exchangeDetailResponse: MyExchangePostingDetailResponse) {
+        binding.apply {
+            llPreferExchange.visibility = View.VISIBLE
+            tvPreferExchangLocation.text =
+                "Tỉnh/Thành Phố: " + exchangeDetailResponse.preferLocation ?: ""
+            tvPreferCheckinDate.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckoutDate.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckinDayOfWeek.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+            tvPreferCheckoutDayOfWeek.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@MyExchangeDetailActivity
+                    )
+                }
+        }
+    }
+
+
     private fun showUpdateExchangeDialog() {
         viewModel.resetUpdateExchangeResponse()
         val updateExchangeBottomDialog = UpdateExchangeBottomDialog(
@@ -542,5 +586,11 @@ class MyExchangeDetailActivity : BaseActivity() {
                 isChecked = false // Mặc định là chưa được chọn
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
+        viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
     }
 }

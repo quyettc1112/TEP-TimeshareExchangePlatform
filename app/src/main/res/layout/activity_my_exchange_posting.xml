@@ -14,54 +14,49 @@
         app:showStartText="false"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!--// Filter-->
-    <LinearLayout
-        android:id="@+id/linearLayout15"
+    <!--// FIller layout-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_fillter"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:weightSum="10"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
+        android:background="@color/white"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/search_input"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="9.5"
-            android:background="@drawable/background_stroke_around"
-            android:drawablePadding="8dp"
-            android:hint="Search"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textSize="16sp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="90 Ngày qua"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:src="@drawable/ic_filter" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary_background_F9"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--// List of My Posting-->
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_my_posting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:paddingStart="10dp"
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintTop_toBottomOf="@+id/ll_fillter"
         app:layout_constraintVertical_bias="0.863"
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/item_my_posting" />

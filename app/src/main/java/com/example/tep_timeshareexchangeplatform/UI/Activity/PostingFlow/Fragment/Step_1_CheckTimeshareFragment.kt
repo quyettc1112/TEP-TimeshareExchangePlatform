@@ -17,6 +17,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.Loca
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.FaqAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.Adapter.TimeshareCompanyAdapter
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentCheckTimeshareBinding
 
 
@@ -30,7 +31,7 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         timeshareCompanyAdapter.submitList(Constant.listTimeshareCompany)
-        faqAdapter.submitList(Constant.listFaq)
+        faqAdapter.submitList(listOf())
     }
 
     override fun onCreateView(
@@ -42,9 +43,24 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
         setRecyclerView()
         setScrollToEvent()
         setEventInputAction()
+        observeData()
+        postingFlowViewModel.callGetAllFAQ()
 
         return binding.root
     }
+
+    private fun observeData() {
+        postingFlowViewModel.faqResponse.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {
+                    it.data?.let { faqAdapter.submitList(it) }
+                }
+                Status.ERROR -> {}
+            }
+        })
+    }
+
 
     // Button or Search Click Event
     private fun setEventInputAction(){
@@ -69,7 +85,6 @@ class Step_1_CheckTimeshareFragment : BaseFragment(R.layout.fragment_check_times
         }
 
     }
-
 
     private fun setRecyclerView() {
         // Timeshare Company

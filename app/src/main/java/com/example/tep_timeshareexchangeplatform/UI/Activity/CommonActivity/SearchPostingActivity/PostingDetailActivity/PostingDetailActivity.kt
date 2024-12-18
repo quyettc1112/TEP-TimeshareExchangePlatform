@@ -90,6 +90,7 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_POSTING_ID, 0)
+        Log.d("CheckPostingDetailData", "getIntentValue: $intent")
         if (intent == 0) {
             finish()
         }
@@ -116,15 +117,6 @@ class PostingDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        this,
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
                 }
             }
         }
@@ -255,6 +247,7 @@ class PostingDetailActivity : BaseActivity() {
 
     private fun bindDataPostingDetail(postingDetail: PublicPostingDetailResponse) {
         binding.cvRequestContaner.visibility = View.VISIBLE
+        binding.llPreferExchange.visibility = View.GONE
 
         // Custom Toolbar Data
         binding.customToolbar.apply {
@@ -301,6 +294,7 @@ class PostingDetailActivity : BaseActivity() {
 
         // Cancel Policy
         binding.apply {
+            llCancellationPolicy.visibility = View.VISIBLE
             if (postingDetail.cancelType.toString() == "null") {
                 tvCancelPolicy.text = "Không có"
                 tvCancelPolicyDtb.text = "Không có"
@@ -316,7 +310,7 @@ class PostingDetailActivity : BaseActivity() {
 
         // UI DTB
         binding.apply {
-            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvResortNameDtb.text = postingDetail.resortName + " | Mã Phòng: " + postingDetail.roomCode
             tvCheckInDateDtb.text =
                 Constant.formatDateByLocale(postingDetail.checkinDate, this@PostingDetailActivity)
             tvCheckOutDateDtb.text =
@@ -327,12 +321,15 @@ class PostingDetailActivity : BaseActivity() {
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
             tvPostedBy.text = "Đăng bởi ${postingDetail.ownerName}"
-
+            tvLocationDtb.text = postingDetail.location.displayName ?: postingDetail.location.name
             Glide.with(this@PostingDetailActivity)
                 .load(postingDetail.unitType.photos)
                 .placeholder(R.drawable.ic_image_tmp_holder)
                 .error(R.drawable.ic_image_tmp_holder)
                 .into(binding.imImageTimeshare)
+
+            binding.llPriceRoom.visibility = View.VISIBLE
+
         }
 
         // Data for Request
@@ -469,6 +466,7 @@ class PostingDetailActivity : BaseActivity() {
     private fun bindDataUnitType(data: PublicPostingDetailResponse) {
         // Set Unit Type Of Posting
         binding.includeUnitType.apply {
+            tvRoomCode.text = data.roomCode
             tvRoomName.text = data.roomName
             tvRoomType.text = data.unitType.title
 

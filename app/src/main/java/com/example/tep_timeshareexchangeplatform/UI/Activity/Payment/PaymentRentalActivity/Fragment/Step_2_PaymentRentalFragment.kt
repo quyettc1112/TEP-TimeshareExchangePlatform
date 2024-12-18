@@ -18,7 +18,6 @@ import com.example.tep_timeshareexchangeplatform.AppConfig.BaseConfig.BaseFragme
 import com.example.tep_timeshareexchangeplatform.BaseModel.DTO.GuestDTO
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.Common.Constant
-import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPrice
 import com.example.tep_timeshareexchangeplatform.Common.Constant.Companion.formatPriceLong
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainActivity
@@ -58,7 +57,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
         checkTokenValid()
         observeData()
         onPaymentMethodSelected()
-        requestButtonClick()
+        eventClickPaymentRental()
         initActivityResultLauncher()
         return binding.root
     }
@@ -121,15 +120,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    (activity as PaymentRentalActivity).showWarningToast("Thất Bại","Không thể tạo URL thanh toán")
                 }
             }
         }
@@ -148,15 +139,10 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    if (it.message!!.contains("400")) {
+                        (activity as PaymentRentalActivity).showWarningToast("Thất Bại", "Phòng đã được đặt bởi người khác")
+                        (activity as PaymentRentalActivity).finish()
+                    }
                 }
             }
         }
@@ -170,31 +156,15 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
                 Status.SUCCESS -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thành Công",
-                        "Thanh Toán thành công",
-                        MotionToastStyle.SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
                     callAPICreateBooking()
-
-
                 }
 
                 Status.ERROR -> {
                     (activity as PaymentRentalActivity).hideLoadingWaiting()
-                    MotionToast.Companion.createColorToast(
-                        requireActivity(),
-                        "Thất Bại",
-                        "${it.message}",
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    if (it.message!!.contains("400")) {
+                        (activity as PaymentRentalActivity).showWarningToast("Thất Bại", "Phòng đã được đặt bởi người khác")
+                        (activity as PaymentRentalActivity).finish()
+                    }
                 }
             }
         }
@@ -214,7 +184,6 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                         tokenManager.saveUserLogState(UserLogState.LOGGED_IN_AS_CUSTOMER)
                         tokenManager.saveProfileInfo(it.data)
                     }
-
                     (activity as PaymentRentalActivity).showSuccessDialog(
                         requireContext(),
                         "Chúc mừng bạn đã đặt phòng thành công. Vui lòng kiểm tra thông tin đặt phòng trong mục lịch sử đặt phòng",
@@ -281,7 +250,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
             tvEstimatedTotalPrice.text =
                 "${Constant.formatPriceLong(postingDetail.totalPrice)} VNĐ / ${postingDetail.nights} đêm"
 
-            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.unitType.title
+            tvResortNameDtb.text = postingDetail.resortName + " | " + postingDetail.roomCode
 
         }
 
@@ -299,7 +268,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
 
     }
 
-    private fun requestButtonClick() {
+    private fun eventClickPaymentRental() {
         binding.ctrRequestButton.setOnClickListener {
             val isFormValid = validateGuestInfo(
                 binding.etFullName,
@@ -319,7 +288,8 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 binding.scrollView.post {
                     binding.scrollView.scrollTo(0, binding.llPolicy.top)
                 }
-                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui lòng đồng ý với điều khoản và chính sách của chúng tôi")
+                (activity as PaymentRentalActivity).showWarningToast("Chú Ý", "Vui Lòng Chấp Nhận Điều Khoản")
+                return@setOnClickListener
             }
 
             paymentMethodProcess()
@@ -357,7 +327,7 @@ class Step_2_PaymentRentalFragment : BaseFragment(R.layout.fragment_step_2__paym
                 // Show error message or keep focus on the invalid field
                 Toast.makeText(
                     requireContext(),
-                    "Vui lòng chọn phương thức thanh toán!",
+                    "Chưa chọn phương thức thanh toán",
                     Toast.LENGTH_SHORT
                 ).show()
             }

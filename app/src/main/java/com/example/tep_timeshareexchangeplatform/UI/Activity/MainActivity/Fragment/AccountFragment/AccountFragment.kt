@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -17,8 +16,11 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.AuthActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.ChangePasswordActivity.ChangePasswordActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.AuthActivity.LoginActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.MyExchangeRequestActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.NotificationActivity.NotificationActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.FAQActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.CommonActivity.PolicyActivity.PolicyActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MemberShipActivity.MemberShipActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.MainActivity.MainViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.DepositActivity.DepositActivity
@@ -26,10 +28,11 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyDash
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyInfoActivity.MyInfoActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyOrderActivity.MyOrderActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTransactionActivity.MyTransactionActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.UserLogState
+import com.example.tep_timeshareexchangeplatform.Until.Status
 import com.example.tep_timeshareexchangeplatform.Until.TokenManager.TokenManager
 import com.example.tep_timeshareexchangeplatform.databinding.FragmentAccountBinding
 
@@ -85,6 +88,20 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                     .placeholder(R.drawable.ic_image_placeholder)
                     .error(R.drawable.ic_image_placeholder)
                     .into(binding.ivUserAvt)
+            }
+        }
+
+        // Load Wallet
+        mainViewModel.customerProfileResponse.observe(viewLifecycleOwner) { resources ->
+            when (resources.status) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {
+                    resources.data?.let {
+                        mainViewModel.setCustomerInfo(it)
+                        tokenManager.saveProfileInfo(it)
+                    }
+                }
+                Status.ERROR -> {}
             }
         }
     }
@@ -183,7 +200,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         }
     }
 
-
     private fun setUserActivitiesEvent() {
         binding.apply {
             // Chỉnh Ngôn ngữ
@@ -201,15 +217,24 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
             // Hỗ trợ
             llHelpCenter.setOnClickListener {
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        MemberShipActivity::class.java
+                if (tokenManager.isLoggedIn()) {
+                    startActivity(
+                        Intent(
+                            requireContext(),
+                            MemberShipActivity::class.java
+                        )
                     )
-                )
+                } else {
+                    startActivity(
+                        Intent(
+                            requireContext(),
+                            LoginActivity::class.java
+                        )
+                    )
+                }
             }
 
-            binding.toolblarCustome.onEndIconClick =  {
+            binding.toolblarCustome.onEndIconClick = {
                 startActivity(Intent(requireContext(), NotificationActivity::class.java))
             }
 
@@ -218,7 +243,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 startActivity(
                     Intent(
                         requireContext(),
-                        MyPostingActivity::class.java
+                        MyRentalPostingListActivity::class.java
                     )
                 )
             }
@@ -281,6 +306,15 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
             }
 
+            // Policy
+            llPrivacyPolicy.setOnClickListener {
+                startActivity(Intent(requireContext(), PolicyActivity::class.java))
+            }
+
+            // FAQ
+            llFaq.setOnClickListener {
+                startActivity(Intent(requireContext(), FAQActivity::class.java))
+            }
 
         }
 
@@ -314,6 +348,22 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
                 }
             }
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when (mainViewModel.userLogState.value) {
+            UserLogState.LOGGED_IN_AS_CUSTOMER_MEMBER -> {
+                mainViewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
+            }
+
+            UserLogState.LOGGED_IN_AS_CUSTOMER -> {
+                mainViewModel.getCustomerProfile(tokenManager.getAccessToken().toString())
+            }
+
+            else -> {}
+        }
 
     }
 

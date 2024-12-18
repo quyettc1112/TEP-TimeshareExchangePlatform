@@ -28,6 +28,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyTimeshareActivity.MyTimeshareActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToastStyle
 import com.example.tep_timeshareexchangeplatform.Until.PreferenceHelper
@@ -65,6 +66,7 @@ class RequestExchangeActivity : BaseActivity() {
         clickIntentToGetMyTimeshare()
         selectMyTimeshareActivityResult = registerSelectMyTimeshareActivityResult()
         setupTextWatchers()
+        eventClickToolbar()
 
     }
 
@@ -87,8 +89,11 @@ class RequestExchangeActivity : BaseActivity() {
                     binding.animationViewExchange.visibility = View.GONE
                     resources.data?.let {
                         bindDatsPostingExchange(it)
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                     }
+                    Log.d(
+                        "ExchangePoasdasdstingDetail",
+                        resources.data?.exchangePostingId.toString()
+                    )
                 }
 
                 Status.ERROR -> {
@@ -205,29 +210,33 @@ class RequestExchangeActivity : BaseActivity() {
     }
 
     // Function to bind data
-    private fun bindDatsPostingExchange(myTimeshareResponse: ExchangeDetailResponse) {
-        if (myTimeshareResponse == null) {
+    private fun bindDatsPostingExchange(exchangeDetailResponse: ExchangeDetailResponse) {
+        if (exchangeDetailResponse == null) {
             binding.includeExchangeTimehare.root.visibility = View.GONE
         } else {
             binding.includeExchangeTimehare.root.visibility = View.VISIBLE
             binding.includeExchangeTimehare.apply {
                 // Hide button
                 btnSelect.visibility = View.GONE
-                tvResortName.text = myTimeshareResponse.resortName
-                tvRoomType.text = myTimeshareResponse.roomCode
+                tvTitle.text = "Loại phòng: "
+                tvResortName.text =
+                    exchangeDetailResponse.resortName + " | " + exchangeDetailResponse.roomCode
+                tvRoomType.text = exchangeDetailResponse.unitType.title
                 tvCheckinDate.text =
                     Constant.formatDateByLocale(
-                        myTimeshareResponse.checkinDate,
+                        exchangeDetailResponse.checkinDate,
                         this@RequestExchangeActivity
                     )
                 tvCheckOutDate.text =
                     Constant.formatDateByLocale(
-                        myTimeshareResponse.checkoutDate,
+                        exchangeDetailResponse.checkoutDate,
                         this@RequestExchangeActivity
                     )
-                Glide.with(binding.root.context).load(myTimeshareResponse.unitType.photos)
-                    .into(imResortImage)
+                Glide.with(binding.root.context).load(exchangeDetailResponse.unitType.photos)
+                    .into(imImageTimeshare)
             }
+
+            bindDataPreferExchange(exchangeDetailResponse)
         }
     }
 
@@ -285,8 +294,8 @@ class RequestExchangeActivity : BaseActivity() {
 
                     // Kiểm tra xem startDateString và endDateString có null hay không
                     bindDataCheckInCheckOut(startDateString, endDateString, selectedYear)
-                    binding.llExchangeMethod.visibility = View.VISIBLE
-                    bindDataExchangePriceOption()
+
+                    checkExchangePackage()
 
                 }
 
@@ -371,6 +380,49 @@ class RequestExchangeActivity : BaseActivity() {
 
     }
 
+    private fun bindDataPreferExchange(exchangeDetailResponse: ExchangeDetailResponse) {
+        binding.apply {
+            llPreferExchange.visibility = View.VISIBLE
+            tvPreferExchangLocation.text =
+                "Tỉnh/Thành Phố: " + exchangeDetailResponse.preferLocation ?: ""
+            tvPreferCheckinDate.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@RequestExchangeActivity
+                    )
+                }
+            tvPreferCheckoutDate.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getFormattedDate(
+                        it,
+                        this@RequestExchangeActivity
+                    )
+                }
+            tvPreferCheckinDayOfWeek.text =
+                exchangeDetailResponse.preferCheckinDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@RequestExchangeActivity
+                    )
+                }
+            tvPreferCheckoutDayOfWeek.text =
+                exchangeDetailResponse.preferCheckoutDate?.let {
+                    Constant.getDayOfWeek(
+                        it,
+                        this@RequestExchangeActivity
+                    )
+                }
+        }
+    }
+
+    private fun eventClickToolbar() {
+        binding.customToolbar2.onStartIconClick = {
+            onBackPressed()
+        }
+
+    }
+
     private fun callGetValidYearTimeshare(timeShareId: Int) {
         viewModel.getValidYearTimeshare(tokenManager.getAccessToken().toString(), timeShareId)
     }
@@ -380,8 +432,8 @@ class RequestExchangeActivity : BaseActivity() {
         viewModel.getMyTimeshareDetail(tokenManager.getAccessToken().toString(), timeShareId)
     }
 
-    private fun callSendExchangeRequest(exchangePostingId: Int, ) {
-        var inputPrice : Long = 0
+    private fun callSendExchangeRequest(exchangePostingId: Int) {
+        var inputPrice: Long = 0
         when (selectedExchangeOption) {
             ExchangeOption.NO_PAYMENT_NEEDED -> {
                 viewModel.updatePrice(0)
@@ -403,7 +455,7 @@ class RequestExchangeActivity : BaseActivity() {
         }
 
         if (selectedExchangeOption != ExchangeOption.NO_PAYMENT_NEEDED && inputPrice == 0L) {
-            showWarningToast("Lỗi","Vui lòng nhập giá trị hợp lệ")
+            showWarningToast("Lỗi", "Vui lòng nhập giá trị hợp lệ")
             return
         }
 
@@ -562,6 +614,28 @@ class RequestExchangeActivity : BaseActivity() {
 
     }
 
+    private fun checkExchangePackage() {
+        val exchangePackageEnum =
+            ExchangePackageEnum.getPackageById(viewModel.exchangePostingDetail.value?.data?.exchangePackageId!!)
+        when (exchangePackageEnum) {
+            ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
+                Toast.makeText(this, "Gói Co bản", Toast.LENGTH_SHORT).show()
+                binding.llExchangeMethod.visibility = View.GONE
+                binding.llPriceInput.visibility = View.GONE
+                binding.btnNext.visibility = View.VISIBLE
+                viewModel.updatePrice(0)
+                selectedExchangeOption = ExchangeOption.NO_PAYMENT_NEEDED
+                sendButtonNextClick()
+            }
+
+            ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
+                Toast.makeText(this, "Gói Nâng Cao", Toast.LENGTH_SHORT).show()
+                binding.llExchangeMethod.visibility = View.VISIBLE
+                bindDataExchangePriceOption()
+            }
+        }
+    }
+
     private fun showErrorToast(message: String) {
         MotionToast.Companion.createColorToast(
             this,
@@ -586,4 +660,8 @@ class RequestExchangeActivity : BaseActivity() {
         )
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

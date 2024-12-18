@@ -38,13 +38,17 @@ class PostingOfResortActivity : BaseActivity() {
         if (intent == 0) finish()
         postingOfResortViewModel.setCurrentResortID(intent)
 
-
-
         getIntentData()
         setUpTabLayoutViewPager()
+        eventClickToolbar()
 
     }
 
+    private fun eventClickToolbar() {
+        binding.toolbar.onStartIconClick = {
+            finish()
+        }
+    }
 
     private fun enableEdgeToEdge() {
         window.setDecorFitsSystemWindows(false)

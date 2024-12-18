@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,7 +29,7 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPack
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.PostingFlowActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.PostingFlow.ViewModel.PostingFlowViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.RentalPackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
@@ -275,9 +274,9 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        "Đăng bài thành công",
+                        getString(R.string.msg_post_successful),
                         View.OnClickListener {
-                            startActivity(Intent(requireContext(), MyPostingActivity::class.java))
+                            startActivity(Intent(requireContext(), MyRentalPostingListActivity::class.java))
                             requireActivity().finish()
                         }
                     )
@@ -308,7 +307,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     (activity as PostingFlowActivity).showSuccessDialog(
                         requireContext(),
-                        "Đăng bài thành công",
+                        getString(R.string.msg_post_successful),
                         View.OnClickListener {
                             startActivity(
                                 Intent(
@@ -325,7 +324,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
                 Status.ERROR -> {
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     Log.d("CheckkDOO-Create Exchange", response.message.toString())
-                    showErrorToast(response.message.toString())
+                    showErrorToast("Lỗi tạo bài đăng trao đổi")
                 }
 
                 Status.LOADING -> {
@@ -446,8 +445,8 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         }
 
         binding.apply {
-            tvPostingFee.text = "${formatPrice(packageModel.price)} đ"
-            tvTotalAmount.text = "${formatPrice(packageModel.price)} đ"
+            tvPostingFee.text = "${formatPrice(packageModel.price)} VNĐ"
+            tvTotalAmount.text = "${formatPrice(packageModel.price)} VNĐ"
 
             // Lấy ngày hiện tại
             val calendar = Calendar.getInstance()
@@ -496,7 +495,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun bindDataWalletInfo() {
         if (tokenManager.isLoggedIn()) {
             val availableMoney = tokenManager.getProfileInfo()?.walletAvailableMoney
-            binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} đ"
+            binding.tvWalletBalance.text = "${availableMoney?.let { formatPrice(it) }} VNĐ"
             availableMoney?.let { money ->
                 postingFlowViewModel.packageStep4.value?.price?.let { price ->
                     if (money < price) {
@@ -542,13 +541,12 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
         if (pricePerNight.toInt() != 0) {
             val totalPrice = pricePerNight * postingFlowViewModel.numberOfNights.value!!.toInt()
             binding.includeDetailBilling.tvEstimatedTotalPrice.text =
-                "${Constant.formatPriceLong(totalPrice)}đ / ${postingFlowViewModel.numberOfNights.value} đêm"
+                "${Constant.formatPriceLong(totalPrice)} VNĐ / ${postingFlowViewModel.numberOfNights.value} đêm"
             binding.includeDetailBilling.tvRoomPricePerNight.text =
-                "${Constant.formatPriceLong(pricePerNight)}đ / 1 đêm"
+                "${Constant.formatPriceLong(pricePerNight)} VNĐ / 1 đêm"
         } else {
             binding.includeDetailBilling.tvEstimatedTotalPrice.setText("Đang Chờ Định Giá")
             binding.includeDetailBilling.tvRoomPricePerNight.setText("Đang Chờ Định Giá")
-            Toast.makeText(requireContext(), "0 Tiền", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -734,7 +732,7 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun requestButtonClick() {
         binding.ctrRequestButton.setOnClickListener {
             if (!binding.cbAgreement.isChecked) {
-                showInfoToast("Vui lòng đọc và đồng ý với điều khoản sử dụng")
+                "Vui Lòng Chấp Nhận Điều Khoản"
                 binding.scrollView.post {
                     binding.scrollView.smoothScrollTo(0, binding.llAgreement.top)
                 }
@@ -801,24 +799,24 @@ class Step_6_PaymentPostingFragment : BaseFragment(R.layout.fragment_payment_pos
     private fun showErrorToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Error",
+            "Thất Bại",
             string,
             MotionToastStyle.ERROR,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 
     private fun showSuccessToast(string: String) {
         MotionToast.createColorToast(
             requireActivity(),
-            "Success",
+            "Thành Công",
             string,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(requireContext(), R.font.inter_thin)
+            ResourcesCompat.getFont(requireContext(), R.font.inter_bold)
         )
     }
 

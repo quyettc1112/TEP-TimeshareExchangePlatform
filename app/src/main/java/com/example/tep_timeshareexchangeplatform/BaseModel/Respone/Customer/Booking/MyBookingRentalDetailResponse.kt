@@ -16,7 +16,7 @@ data class MyBookingRentalDetailResponse(
     @SerializedName("isActive") val isActive: Boolean,
     @SerializedName("isFeedback") val isFeedback: Boolean,
     @SerializedName("renterFullLegalName") val renterFullLegalName: String,
-    @SerializedName("renterLegalPhone") val renterLegalPhone: String,
+    @SerializedName("renterLegalPhone") val renterLegalPhone: String?,
     @SerializedName("renterLegalAvatar") val renterLegalAvatar: String?,
     @SerializedName("serviceFee") val serviceFee: Long,
     @SerializedName("totalPrice") val totalPrice: Long?,
@@ -36,7 +36,7 @@ data class MyBookingRentalDetailResponse(
         @SerializedName("rentalPackageId") val rentalPackageId: Int,
         @SerializedName("rentalPackageRentalPackageName") val rentalPackageRentalPackageName: String,
         @SerializedName("rentalPackageType") val rentalPackageType: String,
-        @SerializedName("rentalPackagePrice") val rentalPackagePrice: Int,
+        @SerializedName("rentalPackagePrice") val rentalPackagePrice: Long?,
         @SerializedName("createdDate") val createdDate: Long,
         @SerializedName("updatedDate") val updatedDate: Long
     ) {
@@ -79,8 +79,8 @@ data class MyBookingRentalDetailResponse(
                     @SerializedName("displayName") val displayName: String,
                     @SerializedName("latitude") val latitude: String,
                     @SerializedName("longitude") val longitude: String,
-                    @SerializedName("country") val country: String,
-                    @SerializedName("placeId") val placeId: Long?
+                    @SerializedName("country") val country: String?,
+                    @SerializedName("placeId") val placeId: String?
                 )
             }
         }

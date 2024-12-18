@@ -29,7 +29,9 @@ import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPack
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostingDetail.MyExchangeDetailActivity
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangeRequestActivity.ExchangeRequestOnPostActivity.ExchangeRequestOnPostActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangeOption
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.ExchangePackageEnum
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyExchangeRequestStatus
+import com.example.tep_timeshareexchangeplatform.Until.EmumClass.MyPostingStatus
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentMethod
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.Status
@@ -87,6 +89,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
         tokenManager = TokenManager(this)
         if (tokenManager.isLoggedIn() && tokenManager.getAccessToken() != null) {
+            Log.d("MyExchangeRequestDasadsetail", intent.toString())
             viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
         } else {
             showWarningToast("Bạn chưa đăng nhập", "Vui lòng đăng nhập để xem thông tin")
@@ -125,16 +128,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Duyệt yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                val intent = Intent(
-                                    this@MyExchangeRequestDetailActivity,
-                                    MyExchangeDetailActivity::class.java
-                                )
-                                intent.putExtra(
-                                    Constant.DEFAULT_MY_POSTING_ID,
-                                    it.data?.exchangePosting?.id
-                                )
-                                startActivity(intent)
-                                finish()
+                                val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+                                viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
                             }
 
                         })
@@ -161,19 +156,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Từ chối yêu cầu trao đổi thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                val intent =
-                                    Intent(
-                                        this@MyExchangeRequestDetailActivity,
-                                        ExchangeRequestOnPostActivity::class.java
-                                    )
-                                intent.putExtra(
-                                    Constant.DEFAULT_EXCHANGE_REQUEST_ON_POST,
-                                    data.data?.exchangePosting?.id
-                                )
-                                startActivity(
-                                    intent
-                                )
-                                finish()
+                                val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+                                viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
                             }
 
                         })
@@ -200,8 +184,8 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                         "Đề xuất giá chênh lệch thành công",
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
-                                setResult(RESULT_OK)
-                                finish()
+                                val intent = intent.getIntExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, 0)
+                                viewModel.getCustomerExchangeDetail(tokenManager.getAccessToken().toString(), intent)
                             }
                         })
                 }
@@ -224,7 +208,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this,
-                        "Thanh toán thành công",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 setResult(RESULT_OK)
@@ -336,22 +320,67 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
         // Check Owner
         val customerProfile = tokenManager.getProfileInfo()
         val status = MyExchangeRequestStatus.fromApiStatus(myExchangeRequestDetail.status)
-        // Owner Side
+       /* // Owner Side
         if (customerProfile?.id != myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER) {
             binding.llRequestAction.visibility = View.VISIBLE
+        } else {
+            binding.llRequestAction.visibility = View.GONE
         }
         if(customerProfile?.id != myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT){
             binding.llPaymentMethod.visibility = View.VISIBLE
+        } else {
+            binding.llPaymentMethod.visibility = View.GONE
         }
 
         // Exchanger Side
         if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING) {
             binding.llRequestAction.visibility = View.VISIBLE
+        } else {
+            binding.llRequestAction.visibility = View.GONE
         }
-
         if (customerProfile?.id == myExchangeRequestDetail.ownerId && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT) {
             binding.llPaymentMethod.visibility = View.VISIBLE
+        } else {
+            binding.llPaymentMethod.visibility = View.GONE
         }
+*/
+
+        val isOwner = customerProfile?.id == myExchangeRequestDetail.ownerId
+
+        binding.llRequestAction.visibility = when {
+            !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER -> View.VISIBLE
+            isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PRICING -> View.VISIBLE
+            !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> View.VISIBLE
+            isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> View.VISIBLE
+            else -> View.GONE
+        }
+
+        binding.llPaymentMethod.visibility = when {
+            !isOwner && status == MyExchangeRequestStatus.PENDING_OWNER_PAYMENT -> View.VISIBLE
+            isOwner && status == MyExchangeRequestStatus.PENDING_RENTER_PAYMENT -> View.VISIBLE
+            else -> View.GONE
+        }
+
+        checkPricingAble(myExchangeRequestDetail)
+
+        // Check Exchange Package
+        val exchangePackage = myExchangeRequestDetail.exchangePackageId?.let {
+            ExchangePackageEnum.getPackageById(
+                it
+            )
+
+        }
+        when (exchangePackage) {
+            ExchangePackageEnum.BASIC_SERVICE.packageModel -> {
+                binding.btnPriceValuation.visibility = View.GONE
+            }
+
+            ExchangePackageEnum.ADVANCED_SERVICE.packageModel -> {
+                binding.btnPriceValuation.visibility = View.VISIBLE
+            }
+
+        }
+
 
     }
 
@@ -483,6 +512,31 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     }
 
+    private fun checkPricingAble(data: MyExchangeRequestDetailResponse) {
+        val statusEP = data?.exchangePosting!!.status
+        val statusRE = data?.status
+        // Trường hợp bài đăng dđã được chấp nhân. Không thể thực hiện chấp nhận/ từ chối hay thay đổi mức giá
+        if (statusEP == MyPostingStatus.ACCEPTED.apiStatus && statusRE != MyExchangeRequestStatus.PENDING_APPROVAL.apiStatus) {
+            binding.llRequestAction.visibility = View.GONE
+            showInfoDialog(
+                this,
+                "Bạn đang có yêu cầu đã được chấp nhận, không thể thực hiện Chấp Nhận/ Từ chối hay thay đổi mức giá",
+                object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+
+                    }
+                }
+            )
+        }
+
+        if (statusEP == MyPostingStatus.COMPLETED.apiStatus){
+            binding.llRequestAction.visibility = View.GONE
+        }
+
+
+
+    }
+
     private fun evenClickApproveExchangeRequest() {
         binding.btnApproval.setOnClickListener {
             callApproveExchangeRequest()
@@ -550,9 +604,9 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     private fun eventClickToolbar() {
         binding.customToolbar5.onStartIconClick = {
-            finish()
+            setResult(RESULT_OK)
+            onBackPressed()
         }
-
 
     }
 
@@ -762,6 +816,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
             val priceValuation = inputPrice
             Log.d("PriceValuatisasdon", priceValuation.toString() + " " + requestId + " " + note)
             callExchangePriceValuation(requestId, priceValuation, note)
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -833,6 +888,7 @@ class MyExchangeRequestDetailActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        setResult(RESULT_OK)
         finish()
     }
 

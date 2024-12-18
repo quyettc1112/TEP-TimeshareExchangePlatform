@@ -55,7 +55,6 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
             submitList(viewModel.getCurrentRequestOnPostList())
             notifyDataSetChanged()
         }
-        viewModel.currentPage.value = 0
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -66,23 +65,16 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             observeData()
         } else {
-            showWarningToast("Bạn chưa đăng nhập","Vui lòng đăng nhập để xem thông tin" )
+            showWarningToast("Bạn chưa đăng nhập",getString(R.string.msg_need_login) )
         }
         initAdapter()
         bindDataRequestOnPostList()
+        eventClickToolbar()
+    }
 
-        // Đăng ký ActivityResultLauncher
-        detailActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
-                // Load lại danh sách
-                viewModel.clearCurrentRequestOnPostList()
-                exchangeRequestOnPostAdapter.apply {
-                    submitList(listOf())
-                    notifyDataSetChanged()
-                }
-                viewModel.currentPage.value = 0
-            }
+    private fun eventClickToolbar() {
+        binding.customToolbar.onStartIconClick = {
+            finish()
         }
     }
 
@@ -90,10 +82,9 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         exchangeRequestOnPostAdapter.onItemClick = {
             val intent = Intent(this, MyExchangeRequestDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_MY_EXCHANGE_REQUEST_ID, it.id)
-            detailActivityLauncher.launch(intent)
+            startActivity(intent)
         }
     }
-
 
     private fun observeData() {
         viewModel.myExchangeRequestOnPostList.observe(this) {
@@ -126,7 +117,6 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
         }
     }
 
-
     private fun bindDataRequestOnPostList() {
         binding.requestOnPost.apply {
             adapter = exchangeRequestOnPostAdapter
@@ -157,6 +147,11 @@ class ExchangeRequestOnPostActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        viewModel.clearCurrentRequestOnPostList()
+        exchangeRequestOnPostAdapter.apply {
+            submitList(listOf())
+            notifyDataSetChanged()
+        }
+        viewModel.currentPage.value = 0
     }
 }

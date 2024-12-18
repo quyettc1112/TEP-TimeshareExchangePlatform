@@ -90,6 +90,10 @@ class MyPostingDetailActivity : BaseActivity() {
     private fun getIntentValue() {
         val intent = intent.getIntExtra(Constant.DEFAULT_MY_POSTING_ID, 0)
         val token = TokenManager(this)
+        if (intent == 0) {
+            finish()
+            return
+        }
         if (token.isLoggedIn() && token.getAccessToken() != null) {
             viewModel.getMyPostingDetail(token.getAccessToken().toString(), intent)
             observeMyPostingDetail()

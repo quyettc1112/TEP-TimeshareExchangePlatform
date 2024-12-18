@@ -80,10 +80,10 @@ class Step_4_SelectPackageFragment : BaseFragment(R.layout.fragment_select_packa
     private fun onButtonSelectPackageClick() {
         binding.btnNext.setOnClickListener {
             (activity as PostingFlowActivity).showConfirmDialog(
-                title = "Confirm",
-                message = "Selected this package?",
-                positiveButtonTitle = "Yes",
-                negativeButtonTitle = "No",
+                title = "Xác nhận",
+                message = "Chọn gói dịch vụ này?",
+                positiveButtonTitle = "Chọn",
+                negativeButtonTitle = "Không",
                 textButton = null,
                 object : ConfirmDialog.ConfirmCallback {
                     override fun negativeAction() {

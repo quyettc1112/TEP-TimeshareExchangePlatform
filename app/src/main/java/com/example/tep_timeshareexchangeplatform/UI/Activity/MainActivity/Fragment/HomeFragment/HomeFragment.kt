@@ -433,7 +433,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         postingDetailResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(requireContext(), "Refresh", Toast.LENGTH_SHORT).show()
                     (activity as MainActivity).apply {
                         checkUserLoggedIn()
                         checkUserStateLog()

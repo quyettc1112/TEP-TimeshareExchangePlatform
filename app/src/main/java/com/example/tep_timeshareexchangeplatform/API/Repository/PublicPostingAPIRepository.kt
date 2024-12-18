@@ -3,6 +3,8 @@ package com.example.tep_timeshareexchangeplatform.API.Repository
 import com.example.tep_timeshareexchangeplatform.API.BaseAPI.BaseAPI
 import com.example.tep_timeshareexchangeplatform.API.Factory.ApiServiceFactory
 import com.example.tep_timeshareexchangeplatform.API.Service.PublicPostingAPIService
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.FAQ.FAQResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Policy.PolicyResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.BlogResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.ExchangeDetailResponse
@@ -132,6 +134,36 @@ class PublicPostingAPIRepository @Inject constructor(
     suspend fun getBlogDetail(postingId: Int): Resource<BlogDetailResponse> {
         return try {
             val response = publicPostingAPIService.getBlogDetail(postingId)
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get Policy
+    suspend fun getAllPolicy(): Resource<PolicyResponse> {
+        return try {
+            val response = publicPostingAPIService.getAllPolicy()
+            if (response.isSuccessful) {
+                Resource.success(response.body())
+            } else {
+                val errorMessage = ErrorHandler.parseError(response.errorBody())
+                Resource.error("Error: ${response.code()}, Message: ${errorMessage}", null)
+            }
+        } catch (e: Exception) {
+            Resource.error("Network Error: ${e.message}", null)
+        }
+    }
+
+    // Get FAQ
+    suspend fun getFAQ(): Resource<FAQResponse> {
+        return try {
+            val response = publicPostingAPIService.getAllFAQ()
             if (response.isSuccessful) {
                 Resource.success(response.body())
             } else {

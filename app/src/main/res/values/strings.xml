@@ -266,7 +266,51 @@ phép quý khách luôn kết nối với gia đình và bè bạn.</string>
     <string name="shop_toys" translatable="false">Đồ chơi</string>
     <string name="shop_gift" translatable="false">Quà tặng</string>
     <string name="shop_cosmetics" translatable="false">Mỹ phẩm</string>
-    <string name="title_activity_test">test</string>
+    <string name="title_activity_test" translatable="false">test</string>
+
+
+    <!--// Message-->
+    <string name="msg_load_data_error" translatable="false">Lỗi tải dữ liệu</string>
+    <string name="msg_no_data" translatable="false">Không có dữ liệu</string>
+    <string name="msg_cannot_load_data" translatable="false">Không thể tải dữ liệu</string>
+    <string name="msg_please_fill_all_info" translatable="false">Vui lòng nhập đầy đủ thông tin</string>
+
+    <string name="msg_login_failed" translatable="false">Đăng Nhập Thất Bại</string>
+    <string name="msg_login_successful" translatable="false">Đăng Nhập Thành Công</string>
+    <string name="msg_register_successful" translatable="false">Tạo Tài Khoản Thành Công</string>
+
+    <string name="msg_need_login" translatable="false">Bạn cần đăng nhập để thực hiện chức năng này</string>
+    <string name="msg_need_customer_profile" translatable="false">Bạn Cần Cung Cấp Hồ Sơ Khách Hàng</string>
+
+    <string name="msg_accept_terms" translatable="false">Vui Lòng Chấp Nhận Điều Khoản</string>
+
+    <string name="msg_request_successful" translatable="false">Gửi Yêu Cầu Thành Công</string>
+    <string name="msg_create_timeshare_successful" translatable="false">Tạo Timeshare Thành Công</string>
+
+    <string name="msg_booking_cancelled" translatable="false">Đặt phòng của bạn đã được hủy thành công</string>
+    <string name="msg_exchange_request_sent" translatable="false">Gửi yêu cầu trao đổi thành công, Chờ phản hồi từ chủ bài đăng</string>
+
+    <string name="msg_invalid_timeshare_years" translatable="false">Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiểm tra lại</string>
+    <string name="msg_payment_url_failed" translatable="false">Không thể tạo URL thanh toán</string>
+    <string name="msg_invalid_amount" translatable="false">Vui lòng nhập số tiền hợp lệ</string>
+
+    <string name="msg_fetch_room_list_failed" translatable="false">Lỗi khi lấy danh sách phòng của Resort</string>
+    <string name="msg_empty_room_list" translatable="false">Danh sách phòng trống</string>
+    <string name="msg_select_nights" translatable="false">Hãy chọn số đêm lưu trú</string>
+    <string name="msg_select_room_type" translatable="false">Hãy Chọn Loại Phòng Của Bạn</string>
+    <string name="msg_select_exchange_date" translatable="false">Vui lòng chọn ngày trao đổi</string>
+    <string name="msg_select_province" translatable="false">Vui lòng chọn tỉnh thành</string>
+
+    <string name="msg_payment_successful" translatable="false">Thanh toán thành công</string>
+    <string name="msg_post_successful" translatable="false">Đăng bài thành công</string>
+    <string name="msg_no_payment_method" translatable="false">Chưa chọn phương thức thanh toán</string>
+
+    <string name="msg_price_change_successful" translatable="false">Thay Đổi Mức Giá Thành Công</string>
+    <string name="msg_hide_post_successful" translatable="false">Ẩn bài đăng thành công</string>
+
+    <string name="msg_error_occurred" translatable="false">Có lỗi xảy ra</string>
+    <string name="msg_confirm_hide_post" translatable="false">Bạn có chắc chắn muốn ẩn bài đăng này không?</string>
+    <string name="msg_no_posts" translatable="false">Bạn chưa có bài đăng nào</string>
 
 
 </resources>

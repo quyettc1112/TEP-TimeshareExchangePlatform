@@ -1,6 +1,7 @@
 package com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking
 
 
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.tmo.Location
 import com.google.gson.annotations.SerializedName
 
 
@@ -40,7 +41,18 @@ data class MyBookingExchangeDetailResponse(
             @SerializedName("resortId") val resortId: Int,
             @SerializedName("resortName") val resortName: String,
             @SerializedName("resortLogo") val resortLogo: String,
-            @SerializedName("resortDescription") val resortDescription: String
+            @SerializedName("resortDescription") val resortDescription: String,
+            @SerializedName("location") val location: Location,
+        )
+
+        data class Location(
+            @SerializedName("name") val name: String?,
+            @SerializedName("displayName") val displayName: String?,
+            @SerializedName("latitude") val latitude: String,
+            @SerializedName("longitude") val longitude: String,
+            @SerializedName("country") val country: String?,
+            @SerializedName("placeId") val placeId: Int?
         )
     }
+
 }

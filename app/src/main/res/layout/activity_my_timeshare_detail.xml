@@ -78,6 +78,39 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--// Verify Button-->
+                <LinearLayout
+                    android:id="@+id/ll_verify"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/ic_verify" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="9"
+                        android:fontFamily="@font/inter_bold"
+                        android:maxLines="2"
+                        android:paddingStart="5dp"
+                        android:text="Đã xác thực và Đảm Bảo bởi Unwind"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
                 <!--// Resort Type-->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/materialCardView4"
@@ -131,7 +164,7 @@
                         android:layout_gravity="left|center"
                         android:layout_weight="9"
                         android:fontFamily="@font/inter_medium"
-                        android:maxLines="2"
+                        android:maxLines="3"
                         android:paddingStart="5dp"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"

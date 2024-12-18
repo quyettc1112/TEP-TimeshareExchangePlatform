@@ -63,6 +63,17 @@ class MainViewModel @Inject constructor(
         _customerProfileInfo.value = customerProfileResponse
     }
 
+    // Call Get User Profile
+    private val _customerProfileResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val customerProfileResponse: LiveData<Resource<CustomerProfileResponse>> get() = _customerProfileResponse
+    fun getCustomerProfile(token: String) {
+        viewModelScope.launch {
+            _customerProfileResponse.postValue(Resource.loading(null))
+            val result = customerAPIRepository.getCustomerProfile(token)
+            _customerProfileResponse.postValue(result)
+        }
+    }
+
 
     /**
      * Tracking Date Range
@@ -169,6 +180,10 @@ class MainViewModel @Inject constructor(
         return _currentMyBookingList
     }
 
+    fun clearCurrentMyBookingList() {
+        _currentMyBookingList.clear()
+    }
+
     /**
      * Call API To POST FeedBack
      *
@@ -184,11 +199,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-    fun clearCurrentMyBookingList() {
-        _currentMyBookingList.clear()
-        _currentMyBookingPage.value = 0
-    }
 
 
     fun resetCurrentMyBookingPage() {
@@ -213,6 +223,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+
 
 
 

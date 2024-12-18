@@ -23,7 +23,7 @@ class ResortSearchedAdapter : BaseAdapter<ResortModelResponse.Content, ResortSea
                     .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.ripple_effect_white))
                     .into(binding.imLogo)
                 tvResortName.text = item.resortName
-                tvLocation.text = item.address
+                tvLocation.text = item.resortLocationDisplayName
             }
 
 

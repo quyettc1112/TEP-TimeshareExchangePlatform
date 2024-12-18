@@ -66,15 +66,7 @@ class MyTransactionDetailActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    MotionToast.createToast(
-                        this,
-                        "Error",
-                        it.message.toString(),
-                        MotionToastStyle.ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
+                    showWarningToast(getString(R.string.msg_load_data_error),getString(R.string.msg_no_data) )
                 }
             }
         }

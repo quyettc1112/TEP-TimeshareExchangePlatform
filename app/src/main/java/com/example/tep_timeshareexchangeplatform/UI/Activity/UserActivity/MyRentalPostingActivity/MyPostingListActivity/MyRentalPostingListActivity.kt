@@ -1,4 +1,4 @@
-package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList
+package com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity
 
 import android.app.Activity
 import android.content.Intent
@@ -32,7 +32,7 @@ import com.example.tep_timeshareexchangeplatform.databinding.ActivityMyPostingBi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPostingActivity : BaseActivity() {
+class MyRentalPostingListActivity : BaseActivity() {
     private lateinit var binding: ActivityMyPostingBinding
     private val viewModel: MyPostingViewModel by viewModels()
     private lateinit var tokenManager: TokenManager
@@ -71,7 +71,7 @@ class MyPostingActivity : BaseActivity() {
     private fun checkUserStage() {
         val token = TokenManager(this)
         if (!token.isLoggedIn() || token.getAccessToken() == null) {
-            showErrorToast("Bạn chưa đăng nhập")
+            showErrorToast(getString(R.string.msg_need_login))
             finish()
         }
 
@@ -113,7 +113,7 @@ class MyPostingActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     binding.animLoadingMore.visibility = View.VISIBLE
-                    showErrorToast(it.message ?: "Có lỗi xảy ra")
+                    showErrorToast(getString(R.string.msg_cannot_load_data))
                     Log.e("MyPostingActivity", it.message ?: "Có lỗi xảy ra")
                 }
             }
@@ -135,6 +135,7 @@ class MyPostingActivity : BaseActivity() {
 
                 Status.SUCCESS -> {
                     hideLoadingWaiting()
+                    showSuccessToast(getString(R.string.msg_hide_post_successful))
                     MotionToast.Companion.createColorToast(
                         this,
                         "Thành công",
@@ -191,6 +192,9 @@ class MyPostingActivity : BaseActivity() {
             // Room Name
             intent.putExtra(Constant.DEFAULT_MY_POSTING_ROOM_NAME, it.roomName)
 
+            // Image
+            intent.putExtra(Constant.DEFAULT_MY_POSTING_IMAGE, it.unitTypeDTO.photos)
+
             // Check In Date
             intent.putExtra(
                 Constant.DEFAULT_MY_POSTING_CHECK_IN_DATE,
@@ -219,7 +223,7 @@ class MyPostingActivity : BaseActivity() {
         myPostingAdapter.onHidePostingClick = {
             showConfirmDialog(
                 "Ẩn bài đăng",
-                "Bạn có chắc chắn muốn ẩn bài đăng này không?",
+                getString(R.string.msg_confirm_hide_post),
                 "Đồng ý",
                 "Hủy",
                 "",
@@ -248,7 +252,7 @@ class MyPostingActivity : BaseActivity() {
             adapter = myPostingAdapter
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@MyPostingActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this@MyRentalPostingListActivity, LinearLayoutManager.VERTICAL, false)
         }
 
         // Scroll Listener
@@ -288,9 +292,9 @@ class MyPostingActivity : BaseActivity() {
         // Show Error Toast
         MotionToast.createColorToast(
             this,
-            "Error",
+            getString(R.string.msg_load_data_error),
             message,
-            MotionToastStyle.ERROR,
+            MotionToastStyle.WARNING,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
             null
@@ -301,7 +305,7 @@ class MyPostingActivity : BaseActivity() {
         // Show Success Toast
         MotionToast.createColorToast(
             this,
-            "Success",
+            "Thành Công",
             message,
             MotionToastStyle.SUCCESS,
             MotionToast.GRAVITY_BOTTOM,
@@ -313,7 +317,7 @@ class MyPostingActivity : BaseActivity() {
     private fun showInfoDialog() {
         showInfoDialog(
             this,
-            "Bạn chưa có bài đăng nào",
+            getString(R.string.msg_no_posts),
             object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     finish()

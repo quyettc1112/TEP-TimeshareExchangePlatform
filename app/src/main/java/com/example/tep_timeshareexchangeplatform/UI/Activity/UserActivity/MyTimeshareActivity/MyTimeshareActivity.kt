@@ -103,14 +103,13 @@ class MyTimeshareActivity : BaseActivity() {
                 Status.LOADING -> {
                     binding.animationView.visibility = View.VISIBLE
                 }
-
                 Status.SUCCESS -> {
                     binding.animationView.visibility = View.GONE
                     resources.data?.let {
                         if (it.totalPages == 0) {
                             showInfoDialog(
                                 this,
-                                "Bạn chưa có Timeshare nào",
+                                "Bạn không có Timeshare hợp lệ nào",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
                                         finish()
@@ -121,7 +120,6 @@ class MyTimeshareActivity : BaseActivity() {
                             myTimeshareViewModel.loadMoreMyTimeshareList(it.content)
                             myTimeshareAdapter.submitList(myTimeshareViewModel.getCurrentMyTimeshareList())
                         }
-
                     }
                 }
 

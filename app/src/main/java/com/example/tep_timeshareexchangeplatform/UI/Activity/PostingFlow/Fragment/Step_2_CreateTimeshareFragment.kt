@@ -335,10 +335,14 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 }
 
                 Status.ERROR -> {
-                    (activity as PostingFlowActivity).showErrorDialog(
-                        "${roomModel.message}",
-                        "Back"
-                    )
+                    if(roomModel.message!!.contains("400")) {
+                        (activity as PostingFlowActivity).showErrorDialog(
+                            "Mã Phòng Đã Tồn Tại",
+                            "Quay lại"
+                        )
+                    } else {
+                        (activity as PostingFlowActivity).showErrorToast("Lỗi Khi Tạo Phòng","Lỗi Khi Tạo Phòng")
+                    }
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                 }
             }
@@ -433,9 +437,6 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                     (activity as PostingFlowActivity).hideLoadingWaiting()
                     showSuccessToast("Thành Công", "Tạo Timeshare Thành Công")
                     resetAllData()
-
-                    // Reload My Timeshare List
-                    postingFlowViewModel.clearCurrentMyTimeshareList()
                 }
 
                 Status.ERROR -> {
@@ -596,7 +597,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         bindDataSpinnerValidYear()
         binding.btnSelectCheckInOutDate.setOnClickListener {
             val selectedStartYear = binding.spValidStarYear.selectedItem as Int
-            showRangeDayPickerDialog(requireContext(), selectedStartYear) { dateRange ->
+            val selectedEndYear = binding.spValidEndYear.selectedItem as Int
+            showRangeDayPickerDialog(requireContext(), selectedStartYear, selectedEndYear) { dateRange ->
 
             }
         }
@@ -630,8 +632,8 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 return@setOnClickListener
             }
 
-
             if (postingFlowViewModel.getIsYesOrNoSelected()) {
+                clearFocusEditText()
                 if(isEditAmenities) {
                     setEnableAllAmenities(false)
                     isEditAmenities = false
@@ -641,7 +643,13 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
                 } else {
                     postingFlowViewModel.updateTaskProgress(5)
                 }
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.btnNext.top)
+                }
             } else {
+                binding.scrollView.post {
+                    binding.scrollView.smoothScrollTo(0, binding.btnNext.top)
+                }
                 postingFlowViewModel.updateTaskProgress(5)
             }
         }
@@ -710,7 +718,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         if (resortModelResponse != null) {
             binding.let {
                 it.tvResortName.text = resortModelResponse.resortName
-                it.tvLocation.text = resortModelResponse.address
+                it.tvLocation.text = resortModelResponse.resortLocationDisplayName
                 Glide.with(requireContext())
                     .load(resortModelResponse.logo)
                     .placeholder(R.drawable.ripple_effect)
@@ -982,7 +990,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.includeUnitTypeNo.btnSaveRoomInfo.setOnClickListener {
             if (!verifyDataAndSendRequest()) {
-                showWarningToast("Cảnh Báo", "Hãy Điền Đầy Đủ Thông Tin")
+                showWarningToast("Cảnh Báo", "Vui lòng nhập đầy đủ thông tin")
                 return@setOnClickListener
             }
 
@@ -1053,7 +1061,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     // 2. Binding Data of Day Check In
     private fun bindDataSpinnerValidYear() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val yearList = (currentYear..currentYear + 100).toList()
+        val yearList = (currentYear - 50..currentYear + 100).toList()
 
         val yearAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, yearList)
@@ -1061,6 +1069,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
 
         binding.spValidStarYear.adapter = yearAdapter
         binding.spValidEndYear.adapter = yearAdapter
+
+        // Tự động chọn năm hiện tại cho spValidStarYear
+        val currentYearPosition = yearList.indexOf(currentYear)
+        binding.spValidStarYear.setSelection(currentYearPosition)
 
         binding.spValidStarYear.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -1182,7 +1194,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
         if (tokenManager.getAccessToken().toString() != null && timeshareDTO != null) {
             callCreateTimeshare(timeshareDTO)
         } else {
-            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Bạn cần đăng nhập để thực hiện chức năng này", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -1288,8 +1300,10 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     }
 
     private fun clearFocusEditText() {
+        binding.includeUnitTypeYes.spUnitType.clearFocus()
         binding.includeUnitTypeNo.edtRoomCode.clearFocus()
         binding.includeUnitTypeNo.edtRoomName.clearFocus()
+
     }
 
     private fun uncheckAllAmenities() {
@@ -1321,6 +1335,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
     fun showRangeDayPickerDialog(
         context: Context,
         startYear: Int,
+        endYear: Int,
         onDateRangeSelected: (String) -> Unit
     ) {
         // Tạo Calendar để giới hạn ngày trong năm Start Year
@@ -1329,7 +1344,7 @@ class Step_2_CreateTimeshareFragment : BaseFragment(R.layout.fragment_create_tim
             set(Calendar.DAY_OF_YEAR, 1) // Ngày đầu tiên trong năm Start Year
         }
         val calendarEnd = Calendar.getInstance().apply {
-            set(Calendar.YEAR, startYear)
+            set(Calendar.YEAR, endYear)
             set(
                 Calendar.DAY_OF_YEAR,
                 getActualMaximum(Calendar.DAY_OF_YEAR)

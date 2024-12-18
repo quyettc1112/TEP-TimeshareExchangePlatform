@@ -105,7 +105,7 @@ class WebView : BaseActivity() {
                 handleLoginSuccess(token, "")
                 callGetCustomerInfo()
             } else {
-                Toast.makeText(this, "No token received", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Không nhận được Token", Toast.LENGTH_LONG).show()
             }
         }
     }

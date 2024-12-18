@@ -187,23 +187,4 @@ class MyBookingAdapter :
         }
     }
 
-    fun updateItemStatus(bookingId: Int, newStatus: String) {
-        val currentList = differ.currentList.toMutableList()
-
-        // Tìm vị trí của item có bookingId tương ứng
-        val position = currentList.indexOfFirst { it.bookingId == bookingId }
-
-        if (position != -1) { // Nếu tìm thấy item
-            val oldItem = currentList[position]
-            val updatedItem = oldItem.copy(status = newStatus) // Cập nhật trạng thái
-            currentList[position] = updatedItem // Thay thế item tại vị trí
-
-            Log.d("Adapter", "Item trước: $oldItem")
-            Log.d("Adapter", "Item sau: $updatedItem")
-
-            differ.submitList(currentList.toList()) // Cập nhật danh sách trong Adapter
-        } else {
-            Log.e("Adapter", "Không tìm thấy item với bookingId: $bookingId")
-        }
-    }
 }

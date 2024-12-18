@@ -43,7 +43,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         super.onCreate(savedInstanceState)
         initAdapter()
         tokenManager = TokenManager(requireContext())
-        myTimeshareAdapter.submitList(listOf())
+        myTimeshareAdapter.apply {
+            submitList(listOf())
+            notifyDataSetChanged()
+        }
         postingFlowViewModel.clearCurrentMyTimeshareList()
 
     }
@@ -114,11 +117,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         }
 
         postingFlowViewModel.currentMyTimesharePage.observe(viewLifecycleOwner) {
-            if(it == 0) {
-                myTimeshareAdapter.submitList(listOf())
-                myTimeshareAdapter.notifyDataSetChanged()
-            }
-
             postingFlowViewModel.getMyTimeshareList(
                 tokenManager.getAccessToken().toString(),
                 it,
@@ -144,10 +142,10 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
         // Select button click
         myTimeshareAdapter.onItemClick = {
             (activity as PostingFlowActivity).showConfirmDialog(
-                title = "Confirm",
-                message = "Are you sure you want to select this Timeshare?",
-                positiveButtonTitle = "Yes",
-                negativeButtonTitle = "No",
+                title = "Xác Nhận",
+                message = "Xác nhận chọn Timeshare này ",
+                positiveButtonTitle = "Có",
+                negativeButtonTitle = "Không",
                 textButton = null,
                 object : ConfirmDialog.ConfirmCallback {
                     override fun negativeAction() {
@@ -164,6 +162,11 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     private fun eventClickReload() {
         binding.btnRefresh.setOnClickListener {
+            postingFlowViewModel.clearCurrentMyTimeshareList()
+            myTimeshareAdapter.apply {
+                submitList(listOf())
+                notifyDataSetChanged()
+            }
             postingFlowViewModel.currentMyTimesharePage.value = 0
         }
     }
@@ -177,7 +180,6 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
                         data?.getParcelableExtra(Constant.DEFAULT_SELECTION_MY_TIMESHARE)
                     if (selectedMyTimeshare != null) {
                         postingFlowViewModel.updateMyTimeshareModel(selectedMyTimeshare)
-                        Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
                         postingFlowViewModel.updateStep(4)
                     }
                 }
@@ -186,8 +188,12 @@ class Step_3_SelectTimeshareFragment : BaseFragment(R.layout.fragment_select_tim
 
     override fun onResume() {
         super.onResume()
-
-
+        postingFlowViewModel.clearCurrentMyTimeshareList()
+        myTimeshareAdapter.apply {
+            submitList(listOf())
+            notifyDataSetChanged()
+        }
+        postingFlowViewModel.currentMyTimesharePage.value = 0
     }
 
 

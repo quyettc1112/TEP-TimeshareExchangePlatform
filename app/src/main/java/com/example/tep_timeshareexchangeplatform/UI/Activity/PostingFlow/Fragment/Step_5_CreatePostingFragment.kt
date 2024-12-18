@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,6 +93,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
             postingFlowViewModel.getValidYearTimeshare(
                 tokenManager.getAccessToken().toString(), myTimeshareModel.timeShareId
             )
+            Log.d("myTimeshareModel.timeShareId", myTimeshareModel.timeShareId.toString())
             bindDataMyTimeshare(myTimeshareModel)
 
         }
@@ -108,7 +110,7 @@ class Step_5_CreatePostingFragment : BaseFragment(R.layout.fragment_create_posti
                     resources.data?.let {
                         if (it.isEmpty()) {
                             (activity as PostingFlowActivity).showInfoDialog(requireContext(),
-                                "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiem tra lại",
+                                "Timeshare của bạn hiện không có năm hợp lệ để cho thuê, Xin vui lòng kiểm tra lại",
                                 object : View.OnClickListener {
                                     override fun onClick(v: View?) {
                                         postingFlowViewModel.resetSteps()

@@ -24,7 +24,7 @@ import com.example.tep_timeshareexchangeplatform.Common.Constant
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.UI.Activity.Payment.PaymentPackage.ViewModel.VNPayViewModel
 import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyExchangePostingActivity.MyExchangePostings.MyExchangePostingActivity
-import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingList.MyPostingActivity
+import com.example.tep_timeshareexchangeplatform.UI.Activity.UserActivity.MyRentalPostingActivity.MyPostingListActivity.MyRentalPostingListActivity
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.PaymentType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.VnpResponseCode
 import com.example.tep_timeshareexchangeplatform.Until.MotionToast.MotionToast
@@ -69,7 +69,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -113,7 +113,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -227,7 +227,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -235,7 +235,7 @@ class VNPayActivity : BaseActivity() {
                                 setResult(RESULT_OK, intent)
                                 // Intent to Billing Activity
                                 val intentToBilling =
-                                    Intent(this@VNPayActivity, MyPostingActivity::class.java)
+                                    Intent(this@VNPayActivity, MyRentalPostingListActivity::class.java)
                                 startActivity(intentToBilling)
 
                                 // Finish Activity
@@ -270,7 +270,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity
@@ -345,7 +345,7 @@ class VNPayActivity : BaseActivity() {
                     hideLoadingWaiting()
                     showSuccessDialog(
                         this@VNPayActivity,
-                        "Payment Success",
+                        getString(R.string.msg_payment_successful),
                         object : View.OnClickListener {
                             override fun onClick(v: View?) {
                                 // Intent to FInsish Activity

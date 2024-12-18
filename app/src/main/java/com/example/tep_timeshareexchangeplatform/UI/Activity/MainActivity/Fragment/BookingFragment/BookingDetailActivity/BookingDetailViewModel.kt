@@ -11,6 +11,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Book
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingExchangeDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Booking.MyBookingRentalDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Feedback.FeedbackResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Profile.CustomerProfileResponse
 import com.example.tep_timeshareexchangeplatform.Until.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -96,6 +97,19 @@ class BookingDetailViewModel @Inject constructor(
             _updateExchangeBookingInfoResponse.postValue(Resource.loading(null))
             customerAPIRepository.updateExchangeBookingCustomerInfo(token, bookingId, updateExchangeBookingDTO).let {
                 _updateExchangeBookingInfoResponse.postValue(it)
+            }
+        }
+    }
+
+    // Call Get Customer Profile Response
+    private val _getCustomerProfileResponse = MutableLiveData<Resource<CustomerProfileResponse>>()
+    val getCustomerProfileResponse: MutableLiveData<Resource<CustomerProfileResponse>>
+        get() = _getCustomerProfileResponse
+    fun callGetCustomerProfile(token: String) {
+        viewModelScope.launch {
+            _getCustomerProfileResponse.postValue(Resource.loading(null))
+            customerAPIRepository.getCustomerProfile(token).let {
+                _getCustomerProfileResponse.postValue(it)
             }
         }
     }

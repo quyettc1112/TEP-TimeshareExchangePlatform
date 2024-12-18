@@ -213,9 +213,9 @@
                             android:layout_gravity="left|center"
                             android:layout_weight="9"
                             android:fontFamily="@font/inter_medium"
-                            android:maxLines="2"
+                            android:maxLines="3"
                             android:paddingStart="5dp"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ll_see_map"
                             app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -427,6 +427,181 @@
                         android:id="@+id/include_unit_type"
                         layout="@layout/include_unit_type"
                         android:visibility="visible" />
+
+                </LinearLayout>
+
+                <!--// Prefer Location-->
+                <LinearLayout
+                    android:id="@+id/ll_prefer_exchange"
+                    android:visibility="visible"
+                    android:layout_margin="2dp"
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="Nhu cầu mong muốn trao đổi"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tv_prefer_exchang_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Tỉnh/Thành Phố: An Giạng"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Khoản thời gian mong muốn trao đổi"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <!--// Ngày nhận phòng-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:weightSum="10">
+
+                        <!-- Check-in Date Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4.5"
+                            android:background="@drawable/ripple_effect_white"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!-- Label for Check-in Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:maxLines="1"
+                                    android:text="Ngày Nhận Phòng"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_check_in" />
+
+
+                            </LinearLayout>
+
+
+                            <!-- Check-in Date -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkin_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <!-- Check-in Day -->
+
+                            <TextView
+                                android:id="@+id/tv_prefer_checkin_dayOfWeek"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_light"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Arrow Icon -->
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_arrow_right" /> <!-- Use your arrow drawable here -->
+
+                        <!-- Check-out Date Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="4.5"
+                            android:background="@drawable/ripple_effect_white"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!-- Label for Check-in Date -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:maxLines="1"
+                                    android:text="Ngày Trả Phòng"
+                                    android:textColor="@color/gray_text"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_check_out" />
+
+                            </LinearLayout>
+
+                            <!-- Check-out Date -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkout_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <!-- Check-out Day -->
+                            <TextView
+                                android:id="@+id/tv_prefer_checkout_dayOfWeek"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_light"
+                                android:textColor="@color/gray_text"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
