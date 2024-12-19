@@ -68,6 +68,9 @@ class TemporaryCodeFragment : BaseFragment(R.layout.fragment_tempory_code) {
                 }
             }
         }
+        viewModel.email.observe(viewLifecycleOwner) {
+            binding.tvEmail.text = it
+        }
     }
 
 

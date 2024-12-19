@@ -188,7 +188,12 @@ class RequestExchangeActivity : BaseActivity() {
 
                 Status.ERROR -> {
                     hideLoadingWaiting()
-                    showErrorToast(resources.message.toString())
+                    if (resources.message!!.contains("400")) {
+                        showWarningToast("Bài đăng đã được trao đổi", "Vui lòng chọn bài đăng khác")
+                        finish()
+                    } else {
+                        showErrorToast(resources.message.toString())
+                    }
                 }
 
                 Status.LOADING -> {
