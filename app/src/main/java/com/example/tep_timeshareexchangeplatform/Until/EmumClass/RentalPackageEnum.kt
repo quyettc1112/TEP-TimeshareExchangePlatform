@@ -106,7 +106,9 @@ enum class RentalPackageEnum(val packageModel: PackageModel) {
             listBenefit = listOf(
                 "Thông báo qua mail khi có người thuê",
                 "Gắn thẻ 'Bài mới' trong 30 ngày",
-                "Gắn cờ 'Được xác minh' của Unwind"
+                "Gắn cờ 'Được xác minh' của Unwind",
+                "Thanh toán trực tuyến qua hệ thống",
+                "Quy đổi quyền sỡ hưu và thu lại lợi nhuận",
             )
         )
     );

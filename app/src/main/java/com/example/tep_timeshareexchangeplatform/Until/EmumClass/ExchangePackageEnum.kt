@@ -13,8 +13,10 @@ enum class ExchangePackageEnum (val packageModel: PackageModel) {
             duration = 2,  // Thời gian sử dụng là 1 tháng
             type = "Basic",
             listBenefit = listOf(
-                "Thông báo qua mail khi có người thuê",
-                "Gắn thẻ 'Bài mới' trong 30 ngày"
+                "Tìm kiếm và trao đổi Timeshare",
+                "Đảm bảo an toàn thông tin trao đổi",
+                "Không giới hạn số lượng yêu cầu",
+                "Gửi và nhận yêu cầu trao đổi"
             )
         )
     ),
@@ -28,11 +30,12 @@ enum class ExchangePackageEnum (val packageModel: PackageModel) {
             duration = 2,  // Thời gian sử dụng là 1 tháng
             type = "Standard",
             listBenefit = listOf(
-                "Thông báo qua mail khi có người thuê",
-                "Gắn thẻ 'Bài mới' trong 30 ngày",
-                "Gắn cờ 'Được xác minh' của Unwind",
-                "Được xác minh bởi nhân viên của Resort",
-                "Cho thuê trực tuyến"
+                "Tìm kiếm và trao đổi Timeshare",
+                "Đảm bảo an toàn thông tin trao đổi",
+                "Không giới hạn số lượng yêu cầu",
+                "Gửi và nhận yêu cầu trao đổi",
+                "Xác thực bài trao đổi",
+                "Xác thực yêu cầu trao đổi",
             )
         )
     );

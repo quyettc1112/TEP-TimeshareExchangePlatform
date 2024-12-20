@@ -90,7 +90,7 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
     // Function to handle step click
     private fun onStepClick(step: Int) {
         if (step == 6) {
-            Toast.makeText(binding.root.context, "You cannot access this step yet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(binding.root.context, "Bạn chưa thể đến bước này", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -100,7 +100,7 @@ class ProcessBarManager(private val binding: CustomProgressBarBinding, private v
             tryNavigateToStep(step)
         } else {
             // Show a message that the user cannot access this step yet
-            Toast.makeText(binding.root.context, "You cannot access this step yet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(binding.root.context, "Bạn chưa thể đến bước này", Toast.LENGTH_SHORT).show()
         }
     }
 
