@@ -27,7 +27,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
             android:maxLines="2"
-            android:text="Phòng: Studio King"
+            android:text="Phòng: Studio King sdfssdf"
             android:textSize="14dp"
             app:layout_constraintEnd_toStartOf="@+id/tv_detail"
             app:layout_constraintStart_toStartOf="parent"
