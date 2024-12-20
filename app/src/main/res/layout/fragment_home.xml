@@ -152,7 +152,7 @@
                             android:layout_weight="5"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="center|left"
-                            android:text="01/09/2024 - 02/09/2024"
+                            android:text="1/12/2024 - 30/12/2024"
                             android:textColor="@color/black"
                             android:textSize="12dp" />
 

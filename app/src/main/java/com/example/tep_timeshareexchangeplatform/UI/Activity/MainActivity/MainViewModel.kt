@@ -86,7 +86,7 @@ class MainViewModel @Inject constructor(
         _dateRange.value = dateRange
     }
     fun getDateRange(): String {
-        return _dateRange.value ?: "20/10/2021 - 25/10/2021"
+        return _dateRange.value ?: "1/12/2024 - 30/12/2024"
     }
 
 
