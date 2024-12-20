@@ -41,7 +41,6 @@ class ResortDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityResortDetailBinding
     private var imagePostingAdapter = ImagePostingAdapter()
     private var unitTypeAdapter = UnitTypeResortAdapter()
-    private var amenitiesAdapter = AmenitiesAdapter()
     private var reviewAdapter = ReviewAdapter()
     private val resortDetailViewModel: ResortDetailViewModel by viewModels()
 
@@ -115,7 +114,6 @@ class ResortDetailActivity : BaseActivity() {
 
     private fun initAdapter() {
         unitTypeAdapter.submitList(listOf())
-        amenitiesAdapter.submitList(listOf())
         reviewAdapter.submitList(listOf())
     }
 
@@ -195,7 +193,7 @@ class ResortDetailActivity : BaseActivity() {
         binding.llSeeMap.setOnClickListener {
             val intent = Intent(this, MapViewActivity::class.java)
             intent.putExtra(Constant.RESORT_LATITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
-            intent.putExtra(Constant.RESORT_LONGITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.latitude)
+            intent.putExtra(Constant.RESORT_LONGITUDE, resortDetailViewModel.resortDetail.value?.data?.location?.longitude)
             startActivity(intent)
         }
     }
