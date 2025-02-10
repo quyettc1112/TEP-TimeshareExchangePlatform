@@ -60,13 +60,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        callAPIGetData()
+        //callAPIGetData()
         gridAdapter = GridAdapter(Constant.destiantionList) { destinationModel ->
 
         }
 
-        publicsPostingAdapter.submitList(listOf())
-        resortAdapterMB.submitList(listOf())
+        publicsPostingAdapter.submitList(Constant.dummyPublicPostingList)
+        resortAdapterMB.submitList(Constant.dummyResortList)
         blogAdapter.submitList(listOf())
 
         // Khởi tạo ActivityResultLauncher
@@ -85,7 +85,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         onSearchComponentClickHandler()
         setAutoScroll()
         observerSearchComponent()
-        observerViewModel()
+        //observerViewModel()
         return binding.root
     }
 
@@ -126,15 +126,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
                 }
-
                 Status.SUCCESS -> {
                     (activity as MainActivity).hideLoadingWaiting()
                     resource.data?.let { resortModel ->
                         resortAdapterMB.submitList(resortModel.content)
                     }
-
                 }
-
                 Status.ERROR -> {
                     MotionToast.Companion.createToast(
                         requireActivity(),
@@ -155,7 +152,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     binding.lottiePostingLoading.visibility = View.GONE
                     publicsPostingAdapter.submitList(it.data?.content)
                 }
-
                 Status.ERROR -> {
                     MotionToast.Companion.createToast(
                         requireActivity(),
@@ -167,7 +163,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                         null
                     )
                 }
-
                 Status.LOADING -> {
                     binding.lottiePostingLoading.visibility = View.VISIBLE
                 }
@@ -179,7 +174,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 Status.LOADING -> {
                     (activity as MainActivity).showLoadingWaiting(true)
                 }
-
                 Status.SUCCESS -> {
                     (activity as MainActivity).hideLoadingWaiting()
                     resource.data?.let { blogModel ->
@@ -187,7 +181,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
 
                 }
-
                 Status.ERROR -> {
                     MotionToast.Companion.createToast(
                         requireActivity(),

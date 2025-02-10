@@ -10,6 +10,8 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.No
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
@@ -714,6 +716,224 @@ class Constant {
                     )
                 }
         }
+
+        val dummyResortList = listOf(
+            ResortModelResponse.Content(
+                id = 1,
+                resortName = "Resort 1",
+                resortLocationName = "Location 1",
+                resortLocationDisplayName = "Display Location 1",
+                resortLocationLatitude = "-49.055267",
+                resortLocationLongitude = "-91.057432",
+                logo = "https://example.com/logo1.png",
+                minPrice = 4016887,
+                maxPrice = 7693369,
+                status = "PENDING",
+                address = "Address 1",
+                timeshareCompanyId = 10,
+                isActive = true,
+                averageRating = 2.8f,
+                totalRating = 432
+            ),
+            ResortModelResponse.Content(
+                id = 2,
+                resortName = "Resort 2",
+                resortLocationName = "Location 2",
+                resortLocationDisplayName = "Display Location 2",
+                resortLocationLatitude = "-59.472471",
+                resortLocationLongitude = "31.435577",
+                logo = "https://example.com/logo2.png",
+                minPrice = 2870646,
+                maxPrice = 7116206,
+                status = "PENDING",
+                address = "Address 2",
+                timeshareCompanyId = 9,
+                isActive = true,
+                averageRating = 3.9f,
+                totalRating = 247
+            ),
+            ResortModelResponse.Content(
+                id = 3,
+                resortName = "Resort 3",
+                resortLocationName = "Location 3",
+                resortLocationDisplayName = "Display Location 3",
+                resortLocationLatitude = "-5.757913",
+                resortLocationLongitude = "-106.831450",
+                logo = "https://example.com/logo3.png",
+                minPrice = 2609779,
+                maxPrice = 6669446,
+                status = "PENDING",
+                address = "Address 3",
+                timeshareCompanyId = 5,
+                isActive = false,
+                averageRating = 2.6f,
+                totalRating = 480
+            ),
+            ResortModelResponse.Content(
+                id = 4,
+                resortName = "Resort 4",
+                resortLocationName = "Location 4",
+                resortLocationDisplayName = "Display Location 4",
+                resortLocationLatitude = "31.361967",
+                resortLocationLongitude = "52.342541",
+                logo = "https://example.com/logo4.png",
+                minPrice = 2494283,
+                maxPrice = 6535568,
+                status = "PENDING",
+                address = "Address 4",
+                timeshareCompanyId = 5,
+                isActive = false,
+                averageRating = 2.5f,
+                totalRating = 971
+            ),
+            ResortModelResponse.Content(
+                id = 5,
+                resortName = "Resort 5",
+                resortLocationName = "Location 5",
+                resortLocationDisplayName = "Display Location 5",
+                resortLocationLatitude = "28.424863",
+                resortLocationLongitude = "125.447153",
+                logo = "https://example.com/logo5.png",
+                minPrice = 4048727,
+                maxPrice = 7084446,
+                status = "ACTIVE",
+                address = "Address 5",
+                timeshareCompanyId = 7,
+                isActive = false,
+                averageRating = 4.4f,
+                totalRating = 428
+            )
+        )
+
+        val dummyPublicPostingList = listOf(
+            PublicPostingResponse.Content(
+                rentalPostingId = 1,
+                expiredDate = "2025-10-10",
+                ownerId = 151,
+                ownerName = "Owner 1",
+                timeShareId = 5,
+                roomInfoId = 16,
+                roomName = "Room 1",
+                resortId = 19,
+                resortName = "Resort 1",
+                resortLocationName = "Location 1",
+                resortLocationDisplayName = "Display Location 1",
+                isVerify = true,
+                nights = 10,
+                pricePerNights = 2543879,
+                totalPrice = 47537698,
+                rentalPackageId = 6,
+                rentalPackageName = "Package 1",
+                checkinDate = "2025-05-25",
+                checkoutDate = "2025-03-06",
+                status = "BOOKED",
+                unitTypeDTO = PublicPostingResponse.Content.UnitTypeDTO(
+                    id = 1,
+                    title = "Unit Type 1",
+                    area = "71 m²",
+                    bathrooms = 2,
+                    bedrooms = 2,
+                    bedsFull = 2,
+                    bedsKing = 2,
+                    bedsSofa = 1,
+                    bedsMurphy = 1,
+                    bedsQueen = 0,
+                    bedsTwin = 1,
+                    buildingsOption = "Building B",
+                    description = "Spacious and luxurious unit type 1 with modern amenities.",
+                    kitchen = "Partial Kitchen",
+                    photos = "https://example.com/unit1.jpg",
+                    sleeps = 3,
+                    view = "Ocean View"
+                ),
+                active = true
+            ),
+            PublicPostingResponse.Content(
+                rentalPostingId = 2,
+                expiredDate = "2025-09-22",
+                ownerId = 123,
+                ownerName = "Owner 2",
+                timeShareId = 24,
+                roomInfoId = 40,
+                roomName = "Room 2",
+                resortId = 12,
+                resortName = "Resort 2",
+                resortLocationName = "Location 2",
+                resortLocationDisplayName = "Display Location 2",
+                isVerify = true,
+                nights = 14,
+                pricePerNights = 3172336,
+                totalPrice = 9746956,
+                rentalPackageId = 6,
+                rentalPackageName = "Package 2",
+                checkinDate = "2025-04-12",
+                checkoutDate = "2025-05-07",
+                status = "AVAILABLE",
+                unitTypeDTO = PublicPostingResponse.Content.UnitTypeDTO(
+                    id = 2,
+                    title = "Unit Type 2",
+                    area = "94 m²",
+                    bathrooms = 3,
+                    bedrooms = 3,
+                    bedsFull = 1,
+                    bedsKing = 2,
+                    bedsSofa = 1,
+                    bedsMurphy = 1,
+                    bedsQueen = 1,
+                    bedsTwin = 1,
+                    buildingsOption = "Building B",
+                    description = "Spacious and luxurious unit type 2 with modern amenities.",
+                    kitchen = "No Kitchen",
+                    photos = "https://example.com/unit2.jpg",
+                    sleeps = 2,
+                    view = "Ocean View"
+                ),
+                active = false
+            ),
+            PublicPostingResponse.Content(
+                rentalPostingId = 3,
+                expiredDate = "2025-07-19",
+                ownerId = 129,
+                ownerName = "Owner 3",
+                timeShareId = 47,
+                roomInfoId = 43,
+                roomName = "Room 3",
+                resortId = 14,
+                resortName = "Resort 3",
+                resortLocationName = "Location 3",
+                resortLocationDisplayName = "Display Location 3",
+                isVerify = true,
+                nights = 6,
+                pricePerNights = 668500,
+                totalPrice = 15104719,
+                rentalPackageId = 7,
+                rentalPackageName = "Package 3",
+                checkinDate = "2025-03-15",
+                checkoutDate = "2025-05-19",
+                status = "BOOKED",
+                unitTypeDTO = PublicPostingResponse.Content.UnitTypeDTO(
+                    id = 3,
+                    title = "Unit Type 3",
+                    area = "97 m²",
+                    bathrooms = 2,
+                    bedrooms = 1,
+                    bedsFull = 0,
+                    bedsKing = 1,
+                    bedsSofa = 1,
+                    bedsMurphy = 0,
+                    bedsQueen = 0,
+                    bedsTwin = 0,
+                    buildingsOption = "Building A",
+                    description = "Spacious and luxurious unit type 3 with modern amenities.",
+                    kitchen = "Partial Kitchen",
+                    photos = "https://example.com/unit3.jpg",
+                    sleeps = 8,
+                    view = "City View"
+                ),
+                active = true
+            )
+        )
+
 
 
     }

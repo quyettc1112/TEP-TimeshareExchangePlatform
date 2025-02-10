@@ -109,4 +109,6 @@ data class ResortModelResponse(
         @SerializedName("sorted") val sorted: Boolean,
         @SerializedName("unsorted") val unsorted: Boolean
     )
+
 }
+
