@@ -31,7 +31,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        resortAdapter.submitList(emptyList())
+        resortAdapter.submitList(Constant.dummyResortList)
         resortAdapter.onItemClick = {
            val intent = Intent(requireContext(), ResortDetailActivity::class.java)
             intent.putExtra(Constant.DEFAULT_RESORT_ID, it.id)
@@ -46,7 +46,7 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
     ): View {
         binding = FragmentTopResortBinding.inflate(inflater, container, false)
         setUpTopResortList()
-        observeData()
+        //observeData()
         return binding.root
     }
 
