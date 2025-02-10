@@ -37,7 +37,6 @@ class TopResortFragment : BaseFragment(R.layout.fragment_top_resort) {
             intent.putExtra(Constant.DEFAULT_RESORT_ID, it.id)
             startActivity(intent)
         }
-
     }
 
     override fun onCreateView(
