@@ -74,8 +74,17 @@ class ResortDetailActivity : BaseActivity() {
         eventClickBack()
         eventClickShowMaps()
 
+
+        bindDataResortInfo(Constant.resortDetail)
+
+        bindDataListImage(Constant.resortDetail.imageUrls)
+
+        bindDataUnitType(Constant.resortDetail.unitTypeDtoList)
+        bindDataReviewResort(Constant.resortDetail.feedbackList)
+        bindDataAmenities(Constant.resortDetail)
+
         // Observe Data
-        observeData()
+        //observeData()
     }
 
     private fun observeData() {
@@ -201,12 +210,12 @@ class ResortDetailActivity : BaseActivity() {
     // Binding Data Group Function
     private fun bindDataResortInfo(resortDetailModelResponse: ResortDetailModelResponse) {
         binding.apply {
-            tvResortName.text = resortDetailViewModel.resortDetail.value?.data?.resortName
-            tvLocation.text = resortDetailViewModel.resortDetail.value?.data?.location?.displayName ?: "Không Có Dữ Liệu"
+            tvResortName.text = Constant.resortDetail.resortName
+            tvLocation.text = Constant.resortDetail.location?.displayName ?: "Không Có Dữ Liệu"
             tvMinPrice.text =
-                "${formatPrice(resortDetailViewModel.resortDetail.value?.data?.minPrice!!)} VND / 1 đêm"
+                "${formatPrice(Constant.resortDetail.minPrice!!)} VND / 1 đêm"
             tvDescription.text =
-                resortDetailViewModel.resortDetail.value?.data?.description.toString()
+                Constant.resortDetail.description.toString()
             if (resortDetailModelResponse.isActive) {
                 llVerify.visibility = View.VISIBLE
             } else {

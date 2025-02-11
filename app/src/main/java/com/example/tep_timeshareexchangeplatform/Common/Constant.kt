@@ -12,6 +12,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.Dail
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortDetailModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.ResortModelResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
@@ -1174,7 +1175,144 @@ class Constant {
 
         )
 
+        val resortDetail = ResortDetailModelResponse(
+            id = 9,
+            resortName = "Luxury Beach Resort",
+            logo = "https://example.com/logo.png",
+            minPrice = 3406,
+            maxPrice = 9956,
+            status = "ACTIVE",
+            location = ResortDetailModelResponse.Location(
+                name = "Da Nang Beach",
+                displayName = "161/9 Đường TA 13, Thới An, Quận 12, Hồ Chí Minh, Việt Nam",
+                latitude = "16.0544",
+                longitude = "108.2022",
+                country = "Vietnam",
+                placeId = "ChIJA8gP2dQZQjERhHy6UXw7D44"
+            ),
+            timeshareCompanyId = 6,
+            description = "A luxury beach resort with -class amenities and bry beach resort with world-class amenities and breathtaking ocean views.A luxury beach resort wit rbreathtaking ocean views.",
+            resortAmenityList = listOf(
+                ResortDetailModelResponse.ResortAmenity(name = "Hồ bơi ngoài trời", type = "AMENITIES", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Khu vui chơi", type = "AMENITIES", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Nhà hàng", type = "AMENITIES", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Phòng xông hơi", type = "AMENITIES", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "An ninh", type = "AMENITIES", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Giặt là chung", type = "AMENITIES", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Khu mua sắm", type = "AMENITIES", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Dịch vụ Spa", type = "AMENITIES", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Sân tennis", type = "AMENITIES", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Bãi biển", type = "NEARBY_ATTRACTIONS", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Đi thuyền", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Nhà thuốc", type = "NEARBY_ATTRACTIONS", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Câu cá", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Sân golf", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Cơ sở y tế", type = "NEARBY_ATTRACTIONS", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Lặn biển", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Trượt nước", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Lướt ván buồm", type = "NEARBY_ATTRACTIONS", free = false),
+                ResortDetailModelResponse.ResortAmenity(name = "Không hút thuốc", type = "POLICY", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Không thú cưng", type = "POLICY", free = true),
+                ResortDetailModelResponse.ResortAmenity(name = "Độ tuổi tối thiểu: 18", type = "POLICY", free = true)
+            ),
+            isActive = true,
+            unitTypeDtoList = listOf(
+                ResortDetailModelResponse.UnitTypeDto(
+                    id = 19,
+                    title = "Deluxe Ocean View Suite",
+                    area = "55m²",
+                    bathrooms = 1,
+                    bedrooms = 1,
+                    bedsFull = 1,
+                    bedsKing = 1,
+                    bedsSofa = 1,
+                    bedsMurphy = 0,
+                    bedsQueen = 0,
+                    bedsTwin = 0,
+                    buildingsOption = "Main Tower",
+                    price = 10686,
+                    description = "A spacious suite asdwith a stunning ocean view.A spacious suite with a stunning ocean view.A spacious suite with a stunning ocean view.A spacious suite with a stunning ocean view.A spacious suite with a stunning ocean viasdasdasdew.A spaciousdasdasdasd suite with a studasdasnning ocean viasdaew.A spacious suite with a stunning ocean view.",
+                    kitchen = "Fully Equipped",
+                    photos = "https://i.pinimg.com/736x/39/83/c8/3983c856579b85a6c3a9ffd548991156.jpg",
+                    resortId = 73,
+                    sleeps = 3,
+                    view = "Ocean",
+                    isActive = true,
+                    unitTypeAmenitiesList = listOf(
+                        ResortDetailModelResponse.UnitTypeDto.UnitTypeAmenities(
+                            name = "Wi-Fi", type = "Connectivity", isActive = true
+                        ),
+                        ResortDetailModelResponse.UnitTypeDto.UnitTypeAmenities(
+                            name = "Air Conditioning", type = "Comfort", isActive = true
+                        )
+                    )
+                ),
+                ResortDetailModelResponse.UnitTypeDto(
+                    id = 19,
+                    title = "Deluxe Ocean View Suite",
+                    area = "55m²",
+                    bathrooms = 1,
+                    bedrooms = 1,
+                    bedsFull = 1,
+                    bedsKing = 1,
+                    bedsSofa = 1,
+                    bedsMurphy = 0,
+                    bedsQueen = 0,
+                    bedsTwin = 0,
+                    buildingsOption = "Main Tower",
+                    price = 10686,
+                    description = "A spacious suite with a stunning ocean view.",
+                    kitchen = "Fully Equipped",
+                    photos = "https://i.pinimg.com/736x/39/83/c8/3983c856579b85a6c3a9ffd548991156.jpg",
+                    resortId = 73,
+                    sleeps = 3,
+                    view = "Ocean",
+                    isActive = true,
+                    unitTypeAmenitiesList = listOf(
+                        ResortDetailModelResponse.UnitTypeDto.UnitTypeAmenities(
+                            name = "Wi-Fi", type = "Connectivity", isActive = true
+                        ),
+                        ResortDetailModelResponse.UnitTypeDto.UnitTypeAmenities(
+                            name = "Air Conditioning", type = "Comfort", isActive = true
+                        )
+                    )
+                )
+            ),
+            feedbackList = listOf(
+                ResortDetailModelResponse.Feedback(
+                    ratingPoint = 3,
+                    comment = "Amazing experience! The resort was clean and the service was excellent.",
+                    user = ResortDetailModelResponse.Feedback.User(
+                        fullName = "John Doe", avatar = "https://example.com/avatar1.png"
+                    ),
+                    createdDate = "2024-11-08T11:57:42",
+                    isActive = true
+                ),
+                ResortDetailModelResponse.Feedback(
+                    ratingPoint = 5,
+                    comment = "Beautiful location, but the food was a bit pricey.",
+                    user = ResortDetailModelResponse.Feedback.User(
+                        fullName = "Jane Smith", avatar = "https://example.com/avatar2.png"
+                    ),
+                    createdDate = "2024-12-11T11:57:42",
+                    isActive = true
+                )
+            ),
+            averageRating = 4.1f,
+            totalRating = 158,
+            imageUrls = listOf(
+                "https://i.pinimg.com/736x/39/83/c8/3983c856579b85a6c3a9ffd548991156.jpg",
+                "https://i.pinimg.com/736x/27/b5/ea/27b5ea826da92f2eedadb4a4de72d8ae.jpg",
+                "https://i.pinimg.com/736x/4f/88/b3/4f88b3859a4145f7261533bd4f6dcf80.jpg",
+                "https://i.pinimg.com/736x/66/1f/61/661f615098313b4331e15ad9e3134b07.jpg",
+                "https://i.pinimg.com/736x/f2/51/c3/f251c3465b8261a1df2a2af79a37c182.jpg",
+                "https://i.pinimg.com/736x/a7/61/81/a7618108047a9615ff93e57499ed4f11.jpg",
+                "https://i.pinimg.com/736x/c6/a3/7d/c6a37d64dc2e8e8e38170a2400961ec6.jpg",
+                "https://i.pinimg.com/736x/f3/f0/69/f3f06987c78c29c7c36740892f6c26d7.jpg",
 
+
+            )
+        )
 
 
     }

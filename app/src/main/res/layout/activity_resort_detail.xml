@@ -292,7 +292,7 @@
                         android:fontFamily="@font/inter_medium"
                         android:maxLines="3"
                         android:paddingStart="5dp"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/ll_see_map"
                         app:layout_constraintStart_toEndOf="@+id/imageView5"
