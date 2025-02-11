@@ -8,6 +8,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.FA
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.IntroSliderModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.NotificationModel
 import com.example.tep_timeshareexchangeplatform.BaseModel.Model.ModelTestTMP.ReviewModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Customer.DailySummaryDataResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyExchangePostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.MyPosting.MyRentalPostingDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.PublicPosting.PublicPostingResponse
@@ -931,6 +932,52 @@ class Constant {
                     view = "City View"
                 ),
                 active = true
+            )
+        )
+
+
+        val mockDailySummaryDataList = listOf(
+            DailySummaryDataResponse(
+                revenueCostByDateDtos = listOf(
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-01",
+                        revenueByCosts = 50000L,
+                        revenueByDate = 150000L
+                    ),
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-02",
+                        revenueByCosts = 60000L,
+                        revenueByDate = 160000L
+                    ),
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-03",
+                        revenueByCosts = 70000L,
+                        revenueByDate = 170000L
+                    )
+                ),
+                totalCosts = 180000L,
+                totalRevenue = 480000L
+            ),
+            DailySummaryDataResponse(
+                revenueCostByDateDtos = listOf(
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-04",
+                        revenueByCosts = 55000L,
+                        revenueByDate = 155000L
+                    ),
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-05",
+                        revenueByCosts = 65000L,
+                        revenueByDate = 165000L
+                    ),
+                    DailySummaryDataResponse.RevenueCostByDateDto(
+                        date = "2024-02-06",
+                        revenueByCosts = 75000L,
+                        revenueByDate = 175000L
+                    )
+                ),
+                totalCosts = 195000L,
+                totalRevenue = 495000L
             )
         )
 

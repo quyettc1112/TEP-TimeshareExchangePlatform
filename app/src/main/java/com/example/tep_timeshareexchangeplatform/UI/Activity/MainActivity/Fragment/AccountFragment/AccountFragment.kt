@@ -64,7 +64,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         setUserActivitiesEvent()
         logoutDialog()
 
-        observeViewModel()
+        //observeViewModel()
     }
 
     // Observer

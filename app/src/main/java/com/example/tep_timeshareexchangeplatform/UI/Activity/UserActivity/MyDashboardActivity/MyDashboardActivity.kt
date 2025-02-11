@@ -63,12 +63,13 @@ class MyDashboardActivity : BaseActivity() {
         }
         tokenManager = TokenManager(this)
         initializeDates()
-        getIntentValue();
-        observeData();
+        //getIntentValue()
+        //observeData()
         binding.customToolbar.onStartIconClick = {
             finish()
         }
-        DatePicker()
+        //DatePicker()
+        setupBarChart(Constant.mockDailySummaryDataList.get(0).revenueCostByDateDtos)
 
     }
 

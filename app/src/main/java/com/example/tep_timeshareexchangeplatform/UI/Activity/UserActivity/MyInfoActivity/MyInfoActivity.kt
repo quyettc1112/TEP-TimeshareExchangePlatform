@@ -50,7 +50,7 @@ class MyInfoActivity : BaseActivity() {
             insets
         }
         tokenManager = TokenManager(this)
-        observeViewModel()
+        //observeViewModel()
         eventClickUpdateCustomerInfo()
         binding.customToolbar.onStartIconClick = {
             finish()

@@ -44,14 +44,15 @@ class SplashActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        observeViewModel()
-        getFCMToken()
+        //observeViewModel()
+        //getFCMToken()
 
         // Load the animations
         val logoAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_scale)
 
         bindind.logoImageView.startAnimation(logoAnimation)
-        checkJwtUserValid()
+        //checkJwtUserValid()
+        handlerLooper()
 
     }
 
