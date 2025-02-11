@@ -42,12 +42,11 @@ class TransactionSpentFragment : BaseFragment(R.layout.fragment_transaction_spen
     ): View {
         binding = FragmentTransactionSpentBinding.inflate(inflater, container, false)
         tokenManager = TokenManager(requireContext())
-        observerData()
+        //observerData()
+        myTransactionAdapter.submitList(Constant.dummyWalletPaymentList)
         setupRecyclerView()
         return binding.root
     }
-
-
     private fun initAdapter() {
         myTransactionAdapter.onItemClick = {
             val intent = Intent(requireContext(), MyTransactionDetailActivity::class.java)

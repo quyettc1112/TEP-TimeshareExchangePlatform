@@ -43,7 +43,8 @@ class TransactionReceivedFragment : BaseFragment(R.layout.fragment_transaction_p
     ): View? {
         binding = FragmentTransactionReciveBinding.inflate(inflater, container, false)
         tokenManager = TokenManager(requireContext())
-        observerData()
+        //observerData()
+        myTransactionAdapter.submitList(Constant.dummyWalletReciceList)
         setupRecyclerView()
         return binding.root
     }

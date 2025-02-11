@@ -48,7 +48,8 @@ class TransactionAllFragment : BaseFragment(R.layout.fragment_transaction_all) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTransactionAllBinding.inflate(inflater, container, false)
-        observerData()
+        //observerData()
+        myTransactionAdapter.submitList(Constant.dummyWalletList)
         setupRecyclerView()
         return binding.root
     }

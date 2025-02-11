@@ -16,6 +16,7 @@ import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Resort.Resort
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Room.RoomDetailResponse
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeBase
 import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.UnitType.UnitTypeModel
+import com.example.tep_timeshareexchangeplatform.BaseModel.Respone.Wallet.WalletListResponse
 import com.example.tep_timeshareexchangeplatform.R
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.AmenityType
 import com.example.tep_timeshareexchangeplatform.Until.EmumClass.NotificationType
@@ -980,6 +981,199 @@ class Constant {
                 totalRevenue = 495000L
             )
         )
+
+        val dummyWalletList = listOf(
+            WalletListResponse.Content(
+                id = "4242",
+                walletId = 6,
+                money = 3404,
+                transactionType = "DEPOSIT",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "PAYPAL",
+                createdAt = "2025-01-22T11:16:52",
+                fee = 6
+            ),
+            WalletListResponse.Content(
+                id = "1951",
+                walletId = 6,
+                money = -4554,
+                transactionType = "DEPOSIT",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-09T11:16:52",
+                fee = 2
+            ),
+            WalletListResponse.Content(
+                id = "7627",
+                walletId = 5,
+                money = 883,
+                transactionType = "WITHDRAWAL",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-02-01T11:16:52",
+                fee = 45
+            ),
+            WalletListResponse.Content(
+                id = "1673",
+                walletId = 4,
+                money = -1370,
+                transactionType = "TRANSFER",
+                description = "Giao dịch rút tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-01-23T11:16:52",
+                fee = 5
+            ),
+            WalletListResponse.Content(
+                id = "9479",
+                walletId = 3,
+                money = 3113,
+                transactionType = "WITHDRAWAL",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-12-24T11:16:52",
+                fee = 1
+            ),
+            WalletListResponse.Content(
+                id = "1728",
+                walletId = 9,
+                money = -1491,
+                transactionType = "TRANSFER",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-08T11:16:52",
+                fee = 7
+            ),
+
+            )
+
+        val dummyWalletReciceList = listOf(
+            WalletListResponse.Content(
+                id = "4242",
+                walletId = 6,
+                money = 3404,
+                transactionType = "DEPOSIT",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "PAYPAL",
+                createdAt = "2025-01-22T11:16:52",
+                fee = 6
+            ),
+            WalletListResponse.Content(
+                id = "1951",
+                walletId = 6,
+                money = 4554,
+                transactionType = "DEPOSIT",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-09T11:16:52",
+                fee = 2
+            ),
+            WalletListResponse.Content(
+                id = "7627",
+                walletId = 5,
+                money = 883,
+                transactionType = "WITHDRAWAL",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-02-01T11:16:52",
+                fee = 45
+            ),
+            WalletListResponse.Content(
+                id = "1673",
+                walletId = 4,
+                money = 1370,
+                transactionType = "TRANSFER",
+                description = "Giao dịch rút tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-01-23T11:16:52",
+                fee = 5
+            ),
+            WalletListResponse.Content(
+                id = "9479",
+                walletId = 3,
+                money = 3113,
+                transactionType = "WITHDRAWAL",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-12-24T11:16:52",
+                fee = 1
+            ),
+            WalletListResponse.Content(
+                id = "1728",
+                walletId = 9,
+                money = 1491,
+                transactionType = "TRANSFER",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-08T11:16:52",
+                fee = 7
+            ),
+
+            )
+
+        val dummyWalletPaymentList = listOf(
+            WalletListResponse.Content(
+                id = "4242",
+                walletId = 6,
+                money = -3404,
+                transactionType = "DEPOSIT",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "PAYPAL",
+                createdAt = "2025-01-22T11:16:52",
+                fee = 6
+            ),
+            WalletListResponse.Content(
+                id = "1951",
+                walletId = 6,
+                money = -4554,
+                transactionType = "DEPOSIT",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-09T11:16:52",
+                fee = 2
+            ),
+            WalletListResponse.Content(
+                id = "7627",
+                walletId = 5,
+                money = -883,
+                transactionType = "WITHDRAWAL",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-02-01T11:16:52",
+                fee = 45
+            ),
+            WalletListResponse.Content(
+                id = "1673",
+                walletId = 4,
+                money = -1370,
+                transactionType = "TRANSFER",
+                description = "Giao dịch rút tiền",
+                paymentMethod = "BANK_TRANSFER",
+                createdAt = "2025-01-23T11:16:52",
+                fee = 5
+            ),
+            WalletListResponse.Content(
+                id = "9479",
+                walletId = 3,
+                money = -3113,
+                transactionType = "WITHDRAWAL",
+                description = "Chuyển khoản",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-12-24T11:16:52",
+                fee = 1
+            ),
+            WalletListResponse.Content(
+                id = "1728",
+                walletId = 9,
+                money = -1491,
+                transactionType = "TRANSFER",
+                description = "Giao dịch nạp tiền",
+                paymentMethod = "CREDIT_CARD",
+                createdAt = "2024-11-08T11:16:52",
+                fee = 7
+            )
+
+        )
+
 
 
 

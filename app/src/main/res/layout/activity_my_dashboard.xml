@@ -22,7 +22,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +35,6 @@
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="10dp">
-
                 <!-- Title -->
                 <TextView
                     android:layout_width="match_parent"
@@ -46,7 +44,6 @@
                     android:text="Lợi nhuận"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
-
                 <!-- Revenue Section -->
                 <LinearLayout
                     android:id="@+id/ll_revenue"
@@ -55,7 +52,6 @@
                     android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
-
                     <!-- Card 1 -->
                     <LinearLayout
                         android:layout_width="0dp"
@@ -66,13 +62,11 @@
                         android:gravity="left"
                         android:orientation="vertical"
                         android:padding="16dp">
-
                         <ImageView
                             android:id="@+id/cardIcon1"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/baseline_attach_money_24" />
-
                         <TextView
                             android:id="@+id/titleText1"
                             android:layout_width="wrap_content"
