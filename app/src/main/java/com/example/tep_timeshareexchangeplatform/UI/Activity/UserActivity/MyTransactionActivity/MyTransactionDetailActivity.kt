@@ -36,8 +36,8 @@ class MyTransactionDetailActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        observeData()
-        getDataIntent()
+        //observeData()
+        //getDataIntent()
 
         binding.customToolbar.onStartIconClick =  {
             onBackPressed()

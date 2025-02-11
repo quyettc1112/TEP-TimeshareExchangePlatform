@@ -72,6 +72,7 @@
 
                         <ImageView
                             android:id="@+id/im_avatar"
+                            android:src="@drawable/logo_tep_app"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="10dp" />
@@ -206,6 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="6.5"
+                            android:text="01-01-2020"
                             android:fontFamily="@font/inter_bold"
                             android:textColor="@color/black"
                             android:textSize="14dp"
@@ -257,6 +259,7 @@
                             android:layout_weight="6.5"
                             android:fontFamily="@font/inter_bold"
                             android:maxLines="2"
+                            android:text="5112124613528358"
                             android:layout_marginStart="100dp"
                             android:textColor="@color/black"
                             android:textSize="14dp"
@@ -294,7 +297,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_bold"
-
+                            android:text="@string/samples"
                             android:textColor="@color/black"
                             android:textSize="14dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -335,6 +338,7 @@
                             android:fontFamily="@font/inter_bold"
                             android:textColor="@color/black"
                             android:textSize="14dp"
+                            android:text="@string/samples"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -435,6 +439,7 @@
                             android:fontFamily="@font/inter_bold"
                             android:textColor="@color/black"
                             android:textSize="14dp"
+                            android:text="Dịch Vụ"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -512,6 +517,7 @@
                             android:fontFamily="@font/inter_medium"
                             android:textColor="@color/black"
                             android:textSize="14dp"
+                            android:text="@string/samples"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView33"
