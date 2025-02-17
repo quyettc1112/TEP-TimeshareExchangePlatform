@@ -12,6 +12,23 @@
 
 Unwind is an innovative Android application designed as a timeshare exchange platform. It allows users to book timeshares, list their own timeshare properties, exchange timeshares with others, and manage their transactions. By creating a flexible and user-driven marketplace, Unwind enhances the timeshare experience, offering greater convenience and financial flexibility.
 
+## Tech Stack
+
+**Language**: Kotlin
+
+**Architecture**: MVVM
+
+**Networking**: Retrofit + OkHttp
+
+**Database**: Room Database
+
+**Dependency Injection**: Hilt
+
+**Push Notifications**: Firebase Cloud Messaging (FCM)
+
+**Payment Integration**: VNPay (Sandbox), Unwind Wallet
+
+
 ## Document
 
 <ul>
@@ -42,21 +59,6 @@ Unwind is an innovative Android application designed as a timeshare exchange pla
 *   **Notifications System**: Real-time push notifications for booking confirmations, payment status, messages, and more.
     
 
-## Tech Stack
-
-**Language**: Kotlin
-
-**Architecture**: MVVM
-
-**Networking**: Retrofit + OkHttp
-
-**Database**: Room Database
-
-**Dependency Injection**: Hilt
-
-**Push Notifications**: Firebase Cloud Messaging (FCM)
-
-**Payment Integration**: VNPay (Sandbox), Unwind Wallet
 
 ## Target Audience
 
